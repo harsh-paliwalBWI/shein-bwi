@@ -130,7 +130,7 @@ if(userId){
                   value={state.newPassword} onChange={(e)=>setState({...state,newPassword:e.target.value})} />
               </div>
             </div> */}
-            <div className="bg-secondary text-white text-center  py-3  text-sm font-medium"
+            <div className="bg-secondary text-white text-center  py-3  text-sm font-medium cursor-pointer"
             onClick={()=>onSaveChangesHandler()}>
               <button>Save Changes</button>
             </div>

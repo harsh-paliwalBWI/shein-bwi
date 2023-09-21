@@ -11,7 +11,7 @@ import InstaFamilySlider from '../../components/instaFamily/InstaFamilySlider'
 
 const ReferAndEarnPage = () => {
   return (
-    <div>
+    <div className='md:pb-10'>
       {/* <CategoryGrid/> */}
       {/* <SimilarProducts /> */}
       {/* <Advertisement/> */}

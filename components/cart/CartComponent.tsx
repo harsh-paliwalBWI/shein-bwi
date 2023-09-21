@@ -104,7 +104,7 @@ const CartComponent = ({cookie}) => {
         </Link> */}
       {/* </div> */}
     </div>
-    <div className=" my-20">
+    <div className=" md:my-20 my-10">
             <SimilarProducts heading={"YOU MIGHT ALSO LIKE"} similarProductData={similarData} from="cart"/>
           </div>
     </>

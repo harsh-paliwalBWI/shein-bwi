@@ -97,12 +97,14 @@ async function uploadTask(userPic: any) {
     </div>     
     {/* <Link href={"/profilePage"}> */}
         <div className='flex gap-3 items-center border-t border-t-[#EEF0F5] border-b border-b-[#EEF0F5] py-4 px-6'>
-     <div><FlatIcon icon={"flaticon-user-fill  font-normal text-2xl cursor-pointer"} /></div><h4 className="text-primary font-semibold text-sm">Profile Info</h4>
+     <div><FlatIcon icon={"flaticon-user-fill  font-normal text-2xl cursor-pointer text-primary"} /></div><h4 className="text-primary font-semibold text-sm">Profile Info</h4>
  </div>
  {/* </Link> */}
+ <Link href={"/wishlist"}>
  <div className='flex gap-3 items-center  border-b border-b-[#EEF0F5]  py-4 px-6 cursor-pointer'>
      <div><FlatIcon icon={"flaticon-heart  font-normal text-2xl"} /></div><h4 className="text-secondary font-semibold text-sm">My Wishlist</h4>
  </div>
+ </Link>
  <div className='flex gap-3 items-center border-b border-b-[#EEF0F5]  py-4 px-6 cursor-pointer'>
      <div><FlatIcon icon={"flaticon-bag  font-normal text-2xl"} /></div><h4 className="text-secondary font-semibold text-sm">My Order</h4>
  </div>

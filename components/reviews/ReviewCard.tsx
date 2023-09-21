@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
 import FlatIcon from '../flatIcon/flatIcon';
+// import usrImg from "../../images/el"
 
 const ReviewCard = ({item}) => {
     console.log(item);

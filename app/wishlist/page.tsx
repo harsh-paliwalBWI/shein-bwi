@@ -28,10 +28,6 @@ const page = async() => {
 // }
   return (
     <div className='body'>
-<h1>MY WISHLIST</h1>
-<div>
-    {1}
-</div>
 <WishlistComponent cookie={cookie}/>
     </div>
   )

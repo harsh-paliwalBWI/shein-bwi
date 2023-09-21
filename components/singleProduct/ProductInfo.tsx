@@ -37,6 +37,11 @@ import paypalImg from "../../images/paypal 1.svg"
 import discoverImg from "../../images/discover 1.svg"
 import SimilarProducts from "../SimilarProducts/SimilarProducts";
 import FlatIcon from "../flatIcon/flatIcon";
+import firstImg from "../../images/6840240711_1_1_1 1.svg"
+import secImg from "../../images/6840240711_2_1_1 2.svg"
+import thirdImg from "../../images/6840240711_2_3_1 1.svg"
+import fourImg from "../../images/6840240711_6_1_1 2.svg"
+import fiveImg from "../../images/6840240711_6_2_1 1.svg"
 const features = [
   " 10 in stock",
   " Easy Return Policy",
@@ -141,12 +146,12 @@ const ProductInfo = ({ params }: any) => {
         </div>
       )}
       {product && (
-        <div className="">
+        <div className="sm:pb-10 ">
           {/* <Headersection heading={product?.prodName} /> */}
-          <div className="flex flex-col px-body  ">
+          <div className="flex flex-col px-body   ">
             <div className="flex flex-col lg:flex-row gap-6 mt-10  ">
-              <div className=" flex lg:flex-col flex-row gap-4 ">
-                {product && product?.images?.map((item: any, idx: number) => {
+              <div className=" md:flex lg:flex-col md:flex-row   gap-4   hidden ">
+                {/* {product && product?.images?.map((item: any, idx: number) => {
                   return <div key={idx} className=" ">
                     <Image
                       src={getImage(product, idx)}
@@ -162,56 +167,102 @@ const ProductInfo = ({ params }: any) => {
 
                     />
                   </div>
-                })}
-                <div className="  w-fit h-fit  ">
+                })} */}
+                <div className="  w-[139px] h-[135px]  ">
                   <Image
-                    src={getImage(product,0)}
+                    src={secImg}
                     alt=""
-                    className="w-full"
+                    className=" w-[139px] h-[135px] aspect-auto object-cover"
                     width={1000}
                     height={1000}
                     // style={{
                     //   maxWidth: "100%",
                     //   height: "auto",
                     // }}
-                    style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
+                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
                   />
                 </div>
-                <div className="w-fit h-fit">
+                <div className="w-[139px] h-[135px]">
                   <Image
-                    src={getImage(product,1)}
+                    src={thirdImg}
                     alt=""
-                    className="w-full"
+                    className="w-[139px] h-[135px] aspect-auto object-cover"
                     width={1000}
                     height={1000}
                     // style={{
                     //   maxWidth: "100%",
                     //   height: "auto",
                     // }}
-                    style={{width: "139px", height: "135px", aspectRatio: "auto" }}
+                    // style={{width: "139px", height: "135px", aspectRatio: "auto" }}
+                  />
+                </div>
+                <div className="   w-[139px] h-[135px]  ">
+                  <Image
+                    src={firstImg}
+                    alt=""
+                    className="w-[139px] h-[135px] aspect-auto object-cover"
+                    width={1000}
+                    height={1000}
+                    // style={{
+                    //   maxWidth: "100%",
+                    //   height: "auto",
+                    // }}
+                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
+                  />
+                </div>
+                <div className="  w-[139px] h-[135px]  ">
+                  <Image
+                    src={fourImg}
+                    alt=""
+                    className="w-[139px] h-[135px] aspect-auto object-cover"
+                    width={1000}
+                    height={1000}
+                    // style={{
+                    //   maxWidth: "100%",
+                    //   height: "auto",
+                    // }}
+                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
+                  />
+                </div>
+                <div className="  w-[139px] h-[135px]  ">
+                  <Image
+                    src={fiveImg}
+                    alt=""
+                    className="w-[139px] h-[135px] aspect-auto object-cover"
+                    width={1000}
+                    height={1000}
+                    // style={{
+                    //   maxWidth: "100%",
+                    //   height: "auto",
+                    // }}
+                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
                   />
                 </div>
               </div>
               <div className="flex lg:flex-row flex-col w-full  sm:gap-16 gap-6">
-                <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col gap-6 ">
-                  <div className=" md:w-[100%]  sm:w-[50%] w-[100%]">
+                <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  ">
+                  <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] sm:h-[300px] h-auto ">
                     <Image
-                      src={getImage(product, 0)}
+                      // src={getImage(product, 0)}
+                      src={secImg}
+
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}
-                      // style={{ width: "100%", height: "695px" }}
-                      className="w-[100%] lg:h-[695px] sm:h-auto h-[300px]"
+                      // style={{ width: "100%", height: "595px" }}
+                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
                     />
                   </div>
-                  <div className=" md:w-[100%]  sm:w-[50%] w-[100%]">
+                  <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px]  sm:block hidden">
                     <Image
-                      src={getImage(product, 1)}
+                      // src={getImage(product, 1)}
+                      src={fourImg}
+
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}
-                      // style={{ width: "100%", height: "695px" }}
-                      className="w-[100%] lg:h-[695px] sm:h-auto h-[300px]"
+                      // style={{ width: "100%", height: "595px" }}
+                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
                     />
                   </div>
                 </div>
@@ -244,8 +295,9 @@ const ProductInfo = ({ params }: any) => {
                       </h4>
                     </div>
                   </div>
-                  <h6 className="text-sm text-[#777777] font-semibold  sm:my-6 my-4 ">
-                    {product?.prodDesc}
+                  <h6 className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 ">
+                    {/* {product?.prodDesc} */}
+                    Strapless bustier. Front pocket. Frayed trims. Asymmetric hem. Side metal zip fastening. Asymmetrical Beige frayed Bustier.
                   </h6>
                   <div className="">
                     <h4 className="text-secondary sm:text-sm text-xs font-semibold mb-3 ">
@@ -415,7 +467,14 @@ const ProductInfo = ({ params }: any) => {
                     className="flex justify-between lg:flex w-full "
                     ref={ref}
                   >
-                    {isClient &&
+
+                    <div className=" w-full flex gap-x-3 text-xs font-bold">
+                      <div className="bg-[#EBEDF1] w-[50%] text-center py-4"><button>ADD TO BAG</button></div>
+                      <div className="bg-secondary text-white w-[50%] text-center py-4"><button>BUY NOW</button></div>
+                    </div>
+                    
+                      {/* previous button with functionality start */}
+                      {/* {isClient &&
                       cart?.filter((item) => item?.productId === product?.id)
                         .length == 0 && (
                         <div className="flex-1 lg:flex-none w-[48%] h-14 bg-black rounded-br-[10px] flex justify-center items-center py-2 border  cursor-pointer">
@@ -423,8 +482,8 @@ const ProductInfo = ({ params }: any) => {
                             "Add To Wishlist"
                           </button>
                         </div>
-                      )}
-                    <div className="w-full flex gap-3 ">
+                      )} */}
+                    {/* <div className="w-full flex gap-3 ">
                       {isClient && (
                         <div
                           className="flex-1 lg:flex-none w-[48%]  sm:h-14 bg-[#EBEDF1] h-12  flex justify-center items-center py-2  cursor-pointer"
@@ -457,7 +516,9 @@ const ProductInfo = ({ params }: any) => {
                             </button>
                           </div>
                         )}
-                    </div>
+                    </div> */}
+                      {/* previous button with functionality end*/}
+
                   </div>
                   <h3 className="font-medium sm:text-sm text-xs my-5">GUARANTEED SAFE CHECKOUT:</h3>
                   <div className="flex items-center sm:flex-nowrap flex-wrap gap-6">
@@ -513,12 +574,12 @@ const ProductInfo = ({ params }: any) => {
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="font-medium sm:text-sm text-xs mb-1">Type</h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">Top</p>
+                          <h3 className="font-medium sm:text-sm text-xs mb-1">Material</h3>
+                          <p className="text-[#555555] sm:text-sm text-xs">Elastane</p>
                         </div>
                         <div>
-                          <h3 className="font-medium  sm:text-sm text-xs mb-1">Pattern</h3>
-                          <p className="text-[#555555] sm:text-sm text-xs"> Adjustable Strap</p>
+                          <h3 className="font-medium  sm:text-sm text-xs mb-1">Color</h3>
+                          <p className="text-[#555555] sm:text-sm text-xs">Breathable Lining</p>
                         </div>
                       </div>
                     </div>
@@ -606,11 +667,14 @@ const ProductInfo = ({ params }: any) => {
               </div>
             </div> */}
             {/* old code end  */}
-            <div className=" w-full h-[1px] border-b border-b-[#CCCCCC] border-dashed my-20"></div>
+            <div className=" w-full h-[1px] border-b border-b-[#CCCCCC] border-dashed md:my-20 my-10"></div>
 
           </div>
           <div>
             <SimilarProducts heading={"SIMILAR PRODUCTS"} similarProductData={similarData} from="info" />
+          </div>
+          <div>
+            <SimilarProducts heading={"RECENTLY VIEWED"} similarProductData={similarData} from="info" />
           </div>
           {/* old code start  */}
           {/* <Transition

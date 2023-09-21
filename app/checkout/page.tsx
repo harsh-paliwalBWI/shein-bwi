@@ -17,6 +17,9 @@ import { useRouter } from "next/navigation";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { reset } from "../../redux/slices/cartSlice";
+import FlatIcon from "../../components/flatIcon/flatIcon";
+import tag from "../../images/tag 1.svg"
+import Image from "next/image";
 const CheckoutPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -246,12 +249,11 @@ const handleChange = (name, value) => {
             </div>
             </div>
           </div>
-          <ReviewTab
-          
-            placeOrder={placeOrder}
-            addressToDeliver={addressToDeliver}
+          <PaymentMethodTab
             selectedPaymentMethod={selectedPaymentMethod}
-            paymentSummary={paymentSummary}
+            setSelectedPaymentMethod={setSelectedPaymentMethod}
+            setSelectedTab={setSelectedTab}
+            setCompletedSteps={setCompletedSteps}
           />
           {/* {renderTabs()} */}
         </div>
@@ -271,14 +273,14 @@ const handleChange = (name, value) => {
               
               </div>
               <div className="flex flex-col gap-y-4 ">
-              <div className="lg:mt-10 mt-4 flex flex-col gap-6   border border-gray-400 sm:px-6 px-2 sm:py-6 py-2">
+              <div className="lg:mt-10 mt-4 flex flex-col gap-4   border border-gray-400 sm:px-6 px-2 sm:py-6 py-2">
                <div><h5 className="text-gray-500  text-base font-semibold ">Coupons</h5>
-               <div className="flex border border-primary items-center  rounded-md px-5 justify-between mt-4 ">
-                <div className="flex items-center gap-x-3 w-[80%]">
-                <p>gb</p>
-                <input type="text" className=" py-4 w-[100%] outline-0"/>
-                </div>
-                <div>X</div>
+               <div className="flex border border-primary items-center  rounded-md lg:px-5 px-3 justify-between mt-4 py-2 ">
+                {/* <div className="flex items-center gap-x-3 w-[80%]"> */}
+                <div className="flex items-center gap-2 text-primary "><Image src={tag} alt=""/><p className="xl:text-base text-sm font-medium">“CODESHE” Applied</p></div>
+                {/* <input type="text" className=" py-4 w-[100%] outline-0" /> */}
+                {/* </div> */}
+                <div><FlatIcon className="flaticon-close text-primary text-lg"/></div>
                </div>
                </div>
                <div className="flex   justify-between gap-4  text-base">
@@ -298,8 +300,8 @@ const handleChange = (name, value) => {
                     <p className="text-gray-500 font-semibold  text-base">
                     Coupon/ Discount
                     </p>
-                    <p className="font-semibold  text-base text-right text-green-500  leading-tight tracking-tight">
-                     - {constant.currency}{" "}
+                    <p className="font-semibold  text-base text-right   leading-tight tracking-tight">
+                      {constant.currency}{" "}
                       {paymentSummary?.discountOnMrp.toFixed(2)}
                     </p>
                   </div>
@@ -333,7 +335,7 @@ const handleChange = (name, value) => {
               </div>
               <div className="flex  ">
             <button
-              className=" w-full text-white py-2 px-2 hover:bg-white hover:text-black cursor-pointer   md:h-[60px] h-[40px] bg-secondary  text-center  text-base font-semibold"
+              className=" w-full text-white py-2 px-2 hover:bg-white hover:text-black cursor-pointer hover:border hover:border-secondary   md:h-[60px] h-[40px] bg-secondary  text-center  text-base font-semibold"
               onClick={() => {
                 handleAddressSubmit();
               }}

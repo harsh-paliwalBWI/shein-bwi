@@ -166,7 +166,7 @@ useEffect(() => {
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-y-6  h-fit  text-end ">
+      <div className="flex flex-col items-end gap-y-4  h-fit  text-end  ">
         <div className="  flex border border-[#C6C6C6]  w-fit text-end    ">
           <div
             className=" text-[#000000] flex-[0.4] flex justify-center items-center text-lg font-bold cursor-pointer select-none px-3 py-3 "
@@ -201,61 +201,14 @@ useEffect(() => {
           </div>
         </div>
         <div className="flex sm:justify-end justify-center  ">
-          {/* {
-            wishlist? 
-            <div className="flex items-center gap-2  text-end cursor-pointer "
-            onClick={() => {
-              // const userId = userData?.id
-              // const productId=item?.productId
-              moveToWishListHandler({userId:userData?.id,productId:item?.productId})
-              setWishList((prev)=>!prev)
-            }}>
+
+        <div className="flex items-center gap-2  text-end cursor-pointer "
+            >
             <FlatIcon icon={"flaticon-heart text-secondary font-normal text-2xl"} />
             <h3 className="text-secondary font-semibold sm:text-base text-sm">
               Move to Wishlist
             </h3>
           </div>
-          : <div className="flex items-center gap-2  text-end cursor-pointer"
-            onClick={() => {
-              removeFromWishListHandler({userId:userData?.id,productId:item?.productId})
-              setWishList((prev)=>!prev)
-            }}
-            >
-            <FlatIcon icon={"flaticon-heart text-secondary font-normal text-2xl"} />
-            <h3 className="text-secondary font-semibold sm:text-base text-sm">
-             Remove from Wishlist
-            </h3>
-          </div>
-          } */}
-          {item.productId.in}
-          {/* {wishlist ? (
-        <div
-          className="flex items-center gap-2  text-end cursor-pointer "
-          onClick={() => {
-            moveToWishListHandler({ userId: userData?.id, productId: item?.productId });
-            setWishlist((prev) => !prev);
-          }}
-        >
-          <FlatIcon icon={"flaticon-heart text-secondary font-normal text-2xl"} />
-          <h3 className="text-secondary font-semibold sm:text-base text-sm">
-            Move to Wishlist
-          </h3>
-        </div>
-      ) : (
-        <div
-          className="flex items-center gap-2  text-end cursor-pointer"
-          onClick={() => {
-            removeFromWishListHandler({ userId: userData?.id, productId: item?.productId });
-            setWishlist((prev) => !prev);
-          }}
-        >
-          <FlatIcon icon={"flaticon-heart text-secondary font-normal text-2xl"} />
-          <h3 className="text-secondary font-semibold sm:text-base text-sm">
-            Remove from Wishlist
-          </h3>
-        </div>
-      )} */}
-
         </div>
       </div>
     </div>

@@ -94,8 +94,8 @@ console.log(from,"from");
   return (
     <>
     {similarProductData&&similarProductData.length > 0&&<div className='px-body'>
-      <div className={`${from==="cart"?"text-start":"text-center"}`}><h1 className={` ${from==="cart"?"text-2xl":"text-3xl"} ${from==="cart"?"font-semibold":"font-bold"}`}>{heading}</h1></div>
-      <div className={` justify-center items-center relative   ${from==="cart"?"my-5":"my-12"}`}>
+      <div className={`${from==="cart"?"text-start":"text-center"}`}><h1 className={` ${from==="cart"?"sm:text-2xl text-xl" :"sm:text-3xl text-xl"} ${from==="cart"?"font-semibold":"font-bold"}`}>{heading}</h1></div>
+      <div className={` justify-center items-center relative   ${from==="cart"?"my-5":"md:my-12 my-6"}`}>
         <div className="back  ">
           <div className="w-[100%]  h-auto only-carousel">
             <Slider

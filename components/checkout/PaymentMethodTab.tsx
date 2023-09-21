@@ -1,7 +1,9 @@
 import React , { useState } from "react";
 import { paymentMethods, tabs } from "../../utils/utilities";
 import FlatIcon from "../flatIcon/flatIcon";
-
+import cashImg from "../../images/credit-card (2) 1.svg"
+import phoneImg from "../../images/payment-method (1) 1.svg"
+import Image from "next/image";
 const PaymentMethodTab = ({
   selectedPaymentMethod,
   setSelectedPaymentMethod,
@@ -14,7 +16,7 @@ const PaymentMethodTab = ({
   return (
     <div className="flex flex-col md:mt-2 mt-4 w-full ">
       <h6 className="font-medium  xl:text-lg md:text-base text-sm ">Choose your preferred Payment Method</h6>
-      <div className="flex flex-col gap-2 sm:mt-12 mt-4">
+      <div className="flex flex-col gap-3 sm:mt-12 mt-4">
         {paymentMethods.map((method, idx) => {
           return (
             <div
@@ -30,11 +32,11 @@ const PaymentMethodTab = ({
                 //   }
                 // });
               }}
-              className="flex justify-between items-center sm:px-8 px-5 py-6 bg-white  border  border-[#838383]  cursor-pointer "
+              className="flex justify-between items-center sm:px-8 px-5 py-2 bg-white  border  border-[#838383]  cursor-pointer "
               key={idx}
             >
               <div className="flex sm:gap-8 gap-4 items-center">
-                <p>icon</p>
+                <div className=""><Image src={cashImg} alt="" height={1000} width={1000} className="aspect-auto w-[50px]"/></div>
                 <p className="text-black md:text-base text-sm font-semibold">{method.name}</p>
               </div>
               <div className="flex gap-4">
@@ -44,6 +46,20 @@ const PaymentMethodTab = ({
             </div>
           );
         })}
+          <div
+            
+              className="flex justify-between items-center sm:px-8 px-5 py-2 bg-white  border  border-[#838383]  cursor-pointer "
+              // key={idx}
+            >
+              <div className="flex sm:gap-8 gap-4 items-center">
+                <div className=""><Image src={phoneImg} alt="" height={1000} width={1000} className="aspect-auto w-[50px]"/></div>
+                <p className="text-black md:text-base text-sm font-semibold">Phone Pay</p>
+              </div>
+              <div className="flex gap-4">
+              {/* {selectionIndex === idx && <p>✔️</p>}  */}
+              <div><FlatIcon icon={"flaticon-arrow-down text-lg"} /></div>
+              </div>
+            </div>
       </div>
     </div>
   );
