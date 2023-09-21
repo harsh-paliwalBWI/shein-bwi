@@ -157,14 +157,14 @@ const NavbarClient = ({ cookie }: any) => {
           <p>All India Free Delivery + 15% Extra Discount </p>
           <p className="text-secondary font-bold"> Code: SHE15</p>
               </div>
-              <div className="flex items-center justify-end gap-4 lg:w-1/3 w-[18%]   xl:text-sm text-xs ">
-                <div className="flex items-center gap-3">
+              <div className="flex items-center justify-end gap-8 lg:w-1/3 w-[18%]   xl:text-sm text-xs ">
+                <div className="flex items-center gap-2">
                   <h4>English</h4>
-                  <FlatIcon className="flaticon-arrow-down-2 text-sm" />
+                  <FlatIcon className="flaticon-arrow-down text-[10px] text-white" />
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <h4>INR</h4>
-                  <FlatIcon className="flaticon-arrow-down-2 text-sm" />
+                  <FlatIcon className="flaticon-arrow-down text-[10px] text-white" />
                 </div>
               </div>
             </div>
