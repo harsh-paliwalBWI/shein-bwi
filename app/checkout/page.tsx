@@ -230,9 +230,11 @@ const handleChange = (name, value) => {
                     key={idx}
                     className="cursor-pointer"
                     onClick={() => {
-                      if (completedSteps.includes(tab)) {
-                        setSelectedTab(tab);
-                      }
+                      // if (completedSteps.includes(tab)) {
+                      //   setSelectedTab(tab);
+                      // }
+                      setSelectedTab(tab);
+
                     }}
                   >
                     <p
@@ -249,13 +251,13 @@ const handleChange = (name, value) => {
             </div>
             </div>
           </div>
-          <PaymentMethodTab
+          {/* <PaymentMethodTab
             selectedPaymentMethod={selectedPaymentMethod}
             setSelectedPaymentMethod={setSelectedPaymentMethod}
             setSelectedTab={setSelectedTab}
             setCompletedSteps={setCompletedSteps}
-          />
-          {/* {renderTabs()} */}
+          /> */}
+          {renderTabs()}
         </div>
         <div className="w-full lg:w-[35%]   ">
           {!paymentSummary ? (

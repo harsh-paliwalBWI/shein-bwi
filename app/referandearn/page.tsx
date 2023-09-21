@@ -7,6 +7,7 @@ import ReviewSlider from '../../components/reviews/ReviewSlider'
 import VideoSlider from '../../components/HomePage/widgets/VideoSlider'
 import Advertisement from '../../components/advertisement/Advertisement'
 import InstaFamilySlider from '../../components/instaFamily/InstaFamilySlider'
+import WatchShopSlider from '../../components/watchAndShop/WatchShopSlider'
 // import CategoryGrid from '../../components/HomePage/widgets/CategoryGrid'
 
 const ReferAndEarnPage = () => {
@@ -16,7 +17,8 @@ const ReferAndEarnPage = () => {
       {/* <SimilarProducts /> */}
       {/* <Advertisement/> */}
       {/* <ReviewSlider/> */}
-      {/* <InstaFamilySlider/> */}
+      <InstaFamilySlider/>
+      <WatchShopSlider/>
       {/* <VideoSlider/> */}
         <ReferAndEarn/>
         <HowItWorks/>

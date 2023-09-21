@@ -4,7 +4,7 @@
 import React from "react";
 import { useState } from "react";
 import Image from "next/image";
-import profilePic from "../../images/Rectangle 110.png"
+import profilePic from "../../images/Ellipse 77.svg"
 import FlatIcon from "../flatIcon/flatIcon";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
@@ -77,13 +77,13 @@ async function uploadTask(userPic: any) {
     <div className="border border-[#EEEEEE] rounded-full p-2 mb-2">
       <div className=" rounded-full  relative" >
       <Image src={profilePic} alt="" width={1000} height={1000} style={{aspectRatio:"auto",width:"110px",height:"110px"}} className="rounded-full"/>
-      <div className="absolute bottom-0 right-0">
+      {/* <div className="absolute bottom-0 right-0">
       <input placeholder='Destination Image' type='file' accept="image/*" onChange={async (e) => {
         // console.log(e.target.files[0],"from input");
                   await uploadTask(e.target.files[0])
                 }} id="Destination-Image" className='w-full hover:cursor-pointer   outline-none px-[10px] py-[7px] hidden rounded-md border-[#bcbcbc] border-[1px]' />
                 <label htmlFor='Destination-Image' className='hover:cursor-pointer '>v</label>
-      </div>
+      </div> */}
       </div>
     </div>
     <h5 className="text-secondary font-semibold text-sm mb-1">
@@ -114,9 +114,11 @@ async function uploadTask(userPic: any) {
  <div className='flex gap-3 items-center border-b border-b-[#EEF0F5]  py-4 px-6 cursor-pointer'>
      <div><FlatIcon icon={"flaticon-card  font-normal text-2xl"} /></div><h4 className="text-secondary font-semibold text-sm">Payment Method</h4>
  </div>
+ <Link href={"/contact"}>
  <div className='flex gap-3 items-center border-b border-b-[#EEF0F5]  py-4 px-6 cursor-pointer'>
      <div><FlatIcon icon={"flaticon-chat  font-normal text-2xl"} /></div><h4 className="text-secondary font-semibold text-sm">Help and Support</h4>
  </div>
+ </Link>
  <Link href={"/referandearn"}>
  <div className='flex gap-3 items-center border-b border-b-[#EEF0F5]  py-4 px-6 cursor-pointer'>
      <div><FlatIcon icon={"flaticon-chat  font-normal text-2xl"} /></div><h4 className="text-secondary font-semibold text-sm">Refer and Earn</h4>

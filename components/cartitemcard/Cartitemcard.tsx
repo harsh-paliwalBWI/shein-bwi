@@ -154,7 +154,7 @@ useEffect(() => {
             </div>
             <div className="flex items-center   gap-4 ">
               <p className="text-center text-black text-lg font-bold leading-[29px]">
-                {constant.currency} {item?.price.toFixed(2)}
+                {constant?.currency} {item?.price?.toFixed(2)}
               </p>
             </div>
           </div>

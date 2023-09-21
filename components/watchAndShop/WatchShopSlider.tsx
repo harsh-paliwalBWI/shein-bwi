@@ -96,9 +96,10 @@ const WatchShopSlider = () => {
 
   return (
     <>
-    {similarData&&similarData.length > 0&&<div className='px-body'>
-      <div className='text-center'><h1 className='text-3xl font-bold'>WATCH AND SHOP</h1></div>
-      <div className="  justify-center items-center relative  my-12 bg-instagram-section-bg">
+    {similarData&&similarData.length > 0&&<div className='px-body bg-[#fef8fb]'>
+        <div className='md:py-12 py-6'>
+      <div className='text-center'><h1 className='sm:text-3xl text-xl font-bold'>WATCH AND SHOP</h1></div>
+      <div className="  justify-center items-center relative  md:py-12 py-6 ">
         <div className="back  ">
           <div className="w-[100%]  h-auto only-carousel">
             <Slider
@@ -120,6 +121,7 @@ const WatchShopSlider = () => {
             </Slider>
           </div>
         </div>
+      </div>
       </div>
     </div>
   }

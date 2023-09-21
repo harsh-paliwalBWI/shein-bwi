@@ -179,6 +179,14 @@ const { data: userData } = useQuery({
     //   onMouseLeave={() => {
     //     setHoveredProduct("");
     //   }}
+    // key={product?.id || Math.random().toString()}  
+
+    // onMouseEnter={() => {
+    //   setHoveredProduct(product?.id);
+    // }}
+    // onMouseLeave={() => {
+    //   setHoveredProduct("");
+    // }}
       >
      
     <div className=" white-triangle flex justify-center items-center"><div className={` green-triangle  border  ${ hoveredProduct === product?.id ? "border-secondary" : "border-primary"}  ${ hoveredProduct === product?.id ? "bg-secondary" : "bg-primary"}`}></div></div>
@@ -195,6 +203,12 @@ const { data: userData } = useQuery({
         <div className="bg-primary absolute top-[8px] left-[8px]">
           <div className="flex gap-1 text-[10px] text-white px-2.5 py-1"> <p>15%</p><p>OFF</p></div>
         </div>
+        <div className={`absolute bottom-0 left-0 w-full h-[45px] bg-primary flex items-center  ${
+              hoveredProduct === product?.id ? "visible" : "invisible"
+            }` }>
+        
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex items-center justify-center gap-1 w-full">
+            <h2 >Add To Bag</h2><div><FlatIcon className="flaticon-bag-fill text-xl" /></div></div></div>
         {/* <div className={`absolute bottom-0 left-0 w-full h-[45px] bg-primary flex items-center ${
               hoveredProduct === product?.id ? "visible" : "invisible"
             }` }>

@@ -88,7 +88,8 @@ const Categories = () => {
 
   const [tab, setTab] = useState(0);
   const [hoveredCategory, setHoveredCategory] = useState(null);
-
+//  console.log(categories,);
+ 
   const handleTabClick = (tabIndex) => {
     if (tab === tabIndex) {
       setTab(0); // Close the categories if the clicked tab is already open

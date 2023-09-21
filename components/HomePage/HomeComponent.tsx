@@ -15,6 +15,8 @@ import TextBlock from "./widgets/TextBlock";
 import Brands from "./widgets/Brands";
 import ReviewSlider from "../reviews/ReviewSlider";
 import Advertisement from "../advertisement/Advertisement";
+import WatchShopSlider from "../watchAndShop/WatchShopSlider";
+import InstaFamilySlider from "../instaFamily/InstaFamilySlider";
 // import CategoryGrid from "./widgets/CategoryGrid";
 
 const HomeComponent = ({cookie}) => {
@@ -27,6 +29,8 @@ console.log(homeData&&homeData,"homeData");
 
 
   function renderWidgets(section, idx) {
+    console.log("CHCOG",section?.widgetType);
+    
     switch (section?.widgetType) {
       case "banner-slider":
         return <BannerSlider myKey={idx} section={section} />;
@@ -44,24 +48,30 @@ console.log(homeData&&homeData,"homeData");
       // case "text-block":
       //   return <TextBlock myKey={idx} section={section} />;
       // fetchTextBlock(section, regionId);
-      case "product-list":
-        return <ProductList myKey={idx} section={section} />;
+      // case "product-list":
+      //   return <ProductList myKey={idx} section={section} />;
       // fetchProductList(section, regionId);
       case "image-block":
         return <ImageBlock myKey={idx} section={section} />;
       // fetchImageBlock(section, regionId);
       case "video-block":
         return <ImageBlock myKey={idx} section={section} isVideo={true} />;
-      case "brands":
-        // <CategoriesSlider myKey={idx} section={section}/>
-        // return <BrandSlider myKey={idx} section={section} isBrand={true} />;
-        return <Brands myKey={idx} section={section} isBrand={true} />;
+      // case "brands":
+      //   // <CategoriesSlider myKey={idx} section={section}/>
+      //   // return <BrandSlider myKey={idx} section={section} isBrand={true} />;
+      //   return <Brands myKey={idx} section={section} isBrand={true} />;
       case "services":
         return <Services section={section} myKey={idx} />;
-        case "testimonials":
-          return <ReviewSlider/>
-          case "advertise":
-          return <Advertisement/>
+      case "testimonials":
+        return <ReviewSlider/>
+      case "advertise":
+        return <Advertisement/>
+      case "video-products":
+        return <WatchShopSlider/>
+      case "instagram-family":
+        console.log("INSASNFSIOHOCHSOIHC OISHAHA");
+        
+        return <InstaFamilySlider/>
       default:
     }
   }
@@ -73,6 +83,7 @@ console.log(homeData&&homeData,"homeData");
         {homeData &&
           homeData?.homeSections?.sections?.map((section: any, idx: any) => {
             // console.log(section,"section");
+            
             
             if (section?.location == "all" || section?.location === "web") {
               // <CategoryGrid/>

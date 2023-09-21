@@ -31,7 +31,7 @@ const ProductCarousel = ({ section, myKey,cookie }) => {
           slidesToShow: 4,
           slidesToScroll: 4,
           infinite: false,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -40,7 +40,7 @@ const ProductCarousel = ({ section, myKey,cookie }) => {
           slidesToShow: 5,
           slidesToScroll: 5,
           infinite: false,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -76,8 +76,8 @@ const ProductCarousel = ({ section, myKey,cookie }) => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2.5,
-          slidesToScroll: 2.5,
+          slidesToShow: 1.5,
+          slidesToScroll: 1.5,
           dots: false,
           arrows: false,
         },
@@ -110,7 +110,7 @@ const ProductCarousel = ({ section, myKey,cookie }) => {
           <div className="">
             {section?.sectionName && (
               <div className=" w-auto flex justify-start mb-2 px-body">
-                <h3 className=" text-[#252B42]  md:text-4xl text-2xl font-bold">
+                <h3 className=" text-secondary  sm:text-3xl text-xl font-bold">
                   {section?.sectionName}
                   {/* Nutrition & Supplements */}
                 </h3>

@@ -3,6 +3,7 @@ import React from "react";
 import { constant } from "../../utils/constants";
 import { paymentMethods } from "../../utils/utilities";
 import FlatIcon from "../flatIcon/flatIcon";
+import cashImg from "../../images/credit-card (2) 1.svg"
 
 const ReviewTab = ({
   addressToDeliver,
@@ -45,33 +46,44 @@ const ReviewTab = ({
                       {" "}{product?.description}
                     </h3>
                     <h3 className="font-bold  text-secondary lg:text-xl sm:text-xl text-base ">
-                      {constant.currency} {product?.price.toFixed(2)}
+                      {constant?.currency} {product?.price?.toFixed(2)}
                     </h3>
                   </div>
                 </div>
               );
             })}
         </div>
-        <div className="border border-gray-400     flex flex-col px-4 py-4 gap-8">
+        <div className="border border-gray-400     flex flex-col px-4 py-4 gap-4">
           <h4 className="font-bold text-black xl:text-lg text-lg  ">Billing Details</h4>
-          <div className="flex flex-col gap-4 ">
-            <p className="text-neutral-600 text-sm font-medium"> {addressToDeliver?.name}</p>
-            <p className="text-neutral-600 text-sm font-medium"> {addressToDeliver?.address}</p>
-            <p className="text-neutral-600 text-sm font-semibold"> {addressToDeliver?.phoneNo}</p>
+          <div className="flex flex-col gap-1 ">
+            <p className="text-secondary text-base font-semibold"> 
+            {/* {addressToDeliver?.name} */}
+            Theresa Webb
+            </p>
+            <p className="text-secondary text-base font-semibold">
+               {/* {addressToDeliver?.address} */}
+               2972 Westheimer Rd. Santa Ana, Illinois 85486 
+               </p>
+            <p className="text-secondary text-base font-semibold"> 
+            {/* {addressToDeliver?.phoneNo} */}
+            (319) 555-0115
+            </p>
           </div>
-          <div className=" "><button className="bg-secondary text-white flex items-center gap-1 py-1 px-7 xl:text-lg text-base font-semibold"><span><FlatIcon icon={"flaticon-plus-1 text-[10px] font-bold"} /></span><span>Add Address</span></button></div>
+          <div className=" "><button className="bg-secondary text-white flex items-center gap-1 py-1 px-7 xl:text-base text-base font-semibold"><span><FlatIcon icon={"flaticon-plus-1 text-[10px] font-bold"} /></span><span>Add Address</span></button></div>
         </div>
         <div className="border border-gray-400   flex flex-col p-4 gap-4">
           <h4 className="font-bold text-black xl:text-lg text-lg">Payment Method</h4>
           <div className="flex flex-col gap-3">
-            <p className="text-secondary xl:text-lg text-lg font-bold ">
-              {" icon "}
+            <div className="text-secondary xl:text-lg text-lg font-bold flex items-center gap-x-2 ">
+             
+            <div className=""><Image src={cashImg} alt="" height={1000} width={1000} className="aspect-auto w-[50px]"/></div>
+             
               {
                 paymentMethods.filter(
                   (method: any) => method.value === selectedPaymentMethod
                 )[0]?.name
               }
-            </p>
+            </div>
             <div className="">
               <h3 className="font-semibold xl:text-sm text-sm mb-1">Card Number</h3>
               <h3 className="text-[#999999] xl:text-text-sm text-sm font-semibold">1232 * * * * * * * * 2762 (Visa)</h3>

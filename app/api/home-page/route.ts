@@ -2,13 +2,16 @@ import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebas
 import { db } from "../../../config/firebase-config";
 import { NextResponse } from "next/server";
 
-export const GET = async (request) => {
+export const POST = async (request) => {
 
     const fetchHomeSections = async () => {
         const docRef = doc(db, "pages", 'homepage');
+
+        
         const docSnap = await getDoc(docRef);
         let homeSections: any = [];
         if (docSnap.exists()) {
+            
             homeSections = JSON.parse(JSON.stringify({ ...docSnap.data() }));
         } else {
             homeSections = null;
@@ -22,53 +25,90 @@ export const GET = async (request) => {
                 if (section?.location === "all" || section?.location === "web") {
                     switch (section?.widgetType) {
                         case "banner-slider":
-                            promiseArr.push(fetchBannerSliders(section))
+                            if (section?.widgetID) {
+                                promiseArr.push(fetchBannerSliders(section))
+                            }
                             // fetchBannerSliders(section);
                             break;
                         case "image-banner":
-                            promiseArr.push(fetchImageBanner(section))
+                            if (section?.widgetID) {
+                                promiseArr.push(fetchImageBanner(section))
+                            }
                             break;
                         case "product-carousel":
-                            promiseArr.push(fetchProductCarousel(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchProductCarousel(section))
+                            }
+
 
                             // fetchProductCarousel(section, regionId);
                             break;
                         case "categories":
-                            promiseArr.push(fetchCategoriesWidget(section))
+                            if (section?.widgetID) {
+
+
+                                promiseArr.push(fetchCategoriesWidget(section))
+                            }
+
 
                             // fetchCategories(section, regionId);
                             break;
                         case "vendors":
-                            promiseArr.push(fetchVendors(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchVendors(section))
+                            }
 
                             // fetchVendors(section, regionId);
                             break;
                         case "text-block":
-                            promiseArr.push(fetchTextBlock(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchTextBlock(section))
+                            }
 
                             // fetchTextBlock(section, regionId);
                             break;
                         case "product-list":
-                            promiseArr.push(fetchProductList(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchProductList(section))
+                            }
 
                             // fetchProductList(section, regionId);
                             break;
                         case "image-block":
-                            promiseArr.push(fetchImageBlock(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchImageBlock(section))
+                            }
 
                             // fetchImageBlock(section, regionId);
                             break;
                         case "video-block":
-                            promiseArr.push(fetchVideoBlock(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchVideoBlock(section))
+                            }
+
                             break;
 
                         case "brands":
-                            promiseArr.push(fetchBrands(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchBrands(section))
+                            }
+
                             break;
 
                         case "services":
-                            promiseArr.push(fetchServices(section))
+                            if (section?.widgetID) {
+
+                                promiseArr.push(fetchServices(section))
+                            }
                             break;
+
 
 
                         // fetchVideoBlock(section, regionId);
@@ -77,18 +117,29 @@ export const GET = async (request) => {
                 }
             }
 
+            
+            
+            
+            try {
 
-            const res = await Promise.allSettled(promiseArr).then((values: any) => {
-                let arr = [];
-                values.forEach(val => {
-                    arr.push(val?.value);
-                })
-                return arr;
-            })
+const res = await Promise.allSettled(promiseArr).then((values: any) => {
+    
+    let arr = [];
+    values.forEach(val => {
+        arr.push(val?.value);
+    })
+    return arr;
+})
 
-            return JSON.parse(JSON.stringify({ homeSections, data: res }))
+                return JSON.parse(JSON.stringify({ homeSections, data: res }))
+            } catch (error) {
+                console.log("ERRORRRRRRR", error);
+
+            }
 
         } else {
+            console.log("ELSEEE");
+
             return null;
         }
 
@@ -208,6 +259,7 @@ export const GET = async (request) => {
 
         })
     }
+
     async function fetchBrands(section) {
         return new Promise(async (resolve) => {
 

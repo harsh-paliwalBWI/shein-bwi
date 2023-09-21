@@ -42,6 +42,7 @@ import secImg from "../../images/6840240711_2_1_1 2.svg"
 import thirdImg from "../../images/6840240711_2_3_1 1.svg"
 import fourImg from "../../images/6840240711_6_1_1 2.svg"
 import fiveImg from "../../images/6840240711_6_2_1 1.svg"
+import Link from "next/link";
 const features = [
   " 10 in stock",
   " Easy Return Policy",
@@ -469,8 +470,12 @@ const ProductInfo = ({ params }: any) => {
                   >
 
                     <div className=" w-full flex gap-x-3 text-xs font-bold">
-                      <div className="bg-[#EBEDF1] w-[50%] text-center py-4"><button>ADD TO BAG</button></div>
-                      <div className="bg-secondary text-white w-[50%] text-center py-4"><button>BUY NOW</button></div>
+                      <Link href={"/cart"} className="bg-[#EBEDF1] w-[50%] text-center py-4 cursor-pointer">
+                      {/* <div className=""> */}
+                        <button>ADD TO BAG</button>
+                        {/* </div> */}
+                      </Link>
+                      <div className="bg-secondary text-white w-[50%] text-center py-4 cursor-pointer"><button>BUY NOW</button></div>
                     </div>
                     
                       {/* previous button with functionality start */}

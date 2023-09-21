@@ -240,8 +240,10 @@ const ImageBanner = ({ section, myKey = `` }) => {
     //     />
     //   </div> */}
     // </div>
+<div className="px-body w-full">
+{/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
 
-    <div className={`px-body w-full  flex gap-2 items-center `} key={myKey}>
+    <div className={` w-full  flex sm:gap-2 items-center `} key={myKey}>
       {newImagesArr.map((imageData, index) => (
         <div
           key={imageData.image.org || imageData.image.url}
@@ -262,6 +264,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
           />
         </div>
       ))}
+    </div>
     </div>
   );
 };

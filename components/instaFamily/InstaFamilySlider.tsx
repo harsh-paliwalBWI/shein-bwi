@@ -99,13 +99,13 @@ const InstaFamilySlider = () => {
 
   return (
     <>
-    {similarData&&similarData.length > 0&&<div className='px-body bg-instagram-section-bg bg-cover bg-no-repeat  sm:py-16 py-10'>
+    {similarData&&similarData.length > 0&&<div className='px-body bg-instagram-section-bg bg-cover bg-no-repeat  md:py-16 py-10 '>
         <div className='text-white'>
       <div className='flex justify-center items-center gap-2 '>
         <FlatIcon className="flaticon-instagram  sm:text-5xl text-3xl"/><h1 className='sm:text-3xl text-xl font-bold'>INSTAGRAM FAMILY</h1></div>
         <h5 className='text-center sm:text-xl sm font-semibold'>Tag us @shienstylestores to get featured</h5>
         </div>
-      <div className="  justify-center items-center relative    sm:py-12 py-6">
+      <div className="  justify-center items-center relative    md:py-12 py-6">
         <div className="back  ">
           <div className="w-[100%]  h-auto only-carousel">
             <Slider

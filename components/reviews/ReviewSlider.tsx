@@ -78,22 +78,24 @@ const slider = useRef<any>(null);
     ],
   };
   const arrowButtonClass =
-    "absolute top-0 bottom-0 my-auto bg-black w-10 h-10 block text-white cursor-pointer z-20";
+    "absolute top-0 bottom-0 my-auto bg-[#fef8fb] w-10 h-10 block text-white cursor-pointer z-20";
   return (
-    <div className='flex  md:flex-row flex-col gap-y-8 items-center  justify-between px-body  md:py-16 py-8 gap-x-4 '>
-        <div className='md:w-[40%]  w-[90%]'>
+    <div className='flex  md:flex-row flex-col gap-y-8 items-center  justify-between px-body  md:py-16 py-8 gap-x-4 bg-[#fef8fb]'>
+        <div className='md:w-[40%]  w-[90%] '>
             <div className='2xl:w-[60%] sm:-[80%] w-[100%]  flex flex-col  gap-y-2'>
-            <h1 className='sm:text-2xl text-lg font-bold 2xl:w-[60%] sm:w-[80%] w-[90%]'>WHAT THEY&apos;RE SAYING</h1>
+            <h1 className='sm:text-3xl text-xl  font-bold '>WHAT THEY&apos;RE SAYING</h1>
             <h6 className='text-[#555555] font-medium text-xs leading-6'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </h6>
             </div>
         </div>
         <div className="flex justify-center items-center relative lg:mt-5   md:w-[60%] w-[100%] ">
               <div className="">
                 <button
-                  className={`${arrowButtonClass} left-0 lg:-left-4 `}
+                  className={`${arrowButtonClass} left-0 lg:-left-4 flex items-center justify-center`}
                   onClick={() => slider.current?.slickPrev()}
                 >
-                  L
+                  <FlatIcon className="flaticon-left-arrow text-secondary text-2xl font-bold"/>
+
+                  {/* L */}
                 </button>
               </div>
 
@@ -122,10 +124,12 @@ const slider = useRef<any>(null);
 
               <div className="">
                 <button
-                  className={`${arrowButtonClass} right-0 lg:-right-4 text-center   `}
+                  className={`${arrowButtonClass} right-0 lg:-right-4 text-center flex items-center justify-center   `}
                   onClick={() => slider.current?.slickNext()}
                 >
-                  R
+                  <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary text-2xl font-bold"/>
+
+                  {/* R */}
                   {/* <FlatIcon className="flaticon-left-arrow lg:text-xl text-lg" /> */}
                 </button>
               </div>

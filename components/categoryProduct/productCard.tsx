@@ -92,7 +92,8 @@ const ProductCard = ({ product, idx = Math.random(),mx }: any) => {
       }}
       onMouseLeave={() => {
         setHoveredProduct("");
-      }}>
+      }}
+      >
      
     <div className=" white-triangle flex justify-center items-center"><div className={` green-triangle  border  ${ hoveredProduct === product?.id ? "border-secondary" : "border-primary"}  ${ hoveredProduct === product?.id ? "bg-secondary" : "bg-primary"}`}></div></div>
 <div className="border-[1px] border-secondary p-2 product-card ">

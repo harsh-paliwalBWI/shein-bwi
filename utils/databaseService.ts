@@ -32,7 +32,7 @@ export const fetchFarmGallery = async () => {
 };
 
 export const fetchCategories = async () => {
-    const res = await fetch(process.env.API_DOMAIN + '/api/categories',
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/categories',
         { next: { revalidate: 60 * 60 * 24 } }
 
         // { cache: 'no-cache' }
@@ -149,13 +149,14 @@ export const handleBuyNowRequestSubmit = async (data: any) => {
 
 
 export const fetchHomeSections = async () => {
-    // console.log(process.env.API_DOMAIN + '/api/home-page');
+    // console.log(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/home-page');
 // console.log("hii");
 
     const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/home-page',
+
         //  { next: { revalidate: 60 * 60 * 24 } }
 
-        { cache: 'no-cache' }
+        { cache: 'no-cache' ,method:"POST"}
     );
     const data = await res.json();
 // console.log(data,"from fetchHomeSections ");
