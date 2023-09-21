@@ -7,7 +7,7 @@ import {
     collection,
     deleteDoc,
     doc,
-     setDoc,
+    setDoc,
     getDoc,
     getDocs,
     orderBy,
@@ -150,16 +150,16 @@ export const handleBuyNowRequestSubmit = async (data: any) => {
 
 export const fetchHomeSections = async () => {
     // console.log(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/home-page');
-// console.log("hii");
+    // console.log("hii");
 
     const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/home-page',
 
         //  { next: { revalidate: 60 * 60 * 24 } }
 
-        { cache: 'no-cache' ,method:"POST"}
+        { cache: 'no-cache', method: "POST" }
     );
     const data = await res.json();
-// console.log(data,"from fetchHomeSections ");
+    // console.log(data,"from fetchHomeSections ");
 
     return data;
 }
@@ -456,61 +456,61 @@ export const addAddressToUser = async (address) => {
 
 }
 
- export const moveToWishListHandler = async ({userId,productId}) => {
+export const moveToWishListHandler = async ({ userId, productId }) => {
     try {
-      if (userId&&productId) {
-        console.log("inside if");
-        console.log(userId);
-        const collectionRef = collection(db, "users")
-        const docRef = doc(collectionRef, userId)
-        const refDoc = doc(db, "users", userId, "wishlist", productId);
-        await setDoc(refDoc, {createdAt: new Date(), id: productId }, { merge: true });
-        // setDoc(doc(db, "users", userId),{wishlist:true},{merge:true});
-    
-      } else {
-        console.log("inside else");
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }
+        if (userId && productId) {
+            console.log("inside if");
+            console.log(userId);
+            const collectionRef = collection(db, "users")
+            const docRef = doc(collectionRef, userId)
+            const refDoc = doc(db, "users", userId, "wishlist", productId);
+            await setDoc(refDoc, { createdAt: new Date(), id: productId }, { merge: true });
+            // setDoc(doc(db, "users", userId),{wishlist:true},{merge:true});
 
- export const  removeFromWishListHandler=async({userId,productId})=>{
+        } else {
+            console.log("inside else");
+        }
+    } catch (error) {
+        console.log(error, "error");
+    }
+}
+
+export const removeFromWishListHandler = async ({ userId, productId }) => {
     // const userId = userData?.id
     // const productId=item?.productId
-  try{
-    if (userId&&productId) {
-      console.log("inside if start");
-      console.log(userId,"userId");
-      console.log(productId,"productId");
-      // const refDoc = doc(db, "users", userId, "wishlist", productId);
-      await deleteDoc(doc(db, "users", userId, "wishlist", productId));
-      // await setDoc(refDoc, {createdAt: new Date(), id: productId }, { merge: true });
-      console.log("inside if end");
-  
-    } else {
-      console.log("inside else");
-    }
-  }catch(error){
-    console.log(error);
-  }
-  }
+    try {
+        if (userId && productId) {
+            console.log("inside if start");
+            console.log(userId, "userId");
+            console.log(productId, "productId");
+            // const refDoc = doc(db, "users", userId, "wishlist", productId);
+            await deleteDoc(doc(db, "users", userId, "wishlist", productId));
+            // await setDoc(refDoc, {createdAt: new Date(), id: productId }, { merge: true });
+            console.log("inside if end");
 
-  export const getUserWishlist=async(userId="")=>{
-   
-    if(userId){
+        } else {
+            console.log("inside else");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getUserWishlist = async (userId = "") => {
+
+    if (userId) {
         console.log(userId);
-        
-        const querySnapshot = await getDocs(collection(db, "users", userId,"wishlist"));
-        const arr=[]
+
+        const querySnapshot = await getDocs(collection(db, "users", userId, "wishlist"));
+        const arr = []
         querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-        //   console.log(doc.id, " => ", doc.data(),"fghjh------");
-          const result=doc.id
-          arr.push(result)
+            // doc.data() is never undefined for query doc snapshots
+            //   console.log(doc.id, " => ", doc.data(),"fghjh------");
+            const result = doc.id
+            arr.push(result)
         });
 
-        console.log(arr,"arr");
+        console.log(arr, "arr");
         return arr
     }
     // console.log("hii");
@@ -518,8 +518,8 @@ export const addAddressToUser = async (address) => {
         console.log("else");
         return []
     }
-    
-  }
+
+}
 
 //   export const getUserWishlist = async (userId = '') => {
 //     // Your code here...
@@ -536,17 +536,17 @@ export const addAddressToUser = async (address) => {
 //   }
 
 
-export const getDocFromWidget=async(docId)=>{
+export const getDocFromWidget = async (docId) => {
     const docRef = doc(db, "widgets", docId);
     const docSnap = await getDoc(docRef);
-    let arr=[]
+    let arr = []
     if (docSnap.exists()) {
-    //   console.log("Document data:", docSnap.data());
-arr.push(docSnap.data())
-return arr
+        //   console.log("Document data:", docSnap.data());
+        arr.push(docSnap.data())
+        return arr
     } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-return[]
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+        return []
     }
 }

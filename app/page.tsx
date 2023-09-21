@@ -11,14 +11,12 @@ import { cookies } from "next/dist/client/components/headers";
 export default async function Home() {
   const cookie = cookies().get("uid");
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(["homeSections"], fetchHomeSections, {
-    cacheTime: 60 * 60 * 3,
-  });
+  await queryClient.prefetchQuery(["homeSections"], fetchHomeSections);
   const dehydratedState = dehydrate(queryClient);
-  
+
   return (
     <Hydrate state={dehydratedState}>
-      <HomeComponent cookie={cookie}/>
+      <HomeComponent cookie={cookie} />
     </Hydrate>
   );
 }
