@@ -43,6 +43,7 @@ import thirdImg from "../../images/6840240711_2_3_1 1.svg"
 import fourImg from "../../images/6840240711_6_1_1 2.svg"
 import fiveImg from "../../images/6840240711_6_2_1 1.svg"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 const features = [
   " 10 in stock",
   " Easy Return Policy",
@@ -53,6 +54,7 @@ const features = [
 const pyamentModeImages = [{ image: visaImg }, { image: masterCardImg }, { image: americanExpImg }, { image: paypalImg }, { image: discoverImg }]
 
 const ProductInfo = ({ params }: any) => {
+  const router = useRouter()
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const dispatch: any = useDispatch();
   const [similarProductData, setSimilarProductData] = useState([])
@@ -334,7 +336,7 @@ const ProductInfo = ({ params }: any) => {
                       </div>
                       <div className="sm:px-4 px-3 sm:py-4 py-2   flex items-center gap-2   border border-[#C6C6C6]">
                         <h2 className="sm:text-sm text-xs font-normal">M</h2>
-                        <div>mail icon</div>
+                        {/* <div>mail icon</div> */}
                       </div>
                       <div className="sm:px-4 px-3 sm:py-4 py-2  bg-secondary text-white">
                         <h2 className="sm:text-sm text-xs font-normal ">L</h2>
@@ -469,14 +471,14 @@ const ProductInfo = ({ params }: any) => {
                     ref={ref}
                   >
 
-                    <div className=" w-full flex gap-x-3 text-xs font-bold">
+                    {/* <div className=" w-full flex gap-x-3 text-xs font-bold">
                       <Link href={"/cart"} className="bg-[#EBEDF1] w-[50%] text-center py-4 cursor-pointer">
-                      {/* <div className=""> */}
+                      <div className="">
                         <button>ADD TO BAG</button>
-                        {/* </div> */}
+                        </div>
                       </Link>
                       <div className="bg-secondary text-white w-[50%] text-center py-4 cursor-pointer"><button>BUY NOW</button></div>
-                    </div>
+                    </div> */}
                     
                       {/* previous button with functionality start */}
                       {/* {isClient &&
@@ -488,7 +490,7 @@ const ProductInfo = ({ params }: any) => {
                           </button>
                         </div>
                       )} */}
-                    {/* <div className="w-full flex gap-3 ">
+                    <div className="w-full flex gap-3 ">
                       {isClient && (
                         <div
                           className="flex-1 lg:flex-none w-[48%]  sm:h-14 bg-[#EBEDF1] h-12  flex justify-center items-center py-2  cursor-pointer"
@@ -496,7 +498,9 @@ const ProductInfo = ({ params }: any) => {
                             cart?.filter(
                               (item) => item?.productId === product?.id
                             ).length !== 0
-                              ? () => { }
+                              ? () => { 
+                                router.push('/cart')
+                              }
                               : addItemToCart
                           }
                         >
@@ -504,7 +508,7 @@ const ProductInfo = ({ params }: any) => {
                             {cart?.filter(
                               (item) => item?.productId === product?.id
                             ).length !== 0
-                              ? "Go To Cart"
+                              ? "Go To Bag"
                               : "ADD TO BAG"}
                           </button>
                         </div>
@@ -517,11 +521,11 @@ const ProductInfo = ({ params }: any) => {
                             onClick={handleRemoveFromCart}
                           >
                             <button className="text-white font-bold">
-                              Remove From Cart
+                              Remove From Bag
                             </button>
                           </div>
                         )}
-                    </div> */}
+                    </div>
                       {/* previous button with functionality end*/}
 
                   </div>

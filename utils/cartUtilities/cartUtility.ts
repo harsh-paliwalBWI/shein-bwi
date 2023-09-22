@@ -111,8 +111,8 @@ async function getUserCartDetails(cookie) {
 
 
 async function updatedCartFromBackend(cartData: any[]) {
-    console.log(cartData,"from updatedCartFromBackend");
-    
+    console.log(cartData, "from updatedCartFromBackend");
+
     return new Promise<any[]>(async (resolve, reject) => {
         try {
             let cartProducts = JSON.parse(JSON.stringify(cartData));
@@ -172,22 +172,24 @@ async function getUpdatedPdts(pdts, cartPdts) {
                     }
                 } else {
                     if (c.pack.variantType !== 'pieces') {
-                        dbProduct.priceList.forEach((pl) => {
-                            if (pl.weight === c.pack.weight) {
-                                c.totalQty = pl.totalQuantity ? pl.totalQuantity : '';
-                                if (parseInt(pl.totalQuantity) && (c.quantity > parseInt(pl.totalQuantity))) {
-                                    c.quantity = parseInt(pl.totalQuantity);
+                        if (dbProduct) {
+                            dbProduct.priceList.forEach((pl) => {
+                                if (pl.weight === c.pack.weight) {
+                                    c.totalQty = pl.totalQuantity ? pl.totalQuantity : '';
+                                    if (parseInt(pl.totalQuantity) && (c.quantity > parseInt(pl.totalQuantity))) {
+                                        c.quantity = parseInt(pl.totalQuantity);
+                                    }
+                                    if (pl.discountedPrice && pl.discountedPrice !== pl.price) {
+                                        c.price = pl.discountedPrice;
+                                        c.mrpPrice = pl.price;
+                                        c.pack.price = pl.price;
+                                    } else {
+                                        c.price = pl.price;
+                                        c.pack.price = pl.price;
+                                    }
                                 }
-                                if (pl.discountedPrice && pl.discountedPrice !== pl.price) {
-                                    c.price = pl.discountedPrice;
-                                    c.mrpPrice = pl.price;
-                                    c.pack.price = pl.price;
-                                } else {
-                                    c.price = pl.price;
-                                    c.pack.price = pl.price;
-                                }
-                            }
-                        })
+                            })
+                        }
                     } else {
                         dbProduct.priceList.forEach((pl) => {
                             if (pl.weight === c.pack.weight) {

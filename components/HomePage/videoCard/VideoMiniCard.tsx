@@ -42,9 +42,9 @@ const VideoMiniCard = () => {
               </div>
               <p className="text-xs font-medium">3.8</p>
             </div>
-            <div className="flex items-center sm:justify-between absolute bottom-0 left-0  w-full">
+            <div className="flex items-end sm:justify-between  bottom-0 left-0   w-full truncate overflow-hidden">
               <h3 className="md:text-sm text-[10px] font-semibold">Rs. 2,999 &nbsp;</h3>
-              <h4 className="md:text-xs text-[8px] text-gray-500 font-semibold line-through">Rs. 3,999</h4>
+              <h4 className="md:text-xs text-[8px] text-gray-500 font-semibold line-through ">Rs. 3,999</h4>
             </div>
           </div>
         </div>

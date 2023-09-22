@@ -23,7 +23,7 @@ const HomeComponent = ({ cookie }) => {
   const { data: homeData } = useQuery({
     queryKey: ["homeSections"],
     queryFn: fetchHomeSections,
-    cacheTime: 180
+    cacheTime: 180,
   });
   // console.log("homeData");
 
@@ -67,10 +67,10 @@ const HomeComponent = ({ cookie }) => {
         return <ReviewSlider />;
       case "advertise":
         return <Advertisement />;
-      // case "video-products":
-      //   return <WatchShopSlider />;
-      // case "instagram-family":
-      //   return <InstaFamilySlider />;
+      case "video-products":
+        return <WatchShopSlider />;
+      case "instagram-family":
+        return <InstaFamilySlider />;
       default:
     }
   }
@@ -85,8 +85,8 @@ const HomeComponent = ({ cookie }) => {
               return renderWidgets(section, idx);
             }
           })}
-          <WatchShopSlider/>
-        <InstaFamilySlider/>
+        {/* <WatchShopSlider />
+        <InstaFamilySlider /> */}
       </div>
     </div>
   );
