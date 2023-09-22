@@ -239,7 +239,7 @@ const handleChange = (name, value) => {
                     <p
                       className={`${
                         tab === selectedTab && "text-primary  "
-                      } font-medium xl:text-xl text-sm text-[#555555]`}
+                      } font-medium xl:text-base text-sm text-[#555555]`}
                     >
                       {tab}
                       {(idx === 0 || idx === 1) && " >"}

@@ -51,7 +51,7 @@ const CategoriesSlider = ({ section, myKey }) => {
           slidesToShow: 4,
           slidesToScroll: 4,
           infinite: true,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -60,7 +60,7 @@ const CategoriesSlider = ({ section, myKey }) => {
           slidesToShow: 6,
           slidesToScroll: 6,
           infinite: true,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -69,7 +69,7 @@ const CategoriesSlider = ({ section, myKey }) => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -78,7 +78,7 @@ const CategoriesSlider = ({ section, myKey }) => {
           slidesToShow: 2,
           slidesToScroll: 2,
           initialSlide: 2,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -87,7 +87,7 @@ const CategoriesSlider = ({ section, myKey }) => {
           slidesToShow: 2,
           slidesToScroll: 2,
           initialSlide: 2,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -105,6 +105,7 @@ const CategoriesSlider = ({ section, myKey }) => {
     "absolute top-0 bottom-0 my-auto  w-10 h-10 block text-white cursor-pointer z-20";
 
 // console.log(widgetData&&widgetData[0]?.style?.itemStyle?.style,"style");
+
 
 // if(widgetData&&widgetData[0]?.style?.itemStyle?.style!=="one"){
 //    return <CategoryGrid section={section}/>

@@ -5,7 +5,7 @@ import videoImg from "../../images/0c8ce2ac-59a4-444a-b6ac-09a3637f205d.svg"
 
 const InstaFamilyCard = () => {
   return (
-    <div className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden `}
+    <div className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden cursor-pointer `}
     // key={product?.id || idx || Math.random().toString()}  
     // onMouseEnter={() => {
     //     setHoveredProduct(product?.id);

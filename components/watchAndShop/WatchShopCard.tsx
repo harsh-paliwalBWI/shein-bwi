@@ -8,7 +8,7 @@ import playButton from "../../images/Group 1830.svg"
 const WatchShopCard = () => {
   return (
    <>
-    <div className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden `}
+    <div className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden cursor-pointer`}
    
       >
      

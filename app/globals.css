@@ -193,3 +193,7 @@ font-weight: 600;
 .arrow-container{
   box-shadow: 0px 2px 4px 0px #0000002B;
 }
+
+.review-user{
+  box-shadow: 0px 4px 4px 0px rgba(235, 72, 151, 0.33);
+}
