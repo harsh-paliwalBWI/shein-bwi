@@ -28,7 +28,7 @@ const CategoryCard = ({ cat, heading, slug }) => {
             </div>
             <div className="absolute  bottom-0 left-1/2 transform -translate-x-1/2 half-circle z-10  h-fit  flex justify-center items-center">
               <div
-                className="absolute bottom-0 second-half w-full h-[30%] rounded-full"
+                className="absolute bottom-0 second-half w-full h-[50%] rounded-full"
               ></div>
             </div>
           </div>
