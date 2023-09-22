@@ -127,14 +127,11 @@ const InstaFamilySlider = () => {
                   prevArrow={<SamplePrevArrow />}
                   draggable={true}
                 >
-                  {similarData &&
-                    similarData.length > 0 &&
-                    similarData.map((item: any, idx: number) => {
+                  {[1,2,3,4,6,7,5,6,8].map((item: any, idx: number) => {
                       return (
                         <div key={idx}>
                           <InstaFamilyCard />
-                          {/* <VideoCard mx={2.5}/> */}
-                          {/* <ProductCard product={item} mx={2.5} /> */}
+                        
                         </div>
                       );
                     })}

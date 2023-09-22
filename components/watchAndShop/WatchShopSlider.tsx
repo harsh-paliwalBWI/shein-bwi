@@ -117,9 +117,7 @@ const WatchShopSlider = () => {
                     prevArrow={<SamplePrevArrow />}
                     draggable={true}
                   >
-                    {similarData &&
-                      similarData.length > 0 &&
-                      similarData.map((item: any, idx: number) => {
+                    {[1,3,4,6,7,9,9,5].map((item: any, idx: number) => {
                         return (
                           <div key={idx}>
                             <WatchShopCard />

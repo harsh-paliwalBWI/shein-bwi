@@ -85,6 +85,7 @@ const HomeComponent = ({ cookie }) => {
               return renderWidgets(section, idx);
             }
           })}
+          <WatchShopSlider/>
         <InstaFamilySlider/>
       </div>
     </div>

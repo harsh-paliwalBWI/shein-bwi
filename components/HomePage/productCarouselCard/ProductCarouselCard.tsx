@@ -247,7 +247,7 @@ const ProductCarouselCard = async ({ product, cookie }) => {
             <h2 className="">{""}</h2> {/* to be checked */}
           </div>
           <div className="flex    w-full text-xs font-bold mb-3 ">
-            <h2 className="">
+            <h2 className="truncate">
               {product?.prodName || "Calcium Magnesium Zinc"}{" "}
             </h2>
           </div>
