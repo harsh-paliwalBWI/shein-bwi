@@ -32,12 +32,7 @@ export const fetchFarmGallery = async () => {
 };
 
 export const fetchCategories = async () => {
-    // const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/categories',
-    //     { next: { revalidate: 60 * 60 * 24 } }
-
-    //     // { cache: 'no-cache' }
-    // );
-    const res = await fetch('/api/categories',
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/categories',
         { next: { revalidate: 60 * 60 * 24 } }
 
         // { cache: 'no-cache' }
@@ -157,18 +152,12 @@ export const fetchHomeSections = async () => {
     // console.log(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/home-page');
     // console.log("hii");
 
-    const res = await fetch( '/api/home-page',
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/home-page',
 
         //  { next: { revalidate: 60 * 60 * 24 } }
 
         { cache: 'no-cache', method: "POST" }
     );
-    // const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/home-page',
-
-    //     //  { next: { revalidate: 60 * 60 * 24 } }
-
-    //     { cache: 'no-cache', method: "POST" }
-    // );
     const data = await res.json();
     // console.log(data,"from fetchHomeSections ");
 
