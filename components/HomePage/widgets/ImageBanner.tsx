@@ -18,6 +18,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
     homeData?.data?.filter((val: any) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID)[0]?.arr;
+// console.log(imagesArr,"img arr");
 
   const newImagesArr = imagesArr.slice(0, 2);
 
@@ -26,68 +27,68 @@ const ImageBanner = ({ section, myKey = `` }) => {
     infinite: true,
     speed: 500,
     arrows: hoveredProduct ? true : false,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+    slidesToShow: 3,
+    slidesToScroll: 3,
     initialSlide: 0,
-    // responsive: [
-    //   {
-    //     breakpoint: 1242,
-    //     settings: {
-    //       slidesToShow: 4,
-    //       slidesToScroll: 4,
-    //       infinite: false,
-    //       dots: true,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 1515,
-    //     settings: {
-    //       slidesToShow: 5,
-    //       slidesToScroll: 5,
-    //       infinite: false,
-    //       dots: true,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 1024,
-    //     settings: {
-    //       slidesToShow: 3.5,
-    //       slidesToScroll: 3.5,
-    //       infinite: false,
-    //       dots: false,
-    //       arrows: false,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 833,
-    //     settings: {
-    //       slidesToShow: 3.5,
-    //       slidesToScroll: 3.5,
-    //       initialSlide: 1,
-    //       dots: false,
-    //       arrows: false,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 768,
-    //     settings: {
-    //       slidesToShow: 2.5,
-    //       slidesToScroll: 2.5,
-    //       initialSlide: 1,
-    //       dots: false,
-    //       arrows: false,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 480,
-    //     settings: {
-    //       slidesToShow: 2.5,
-    //       slidesToScroll: 2.5,
-    //       dots: false,
-    //       arrows: false,
-    //     },
-    //   },
-    // ],
+    responsive: [
+      {
+        breakpoint: 1242,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+          infinite: false,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 1515,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: false,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: false,
+          dots: false,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 833,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 1,
+          dots: false,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1.5,
+          slidesToScroll: 1.5,
+          initialSlide: 1,
+          dots: false,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: true,
+          arrows: false,
+        },
+      },
+    ],
   };
 
   function getProduct(product) {
@@ -109,43 +110,43 @@ const ImageBanner = ({ section, myKey = `` }) => {
   // if(imagesArr.length>3){
   //   ima
   // }
-  // if (imagesArr.length > 1) {
-  //   return (
-  //     <div
-  //       className={`px-body only-carousel `}
-  //       onMouseEnter={() => {
-  //         setHoveredProduct(true);
-  //       }}
-  //       onMouseLeave={() => {
-  //         setHoveredProduct(false);
-  //       }}
-  //     >
-  //       <Slider
-  //         {...settings}
-  //         className=""
-  //         dotsClass={`slick-dots `}
-  //         nextArrow={<SampleNextArrow />}
-  //         prevArrow={<SamplePrevArrow />}
-  //         draggable={true}
-  //       >
-  //         {imagesArr?.map((image: any) => {
-  //           return (
-  //             <div className="rounded-lg px-[10%]" key={key}>
-  //               <Image
-  //                 src={image?.image?.org}
-  //                 alt="banner"
-  //                 width={100}
-  //                 height={100}
-  //                 layout="responsive"
-  //                 className="flex-1 max-h-[450px] object-fill rounded-lg cursor-pointer"
-  //               />
-  //             </div>
-  //           );
-  //         })}
-  //       </Slider>
-  //     </div>
-  //   );
-  // }
+  if (imagesArr.length > 3) {
+    return (
+      <div
+        className={` only-carousel `}
+        onMouseEnter={() => {
+          setHoveredProduct(true);
+        }}
+        onMouseLeave={() => {
+          setHoveredProduct(false);
+        }}
+      >
+        <Slider
+          {...settings}
+          className=""
+          dotsClass={`slick-dots `}
+          nextArrow={<SampleNextArrow />}
+          prevArrow={<SamplePrevArrow />}
+          draggable={true}
+        >
+          {imagesArr?.map((image: any,idx:number) => {
+            return (
+              <div className="rounded-lg px-[10%]" key={idx}>
+                <Image
+                  src={image?.image?.org}
+                  alt="banner"
+                  width={100}
+                  height={100}
+                  layout="responsive"
+                  className="flex-1 max-h-[450px] object-fill rounded-lg cursor-pointer"
+                />
+              </div>
+            );
+          })}
+        </Slider>
+      </div>
+    );
+  }
 
   const image =
     (homeData?.data?.filter((val) => val?.id === section?.widgetID)[0]?.arr &&
@@ -240,7 +241,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
     //     />
     //   </div> */}
     // </div>
-<div className="px-body w-full">
+<div className={`${imagesArr.length===1?"px-0":"px-body"} w-full`}>
 {/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
 
     <div className={` w-full  flex sm:gap-2 items-center `} key={myKey}>

@@ -4,17 +4,18 @@ import FlatIcon from '../flatIcon/flatIcon';
 import usrImg from "../../images/Ellipse 114.svg"
 import profilePic from "../../images/Rectangle 110.png"
 // import profilePic from "../../images/Rectangle 110.png"
+import pic from "../../images/Ellipse 114.png"
 import Image from "next/image";
 
 const ReviewCard = ({item}) => {
-    console.log(item);
+    // console.log(item);
     
   return (
     <div className='flex flex-col gap-y-4'>
         <div className='flex justify-center items-center sm:flex-row flex-col gap-y-4 gap-x-4  w-full'>
-        <div className="border border-[#EEEEEE] rounded-full p-2 mb-2">
+        <div className=" rounded-full p-1 mb-2 flex items-center justify-center review-user">
       <div className=" rounded-full  relative" >
-      <Image src={usrImg} alt="" width={1000} height={1000} style={{aspectRatio:"auto",width:"80px",height:"80px"}} className="rounded-full"/>
+      <Image src={pic} alt="" width={1000} height={1000} style={{aspectRatio:"auto",width:"80px",height:"80px"}} className="rounded-full"/>
       {/* <div className="absolute bottom-0 right-0">
       <input placeholder='Destination Image' type='file' accept="image/*" onChange={async (e) => {
         // console.log(e.target.files[0],"from input");

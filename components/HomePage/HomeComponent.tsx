@@ -27,7 +27,7 @@ const HomeComponent = ({ cookie }) => {
   // console.log("homeData");
 
   function renderWidgets(section, idx) {
-    console.log("CHCOG", section?.widgetType);
+    // console.log("CHCOG", section?.widgetType);
 
     switch (section?.widgetType) {
       case "banner-slider":
@@ -69,7 +69,6 @@ const HomeComponent = ({ cookie }) => {
       case "video-products":
         return <WatchShopSlider />;
       case "instagram-family":
-
         return <InstaFamilySlider />;
       default:
     }
@@ -81,15 +80,11 @@ const HomeComponent = ({ cookie }) => {
         {homeData &&
           homeData?.homeSections?.sections?.map((section: any, idx: any) => {
             // console.log(section,"section");
-
             if (section?.location == "all" || section?.location === "web") {
-              // <CategoryGrid/>
               return renderWidgets(section, idx);
             }
-            // return <div key={idx}></div>;
           })}
-        {/* <div><</div> */}
-        {/* <BrandSlider section="brands"/> */}
+        
       </div>
     </div>
   );

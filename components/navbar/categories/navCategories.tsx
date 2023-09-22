@@ -119,7 +119,6 @@ const Categories = () => {
                 }}
                 onMouseLeave={() => {
                   setTab(null);
-
                   setHoveredCategory(null);
                 }}
                 className={`
@@ -191,7 +190,6 @@ const Categories = () => {
                         {category.name}
                       </h1>
                     </Link>
-
                     <Transition
                       appear={true}
                       show={hoveredCategory !== null && tab === index + 1}

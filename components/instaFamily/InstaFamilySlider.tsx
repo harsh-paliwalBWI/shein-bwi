@@ -103,7 +103,7 @@ const InstaFamilySlider = () => {
   return (
     <>
       {similarData && similarData.length > 0 && (
-        <div className="px-body bg-instagram-section-bg bg-cover bg-no-repeat  md:py-16 py-10 ">
+        <div className="px-body bg-instagram-section-bg bg-cover bg-no-repeat  md:py-16 py-10  -mb-4">
           <div className="text-white">
             <div className="flex justify-center items-center gap-2 ">
               <FlatIcon className="flaticon-instagram  sm:text-5xl text-3xl" />

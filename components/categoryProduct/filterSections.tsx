@@ -119,9 +119,24 @@ const FilterSection = () => {
             <p className="h-[30px] w-[30px] rounded-full text-secondary bg-[#F3F5F9] flex items-center justify-center"><FlatIcon className="flaticon-minus text-secondary text-xs" /></p>
           </div>
           <div className="grid-cols-6  grid gap-y-4 gap-x-2">
-            {colors.map((item: any, idx: number) => {
+            {/* {colors.map((item: any, idx: number) => {
               return <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" key={idx}><div className={`h-[25px] w-[25px] rounded-full bg-[${item}]`}></div></div>
-            })}
+            })} */}
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#379788]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#D1DCEB]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#F4E6A2]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#B18249]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#6185C4]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#222222]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#FFC50A]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#C7CF56]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#6639A6]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#F35528]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#03C2FF]`}></div></div>
+            <div className="border border-[#E9EEF3] p-1 rounded-full w-fit" ><div className={`h-[25px] w-[25px] rounded-full bg-[#C8DB9B]`}></div></div>
+
+
+
           </div>
         </div>
       </div>

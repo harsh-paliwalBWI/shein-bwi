@@ -363,8 +363,9 @@ const NavbarClient = ({ cookie }: any) => {
                   </Link>
                   {/* <div><FlatIcon icon={"flaticon-bag-fill text-xl"} /></div> */}
         
-                    <Link href={"/cart"} className="flex items-center  gap-2 cursor-pointer">
+                    <Link href={"/cart"} className="flex items-center  gap-2 cursor-pointer relative">
                     <FlatIcon icon={"flaticon-bag-fill text-2xl"} />
+                    <div className="h-[15px] w-[15px] rounded-full bg-primary absolute top-0 -right-1 flex items-center justify-center text-[8px] text-white">1</div>
                     {/* <h3>My Cart</h3> */}
                   </Link>
                 </div>
