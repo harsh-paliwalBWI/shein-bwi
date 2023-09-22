@@ -23,6 +23,7 @@ const HomeComponent = ({ cookie }) => {
   const { data: homeData } = useQuery({
     queryKey: ["homeSections"],
     queryFn: fetchHomeSections,
+    cacheTime: 180
   });
   // console.log("homeData");
 

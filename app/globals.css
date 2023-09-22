@@ -134,13 +134,18 @@
 
 }
 .second-half{
-  border-radius: 100%;
+  /* border-radius: 100%;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   border-bottom-left-radius: 150px;
   border-bottom-right-radius: 150px;
   border: 9px solid #BC2D72;
-  border-top: 0;
+  border-top: 0; */
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border-bottom-left-radius: 150px;
+  border-bottom-right-radius: 150px;
+  background-color:#BC2D72 ;
 }
 
 

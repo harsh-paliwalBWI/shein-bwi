@@ -32,7 +32,6 @@ const CartComponent = ({cookie}) => {
   })
 
 
-  console.log(similarData,"from CartComponent");
   
   async function updateCart() {
     // console.log("hii");
@@ -70,7 +69,6 @@ const CartComponent = ({cookie}) => {
       </div>
     );
   }
-  console.log(updatedCart)
 
   return (
     <>

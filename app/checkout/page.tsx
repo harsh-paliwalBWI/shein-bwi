@@ -64,7 +64,6 @@ const CheckoutPage = () => {
       customDeliverySettings: null,
     };
     const res = await getPaymentSummaryDetails(data);
-    console.log("PAYMENT ", res);
     setPaymentSummary(res.data);
   }
 const handleChange = (name, value) => {
