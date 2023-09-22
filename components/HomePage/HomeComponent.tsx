@@ -66,10 +66,10 @@ const HomeComponent = ({ cookie }) => {
         return <ReviewSlider />;
       case "advertise":
         return <Advertisement />;
-      case "video-products":
-        return <WatchShopSlider />;
-      case "instagram-family":
-        return <InstaFamilySlider />;
+      // case "video-products":
+      //   return <WatchShopSlider />;
+      // case "instagram-family":
+      //   return <InstaFamilySlider />;
       default:
     }
   }
@@ -84,7 +84,7 @@ const HomeComponent = ({ cookie }) => {
               return renderWidgets(section, idx);
             }
           })}
-        
+        <InstaFamilySlider/>
       </div>
     </div>
   );
