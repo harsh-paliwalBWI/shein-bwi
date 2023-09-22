@@ -27,7 +27,7 @@ const CategoriesBar: FC<Props> = ({
         {type === "shopby" && (
           <div className=" w-[25%] py-[20px] flex flex-col   bg-[#ececec]">
             {categories &&
-              categories?.map((categoryData, idx) => {
+              categories?.map((categoryData: any, idx: any) => {
                 let category = categoryData?.category;
                 return (
                   <Link
@@ -53,8 +53,9 @@ const CategoriesBar: FC<Props> = ({
           </div>
         )}
 
-        <div className="flex flex-col h-[500px]  flex-wrap  w-[80%] p-[20px]">
-          {categories&&categories[selectedCategory]?.subcategories &&
+        {/* <div className="flex flex-col h-[500px]  flex-wrap  w-[80%] p-[20px]">
+          {categories &&
+            categories[selectedCategory]?.subcategories &&
             categories[selectedCategory]?.subcategories.map((subCat, index) => {
               return (
                 <div key={index}>
@@ -62,7 +63,7 @@ const CategoriesBar: FC<Props> = ({
                 </div>
               );
             })}
-        </div>
+        </div> */}
       </div>
     </div>
   );

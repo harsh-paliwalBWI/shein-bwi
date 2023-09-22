@@ -12,16 +12,22 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { RecaptchaVerifier } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
-import girlsImg from "../../images/beautiful-young-women-summer-fashion-concept 1.svg"
-import logo from "../../images/Frame 34284.svg"
-import {toast} from 'react-toastify';
-import { GoogleAuthProvider ,signInWithPopup, getAdditionalUserInfo} from "firebase/auth";
+import girlsImg from "../../images/beautiful-young-women-summer-fashion-concept 1.svg";
+import logo from "../../images/Frame 34284.svg";
+import { toast } from "react-toastify";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  getAdditionalUserInfo,
+} from "firebase/auth";
+import { useQueryClient } from "@tanstack/react-query";
 // import {  signInWithPopup,  } from "firebase/auth";
 
 interface Props {
   createAccountClickHandler?: any;
 }
 const LoginPage: FC<Props> = () => {
+  const queryClient = useQueryClient();
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState<any>("");
   const [password, setPassword] = useState<any>("");
@@ -35,7 +41,7 @@ const LoginPage: FC<Props> = () => {
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
-  const [privacyCheck, setPrivacyCheck] = useState<any>(false)
+  const [privacyCheck, setPrivacyCheck] = useState<any>(false);
   const provider = new GoogleAuthProvider();
 
   const handleCreateAccountClick = () => {
@@ -48,7 +54,7 @@ const LoginPage: FC<Props> = () => {
 
   const loginHandler = () => {
     console.log("hii");
-    
+
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
@@ -60,10 +66,11 @@ const LoginPage: FC<Props> = () => {
             { merge: true }
           );
           await axios.get(`/api/login?uid=${user.uid}`);
-          router.push("/");
+          await queryClient.invalidateQueries({ queryKey: ["userData"] });
+          await queryClient.refetchQueries({ queryKey: ["userData"] });
+          router.replace("/");
           console.log("login successfully");
           // toast.success("Login successfully !")
-          
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -77,21 +84,20 @@ const LoginPage: FC<Props> = () => {
           }
         });
     } else {
-      if(email===""||password===""){
+      if (email === "" || password === "") {
         console.log("fill details");
         // toast.success("Please fill details")
       }
-     
     }
   };
-  const handleLoginWithGoogle = async (result:any) => {
+  const handleLoginWithGoogle = async (result: any) => {
     const user = result.user;
-    console.log(user,"user from result-");
-    console.log(result,"result");
+    console.log(user, "user from result-");
+    console.log(result, "result");
     if (getAdditionalUserInfo(result).isNewUser) {
       console.log("new user plz signup first");
       // router.push("/signup");
-    }else{
+    } else {
       console.log("insile else");
       await setDoc(
         doc(db, "users", user.uid),
@@ -100,41 +106,53 @@ const LoginPage: FC<Props> = () => {
       );
       await axios.get(`/api/login?uid=${user.uid}`);
       console.log("sign successfukllly with google");
-    router.push("/");
-
+      router.push("/");
     }
-  }
+  };
   const loginWithGoogle = async () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result,"result-------");
-        handleLoginWithGoogle(result)
-      }).catch((error) => {
+        console.log(result, "result-------");
+        handleLoginWithGoogle(result);
+      })
+      .catch((error) => {
         console.log(error, "error");
       });
-  }
-
-
-
- 
+  };
 
   // co
   return (
     <div className=" flex w-full lg:my-0 my-6 ">
-      <div className="lg:block hidden w-[50%]  "><Image src={girlsImg} alt="" width={1000} height={1000} className="w-full h-full object-cover" /></div>
+      <div className="lg:block hidden w-[50%]  ">
+        <Image
+          src={girlsImg}
+          alt=""
+          width={1000}
+          height={1000}
+          className="w-full h-full object-cover"
+        />
+      </div>
       <div className="flex justify-center   md:w-[70%] lg:w-[50%] w-full mx-auto ">
         <div className="bg-white  lg:px-[15%] px-[7%] lg:py-[30px] py-[15px]  relative   w-[100%] log-in container   ">
-          <div className="flex justify-center items-center lg:mt-[30px]  lg:mb-[20px] mb-[20px] "><Image src={logo} alt=""
-            width={1000}
-            height={1000}
-            style={{
-              aspectRatio: "auto",
-              width: "150px",
-              height: "auto",
-            }}
-          /></div>
-          <h3 className="font-bold sm:text-lg text-base text-center">Elevate Your Look: Embrace the Latest Trends</h3>
-          <div className="font-bold sm:text-2xl text-lg sm:mt-[50px] mt-[25px]">Log In</div>
+          <div className="flex justify-center items-center lg:mt-[30px]  lg:mb-[20px] mb-[20px] ">
+            <Image
+              src={logo}
+              alt=""
+              width={1000}
+              height={1000}
+              style={{
+                aspectRatio: "auto",
+                width: "150px",
+                height: "auto",
+              }}
+            />
+          </div>
+          <h3 className="font-bold sm:text-lg text-base text-center">
+            Elevate Your Look: Embrace the Latest Trends
+          </h3>
+          <div className="font-bold sm:text-2xl text-lg sm:mt-[50px] mt-[25px]">
+            Log In
+          </div>
           <div className="text-[#3F3F3F] font-semibold text-sm mt-[20px]">
             Please Enter Details.
           </div>
@@ -183,17 +201,14 @@ const LoginPage: FC<Props> = () => {
           </div> */}
           {/* Remember me code  end*/}
 
-
-        
           <div
             // onClick={loginHandler}
             onClick={async () => {
-              loginHandler()
+              loginHandler();
             }}
             className=" text-center sm:text-lg text-base font-semibold bg-secondary py-[12px] text-[white] cursor-pointer"
           >
             Login
-
           </div>
           {/* code for login with email and password start  */}
           <div className="flex items-center justify-center gap-10 lg:my-[30px] my-[20px]">
@@ -201,8 +216,10 @@ const LoginPage: FC<Props> = () => {
             <span className="text-gray-600 sm:text-sm text-sm">OR</span>
             <div className="w-[25%] h-px bg-[#dfdfdf]"></div>
           </div>
-          <div className="flex border-[1px] border-text-[#777777] items-center justify-center gap-3  py-[12px] lg:mb-[30px] mb-[20px]"
-          onClick={()=>loginWithGoogle()}>
+          <div
+            className="flex border-[1px] border-text-[#777777] items-center justify-center gap-3  py-[12px] lg:mb-[30px] mb-[20px]"
+            onClick={() => loginWithGoogle()}
+          >
             <div className="font-semibold sm:text-lg text-sm">
               Log In with Google
             </div>
@@ -230,10 +247,7 @@ const LoginPage: FC<Props> = () => {
           </div>
           <div className="flex justify-center items-center gap-1 font-bold sm:text-base text-sm">
             <div>Don&apos;t have an account ?</div>
-            <Link
-              href={"/signup"}
-              className="text-primary cursor-pointer"
-            >
+            <Link href={"/signup"} className="text-primary cursor-pointer">
               Sign Up
             </Link>
           </div>
@@ -303,7 +317,6 @@ const LoginPage: FC<Props> = () => {
             </div>
           )} */}
           {/* code for otp modal end  */}
-
         </div>
       </div>
     </div>

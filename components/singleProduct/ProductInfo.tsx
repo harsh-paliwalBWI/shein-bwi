@@ -1,7 +1,10 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState, useEffect } from "react";
-import { addCartObjToUser, fetchSingleProduct, } from "../../utils/databaseService";
+import {
+  addCartObjToUser,
+  fetchSingleProduct,
+} from "../../utils/databaseService";
 import Image from "next/image";
 import { constant } from "../../utils/constants";
 import p1 from "../../images/p1.svg";
@@ -19,29 +22,29 @@ import {
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { auth } from "../../config/firebase-config";
-import { fetchSimilarProductsForCart } from '../../config/typesense'
+import { fetchSimilarProductsForCart } from "../../config/typesense";
 import Modal from "../Modal/modal";
 import Headersection from "../headersection/Headersection";
-import img1 from "../../images/image 146.svg"
-import img2 from "../../images/da1cd32c-33a4-48a2-9873-f45c918d31f5 1.svg"
-import img3 from "../../images/image 147.svg"
-import img4 from "../../images/Fedex-logo 1.svg"
-import img5 from "../../images/pngkit_delivery-com-logo-png_5554386 1.svg"
-import codImg from "../../images/image 148.svg"
-import americanExpImg from "../../images/pngwing 1.svg"
-import masterCardImg from "../../images/MasterCard_Logo 1.svg"
-import visaImg from "../../images/visa 3.svg"
-import gpayImg from "../../images/google-pay 1.svg"
-import paytmImg from "../../images/Paytm-Logo 1.svg"
-import paypalImg from "../../images/paypal 1.svg"
-import discoverImg from "../../images/discover 1.svg"
+import img1 from "../../images/image 146.svg";
+import img2 from "../../images/da1cd32c-33a4-48a2-9873-f45c918d31f5 1.svg";
+import img3 from "../../images/image 147.svg";
+import img4 from "../../images/Fedex-logo 1.svg";
+import img5 from "../../images/pngkit_delivery-com-logo-png_5554386 1.svg";
+import codImg from "../../images/image 148.svg";
+import americanExpImg from "../../images/pngwing 1.svg";
+import masterCardImg from "../../images/MasterCard_Logo 1.svg";
+import visaImg from "../../images/visa 3.svg";
+import gpayImg from "../../images/google-pay 1.svg";
+import paytmImg from "../../images/Paytm-Logo 1.svg";
+import paypalImg from "../../images/paypal 1.svg";
+import discoverImg from "../../images/discover 1.svg";
 import SimilarProducts from "../SimilarProducts/SimilarProducts";
 import FlatIcon from "../flatIcon/flatIcon";
-import firstImg from "../../images/6840240711_1_1_1 1.svg"
-import secImg from "../../images/6840240711_2_1_1 2.svg"
-import thirdImg from "../../images/6840240711_2_3_1 1.svg"
-import fourImg from "../../images/6840240711_6_1_1 2.svg"
-import fiveImg from "../../images/6840240711_6_2_1 1.svg"
+import firstImg from "../../images/6840240711_1_1_1 1.svg";
+import secImg from "../../images/6840240711_2_1_1 2.svg";
+import thirdImg from "../../images/6840240711_2_3_1 1.svg";
+import fourImg from "../../images/6840240711_6_1_1 2.svg";
+import fiveImg from "../../images/6840240711_6_2_1 1.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 const features = [
@@ -50,30 +53,34 @@ const features = [
   " Quality Assured Products",
 ];
 
-
-const pyamentModeImages = [{ image: visaImg }, { image: masterCardImg }, { image: americanExpImg }, { image: paypalImg }, { image: discoverImg }]
+const pyamentModeImages = [
+  { image: visaImg },
+  { image: masterCardImg },
+  { image: americanExpImg },
+  { image: paypalImg },
+  { image: discoverImg },
+];
 
 const ProductInfo = ({ params }: any) => {
-  const router = useRouter()
+  const router = useRouter();
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const dispatch: any = useDispatch();
-  const [similarProductData, setSimilarProductData] = useState([])
+  const [similarProductData, setSimilarProductData] = useState([]);
   const { data: product } = useQuery({
-    queryKey: ["product", params?.slug,],
+    queryKey: ["product", params?.slug],
     queryFn: () => fetchSingleProduct(params?.slug),
   });
 
-//   console.log(product, "product from single product---------->");
-//   console.log(product?.images, "images---------->");
-// console.log(product?.searchKeywords,"product?.searchKeywords");
-// console.log(params.slug,"params slug");
-
-
+  //   console.log(product, "product from single product---------->");
+  //   console.log(product?.images, "images---------->");
+  // console.log(product?.searchKeywords,"product?.searchKeywords");
+  // console.log(params.slug,"params slug");
 
   const { data: similarData } = useQuery({
     queryKey: ["product", params?.slug, "similar-product"],
-    queryFn: () => fetchSimilarProductsForCart({ searchKeywords: product?.searchKeywords })
-  })
+    queryFn: () =>
+      fetchSimilarProductsForCart({ searchKeywords: product?.searchKeywords }),
+  });
   // console.log(similarData,"similarData--------->");
 
   const ref = useRef<HTMLDivElement>(null);
@@ -112,15 +119,15 @@ const ProductInfo = ({ params }: any) => {
     };
     const cartObject = data.isPriceList
       ? getPriceListCartObj({
-        product: product,
-        quantity: quantity,
-        index: data.index,
-      })
+          product: product,
+          quantity: quantity,
+          index: data.index,
+        })
       : getCartObj({
-        product: product,
-        productID: data?.productID,
-        quantity: data?.quantity,
-      });
+          product: product,
+          productID: data?.productID,
+          quantity: data?.quantity,
+        });
     if (auth.currentUser) {
       const docId = await addCartObjToUser(cartObject);
       cartObject["id"] = docId;
@@ -248,7 +255,6 @@ const ProductInfo = ({ params }: any) => {
                     <Image
                       // src={getImage(product, 0)}
                       src={secImg}
-
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}
@@ -260,7 +266,6 @@ const ProductInfo = ({ params }: any) => {
                     <Image
                       // src={getImage(product, 1)}
                       src={fourImg}
-
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}
@@ -283,11 +288,31 @@ const ProductInfo = ({ params }: any) => {
                     <div className="flex items-center gap-2 text-start ">
                       <div className="text-primary text-xl flex ">
                         {" "}
-                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"} />
-                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"} />
-                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"} />
-                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"} />
-                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"} />
+                        <FlatIcon
+                          icon={
+                            "flaticon-star text-[#FFBA07] font-normal text-xl"
+                          }
+                        />
+                        <FlatIcon
+                          icon={
+                            "flaticon-star text-[#FFBA07] font-normal text-xl"
+                          }
+                        />
+                        <FlatIcon
+                          icon={
+                            "flaticon-star text-[#FFBA07] font-normal text-xl"
+                          }
+                        />
+                        <FlatIcon
+                          icon={
+                            "flaticon-star text-[#FFBA07] font-normal text-xl"
+                          }
+                        />
+                        <FlatIcon
+                          icon={
+                            "flaticon-star text-[#FFBA07] font-normal text-xl"
+                          }
+                        />
                         {/* &#10027;&#10027;&#10027;&#10027;&#10027; */}
                         <span className="text-sm font-medium text-zinc-400">
                           (27)
@@ -300,7 +325,9 @@ const ProductInfo = ({ params }: any) => {
                   </div>
                   <h6 className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 ">
                     {/* {product?.prodDesc} */}
-                    Strapless bustier. Front pocket. Frayed trims. Asymmetric hem. Side metal zip fastening. Asymmetrical Beige frayed Bustier.
+                    Strapless bustier. Front pocket. Frayed trims. Asymmetric
+                    hem. Side metal zip fastening. Asymmetrical Beige frayed
+                    Bustier.
                   </h6>
                   <div className="">
                     <h4 className="text-secondary sm:text-sm text-xs font-semibold mb-3 ">
@@ -309,7 +336,10 @@ const ProductInfo = ({ params }: any) => {
                     <div className="flex gap-3 sm:mb-8 mb-4">
                       {[1, 2, 4, 4].map((item: any, idx: number) => {
                         return (
-                          <div key={idx} className="  border border-[#E6DBD7] p-1 rounded-full flex justify-center items-center">
+                          <div
+                            key={idx}
+                            className="  border border-[#E6DBD7] p-1 rounded-full flex justify-center items-center"
+                          >
                             <div className="h-[25px] w-[25px] rounded-full bg-black"></div>
                           </div>
                         );
@@ -323,7 +353,13 @@ const ProductInfo = ({ params }: any) => {
                         <h4>S</h4>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div><FlatIcon icon={"flaticon-measure text-[#777777]  font-normal text-3xl"} /></div>
+                        <div>
+                          <FlatIcon
+                            icon={
+                              "flaticon-measure text-[#777777]  font-normal text-3xl"
+                            }
+                          />
+                        </div>
                         <h4 className="underline ">Size Chart</h4>
                       </div>
                     </div>
@@ -369,14 +405,18 @@ const ProductInfo = ({ params }: any) => {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 ">
-                        <p><FlatIcon icon={"flaticon-heart text-2xl"} /></p>
+                        <p>
+                          <FlatIcon icon={"flaticon-heart text-2xl"} />
+                        </p>
                         <h3 className="text-secondary font-semibold sm:text-sm text-xs">
                           Add to Wishlist
                         </h3>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-sm font-bold  mb-3">
-                      <div className=""><FlatIcon icon={"flaticon-express-delivery text-2xl"} /></div>
+                      <div className="">
+                        <FlatIcon icon={"flaticon-express-delivery text-2xl"} />
+                      </div>
                       <h3 className="text-secondary sm:text-sm text-xs font-semibold  ">
                         WHEN WILL I RECIVE MY ORDER ?
                       </h3>
@@ -470,7 +510,6 @@ const ProductInfo = ({ params }: any) => {
                     className="flex justify-between lg:flex w-full "
                     ref={ref}
                   >
-
                     {/* <div className=" w-full flex gap-x-3 text-xs font-bold">
                       <Link href={"/cart"} className="bg-[#EBEDF1] w-[50%] text-center py-4 cursor-pointer">
                       <div className="">
@@ -479,9 +518,9 @@ const ProductInfo = ({ params }: any) => {
                       </Link>
                       <div className="bg-secondary text-white w-[50%] text-center py-4 cursor-pointer"><button>BUY NOW</button></div>
                     </div> */}
-                    
-                      {/* previous button with functionality start */}
-                      {/* {isClient &&
+
+                    {/* previous button with functionality start */}
+                    {/* {isClient &&
                       cart?.filter((item) => item?.productId === product?.id)
                         .length == 0 && (
                         <div className="flex-1 lg:flex-none w-[48%] h-14 bg-black rounded-br-[10px] flex justify-center items-center py-2 border  cursor-pointer">
@@ -498,9 +537,9 @@ const ProductInfo = ({ params }: any) => {
                             cart?.filter(
                               (item) => item?.productId === product?.id
                             ).length !== 0
-                              ? () => { 
-                                router.push('/cart')
-                              }
+                              ? () => {
+                                  handleRemoveFromCart();
+                                }
                               : addItemToCart
                           }
                         >
@@ -508,50 +547,76 @@ const ProductInfo = ({ params }: any) => {
                             {cart?.filter(
                               (item) => item?.productId === product?.id
                             ).length !== 0
-                              ? "Go To Bag"
+                              ? "Remove From Bag"
                               : "ADD TO BAG"}
                           </button>
                         </div>
                       )}
-                      {isClient &&
-                        cart?.filter((item) => item?.productId === product?.id)
-                          .length !== 0 && (
-                          <div
-                            className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
-                            onClick={handleRemoveFromCart}
-                          >
-                            <button className="text-white font-bold">
-                              Remove From Bag
-                            </button>
-                          </div>
-                        )}
-                    </div>
-                      {/* previous button with functionality end*/}
 
+                      <div
+                        className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
+                        // onClick={handleRemoveFromCart}
+                      >
+                        <button className="text-white font-bold">
+                          Buy Now
+                        </button>
+                      </div>
+                    </div>
+                    {/* previous button with functionality end*/}
                   </div>
-                  <h3 className="font-medium sm:text-sm text-xs my-5">GUARANTEED SAFE CHECKOUT:</h3>
+                  <h3 className="font-medium sm:text-sm text-xs my-5">
+                    GUARANTEED SAFE CHECKOUT:
+                  </h3>
                   <div className="flex items-center sm:flex-nowrap flex-wrap gap-6">
                     {pyamentModeImages.map((item: any, idx: number) => {
-                      return <div key={idx} className=" bg-[#f5f5f5ff] flex justify-center items-center px-3 py-2">
-                        <Image src={item.image} alt="" width={1000} height={1000} style={{ aspectRatio: "auto", width: "40px", height: "20px" }} /></div>
+                      return (
+                        <div
+                          key={idx}
+                          className=" bg-[#f5f5f5ff] flex justify-center items-center px-3 py-2"
+                        >
+                          <Image
+                            src={item.image}
+                            alt=""
+                            width={1000}
+                            height={1000}
+                            style={{
+                              aspectRatio: "auto",
+                              width: "40px",
+                              height: "20px",
+                            }}
+                          />
+                        </div>
+                      );
                     })}
                   </div>
                   <div className="flex items-center gap-3 my-5">
                     <div className="flex items-center gap-2">
-                      <div><FlatIcon icon={"flaticon-share text-xl"} /></div>
+                      <div>
+                        <FlatIcon icon={"flaticon-share text-xl"} />
+                      </div>
                       <p>Share :</p>
                     </div>
                     <div className="flex items-center gap-x-6">
-                      <div><FlatIcon icon={"flaticon-facebook text-xl"} /></div>
-                      <div><FlatIcon icon={"flaticon-twitter text-2xl"} /></div>
-                      <div><FlatIcon icon={"flaticon-instagram text-xl"} /></div>
-                      <div><FlatIcon icon={"flaticon-pinterest text-xl"} /></div>
+                      <div>
+                        <FlatIcon icon={"flaticon-facebook text-xl"} />
+                      </div>
+                      <div>
+                        <FlatIcon icon={"flaticon-twitter text-2xl"} />
+                      </div>
+                      <div>
+                        <FlatIcon icon={"flaticon-instagram text-xl"} />
+                      </div>
+                      <div>
+                        <FlatIcon icon={"flaticon-pinterest text-xl"} />
+                      </div>
                     </div>
                   </div>
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
                   <div className=" y">
                     <div className="my-3 flex items-center justify-between">
-                      <h2 className="font-medium sm:text-base  text-sm ">Product Info</h2>
+                      <h2 className="font-medium sm:text-base  text-sm ">
+                        Product Info
+                      </h2>
                       <FlatIcon icon={"flaticon-plus text-secondary text-xs"} />
                     </div>
                     <p className="sm:text-sm text-xs  mb-7 mt-4">
@@ -563,40 +628,60 @@ const ProductInfo = ({ params }: any) => {
                       everything from cropped jeans to midi skirts.
                     </p>
                     <div>
-                      <h3 className="font-medium sm:text-base  text-sm mb-1">Material & Care</h3>
+                      <h3 className="font-medium sm:text-base  text-sm mb-1">
+                        Material & Care
+                      </h3>
                       <p className="sm:text-base text-xs">Dupion-Silk</p>
                       <p className="sm:text-base text-xs">Machine-Wash</p>
                     </div>
                   </div>
                   <div className="">
-                    <h3 className="font-medium sm:text-base text-sm mt-3 ">Specifications</h3>
+                    <h3 className="font-medium sm:text-base text-sm mt-3 ">
+                      Specifications
+                    </h3>
                     <div className="flex flex-col gap-y-5  md:w-[80%] w-[100%] mt-4 mb-8 ">
                       <div className="flex items-center justify-between ">
                         <div>
-                          <h3 className="font-medium sm:text-sm text-xs mb-1">Type</h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">Top</p>
+                          <h3 className="font-medium sm:text-sm text-xs mb-1">
+                            Type
+                          </h3>
+                          <p className="text-[#555555] sm:text-sm text-xs">
+                            Top
+                          </p>
                         </div>
                         <div>
-                          <h3 className="font-medium  sm:text-sm text-xs mb-1">Pattern</h3>
-                          <p className="text-[#555555] sm:text-sm text-xs"> Adjustable Strap</p>
+                          <h3 className="font-medium  sm:text-sm text-xs mb-1">
+                            Pattern
+                          </h3>
+                          <p className="text-[#555555] sm:text-sm text-xs">
+                            {" "}
+                            Adjustable Strap
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="font-medium sm:text-sm text-xs mb-1">Material</h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">Elastane</p>
+                          <h3 className="font-medium sm:text-sm text-xs mb-1">
+                            Material
+                          </h3>
+                          <p className="text-[#555555] sm:text-sm text-xs">
+                            Elastane
+                          </p>
                         </div>
                         <div>
-                          <h3 className="font-medium  sm:text-sm text-xs mb-1">Color</h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">Breathable Lining</p>
+                          <h3 className="font-medium  sm:text-sm text-xs mb-1">
+                            Color
+                          </h3>
+                          <p className="text-[#555555] sm:text-sm text-xs">
+                            Breathable Lining
+                          </p>
                         </div>
                       </div>
                     </div>
-
                   </div>
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
                   <div className="flex items-center justify-between sm:text-base font-medium text-xs  my-5 text-gray-400">
-                    <h3 >Reviews & Ratings</h3>
+                    <h3>Reviews & Ratings</h3>
                     <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
                   </div>
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
@@ -677,13 +762,20 @@ const ProductInfo = ({ params }: any) => {
             </div> */}
             {/* old code end  */}
             <div className=" w-full h-[1px] border-b border-b-[#CCCCCC] border-dashed md:my-20 my-10"></div>
-
           </div>
           <div>
-            <SimilarProducts heading={"SIMILAR PRODUCTS"} similarProductData={similarData} from="info" />
+            <SimilarProducts
+              heading={"SIMILAR PRODUCTS"}
+              similarProductData={similarData}
+              from="info"
+            />
           </div>
           <div>
-            <SimilarProducts heading={"RECENTLY VIEWED"} similarProductData={similarData} from="info" />
+            <SimilarProducts
+              heading={"RECENTLY VIEWED"}
+              similarProductData={similarData}
+              from="info"
+            />
           </div>
           {/* old code start  */}
           {/* <Transition
