@@ -15,7 +15,7 @@ const PaymentMethodTab = ({
 
   return (
     <div className="flex flex-col md:mt-2 mt-4 w-full ">
-      <h6 className="font-medium  xl:text-lg md:text-base text-sm ">Choose your preferred Payment Method</h6>
+      <h6 className="font-medium  xl:text-base md:text-base text-sm ">Choose your preferred Payment Method</h6>
       <div className="flex flex-col gap-3 sm:mt-12 mt-4">
         {paymentMethods.map((method, idx) => {
           return (

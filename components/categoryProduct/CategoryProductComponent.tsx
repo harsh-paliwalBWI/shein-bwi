@@ -14,6 +14,7 @@ const CategoryProductComponent = ({ params }) => {
     queryFn: () => fetchCategoryProducts(params?.slug,"category-product"),
   });
   console.log(categoryProducts,"category Products");
+console.log(params,"from cat page");
 
   return (
     <div className="flex flex-col px-body   h-full ">

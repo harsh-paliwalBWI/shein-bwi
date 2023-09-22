@@ -28,7 +28,7 @@ const HomeComponent = ({ cookie }) => {
   // console.log("homeData");
 
   function renderWidgets(section, idx) {
-    // console.log("CHCOG", section?.widgetType);
+    console.log("CHCOG", section?.widgetType);
 
     switch (section?.widgetType) {
       case "banner-slider":

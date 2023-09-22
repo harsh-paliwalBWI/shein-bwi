@@ -19,7 +19,7 @@ function ShippingTab(props) {
 
   return (
     <div className="flex flex-col md:mt-2 mt-4 w-full  ">
-      <h6 className="font-medium  xl:text-lg md:text-base text-sm  ">Enter your Shipping Details</h6>
+      <h6 className="font-medium  xl:text-base md:text-base text-sm  ">Enter your Shipping Details</h6>
       {props.userData?.defaultAddress && !props.isNewAddress ? (
         <div className="flex flex-col gap-4 ">
           <div className=" rounded-br-[10px] border border-primary mt-4 flex justify-between  px-4 py-4  shadow-md">
