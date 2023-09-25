@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import "../assets/flaticons/flaticon_shein.css";
+@import "react-toastify/dist/ReactToastify.css";
 
 
 /* h1,p,h2,h3,h4,h5,h6,div,span,a{

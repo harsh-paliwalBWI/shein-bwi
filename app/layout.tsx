@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
             {/* <SearchHeader/> */}
             <Navbar />
             {children}
-            <NewsLetter/>
+            <NewsLetter />
             <Footer />
             <ToastContainer />
           </Providers>

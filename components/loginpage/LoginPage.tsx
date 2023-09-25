@@ -128,6 +128,7 @@ const LoginPage: FC<Props> = () => {
           src={girlsImg}
           alt=""
           width={1000}
+          loading="eager"
           height={1000}
           className="w-full h-full object-cover"
         />
