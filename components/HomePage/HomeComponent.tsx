@@ -31,6 +31,7 @@ const HomeComponent = ({ cookie }) => {
     console.log("CHCOG", section?.widgetType);
 
     switch (section?.widgetType) {
+      
       case "banner-slider":
         return <BannerSlider myKey={idx} section={section} />;
       case "image-banner":

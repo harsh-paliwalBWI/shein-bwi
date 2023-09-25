@@ -449,6 +449,7 @@ export const updateDefaultAddress = async (address) => {
 
 }
 export const addAddressToUser = async (address) => {
+    console.log(address,"adres");
     return await addDoc(collection(db, `users/${auth.currentUser?.uid}/addresses`), address)
     // return await updateDoc(doc(db, `users`, auth.currentUser?.uid), {
     //     defaultAddress: address

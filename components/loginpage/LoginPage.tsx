@@ -22,6 +22,7 @@ import {
 } from "firebase/auth";
 import { useQueryClient } from "@tanstack/react-query";
 // import {  signInWithPopup,  } from "firebase/auth";
+import googleImg from "../../images/google 1.svg"
 
 interface Props {
   createAccountClickHandler?: any;
@@ -106,6 +107,7 @@ const LoginPage: FC<Props> = () => {
       );
       await axios.get(`/api/login?uid=${user.uid}`);
       console.log("sign successfukllly with google");
+      toast.success("Logged in successfully.")
       router.push("/");
     }
   };
@@ -218,9 +220,10 @@ const LoginPage: FC<Props> = () => {
             <div className="w-[25%] h-px bg-[#dfdfdf]"></div>
           </div>
           <div
-            className="flex border-[1px] border-text-[#777777] items-center justify-center gap-3  py-[12px] lg:mb-[30px] mb-[20px]"
+            className="flex border-[1px] border-text-[#777777] items-center justify-center gap-3  py-[12px] lg:mb-[30px] mb-[20px] cursor-pointer"
             onClick={() => loginWithGoogle()}
           >
+            <div><Image src={googleImg} alt=""/></div>
             <div className="font-semibold sm:text-lg text-sm">
               Log In with Google
             </div>

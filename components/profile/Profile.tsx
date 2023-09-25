@@ -114,22 +114,24 @@ if(userId){
                 rows={4}
               ></textarea>
             </div>
-            {/* <div className="flex md:flex-row flex-col gap-4 w-full mb-7">
+            <div className="flex md:flex-row flex-col gap-4 w-full mb-7">
               <div className="md:w-[50%] w-full flex flex-col gap-3 ">
                 <label className="text-[#555555] font-medium text-sm">
                   Current Password
                 </label>
                 <input className="py-3 border-[1px] border-[#838383] outline-0 px-3" 
-                  value={state.currPassword} onChange={(e)=>setState({...state,currPassword:e.target.value})}/>
+                  // value={state.currPassword} onChange={(e)=>setState({...state,currPassword:e.target.value})}
+                  />
               </div>
               <div className="md:w-[50%] w-full flex flex-col gap-3 ">
                 <label className="text-[#555555] font-medium text-sm">
                   New Password
                 </label>
                 <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-                  value={state.newPassword} onChange={(e)=>setState({...state,newPassword:e.target.value})} />
+                  // value={state.newPassword} onChange={(e)=>setState({...state,newPassword:e.target.value})}
+                   />
               </div>
-            </div> */}
+            </div>
             <div className="bg-secondary text-white text-center  py-3  text-sm font-medium cursor-pointer"
             onClick={()=>onSaveChangesHandler()}>
               <button>Save Changes</button>

@@ -18,9 +18,9 @@ const ImageBanner = ({ section, myKey = `` }) => {
     homeData?.data?.filter((val: any) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID)[0]?.arr;
-// console.log(imagesArr,"img arr");
+console.log(imagesArr,"img arr");
 
-  const newImagesArr = imagesArr.slice(0, 2);
+  const newImagesArr = imagesArr.slice(0, 3);
 
   const settings = {
     dots: true,
@@ -242,16 +242,16 @@ const ImageBanner = ({ section, myKey = `` }) => {
     //   </div> */}
     // </div>
     // ${imagesArr.length===1?"px-0":"px-body"}
-<div className={` w-full`}>
+<div className={` w-full ${imagesArr.length===3?"px-body":imagesArr.length===2?"px-[1.5%]":"px-0"}   ${imagesArr.length===3?"lg:-mt-36 -mt-16":"-mt-0"} z-30`}>
 {/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
 
-    <div className={` w-full  flex sm:gap-2 items-center `} key={myKey}>
+    <div className={` w-full  flex  items-center ${imagesArr.length===3?"sm:gap-7":"sm:gap-2"} `} key={myKey}>
       {newImagesArr.map((imageData, index) => (
         <div
           key={imageData.image.org || imageData.image.url}
           className={` ${
             newImagesArr.length === 1
-              ? "w-full flex justify-center items-center "
+              ? "w-full flex justify-center items-center  "
               : `w-${100 / newImagesArr.length} `
           }  `}
         >
@@ -262,7 +262,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
             height={1000}
             // layout="responsive"
             style={{aspectRatio:"auto"}}
-            className="flex-1  h-[25rem] object-fit  "
+            className={`flex-1 ${imagesArr.length===2?"sm:h-[25rem] h-[10rem]":"h-auto"} object-fit`   }
           />
         </div>
       ))}

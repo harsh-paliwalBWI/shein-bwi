@@ -12,7 +12,7 @@ const ReviewTab = ({
   placeOrder
 }) => {
   return (
-    <div className="flex flex-col md:mt-2 mt-4 w-full mb-12">
+    <div className="flex flex-col md:mt-2 mt-4 w-full ">
       <h6 className="font-medium  xl:text-base md:text-base text-sm ">Please review your order details.</h6>
       <div className="w-full flex flex-col sm:gap-5 gap-3 ">
       <div className="flex  items-center justify-end xl:text-base sm:text-base text-sm text-secondary font-semibold  sm:mt-12 mt-4 "><h3 className="text-end">Order Number:</h3 ><h3 className="text-end">#47858740844</h3></div>
@@ -43,7 +43,8 @@ const ReviewTab = ({
                       </h3>
                     <div className="flex gap-2  text-[#555555] lg:text-sm text-xs font-semibold mb-1">Size : <span>L</span>  <span>|</span>  Color :  <span>Beige</span></div>
                     <h3 className="font-semibold text-black text-opacity-75 lg:text-sm text-xs   mb-6">Qty:
-                      {" "}{product?.description}
+                      {/* {" "}{product?.description} */}
+                      1
                     </h3>
                     <h3 className="font-bold  text-secondary lg:text-xl sm:text-xl text-base ">
                       {constant?.currency} {product?.price?.toFixed(2)}

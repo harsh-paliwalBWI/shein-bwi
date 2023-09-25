@@ -83,6 +83,8 @@ export function typesense_initClient() {
     return new Promise(async (resolve, reject) => {
         try {
             const env = (await getDoc(doc(db, 'settings', 'environment'))).data();
+            console.log(env?.typesense,"env");
+            
             const Typesense = require('typesense');
             let typesenseClient = new Typesense.Client({
                 'nodes': [{

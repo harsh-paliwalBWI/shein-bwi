@@ -7,7 +7,10 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
+  extend: {
+      fontFamily: {
+        outfit: "var(--font-outfit)",
+      },
       colors: {
         primary: "#EB4897",
         secondary:"#000000",

@@ -16,6 +16,9 @@ import { doc, setDoc } from "firebase/firestore";
 import axios from "axios";
 import { GoogleAuthProvider, signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
 import FlatIcon from "../flatIcon/flatIcon";
+import googleImg from "../../images/google 1.svg"
+import { toast } from "react-toastify";
+
 interface Props {
   redirectToLogin?: any;
 }
@@ -50,32 +53,40 @@ const Signup: FC<Props> = () => {
   };
 
   const signupHandler = () => {
-    if (email && password.length > 5 && name) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          await addUserToFirebase(user);
-          await signInWithEmailAndPassword(auth, email, password)
-            .then(async (val: any) => {
-              await axios.get(`/api/login?uid=${user.uid}`);
-              router.push("/");
-            })
-            .catch((e) => {
-              router.push("/login");
-            });
-          // ...
-        })
-        .catch((error) => {
-          console.log("User already exists. Please login 9999999");
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(error)
-          // ..
-        });
-    } else {
-      console.log("plase fill details ");
+    if(isChecked){
+      if (email && password.length > 5 && name&&phone) {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then(async (userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            await addUserToFirebase(user);
+            await signInWithEmailAndPassword(auth, email, password)
+              .then(async (val: any) => {
+                await axios.get(`/api/login?uid=${user.uid}`);
+                router.push("/");
+                toast.success("Signed up successfully")
+              })
+              .catch((e) => {
+                router.push("/login");
+              });
+            // ...
+          })
+          .catch((error) => {
+            console.log("User already exists. Please login 9999999");
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(error)
+            // ..
+          });
+      } else {
+        toast.error("plase fill details ")
+        console.log("plase fill details ");
+      }
+    }else{
+         console.log("plz agree first")
+                  toast.error("Agree to terms and conditions first.")
     }
+    
   };
 
   const handleSignUpWithGoogle = async (result) => {
@@ -94,20 +105,40 @@ const Signup: FC<Props> = () => {
       );
       await axios.get(`/api/login?uid=${user.uid}`);
       router.push("/");
+      toast.success("Signed up successfully.")
+
     } else {
       console.log("insile else");
       console.log("user already exist plz log in");
       router.push("/login");
     }
   }
+
+  
   const signUpWithGoogle = async () => {
-    signInWithPopup(auth, provider)
+    if(isChecked){
+      signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result, "result-------");
         handleSignUpWithGoogle(result)
+        setPhoneNumModal((prev) => !prev);
       }).catch((error) => {
         console.log(error, "error");
+        setPhoneNumModal((prev) => !prev);
       });
+    }else{
+      console.log("fdhgfdh");
+      toast.error("Agree to terms and conditions first.")
+      setPhoneNumModal((prev) => !prev);
+      
+    }
+    // signInWithPopup(auth, provider)
+    //   .then((result) => {
+    //     console.log(result, "result-------");
+    //     handleSignUpWithGoogle(result)
+    //   }).catch((error) => {
+    //     console.log(error, "error");
+    //   });
   }
   return (
     <>
@@ -192,8 +223,11 @@ const Signup: FC<Props> = () => {
             </div>
             <div
               onClick={() => {
-                isChecked ? signupHandler() :
-                  console.log("plz agree first")
+                console.log(isChecked,"check");
+                
+                 signupHandler() 
+                  // console.log("plz agree first")
+                  // toast.error("Agree to terms and conditions first.")
                 // setPhoneNumModal((prev)=>!prev);
 
               }}
@@ -204,14 +238,17 @@ const Signup: FC<Props> = () => {
               <span className="text-gray-600 sm:text-sm text-sm">OR</span>
               <div className="w-[25%] h-px bg-[#dfdfdf]"></div>
             </div>
-            <div className="flex border-[1px] border-text-[#777777] items-center justify-center gap-3  py-[12px] lg:mb-[90px] mb-[45px]"
+            <div className="flex border-[1px] border-text-[#777777] items-center justify-center gap-3  py-[12px] lg:mb-[90px] mb-[45px] cursor-pointer"
               onClick={() => {
                 // if(googlePhone&&isChecked){
 
                 // }
                 // (isChecked&&googlePhone)?signUpWithGoogle():
                 setPhoneNumModal((prev) => !prev);
+                console.log(isChecked,"check");
               }}>
+            <div><Image src={googleImg} alt=""/></div>
+
               <div className="font-semibold sm:text-lg text-sm">
                 Sign Up with Google
               </div>
@@ -232,7 +269,7 @@ const Signup: FC<Props> = () => {
           }}><button className="bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center"><FlatIcon icon={"flaticon-close text-secondary font-bold text-[10px]"} /></button></div>
           <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  px-5 py-5" >
             <h3 className="sm:text-lg text-base font-semibold text-center ">Please Enter Phone Number</h3>
-            <input type="number" value={googlePhone} onChange={(e) => setGooglePhone(e.target.value)} className="border border-[#838383] w-full px-3 py-2 outline-0" placeholder="Phone number" />
+            <input type="text" value={googlePhone} onChange={(e) => setGooglePhone(e.target.value)} className="border border-[#838383] w-full px-3 py-2 outline-0" placeholder="Phone number" />
             <div className="flex justify-center items-center bg-primary text-white sm:text-base text-sm font-medium py-2" onClick={async () => {
               signUpWithGoogle()
             }}><button>Ok</button></div>

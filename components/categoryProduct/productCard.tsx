@@ -108,7 +108,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
         </div>
         <div className="border-[1px] border-secondary p-2 product-card ">
           <div className=" relative  mb-2">
-            <div className="h-[180px] relative ">
+            <div className="h-[250px] relative ">
               <Image
                 src={image}
                 alt=""
@@ -164,7 +164,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
           <div className="flex items-center gap-4">
             <div className="text-ellipsis overflow-hidden ... truncate text-center ">
               <p className="text-ellipsis overflow-hidden ... truncate text-center  text-primary font-bold text-lg">
-                {constant.currency} {product?.discountedPrice.toFixed(2)}
+                {constant?.currency} {product?.discountedPrice?.toFixed(2)}
               </p>
             </div>
             {checkIfPriceDiscounted({

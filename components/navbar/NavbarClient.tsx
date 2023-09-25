@@ -24,7 +24,7 @@ import FlatIcon from "../flatIcon/flatIcon";
 import Modal from "../Modal/modal";
 import SearchResults from "../SeachResults/SearchResults";
 import {addCartObjToUser,fetchSingleProduct,} from "../../utils/databaseService";
-
+// import { usePathname } from "next/navigation";
 // import { log } from "console";
 import {
   addToCart,
@@ -46,6 +46,11 @@ const NavbarClient = ({ cookie }: any) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLogoVisible, setIsLogoVisible] = useState(true);
   const debouncedSearch = useDebounce(searchQuery, 500);
+  
+
+  console.log(pathname,"name");
+  
+
 
   async function getCart() {
     const cart = await getUserCartDetails(cookie);

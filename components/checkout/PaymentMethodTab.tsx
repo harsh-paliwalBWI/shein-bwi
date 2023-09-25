@@ -23,14 +23,14 @@ const PaymentMethodTab = ({
               onClick={() => {
                 setSelectedPaymentMethod(method.value);
                 setSelectionIndex(idx);
-                // setSelectedTab(tabs[2]);
-                // setCompletedSteps((val: any) => {
-                //   if (!val.includes(tabs[2])) {
-                //     let arr = val;
-                //     arr.push(tabs[2]);
-                //     return arr;
-                //   }
-                // });
+                setSelectedTab(tabs[2]);
+                setCompletedSteps((val: any) => {
+                  if (!val?.includes(tabs[2])) {
+                    let arr = val;
+                    arr.push(tabs[2]);
+                    return arr;
+                  }
+                });
               }}
               className="flex justify-between items-center sm:px-8 px-5 py-2 bg-white  border  border-[#838383]  cursor-pointer "
               key={idx}
@@ -46,20 +46,20 @@ const PaymentMethodTab = ({
             </div>
           );
         })}
-          <div
+          {/* <div
             
               className="flex justify-between items-center sm:px-8 px-5 py-2 bg-white  border  border-[#838383]  cursor-pointer "
-              // key={idx}
+            
             >
               <div className="flex sm:gap-8 gap-4 items-center">
                 <div className=""><Image src={phoneImg} alt="" height={1000} width={1000} className="aspect-auto w-[50px]"/></div>
                 <p className="text-black md:text-base text-sm font-semibold">Phone Pay</p>
               </div>
               <div className="flex gap-4">
-              {/* {selectionIndex === idx && <p>✔️</p>}  */}
+          
               <div><FlatIcon icon={"flaticon-arrow-down text-lg"} /></div>
               </div>
-            </div>
+            </div> */}
       </div>
     </div>
   );

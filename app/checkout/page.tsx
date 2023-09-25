@@ -20,6 +20,7 @@ import { reset } from "../../redux/slices/cartSlice";
 import FlatIcon from "../../components/flatIcon/flatIcon";
 import tag from "../../images/tag 1.svg"
 import Image from "next/image";
+import { toast } from "react-toastify";
 const CheckoutPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -67,17 +68,23 @@ const CheckoutPage = () => {
     setPaymentSummary(res.data);
   }
 const handleChange = (name, value) => {
+  console.log(name,"name",value,"value");
+  
     setUserAddress((val) => {
       return { ...val, [name]: value };
     });
   };
   function handleAddressSubmit() {
+    console.log(userAddress,"userAddress");
+    
     const {
-      address,
+      address1,
+      address2,
       city,
       lat,
       lng,
       name,
+      lastName,
       phoneNo,
       pincode,
       state,
@@ -85,16 +92,20 @@ const handleChange = (name, value) => {
       country,
     } = userAddress;
     if (
-      !address ||
+      !address1 ||
+      !address2 ||
       !city ||
       !phoneNo ||
       !pincode ||
       !state ||
       !stateCode ||
       !country ||
+      !lastName||
       !name
     ) {
+
       console.log("ENTER DETAILS CORRECTLY", userAddress);
+      toast.error("Enter all the details.")
       return;
     }
     if (makeDefaultAddress) {

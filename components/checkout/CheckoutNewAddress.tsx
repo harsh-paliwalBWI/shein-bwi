@@ -82,7 +82,7 @@ function CheckoutNewAddress(props) {
         <input
           className="py-3 h-14  border border-[#838383] px-2 outline-0"
           type="text"
-          name="address"
+          name="address1"
           onChange={(e) => {
             props.handleChange(e.target.name, e.target.value);
           }}
@@ -95,7 +95,7 @@ function CheckoutNewAddress(props) {
         <input
           className="py-3 h-14  border border-[#838383] px-2 outline-0"
           type="text"
-          name="city"
+          name="address2"
           onChange={(e) => {
             props.handleChange(e.target.name, e.target.value);
           }}
@@ -117,9 +117,9 @@ function CheckoutNewAddress(props) {
               <span className="block truncate">
                 {props.userAddress?.state || "Select"}
               </span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              {/* <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 up icon
-              </span>
+              </span> */}
             </Listbox.Button>
             <Transition
               as={Fragment}
