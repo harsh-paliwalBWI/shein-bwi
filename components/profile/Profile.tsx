@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { fetchCategoryProducts } from "../../utils/databaseService";
 // import FilterSection from "./filterSections";
 // import ProductCard from "./productCard";
@@ -13,6 +13,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 
 const Profile = ({cookie}) => {
+  const [isClient, setIsClient] = useState(false);
   const matches = useMediaQuery("(min-width:1024px)");
   const { data: userData } = useQuery({
     queryKey: ["userData"],
@@ -45,7 +46,7 @@ const Profile = ({cookie}) => {
   const onSaveChangesHandler=async()=>{
     console.log("start");
     const newInfo={
-      firstName:state.firstName,
+      name:state.firstName,
       lastName:state.lastName,
       email:state.email,
       phone:state.phone,
@@ -53,6 +54,8 @@ const Profile = ({cookie}) => {
       // currPass:state.currPassword,
       // newPass:state.newPassword
     }
+    console.log(newInfo,"fdg");
+    
     const userId = await userData.id
 if(userId){
   console.log("inside if start");
@@ -63,6 +66,9 @@ if(userId){
     // console.log(newInfo,"new info");
     
   }
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   return (
     <div className="flex flex-col px-body gap-2 mt-2  h-full ">
       <div className="w-full flex flex-col lg:flex-row gap-4 mt-5 sm:mb-20 mb-10">
@@ -76,14 +82,14 @@ if(userId){
                   First Name*
                 </label>
                 <input className="py-3 border-[1px] border-[#838383] outline-0 px-3 "
-                value={state.firstName} onChange={(e)=>setState({...state,firstName:e.target.value})} />
+                value={isClient&&state.firstName} onChange={(e)=>setState({...state,firstName:e.target.value})} />
               </div>
               <div className="md:w-[50%] w-full flex flex-col gap-3 ">
                 <label className="text-[#555555] font-medium text-sm">
                   Last Name*
                 </label>
                 <input className="py-3 border-[1px] border-[#838383] outline-0 px-3" 
-                  value={state.lastName} onChange={(e)=>setState({...state,lastName:e.target.value})}/>
+                  value={isClient&&state.lastName} onChange={(e)=>setState({...state,lastName:e.target.value})}/>
               </div>
             </div>
             <div className="flex md:flex-row flex-col gap-4 w-full mb-5">
@@ -92,14 +98,14 @@ if(userId){
                   Email Address*
                 </label>
                 <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-                  value={state?.email} onChange={(e)=>setState({...state,email:e.target.value})} />
+                  value={isClient&&state?.email} onChange={(e)=>setState({...state,email:e.target.value})} />
               </div>
               <div className="md:w-[50%] w-full flex flex-col gap-3 ">
                 <label className="text-[#555555] font-medium text-sm">
                   Phone No.
                 </label>
                 <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-                  value={state?.phone} onChange={(e)=>setState({...state,phone:e.target.value})} />
+                  value={isClient&&state?.phone} onChange={(e)=>setState({...state,phone:e.target.value})} />
               </div>
             </div>
             <div className="w-full  flex flex-col gap-3 mb-5">
@@ -107,7 +113,7 @@ if(userId){
                 About Me
               </label>
               <textarea
-                value={state.about} onChange={(e)=>setState({...state,about:e.target.value})}
+                value={isClient&&state.about} onChange={(e)=>setState({...state,about:e.target.value})}
                 name=""
                 id=""
                 className=" border-[1px] border-[#838383] w-full outline-0 px-3 py-2"

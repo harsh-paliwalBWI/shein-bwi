@@ -100,7 +100,7 @@ const Categories = () => {
 
   return (
     <div className="w-full bg-secondary px-body relative">
-    <div className=" relative   py-3.5  px-2.5">
+    <div className=" relative   py-3.5  ">
       <OutsideClickHandler
         onClick={() => {
           // setTab(0);

@@ -71,7 +71,7 @@ const ProductInfo = ({ params }: any) => {
     queryFn: () => fetchSingleProduct(params?.slug),
   });
 
-  //   console.log(product, "product from single product---------->");
+    console.log(product, "product from single product---------->");
   //   console.log(product?.images, "images---------->");
   // console.log(product?.searchKeywords,"product?.searchKeywords");
   // console.log(params.slug,"params slug");
@@ -253,8 +253,8 @@ const ProductInfo = ({ params }: any) => {
                 <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  ">
                   <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] sm:h-[300px] h-auto ">
                     <Image
-                      // src={getImage(product, 0)}
-                      src={secImg}
+                      src={getImage(product, 0)}
+                      // src={secImg}
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}

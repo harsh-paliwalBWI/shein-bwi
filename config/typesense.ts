@@ -83,7 +83,7 @@ export function typesense_initClient() {
     return new Promise(async (resolve, reject) => {
         try {
             const env = (await getDoc(doc(db, 'settings', 'environment'))).data();
-            console.log(env?.typesense,"env");
+            // console.log(env?.typesense,"env");
             
             const Typesense = require('typesense');
             let typesenseClient = new Typesense.Client({
@@ -104,28 +104,40 @@ export function typesense_initClient() {
 }
 
 export async function handleTypesenseSearch(query) {
+    console.log(query,"quert");
+    
     const client: any = await typesense_initClient();
     if (client) {
+        console.log("if");
         const searchParameters = {
             q: query,
             query_by: 'prodName, searchKeywords',
         };
         let projectId = firebaseConfig?.projectId;
         try {
+            console.log("inside try");
+            
             const data = await client
                 .collections(`${projectId}-products`)
                 .documents()
                 .search(searchParameters);
 
-                // console.log(data,"from data var --------->");
+                console.log(data,"from data var --------->");
                 
             if (data && data?.hits) {
+                console.log( "inside if");
                 let arr = [];
                 for (const prod of data?.hits) {
+                    console.log("hii");
+                    console.log(prod , "inside for of  loop");
+                    
                     arr.push(prod?.document)
                 }
+            console.log(arr,"arrr");
+
                 return arr;
             }
+            
             return data;
         } catch (error) {
             console.log(error, "error ISIDE CATCH");

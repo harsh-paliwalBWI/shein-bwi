@@ -270,7 +270,7 @@ const Signup: FC<Props> = () => {
           <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  px-5 py-5" >
             <h3 className="sm:text-lg text-base font-semibold text-center ">Please Enter Phone Number</h3>
             <input type="text" value={googlePhone} onChange={(e) => setGooglePhone(e.target.value)} className="border border-[#838383] w-full px-3 py-2 outline-0" placeholder="Phone number" />
-            <div className="flex justify-center items-center bg-primary text-white sm:text-base text-sm font-medium py-2" onClick={async () => {
+            <div className="flex justify-center items-center bg-primary text-white sm:text-base text-sm font-medium py-2 cursor-pointer" onClick={async () => {
               signUpWithGoogle()
             }}><button>Ok</button></div>
           </div>

@@ -28,6 +28,8 @@ const PaymentMethodTab = ({
                   if (!val?.includes(tabs[2])) {
                     let arr = val;
                     arr.push(tabs[2]);
+                    console.log(arr,"from payment method tab");
+                    
                     return arr;
                   }
                 });

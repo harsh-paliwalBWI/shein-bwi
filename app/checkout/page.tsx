@@ -5,7 +5,7 @@ import { getGstAppilicableInfo } from "../../utils/cartUtilities/cartUtility";
 import { httpsCallable } from "firebase/functions";
 import { auth, db, functions } from "../../config/firebase-config";
 import { useQuery } from "@tanstack/react-query";
-import {addAddressToUser,fetchStates,getUserData,updateDefaultAddress,} from "../../utils/databaseService";
+import { addAddressToUser, fetchStates, getUserData, updateDefaultAddress, } from "../../utils/databaseService";
 import ShippingTab from "../../components/checkout/ShippingTab";
 import { initialAddress, paymentMethods, tabs } from "../../utils/utilities";
 import PaymentMethodTab from "../../components/checkout/PaymentMethodTab";
@@ -21,6 +21,7 @@ import FlatIcon from "../../components/flatIcon/flatIcon";
 import tag from "../../images/tag 1.svg"
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { couponsAvailable, fetchCouponList } from "../../utils/databaseService";
 const CheckoutPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -35,10 +36,31 @@ const CheckoutPage = () => {
     queryFn: () => fetchStates(),
     keepPreviousData: true,
   });
+
+  const { data: couponAvl } = useQuery({
+    queryKey: ["isCoupon"],
+    queryFn: () => couponsAvailable(),
+    refetchInterval: 2000,
+    // keepPreviousData: true,
+  });
+
+  // console.log(couponAvl, "couponData-------");
+
+  const { data: couponList } = useQuery({
+    queryKey: ["couponlist"],
+    queryFn: () => fetchCouponList(),
+    refetchInterval: 2000,
+    // keepPreviousData: true,
+  });
+
+  // console.log(couponList, "couponList-------");
+
   const [completedSteps, setCompletedSteps] = useState([]);
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const [selectedTab, setSelectedTab] = useState("Shipping");
   const [paymentSummary, setPaymentSummary] = useState(null);
+  const [isCoupon, setIsCoupon] = useState(false)
+  const [coupon, setCoupon] = useState("")
   const [userAddress, setUserAddress] = useState(
     userData?.defaultAddress || initialAddress
   );
@@ -67,16 +89,18 @@ const CheckoutPage = () => {
     const res = await getPaymentSummaryDetails(data);
     setPaymentSummary(res.data);
   }
-const handleChange = (name, value) => {
-  console.log(name,"name",value,"value");
-  
+
+
+  const handleChange = (name, value) => {
+    // console.log(name, "name", value, "value");
+
     setUserAddress((val) => {
       return { ...val, [name]: value };
     });
   };
   function handleAddressSubmit() {
-    console.log(userAddress,"userAddress");
-    
+    console.log(userAddress, "userAddress");
+
     const {
       address1,
       address2,
@@ -100,7 +124,7 @@ const handleChange = (name, value) => {
       !state ||
       !stateCode ||
       !country ||
-      !lastName||
+      !lastName ||
       !name
     ) {
 
@@ -116,12 +140,13 @@ const handleChange = (name, value) => {
     setSelectedTab(tabs[1]);
     setCompletedSteps((val: any) => {
       let arr = val;
-      if (!val.includes(tabs[0])) {
-        arr.push(tabs[0]);
+      if (!val?.includes(tabs[0])) {
+        arr?.push(tabs[0]);
       }
-      if (!val.includes(tabs[1])) {
-        arr.push(tabs[1]);
+      if (!val?.includes(tabs[1])) {
+        arr?.push(tabs[1]);
       }
+      console.log(arr,"steps arr");
       return arr;
     });
   }
@@ -183,6 +208,8 @@ const handleChange = (name, value) => {
       // }
     }
   }
+
+ 
   useEffect(() => {
     getPaymentSummary();
   }, [addressToDeliver]);
@@ -215,7 +242,7 @@ const handleChange = (name, value) => {
       case tabs[2]:
         return (
           <ReviewTab
-          
+
             placeOrder={placeOrder}
             addressToDeliver={addressToDeliver}
             selectedPaymentMethod={selectedPaymentMethod}
@@ -233,40 +260,36 @@ const handleChange = (name, value) => {
           <div className="flex justify-between sm:flex-row flex-col gap-y-3 items-center ">
             <h2 className="xl:text-3xl text-xl font-bold text-black   uppercase">Checkout</h2>
             <div className="flex items-center sm:justify-center  ">
-      <div className="flex  flex-row gap-2 ">
-              {tabs.map((tab, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      // if (completedSteps.includes(tab)) {
-                      //   setSelectedTab(tab);
-                      // }
-                      setSelectedTab(tab);
+              <div className="flex  flex-row gap-2 ">
+                {tabs.map((tab, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        if (completedSteps.includes(tab)) {
+                          console.log(completedSteps.includes(tab),"tab");
+                          
+                          setSelectedTab(tab);
+                        }
+                        // setSelectedTab(tab);
 
-                    }}
-                  >
-                    <p
-                      className={`${
-                        tab === selectedTab && "text-primary  "
-                      } font-medium xl:text-base text-sm text-[#555555]`}
+                      }}
                     >
-                      {tab}
-                      {(idx === 0 || idx === 1) && " >"}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
+                      <p
+                        className={`${tab === selectedTab && "text-primary  "
+                          } font-medium xl:text-base text-sm text-[#555555]`}
+                      >
+                        {tab}
+                        {(idx === 0 || idx === 1) && " >"}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-          {/* <PaymentMethodTab
-            selectedPaymentMethod={selectedPaymentMethod}
-            setSelectedPaymentMethod={setSelectedPaymentMethod}
-            setSelectedTab={setSelectedTab}
-            setCompletedSteps={setCompletedSteps}
-          /> */}
+      
           {renderTabs()}
         </div>
         <div className="w-full lg:w-[35%]   ">
@@ -278,84 +301,108 @@ const handleChange = (name, value) => {
           ) : (
             <div className="flex flex-col ">
               <div className="flex xl:items-end items-center  ">
-              <h2 className="xl:text-3xl  text-xl font-semibold text-black uppercase leading-[30px] tracking-wide">
-                ORDER SUMMARY</h2>
+                <h2 className="xl:text-3xl  text-xl font-semibold text-black uppercase leading-[30px] tracking-wide">
+                  ORDER SUMMARY</h2>
                 <h4 className="xl:text-base text-sm font-semibold ">({cart.length} Item)</h4>
                 {/* <span className=" text-neutral-400 text-base font-normal lowercase leading-[30px] tracking-tight">({cart.length} Items)</span> */}
-              
+
               </div>
               <div className="flex flex-col gap-y-4 ">
-              <div className="lg:mt-10 mt-4 flex flex-col gap-4   border border-gray-400 sm:px-6 px-2 sm:py-6 py-2">
-               <div><h5 className="text-gray-500  text-base font-semibold ">Coupons</h5>
-               <div className="flex border border-primary items-center  rounded-md lg:px-5 px-3 justify-between mt-4 py-2 ">
-                {/* <div className="flex items-center gap-x-3 w-[80%]"> */}
-                <div className="flex items-center gap-2 text-primary "><Image src={tag} alt=""/><p className="xl:text-base text-sm font-medium">“CODESHE” Applied</p></div>
-                {/* <input type="text" className=" py-4 w-[100%] outline-0" /> */}
-                {/* </div> */}
-                <div><FlatIcon className="flaticon-close text-primary text-lg"/></div>
-               </div>
-               </div>
-               <div className="flex   justify-between gap-4  text-base">
-                  <p className="text-gray-500 font-semibold  text-base">Price</p>
-                  <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
-                    {constant.currency} {paymentSummary?.totalMrp.toFixed(2)}
-                  </p>
-                </div>
-                <div className="flex  justify-between gap-4  text-base">
-                  <p className="text-gray-500 font-semibold  text-base">Subtotal</p>
-                  <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
-                    {constant.currency} {paymentSummary?.totalMrp.toFixed(2)}
-                  </p>
-                </div>
-                {paymentSummary?.discountOnMrp !== 0 && (
-                  <div className="flex  justify-between ">
-                    <p className="text-gray-500 font-semibold  text-base">
-                    Coupon/ Discount
-                    </p>
-                    <p className="font-semibold  text-base text-right   leading-tight tracking-tight">
-                      {constant.currency}{" "}
-                      {paymentSummary?.discountOnMrp.toFixed(2)}
+                <div className="lg:mt-10 mt-4 flex flex-col gap-4   border border-gray-400 sm:px-6 px-2 sm:py-6 py-2">
+                  <div onClick={() => setIsCoupon((prev) => !prev)}><h5 className="  text-base font-semibold text-primary underline cursor-pointer">Coupons</h5>
+                  </div>
+                  {isCoupon && <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30 flex justify-center items-center">
+                    <div className="xl:w-[30%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   px-5 py-5 flex flex-col justify-end gap-y-3">
+                      <div className="w-full flex justify-end items-center cursor-pointer " onClick={() => {
+                        setIsCoupon((prev) => !prev);
+                      }}><button className="bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center cursor-pointer"><FlatIcon icon={"flaticon-close text-secondary font-bold text-[10px]"} /></button>
+                      </div>
+                      <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  px-5 py-5" >
+                        <h3 className="sm:text-lg text-base font-semibold text-center ">Apply Coupon</h3>
+                        <div className="my-4">
+                        <div className="flex border border-primary items-center  rounded-md lg:px-5 px-3 justify-between  py-2 cursor-pointer">
+                          <div className="flex items-center gap-2 text-primary "><Image src={tag} alt="" />
+                          <input className="xl:text-base text-sm font-medium outline-0" value={coupon} onChange={(e) => setCoupon(e.target.value)} /></div>
+                          <div><FlatIcon className="flaticon-close text-primary text-lg" /></div>
+                        </div>
+                        {
+                          couponAvl && couponList && couponList.length > 0 &&
+                          <div>
+                            <h2 className="text-primary text-base font-semibold my-6">Coupons Available</h2>
+                            {couponAvl && couponList && couponList.length > 0 && couponList.map((item: any, idx: number) => {
+                              return <div className="flex justify-between items-center" key={idx}>
+                                <div>{item.name}</div>
+                                <div className="cursor-pointer"><button className="text-white bg-secondary px-5 py-1 text-sm">Apply</button></div>
+                              </div>
+                            })}
+                          </div>
+                        }
+                        </div>
+                      </div>
+                    </div>
+                  </div>}
+                  <div className="flex   justify-between gap-4  text-base">
+                    <p className="text-gray-500 font-semibold  text-base">Price</p>
+                    <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
+                      {constant.currency} {paymentSummary?.totalMrp.toFixed(2)}
                     </p>
                   </div>
-                )}
-                <div className="flex justify-between  ">
-                  <p className="text-gray-500 font-semibold  text-base">
-                  Shipping Fees
-                  </p>
-                  <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
-                    {paymentSummary?.delivery?.deliveryCost === 0
-                      ? "Free"
-                      : `${
-                          constant.currency
+                  <div className="flex  justify-between gap-4  text-base">
+                    <p className="text-gray-500 font-semibold  text-base">Subtotal</p>
+                    <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
+                      {constant.currency} {paymentSummary?.totalMrp.toFixed(2)}
+                    </p>
+                  </div>
+                  {paymentSummary?.discountOnMrp !== 0 && (
+                    <div className="flex  justify-between ">
+                      <p className="text-gray-500 font-semibold  text-base">
+                        Coupon/ Discount
+                      </p>
+                      <p className="font-semibold  text-base text-right   leading-tight tracking-tight">
+                        {constant.currency}{" "}
+                        {paymentSummary?.discountOnMrp.toFixed(2)}
+                      </p>
+                    </div>
+                  )}
+                  <div className="flex justify-between  ">
+                    <p className="text-gray-500 font-semibold  text-base">
+                      Shipping Fees
+                    </p>
+                    <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
+                      {paymentSummary?.delivery?.deliveryCost === 0
+                        ? "Free"
+                        : `${constant.currency
                         } ${paymentSummary?.delivery?.deliveryCost.toFixed(2)}`}
-                  </p>
+                    </p>
+                  </div>
+                  <div className="flex justify-between gap-4  text-base">
+                    <p className="text-gray-500 font-semibold  text-base">Taxes</p>
+                    <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
+                      {constant.currency} {paymentSummary?.totalMrp.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="  border-gray-400 border-t  "></div>
+                  <div className="flex justify-between     ">
+                    <p className=" font-bold text-secondary   text-base leading-tight tracking-tight">Total</p>
+                    <p className=" font-bold text-secondary    text-base leading-tight tracking-tight">
+                      {constant.currency}{" "}
+                      {paymentSummary?.totalPayable.toFixed(2)}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex justify-between gap-4  text-base">
-                  <p className="text-gray-500 font-semibold  text-base">Taxes</p>
-                  <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
-                    {constant.currency} {paymentSummary?.totalMrp.toFixed(2)}
-                  </p>
-                </div> 
-                <div className="  border-gray-400 border-t  "></div>
-                <div className="flex justify-between     ">
-                  <p className=" font-bold text-secondary   text-base leading-tight tracking-tight">Total</p>
-                  <p className=" font-bold text-secondary    text-base leading-tight tracking-tight">
-                    {constant.currency}{" "}
-                    {paymentSummary?.totalPayable.toFixed(2)}
-                  </p>
+                <div className="flex  ">
+                  
+                  <button
+                    className=" w-full text-white py-2 px-2 hover:bg-white hover:text-black cursor-pointer hover:border hover:border-secondary   md:h-[60px] h-[40px] bg-secondary  text-center  text-base font-semibold"
+                    onClick={() => {
+                      handleAddressSubmit();
+                    }}
+                  >
+                    {/* {tabs} */}
+                    Proceed To Payment
+                  </button>
                 </div>
               </div>
-              <div className="flex  ">
-            <button
-              className=" w-full text-white py-2 px-2 hover:bg-white hover:text-black cursor-pointer hover:border hover:border-secondary   md:h-[60px] h-[40px] bg-secondary  text-center  text-base font-semibold"
-              onClick={() => {
-                handleAddressSubmit();
-              }}
-            >
-              Proceed To Payment
-            </button>
-          </div>
-          </div>
             </div>
           )}
         </div>

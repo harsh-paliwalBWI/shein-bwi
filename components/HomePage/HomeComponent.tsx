@@ -28,10 +28,10 @@ const HomeComponent = ({ cookie }) => {
   // console.log("homeData");
 
   function renderWidgets(section, idx) {
-    console.log("CHCOG", section?.widgetType);
+    // console.log("CHCOG", section?.widgetType);lo
 
     switch (section?.widgetType) {
-      
+
       case "banner-slider":
         return <BannerSlider myKey={idx} section={section} />;
       case "image-banner":

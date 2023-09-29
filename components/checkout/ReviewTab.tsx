@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { constant } from "../../utils/constants";
 import { paymentMethods } from "../../utils/utilities";
 import FlatIcon from "../flatIcon/flatIcon";
@@ -11,6 +11,16 @@ const ReviewTab = ({
   paymentSummary,
   placeOrder
 }) => {
+  const [isClient,setIsClient]=useState(false)
+  useEffect(()=>{
+   setIsClient(true)
+  },[])
+
+  console.log(paymentSummary,"sunaary");
+  console.log(addressToDeliver,"address");
+  console.log(selectedPaymentMethod,"payment");
+  
+  
   return (
     <div className="flex flex-col md:mt-2 mt-4 w-full ">
       <h6 className="font-medium  xl:text-base md:text-base text-sm ">Please review your order details.</h6>
@@ -18,8 +28,8 @@ const ReviewTab = ({
       <div className="flex  items-center justify-end xl:text-base sm:text-base text-sm text-secondary font-semibold  sm:mt-12 mt-4 "><h3 className="text-end">Order Number:</h3 ><h3 className="text-end">#47858740844</h3></div>
 
         <div className="border border-gray-400     flex flex-col gap-4">
-          {paymentSummary &&
-            paymentSummary?.products?.map((product, idx) => {
+          {isClient&&paymentSummary &&
+            isClient&&paymentSummary?.products?.map((product, idx) => {
               return (
                 <div className="flex sm:flex-row flex-col items-center sm:items-start px-4 py-4 gap-8 " key={idx}>
                   <div className="h-fit w-fit  ">
@@ -38,8 +48,8 @@ const ReviewTab = ({
                   </div>
                   <div className="flex-1 flex flex-col ">
                     <h3 className="font-bold text-black lg:text-lg sm:text-lg text-base  mb-2">
-                    Asymmetrical Frayed Bustier
-                      {/* {product?.name} */}
+                    {/* Asymmetrical Frayed Bustier */}
+                      {product?.name}
                       </h3>
                     <div className="flex gap-2  text-[#555555] lg:text-sm text-xs font-semibold mb-1">Size : <span>L</span>  <span>|</span>  Color :  <span>Beige</span></div>
                     <h3 className="font-semibold text-black text-opacity-75 lg:text-sm text-xs   mb-6">Qty:
@@ -67,7 +77,8 @@ const ReviewTab = ({
                </p>
             <p className="text-secondary text-base font-semibold"> 
             {/* {addressToDeliver?.phoneNo} */}
-            (319) 555-0115
+            {/* (319) 555-0115 */}
+            {addressToDeliver?.phoneNo}
             </p>
           </div>
           <div className=" "><button className="bg-secondary text-white flex items-center gap-1 py-1 px-7 xl:text-base text-base font-semibold"><span><FlatIcon icon={"flaticon-plus-1 text-[10px] font-bold"} /></span><span>Add Address</span></button></div>
@@ -102,14 +113,14 @@ const ReviewTab = ({
       </div>
 
       {/* order btn start  */}
-      {/* <div className="flex items-center justify-end mt-4 gap-2">
+      <div className="flex items-center justify-end mt-4 gap-2">
         <button
           className="px-10 border border-black hover:bg-white hover:text-black rounded-full py-2 bg-primary text-white"
           onClick={placeOrder}
         >
           Place Order
         </button>
-      </div> */}
+      </div>
        {/* order btn end */}
     </div>
   );

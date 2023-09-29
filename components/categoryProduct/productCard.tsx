@@ -155,12 +155,12 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
               </div>
             </div>
           </div>
-          <div className="flex  overflow-hidden truncate w-full text-sm font-medium text-primary capitalize mb-1">
+          <div className="flex  overflow-hidden truncate w-full text-sm font-medium text-primary capitalize mb-3">
             <h2 className="">{product?.prodName}</h2>
           </div>
-          <div className="flex    w-full text-sm font-semibold mb-3 ">
+          {/* <div className="flex    w-full text-sm font-semibold mb-3 ">
             <h2 className="">Calcium Magnesium Zinc </h2>
-          </div>
+          </div> */}
           <div className="flex items-center gap-4">
             <div className="text-ellipsis overflow-hidden ... truncate text-center ">
               <p className="text-ellipsis overflow-hidden ... truncate text-center  text-primary font-bold text-lg">

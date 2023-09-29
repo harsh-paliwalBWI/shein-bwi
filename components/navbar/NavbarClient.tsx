@@ -48,7 +48,7 @@ const NavbarClient = ({ cookie }: any) => {
   const debouncedSearch = useDebounce(searchQuery, 500);
   
 
-  console.log(pathname,"name");
+  // console.log(pathname,"name");
   
 
 
@@ -66,19 +66,29 @@ const NavbarClient = ({ cookie }: any) => {
 
   // console.log(userData,"userData---------->");
   
-  const {
-    data: searchData,
-    isFetching,
-    isLoading,
-  } = useQuery({
-    queryKey: ["search", searchQuery],
-    queryFn: () => handleTypesenseSearch(searchQuery),
-    keepPreviousData: false,
-  });
+  // const {
+  //   data: searchData,
+  //   isFetching,
+  //   isLoading,
+  // } = useQuery({
+  //   queryKey: ["search", searchQuery],
+  //   queryFn: () => handleTypesenseSearch(searchQuery),
+  //   keepPreviousData: false,
+  //   refetchInterval: 2000,
+  // });
 
-  async function fetchSearchedProducts() {
-    const res = await handleTypesenseSearch(debouncedSearch);
-    // console.log(res,"res from fetchSearchedProducts");
+  // console.log(searchData,"saearch data---------");
+  
+
+  async function fetchSearchedProducts(searchquery:any) {
+    console.log(searchquery,"fdgfdh");
+    
+    let res:any
+    if(debouncedSearch){
+       res = await handleTypesenseSearch(searchquery);
+      console.log(res,"res from fetchSearchedProducts");
+    }
+   
     
     if (res) {
       setSearchedProducts(res);
@@ -94,11 +104,14 @@ const NavbarClient = ({ cookie }: any) => {
 
   useEffect(() => {
     if (searchQuery === "") {
+      // console.log("inside if");
+      
       setSearchedProducts([]);
     }
     if (debouncedSearch) {
+      console.log("inside else");
       // console.log(debouncedSearch,"debouncedSearch------------------>");
-      fetchSearchedProducts();
+      fetchSearchedProducts(debouncedSearch);
       // fetch(`/api/search?q=${debouncedSearch}`);
     }
   }, [debouncedSearch]);
@@ -144,8 +157,8 @@ const NavbarClient = ({ cookie }: any) => {
         <NavMobile />
       ) : (
         <>
-          <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body ">
-            <div className="flex items-center   w-full  justify-between lg:gap-5 px-2.5 ">
+          <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body z-10 ">
+            <div className="flex items-center   w-full  justify-between lg:gap-5  ">
               <div className="flex items-center lg:gap-8 gap-4 lg:w-1/3 w-[18%] ">
                <div> <FlatIcon className="flaticon-facebook lg:text-base text-sm" /> </div>
                <div> <FlatIcon className="flaticon-twitter lg:text-xl text-lg" /></div>
@@ -174,10 +187,10 @@ const NavbarClient = ({ cookie }: any) => {
               </div>
             </div>
           </div>
-          <div className="  ">
+          <div className="z-10  ">
             {/* nav header section  */}
-            <div className="flex text-sm  font-semibold   bg-white  w-full px-body  ">
-              <div className=" w-full px-2.5  ">
+            <div className="flex text-sm  font-semibold   bg-white  w-full px-body   ">
+              <div className=" w-full   ">
               <div className="  flex items-center w-full  justify-between   ">
                 {/* <div className="flex items-center gap-2">
                   <div
@@ -229,7 +242,7 @@ const NavbarClient = ({ cookie }: any) => {
                       leaveFrom=" opacity-100"
                       leaveTo=" opacity-0"
                     >
-                      <div className="relative w-full h-full flex items-center border border-[#999999] px-4 justify-between gap-3 search-container  ">
+                      <div className="relative w-full h-full flex items-center border border-[#999999] px-4 justify-between gap-3 search-container z-10 ">
                         {/* <div className="flex w-full gap-3 items-center border border-[red]"> */}
                           <div><FlatIcon className={"flaticon-camera  text-xl text-[#999999]"} /></div>
                           <input
@@ -238,10 +251,10 @@ const NavbarClient = ({ cookie }: any) => {
                             name=""
                             id=""
                             value={searchQuery}
-                            className="py-3 px-4  w-full outline-none focus:border-none  "
+                            className="py-3 px-4  w-full outline-none focus:border-none  bg-transparent "
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
-                              // console.log(searchQuery,"searchQuery from input field");
+                              console.log(searchQuery,"searchQuery from input field");
                               // searchResultsHandler(searchQuery)
                               
                             }}
@@ -364,7 +377,7 @@ const NavbarClient = ({ cookie }: any) => {
 
                   </Link>
                   <Link href={"/wishlist"}>
-                  <div className="cursor-pointer"><FlatIcon icon={"flaticon-heart-fill text-2xl"} /></div>
+                  <div className="cursor-pointer"><FlatIcon icon={"flaticon-heart-fill text-2xl "} /></div>
                   </Link>
                   {/* <div><FlatIcon icon={"flaticon-bag-fill text-xl"} /></div> */}
         

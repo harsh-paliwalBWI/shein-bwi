@@ -18,7 +18,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
     homeData?.data?.filter((val: any) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID)[0]?.arr;
-console.log(imagesArr,"img arr");
+// console.log(imagesArr,"img arr");
 
   const newImagesArr = imagesArr.slice(0, 3);
 
