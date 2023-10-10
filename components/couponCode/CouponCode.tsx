@@ -8,7 +8,10 @@ import { initialAddress, paymentMethods, tabs } from "../../utils/utilities";
 import { useAppSelector } from "../../redux/hooks";
 import { getGstAppilicableInfo } from "../../utils/cartUtilities/cartUtility";
 import { constant } from "../../utils/constants";
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 const CouponCode = () => {
+  const router=useRouter()
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const [paymentSummary, setPaymentSummary] = useState(null);
   
@@ -41,6 +44,15 @@ async function getPaymentSummary() {
   setPaymentSummary(res.data);
 }
 
+// console.log(auth,"auth");
+
+const onCheckOutHandler=()=>{
+if(auth?.currentUser?.uid){
+router.push("/checkout")
+}else{
+  toast.error("Please login first.")
+}
+}
   useEffect(()=>{
     getPaymentSummary()
   },[])
@@ -51,15 +63,15 @@ async function getPaymentSummary() {
       <div className='flex items-center justify-between w-full'><h3 className='text-gray-500 font-medium sm:text-base text-sm mb-4'>Subtotal</h3><h2 className='font-semibold text-secondary sm:text-base text-sm'>{constant.currency} {paymentSummary?.totalMrp.toFixed(2)}</h2></div>
       <div className='flex items-center justify-between w-full'><h3 className='text-gray-500 font-medium sm:text-base text-sm mb-4'>Shipping Fees</h3>
       <h2 className='font-semibold text-secondary sm:text-base text-sm' >{paymentSummary?.delivery?.deliveryCost === 0 ? "Free": `${constant.currency} ${paymentSummary?.delivery?.deliveryCost.toFixed(2)}`}</h2></div>
-      <div className='flex items-center justify-between w-full'><h3 className='text-gray-500 font-medium sm:text-base text-sm mb-4'>Coupon/ Discount</h3><h2 className='font-semibold text-secondary sm:text-base text-sm'>       {constant.currency}{" "}
+      <div className='flex items-center justify-between w-full'><h3 className='text-gray-500 font-medium sm:text-base text-sm mb-4'>Discount</h3><h2 className='font-semibold text-secondary sm:text-base text-sm'>       {constant.currency}{" "}
                       {paymentSummary?.discountOnMrp.toFixed(2)}</h2></div>
       <div className='flex items-center justify-between w-full'><h3 className='text-gray-500 font-medium sm:text-base text-sm mb-4'>Taxes</h3><h2 className='font-semibold text-secondary sm:text-base text-sm'>Rs. 3290</h2></div>
       <div className='w-full bg-gray-300 h-[1px]'></div>
       <div className='flex items-center justify-between w-full text-secondary'><h3 className=' font-medium sm:text-lg text-sm mt-3 mb-5'>Total</h3>
       <h2 className='font-semibold text-secondary sm:text-base text-sm'>{constant.currency}{" "}{paymentSummary?.totalPayable.toFixed(2)}</h2></div>
-      <Link href={"/checkout"}>
-        <div className='flex  justify-between w-full'><button className='bg-secondary text-white font-semibold w-full text-center py-2 sm:text-base text-xs'>Checkout</button></div>
-      </Link>
+      {/* <Link href={"/checkout"} onClick={()=>onCheckOutHandler()}> */}
+        <div className='flex  justify-between w-full' onClick={()=>onCheckOutHandler()}><button className='bg-secondary text-white font-semibold w-full text-center py-2 sm:text-base text-xs'>Checkout</button></div>
+      {/* </Link> */}
     </div>
   </div>
   )

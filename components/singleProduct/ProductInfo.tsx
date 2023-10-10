@@ -1,9 +1,14 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState, useEffect } from "react";
+import { Disclosure } from "@headlessui/react";
 import {
   addCartObjToUser,
   fetchSingleProduct,
+  getUserData,
+  getUserWishlist,
+  moveToWishListHandler,
+  removeFromWishListHandler,
 } from "../../utils/databaseService";
 import Image from "next/image";
 import { constant } from "../../utils/constants";
@@ -63,6 +68,7 @@ const pyamentModeImages = [
 
 const ProductInfo = ({ params }: any) => {
   const router = useRouter();
+
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const dispatch: any = useDispatch();
   const [similarProductData, setSimilarProductData] = useState([]);
@@ -70,8 +76,9 @@ const ProductInfo = ({ params }: any) => {
     queryKey: ["product", params?.slug],
     queryFn: () => fetchSingleProduct(params?.slug),
   });
-
-    console.log(product, "product from single product---------->");
+  const [prodTab, setProdTab] = useState(product?.priceList[0])
+  const [colorTab,setColorTab]=useState(product?.options&&product?.options[0])
+  // console.log(product, "product from single product---------->");
   //   console.log(product?.images, "images---------->");
   // console.log(product?.searchKeywords,"product?.searchKeywords");
   // console.log(params.slug,"params slug");
@@ -100,7 +107,22 @@ const ProductInfo = ({ params }: any) => {
   //   useEffect(()=>{
   // similarDataHandler()
   //   },[similarProductData])
+  const { data: userData } = useQuery({
+    queryKey: ["userData"],
+    queryFn: () => getUserData(null),
+    refetchInterval: 2000,
+    // keepPreviousData: true,
+    // enabled: isClient,
+  });
 
+  // console.log(userData, "user data");
+
+  const { data: wishlistData } = useQuery({
+    queryKey: ["wishlistData"],
+    queryFn: () => getUserWishlist(userData?.id),
+    refetchInterval: 2000,
+  })
+  const [tabImage, setTabImage] = useState(getImage(product, 0))
   function getImage(product: any, idx: number) {
     // console.log(product)
     // console.log("gggggggggg")
@@ -110,6 +132,8 @@ const ProductInfo = ({ params }: any) => {
     return constant?.errImage;
   }
   async function addItemToCart() {
+    console.log("START");
+    
     let data: any = {
       product,
       productID: product?.id,
@@ -119,15 +143,15 @@ const ProductInfo = ({ params }: any) => {
     };
     const cartObject = data.isPriceList
       ? getPriceListCartObj({
-          product: product,
-          quantity: quantity,
-          index: data.index,
-        })
+        product: product,
+        quantity: quantity,
+        index: data.index,
+      })
       : getCartObj({
-          product: product,
-          productID: data?.productID,
-          quantity: data?.quantity,
-        });
+        product: product,
+        productID: data?.productID,
+        quantity: data?.quantity,
+      });
     if (auth.currentUser) {
       const docId = await addCartObjToUser(cartObject);
       cartObject["id"] = docId;
@@ -161,99 +185,37 @@ const ProductInfo = ({ params }: any) => {
           <div className="flex flex-col px-body   ">
             <div className="flex flex-col lg:flex-row gap-6 mt-10  ">
               <div className=" md:flex lg:flex-col md:flex-row   gap-4   hidden ">
-                {/* {product && product?.images?.map((item: any, idx: number) => {
-                  return <div key={idx} className=" ">
+                {product.images.map((item: any, idx: number) => {
+                  return <div onClick={() => setTabImage(getImage(product, idx))} className="   cursor-pointer">
                     <Image
                       src={getImage(product, idx)}
-                      alt={product?.prodName || ""}
-                      className="w-full"
+                      // src={item.url}
+                      alt=""
+                      className=" w-[139px] h-[135px] aspect-auto object-cover"
                       width={1000}
                       height={1000}
-                      // style={{
-                      //   maxWidth: "100%",
-                      //   height: "auto",
-                      // }}
-                      style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
 
                     />
                   </div>
-                })} */}
-                <div className="  w-[139px] h-[135px]  ">
-                  <Image
-                    src={secImg}
-                    alt=""
-                    className=" w-[139px] h-[135px] aspect-auto object-cover"
-                    width={1000}
-                    height={1000}
-                    // style={{
-                    //   maxWidth: "100%",
-                    //   height: "auto",
-                    // }}
-                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
-                  />
-                </div>
-                <div className="w-[139px] h-[135px]">
-                  <Image
-                    src={thirdImg}
-                    alt=""
-                    className="w-[139px] h-[135px] aspect-auto object-cover"
-                    width={1000}
-                    height={1000}
-                    // style={{
-                    //   maxWidth: "100%",
-                    //   height: "auto",
-                    // }}
-                    // style={{width: "139px", height: "135px", aspectRatio: "auto" }}
-                  />
-                </div>
-                <div className="   w-[139px] h-[135px]  ">
-                  <Image
-                    src={firstImg}
-                    alt=""
-                    className="w-[139px] h-[135px] aspect-auto object-cover"
-                    width={1000}
-                    height={1000}
-                    // style={{
-                    //   maxWidth: "100%",
-                    //   height: "auto",
-                    // }}
-                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
-                  />
-                </div>
-                <div className="  w-[139px] h-[135px]  ">
-                  <Image
-                    src={fourImg}
-                    alt=""
-                    className="w-[139px] h-[135px] aspect-auto object-cover"
-                    width={1000}
-                    height={1000}
-                    // style={{
-                    //   maxWidth: "100%",
-                    //   height: "auto",
-                    // }}
-                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
-                  />
-                </div>
-                <div className="  w-[139px] h-[135px]  ">
-                  <Image
-                    src={fiveImg}
-                    alt=""
-                    className="w-[139px] h-[135px] aspect-auto object-cover"
-                    width={1000}
-                    height={1000}
-                    // style={{
-                    //   maxWidth: "100%",
-                    //   height: "auto",
-                    // }}
-                    // style={{ width: "139px", height: "135px", aspectRatio: "auto" }}
-                  />
-                </div>
+                })}
+
               </div>
               <div className="flex lg:flex-row flex-col w-full  sm:gap-16 gap-6">
                 <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  ">
                   <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] sm:h-[300px] h-auto ">
-                    <Image
+                    {/* <Image
                       src={getImage(product, 0)}
+                      // src={secImg}
+                      alt={product?.prodName || ""}
+                      width={1000}
+                      height={1000}
+                      // style={{ width: "100%", height: "595px" }}
+                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
+                    /> */}
+
+
+                    <Image
+                      src={tabImage}
                       // src={secImg}
                       alt={product?.prodName || ""}
                       width={1000}
@@ -262,17 +224,7 @@ const ProductInfo = ({ params }: any) => {
                       className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
                     />
                   </div>
-                  <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px]  sm:block hidden">
-                    <Image
-                      // src={getImage(product, 1)}
-                      src={fourImg}
-                      alt={product?.prodName || ""}
-                      width={1000}
-                      height={1000}
-                      // style={{ width: "100%", height: "595px" }}
-                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
-                    />
-                  </div>
+
                 </div>
                 <div className="flex flex-col lg:w-[50%] w-[100%]   ">
                   <div className="flex items-center  sm:mb-3 mb-1">
@@ -283,37 +235,25 @@ const ProductInfo = ({ params }: any) => {
                   <div className="flex sm:flex-row flex-col gap-y-2  gap-x-4 sm:items-center ">
                     <h2 className=" md:text-2xl text-lg  sm:text-center text-start text-secondary font-bold  ">
                       {constant?.currency}{" "}
-                      {parseFloat(product?.prodPrice).toFixed(2)}
+                      {product?.isPriceList ? prodTab.discountedPrice : parseFloat(product?.prodPrice).toFixed(2)}
+                      {/* {parseFloat(product?.prodPrice).toFixed(2)} */}
                     </h2>
-                    <div className="flex items-center gap-2 text-start ">
+
+
+                    {/* reviews code start  */}
+                    {/* <div className="flex items-center gap-2 text-start ">
                       <div className="text-primary text-xl flex ">
                         {" "}
-                        <FlatIcon
-                          icon={
-                            "flaticon-star text-[#FFBA07] font-normal text-xl"
-                          }
+                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"}
                         />
-                        <FlatIcon
-                          icon={
-                            "flaticon-star text-[#FFBA07] font-normal text-xl"
-                          }
+                        <FlatIcon icon={ "flaticon-star text-[#FFBA07] font-normal text-xl"}
                         />
-                        <FlatIcon
-                          icon={
-                            "flaticon-star text-[#FFBA07] font-normal text-xl"
-                          }
+                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"}
                         />
-                        <FlatIcon
-                          icon={
-                            "flaticon-star text-[#FFBA07] font-normal text-xl"
-                          }
+                        <FlatIcon icon={"flaticon-star text-[#FFBA07] font-normal text-xl"}
                         />
-                        <FlatIcon
-                          icon={
-                            "flaticon-star text-[#FFBA07] font-normal text-xl"
-                          }
+                        <FlatIcon icon={ "flaticon-star text-[#FFBA07] font-normal text-xl" }
                         />
-                        {/* &#10027;&#10027;&#10027;&#10027;&#10027; */}
                         <span className="text-sm font-medium text-zinc-400">
                           (27)
                         </span>{" "}
@@ -321,64 +261,76 @@ const ProductInfo = ({ params }: any) => {
                       <h4 className="text-[#777777] text-xs font-medium">
                         1.2k reviews
                       </h4>
-                    </div>
+                    </div> */}
+                     {/* reviews code end  */}
                   </div>
-                  <h6 className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 ">
-                    {/* {product?.prodDesc} */}
+                  {/* <div className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 ">
+                   
                     Strapless bustier. Front pocket. Frayed trims. Asymmetric
                     hem. Side metal zip fastening. Asymmetrical Beige frayed
                     Bustier.
-                  </h6>
-                  <div className="">
+                  </div> */}
+                  {/* <div
+                    dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
+                    className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 " /> */}
+{
+  product?.options && product?.options?.length > 0 &&
+                  <div className=" mt-4">
                     <h4 className="text-secondary sm:text-sm text-xs font-semibold mb-3 ">
-                      COLOR : DARK OLIVE GREEN
+                      {/* COLOR : DARK OLIVE GREEN */}
+                      COLOR : {colorTab.color.name}
+
                     </h4>
-                    <div className="flex gap-3 sm:mb-8 mb-4">
-                      {[1, 2, 4, 4].map((item: any, idx: number) => {
-                        return (
-                          <div
-                            key={idx}
-                            className="  border border-[#E6DBD7] p-1 rounded-full flex justify-center items-center"
-                          >
-                            <div className="h-[25px] w-[25px] rounded-full bg-black"></div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    {product?.options && product?.options?.length > 0 &&
+                      <div className="flex gap-3 ">
+                        {product.options.map((item: any, idx: number) => {
+                          // console.log(item.color.code,"cocloe");
+
+                          return (
+                            <div
+                            onClick={()=>setColorTab(item)}
+                              key={idx}
+                              className="  border border-[#E6DBD7] p-1 rounded-full flex justify-center items-center cursor-pointer"
+                            >
+                             
+                              <div className={`h-[25px] w-[25px] rounded-full bg-[${item.color.code}]`}></div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    }
                   </div>
+}
                   <div className="flex flex-col ">
-                    <div className="flex items-center gap-6 sm:text-sm text-xs  font-semibold mb-3 ">
-                      <div className="flex gap-1 items-center">
-                        <h4 className="    ">SIZE : </h4>
-                        <h4>S</h4>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div>
-                          <FlatIcon
-                            icon={
-                              "flaticon-measure text-[#777777]  font-normal text-3xl"
-                            }
-                          />
+                    {product.priceList && product.priceList.length > 0 &&
+                      <div className="flex items-center gap-6 sm:text-sm text-xs  font-semibold mb-3 sm:mt-4 mt-4 ">
+                        <div className="flex gap-1 items-center">
+                          <h4 className="    ">SIZE : </h4>
+                          <h4>{prodTab?.weight}</h4>
                         </div>
-                        <h4 className="underline ">Size Chart</h4>
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <FlatIcon
+                              icon={
+                                "flaticon-measure text-[#777777]  font-normal text-3xl"
+                              }
+                            />
+                          </div>
+                          <h4 className="underline ">Size Chart</h4>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex gap-3 text-[#555555] text-sm font-semibold sm:mb-6 mb-4">
-                      <div className="sm:px-4 px-3 sm:py-4 py-2 border border-secondary ">
-                        <h2 className="sm:text-sm text-xs font-normal">XS</h2>
+                    }
+                    {
+                      product.priceList && product.priceList.length > 0 && <div className="flex gap-3 text-[#555555] text-sm font-semibold ">
+                        {product.priceList && product.priceList.map((item: any, idx: number) => {
+                          return <div onClick={() => setProdTab(item)} className={`sm:px-3 px-3 sm:py-2 py-2 border  cursor-pointer ${prodTab===item?"border-secondary":"border-[#C6C6C6]"}`}>
+                            <h2 className="sm:text-sm text-xs font-normal">{item.weight}</h2>
+                          </div>
+                        })}
                       </div>
-                      <div className="sm:px-4 px-3 sm:py-4 py-2 border border-secondary  ">
-                        <h2 className="sm:text-sm text-xs font-normal">S</h2>
-                      </div>
-                      <div className="sm:px-4 px-3 sm:py-4 py-2   flex items-center gap-2   border border-[#C6C6C6]">
-                        <h2 className="sm:text-sm text-xs font-normal">M</h2>
-                        {/* <div>mail icon</div> */}
-                      </div>
-                      <div className="sm:px-4 px-3 sm:py-4 py-2  bg-secondary text-white">
-                        <h2 className="sm:text-sm text-xs font-normal ">L</h2>
-                      </div>
-                    </div>
-                    <h3 className="text-secondary sm:text-sm text-xs font-semibold mb-3 ">
+                    }
+
+                    <h3 className="text-secondary sm:text-sm text-xs font-semibold mb-3 mt-6 ">
                       QUANTITY :
                     </h3>
                     <div className="flex sm:items-center sm:flex-row flex-col gap-y-4 justify-between   sm:mb-10 mb-5 ">
@@ -404,33 +356,54 @@ const ProductInfo = ({ params }: any) => {
                           +
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 ">
+
+                      {wishlistData && wishlistData.length > 0 && wishlistData.includes(`${product?.id}`) ?
+                        <div onClick={() => removeFromWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 ">
+                          <p>
+                            <FlatIcon icon={"flaticon-heart-fill text-2xl"} />
+                          </p>
+                          <h3 className="text-secondary font-semibold sm:text-sm text-xs">
+                            Remove from Wishlist
+                          </h3>
+                        </div>
+                        :
+                        <div onClick={() => moveToWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 ">
+                          <p>
+                            <FlatIcon icon={"flaticon-heart text-2xl"} />
+                          </p>
+                          <h3 className="text-secondary font-semibold sm:text-sm text-xs">
+                            Add to Wishlist
+                          </h3>
+                        </div>
+                      }
+
+                      {/* <div onClick={()=>moveToWishListHandler({userId:userData?.id,productId:product?.id})} className="flex items-center gap-2 ">
                         <p>
                           <FlatIcon icon={"flaticon-heart text-2xl"} />
                         </p>
                         <h3 className="text-secondary font-semibold sm:text-sm text-xs">
                           Add to Wishlist
                         </h3>
-                      </div>
+                      </div> */}
                     </div>
-                    <div className="flex items-center gap-2 text-sm font-bold  mb-3">
+                    {/* <div className="flex items-center gap-2 text-sm font-bold  mb-3">
                       <div className="">
                         <FlatIcon icon={"flaticon-express-delivery text-2xl"} />
                       </div>
                       <h3 className="text-secondary sm:text-sm text-xs font-semibold  ">
                         WHEN WILL I RECIVE MY ORDER ?
                       </h3>
-                    </div>
-                    <div className="border border-[#E1E1E1] flex items-center justify-between p-2 gap-4  mb-6">
+                    </div> */}
+                    {/* <div className="border border-[#E1E1E1] flex items-center justify-between p-2 gap-4  mb-6">
                       <input
                         type="text"
-                        className=" py-1 w-full b"
+                        className=" py-1 w-full outline-0"
                         placeholder="Enter your pincode"
                       />
                       <button className="bg-primary text-white sm:px-10 px-6 sm:py-3 py-2 sm:text-sm text-xs font-semibold">
                         Check
                       </button>
-                    </div>
+                    </div> */}
                     {/* old code start  */}
                     {/* <h2 className="text-xl   font-medium leading-[35px] mb-1">Flavour:</h2>
                 <div className="flex gap-3">
@@ -538,16 +511,16 @@ const ProductInfo = ({ params }: any) => {
                               (item) => item?.productId === product?.id
                             ).length !== 0
                               ? () => {
-                                  handleRemoveFromCart();
-                                }
+                                handleRemoveFromCart();
+                              }
                               : addItemToCart
                           }
                         >
-                          <button className=" text-secondary font-medium  sm:text-lg text-base">
+                          <button className=" text-secondary font-semibold  sm:text-lg text-base">
                             {cart?.filter(
                               (item) => item?.productId === product?.id
                             ).length !== 0
-                              ? "Remove From Bag"
+                              ? "REMOVE FROM BAG"
                               : "ADD TO BAG"}
                           </button>
                         </div>
@@ -555,10 +528,10 @@ const ProductInfo = ({ params }: any) => {
 
                       <div
                         className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
-                        // onClick={handleRemoveFromCart}
+                      // onClick={handleRemoveFromCart}
                       >
                         <button className="text-white font-bold">
-                          Buy Now
+                          BUY NOW
                         </button>
                       </div>
                     </div>
@@ -612,83 +585,81 @@ const ProductInfo = ({ params }: any) => {
                     </div>
                   </div>
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
-                  <div className=" y">
+                  {/* <div className=" ">
                     <div className="my-3 flex items-center justify-between">
                       <h2 className="font-medium sm:text-base  text-sm ">
                         Product Info
                       </h2>
                       <FlatIcon icon={"flaticon-plus text-secondary text-xs"} />
                     </div>
-                    <p className="sm:text-sm text-xs  mb-7 mt-4">
-                      A visually pleasing lilac colourway and flower-shaped
-                      buckle take these crossover mules to greater style
-                      heights. Between the rounded square-toes and chunky
-                      platform soles, there is no shortage of details to admire
-                      when it comes to this slip-and-go design. Style yours with
-                      everything from cropped jeans to midi skirts.
-                    </p>
-                    <div>
-                      <h3 className="font-medium sm:text-base  text-sm mb-1">
-                        Material & Care
-                      </h3>
-                      <p className="sm:text-base text-xs">Dupion-Silk</p>
-                      <p className="sm:text-base text-xs">Machine-Wash</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <h3 className="font-medium sm:text-base text-sm mt-3 ">
-                      Specifications
-                    </h3>
-                    <div className="flex flex-col gap-y-5  md:w-[80%] w-[100%] mt-4 mb-8 ">
-                      <div className="flex items-center justify-between ">
-                        <div>
-                          <h3 className="font-medium sm:text-sm text-xs mb-1">
-                            Type
-                          </h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">
-                            Top
-                          </p>
-                        </div>
-                        <div>
-                          <h3 className="font-medium  sm:text-sm text-xs mb-1">
-                            Pattern
-                          </h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">
-                            {" "}
-                            Adjustable Strap
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium sm:text-sm text-xs mb-1">
-                            Material
-                          </h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">
-                            Elastane
-                          </p>
-                        </div>
-                        <div>
-                          <h3 className="font-medium  sm:text-sm text-xs mb-1">
-                            Color
-                          </h3>
-                          <p className="text-[#555555] sm:text-sm text-xs">
-                            Breathable Lining
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
+                      className="sm:text-sm text-xs  mb-7 mt-4" />
+                  </div> */}
+                  <Disclosure >
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button
+                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${open ? "font-semibold" : ""
+                            } `}
+                        >
+                          <h2 className="font-medium sm:text-base  text-sm ">
+                            Product Info
+                          </h2>
+                          <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
+                          <div
+                            dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
+                            className="sm:text-sm text-xs  mb-7 mt-4" />
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
-                  <div className="flex items-center justify-between sm:text-base font-medium text-xs  my-5 text-gray-400">
+                  {/* <div className="flex items-center justify-between sm:text-base font-medium text-xs  my-5 text-gray-400">
                     <h3>Reviews & Ratings</h3>
                     <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
-                  </div>
+                  </div> */}
+
+                  <Disclosure >
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button
+                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${open ? "font-semibold" : ""
+                            } `}
+                        >
+                          <span>Reviews & Ratings</span>
+                          <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
+                          gfjh
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
-                  <div className="flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400">
+                  {/* <div className="flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400">
                     <h3>Reviews & Ratings</h3>
                     <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
-                  </div>
+                  </div> */}
+                  <Disclosure >
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button
+                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${open ? "font-semibold" : ""
+                            } `}
+                        >
+                          <span>Reviews & Ratings</span>
+                          <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
+                          gfjh
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
 
                   {/* old code start  */}

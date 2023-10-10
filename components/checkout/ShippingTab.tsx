@@ -13,6 +13,8 @@ function ShippingTab(props) {
     refetchInterval: 2000,
     keepPreviousData: true,
   });
+  // console.log(userData,"user");
+  
   const { data: userAddresses } = useQuery({
     queryKey: ["userAddresses"],
     queryFn: () => getUserAddresses(null),
@@ -81,6 +83,18 @@ useEffect(()=>{
           setIsNewAddress={props.setIsNewAddress}
         />
       )}
+
+
+{/* <CheckoutNewAddress
+          states={props.states}
+          userAddress={props.userAddress}
+          setUserAddress={props.setUserAddress}
+          handleAddressSubmit={props.handleAddressSubmit}
+          makeDefaultAddress={props.makeDefaultAddress}
+          setMakeDefaultAddress={props.setMakeDefaultAddress}
+          handleChange={props.handleChange}
+          setIsNewAddress={props.setIsNewAddress}
+        /> */}
     </div>
   );
 }

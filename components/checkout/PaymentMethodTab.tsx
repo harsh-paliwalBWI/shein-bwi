@@ -21,18 +21,18 @@ const PaymentMethodTab = ({
           return (
             <div
               onClick={() => {
-                setSelectedPaymentMethod(method.value);
                 setSelectionIndex(idx);
-                setSelectedTab(tabs[2]);
-                setCompletedSteps((val: any) => {
-                  if (!val?.includes(tabs[2])) {
-                    let arr = val;
-                    arr.push(tabs[2]);
-                    console.log(arr,"from payment method tab");
+                setSelectedPaymentMethod(method.value);
+                // setSelectedTab(tabs[2]);
+                // setCompletedSteps((val: any) => {
+                //   if (!val?.includes(tabs[2])) {
+                //     let arr = val;
+                //     arr.push(tabs[2]);
+                //     console.log(arr,"from payment method tab");
                     
-                    return arr;
-                  }
-                });
+                //     return arr;
+                //   }
+                // });
               }}
               className="flex justify-between items-center sm:px-8 px-5 py-2 bg-white  border  border-[#838383]  cursor-pointer "
               key={idx}

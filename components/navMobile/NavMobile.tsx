@@ -35,9 +35,9 @@ const Navmobile = () => {
         </div>
       </div>
       {isMobile && (
-        <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30">
+        <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50">
           <div
-            className={` bg-[white]  sm:w-[50%] w-[100%] absolute top-0 left-0 h-screen z-30 rounded-tr-3xl rounded-br-3xl `}
+            className={` bg-[white]  sm:w-[50%] w-[100%] absolute top-0 left-0 h-screen z-50 rounded-tr-3xl rounded-br-3xl `}
           >
             <div
               onClick={() => {

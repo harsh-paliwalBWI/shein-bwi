@@ -95,7 +95,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
           setHoveredProduct("");
         }}
       >
-        <div className=" white-triangle flex justify-center items-center">
+        <div className={`white-triangle flex justify-center items-center border ${ hoveredProduct === product?.id?"border-primary":"border-secondary"} `}>
           <div
             className={` green-triangle  border  ${
               hoveredProduct === product?.id
@@ -106,7 +106,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
             }`}
           ></div>
         </div>
-        <div className="border-[1px] border-secondary p-2 product-card ">
+        <div className={`border-[1px]  p-2 product-card ${ hoveredProduct === product?.id?"border-primary":"border-secondary"}`}>
           <div className=" relative  mb-2">
             <div className="h-[250px] relative ">
               <Image

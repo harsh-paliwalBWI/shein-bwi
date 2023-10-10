@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchCategoryProducts } from "../../utils/databaseService";
 // import FilterSection from "./filterSections";
 // import ProductCard from "./productCard";
@@ -10,24 +10,30 @@ import { getUserData } from "../../utils/databaseService";
 // import { cookies } from "next/dist/client/components/headers";
 import { db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
+import EditProfile from "./EditProfile";
+import OrdersPage from "../../app/orders/page";
+import OrderPage from "../orderPage/OrderPage";
+import HelpAndSupport from "../helpAndSupport/HelpAndSupport";
+import Addresses from "../addresses/Addresses";
 
 
-const Profile = ({cookie}) => {
+const Profile = ({ cookie }) => {
   const [isClient, setIsClient] = useState(false);
+  const [selectedTab,setSelectedTab]=useState(1)
   const matches = useMediaQuery("(min-width:1024px)");
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(cookie),
-    refetchInterval: 2000,
+    // refetchInterval: 2000,
     // keepPreviousData: true,
     // enabled: isClient,
   });
   const [state, setState] = useState({
-    firstName:userData?.name,
-    lastName: userData?.lastName?userData?.lastName:"",
+    firstName: userData?.name,
+    lastName: userData?.lastName ? userData?.lastName : "",
     email: userData?.email,
     phone: userData?.phoneNo,
-    about: userData?.aboutMe?userData?.aboutMe:"",
+    about: userData?.aboutMe ? userData?.aboutMe : "",
     // currPassword: "",
     // newPassword: "",
   });
@@ -40,109 +46,64 @@ const Profile = ({cookie}) => {
   //   keepPreviousData: true,
   //   // enabled: isClient,
   // });
-// console.log(userData,"userData");
+  // console.log(userData, "userData");
 
 
-  const onSaveChangesHandler=async()=>{
+  const onSaveChangesHandler = async () => {
     console.log("start");
-    const newInfo={
-      name:state.firstName,
-      lastName:state.lastName,
-      email:state.email,
-      phone:state.phone,
-      about:state.about,
+    const newInfo = {
+      name: state.firstName,
+      lastName: state.lastName,
+      email: state.email,
+      phone: state.phone,
+      about: state.about,
       // currPass:state.currPassword,
       // newPass:state.newPassword
     }
-    console.log(newInfo,"fdg");
-    
+    console.log(newInfo, "fdg");
     const userId = await userData.id
-if(userId){
-  console.log("inside if start");
-  await setDoc(doc(db, "users", userId), { name:state.firstName,lastName:state.lastName,email:state.email,phoneNo:state.phone,aboutMe:state.about }, { merge: true })
-  console.log("inside if end");
-
-}
+    if (userId) {
+      console.log("inside if start");
+      await setDoc(doc(db, "users", userId), { name: state.firstName, lastName: state.lastName, email: state.email, phoneNo: state.phone, aboutMe: state.about }, { merge: true })
+      console.log("inside if end");
+    }
     // console.log(newInfo,"new info");
-    
   }
+
+//   const renderTabs=(tab=1)=>{
+//     switch (selectedTab){
+//       case selectedTab==="4" : return<EditProfile/>
+//       // case selectedTab===tab:return <EditProfile/>
+//       // case selectedTab===4:return <OrderPage/>
+// default:
+//     }
+//   }
+
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+
   return (
     <div className="flex flex-col px-body gap-2 mt-2  h-full ">
       <div className="w-full flex flex-col lg:flex-row gap-4 mt-5 sm:mb-20 mb-10">
-        <ProfileOptions  cookie={cookie} />
+        <ProfileOptions cookie={cookie} setSelectedTab={setSelectedTab} selectedTab={selectedTab}/>
         <hr />
-        <div className="w-full flex-[0.60]">
-          <div className="w-full">
-            <div className="flex md:flex-row flex-col gap-4 w-full mb-5">
-              <div className="md:w-[50%] w-full flex flex-col gap-3 ">
-                <label className="text-[#555555] font-medium text-sm">
-                  First Name*
-                </label>
-                <input className="py-3 border-[1px] border-[#838383] outline-0 px-3 "
-                value={isClient&&state.firstName} onChange={(e)=>setState({...state,firstName:e.target.value})} />
-              </div>
-              <div className="md:w-[50%] w-full flex flex-col gap-3 ">
-                <label className="text-[#555555] font-medium text-sm">
-                  Last Name*
-                </label>
-                <input className="py-3 border-[1px] border-[#838383] outline-0 px-3" 
-                  value={isClient&&state.lastName} onChange={(e)=>setState({...state,lastName:e.target.value})}/>
-              </div>
-            </div>
-            <div className="flex md:flex-row flex-col gap-4 w-full mb-5">
-              <div className="md:w-[50%] w-full flex flex-col gap-3 ">
-                <label className="text-[#555555] font-medium text-sm">
-                  Email Address*
-                </label>
-                <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-                  value={isClient&&state?.email} onChange={(e)=>setState({...state,email:e.target.value})} />
-              </div>
-              <div className="md:w-[50%] w-full flex flex-col gap-3 ">
-                <label className="text-[#555555] font-medium text-sm">
-                  Phone No.
-                </label>
-                <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-                  value={isClient&&state?.phone} onChange={(e)=>setState({...state,phone:e.target.value})} />
-              </div>
-            </div>
-            <div className="w-full  flex flex-col gap-3 mb-5">
-              <label htmlFor="" className="text-[#555555] font-medium">
-                About Me
-              </label>
-              <textarea
-                value={isClient&&state.about} onChange={(e)=>setState({...state,about:e.target.value})}
-                name=""
-                id=""
-                className=" border-[1px] border-[#838383] w-full outline-0 px-3 py-2"
-                rows={4}
-              ></textarea>
-            </div>
-            <div className="flex md:flex-row flex-col gap-4 w-full mb-7">
-              <div className="md:w-[50%] w-full flex flex-col gap-3 ">
-                <label className="text-[#555555] font-medium text-sm">
-                  Current Password
-                </label>
-                <input className="py-3 border-[1px] border-[#838383] outline-0 px-3" 
-                  // value={state.currPassword} onChange={(e)=>setState({...state,currPassword:e.target.value})}
-                  />
-              </div>
-              <div className="md:w-[50%] w-full flex flex-col gap-3 ">
-                <label className="text-[#555555] font-medium text-sm">
-                  New Password
-                </label>
-                <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-                  // value={state.newPassword} onChange={(e)=>setState({...state,newPassword:e.target.value})}
-                   />
-              </div>
-            </div>
-            <div className="bg-secondary text-white text-center  py-3  text-sm font-medium cursor-pointer"
-            onClick={()=>onSaveChangesHandler()}>
-              <button>Save Changes</button>
-            </div>
-          </div>
+        <div className="w-full flex-1 ">
+          {
+            selectedTab===1&&<EditProfile/>
+          }
+          {
+            selectedTab===2&&<OrderPage/>
+          }
+          {
+            selectedTab===3&&<Addresses userId={userData?.id}/>
+          }
+             {
+            selectedTab===5&&<HelpAndSupport/>
+          }
+           
+        
         </div>
       </div>
     </div>

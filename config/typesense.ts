@@ -108,30 +108,38 @@ export async function handleTypesenseSearch(query) {
     
     const client: any = await typesense_initClient();
     if (client) {
-        console.log("if");
+        // console.log("if");
         const searchParameters = {
             q: query,
             query_by: 'prodName, searchKeywords',
         };
         let projectId = firebaseConfig?.projectId;
         try {
-            console.log("inside try");
+            // console.log("inside try");
             
             const data = await client
                 .collections(`${projectId}-products`)
                 .documents()
                 .search(searchParameters);
 
-                console.log(data,"from data var --------->");
+                // console.log(data,"from data var --------->");
                 
             if (data && data?.hits) {
-                console.log( "inside if");
+                // console.log( "inside if");
                 let arr = [];
                 for (const prod of data?.hits) {
-                    console.log("hii");
-                    console.log(prod , "inside for of  loop");
-                    
+                    console.log("prod",prod);
+                    // console.log("hii");
+                    // console.log(prod , "inside for of  loop");
+                  if  (prod.document.isPriceList){
+                    const value = JSON.parse(prod?.document?.priceList);
+                    let newProd={...prod?.document,priceList:value}
+                    console.log(newProd,"NEW PROD ------------");
+                    arr.push(newProd)
+                  }else{
                     arr.push(prod?.document)
+                  }
+                    // arr.push(prod?.document)
                 }
             console.log(arr,"arrr");
 

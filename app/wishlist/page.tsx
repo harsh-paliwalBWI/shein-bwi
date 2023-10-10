@@ -5,10 +5,16 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from '../../config/firebase-config';
 import { cookies } from "next/dist/client/components/headers";
 // import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUserData } from "../../utils/databaseService";
+import { getUserData, getUserWishlistData2 } from "../../utils/databaseService";
+import { dehydrate } from '@tanstack/react-query';
+import getQueryClient from '../../utils/getQueryClient';
+import Hydrate from '../../utils/hydrate.client';
 
-const page = async() => {
+const WishListPage = async() => {
   const cookie = cookies().get("uid");
+  const queryClient=getQueryClient()
+  await queryClient.prefetchQuery(["wishlistData"],getUserWishlistData2)
+  const dehydratedState=dehydrate(queryClient)
   // const { data: userData } = useQuery({
   //   queryKey: ["userData"],
   //   queryFn: () => getUserData(cookie),
@@ -27,10 +33,12 @@ const page = async() => {
 //     });
 // }
   return (
+    <Hydrate state={dehydratedState}>
     <div className='body'>
 <WishlistComponent cookie={cookie}/>
     </div>
+    </Hydrate>
   )
 }
 
-export default page
+export default WishListPage

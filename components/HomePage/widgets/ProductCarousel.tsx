@@ -151,7 +151,7 @@ const ProductCarousel = ({ section, myKey,cookie }) => {
                           const productData = getProduct(product);
                           return (
                             <div className="flex-1  " key={idx}>
-                              <ProductCarouselCard product={productData} cookie={cookie} />
+                              <ProductCarouselCard product={productData}  />
                             </div>
                           );
                         })}

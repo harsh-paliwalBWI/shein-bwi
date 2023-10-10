@@ -4,7 +4,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from '../../config/firebase-config';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getUserData,getUserWishlistData } from "../../utils/databaseService";
+import { getUserData,getUserWishlistData} from "../../utils/databaseService";
+import { getUserWishlistData2 } from '../../utils/databaseService';
 import { fetchSimilarProductsForCart } from '../../config/typesense';
 import ProductCard from '../categoryProduct/productCard';
 
@@ -19,28 +20,40 @@ const WishlistComponent = ({ cookie }) => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    refetchInterval: 2000,
+    // refetchInterval: 2000,
     // keepPreviousData: true,
     // enabled: isClient,
   });
 
-  const {data:wishlistData}=useQuery({
-    queryKey: ["wishlistData"],
-    queryFn: () => getUserWishlistData(userData?.id),
-    refetchInterval: 2000,
-  })
+  console.log(userData,"user");
+  
+  // const {data:wishlistData}=useQuery({
+  //   queryKey: ["wishlistData"],
+  //   queryFn: () => getUserWishlistData(userData?.id),
+  //   refetchInterval: 2000,
+  // })
+
+// console.log(wishlistData,"wishlistData");
+
+const {data:wishlistData2}=useQuery({
+  queryKey: ["wishlistData"],
+  queryFn: () => getUserWishlistData2(null),
+  refetchInterval: 2000,
+})
+console.log(wishlistData2,"wishlistData2-------");
+
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+  }, [wishlistData2]);
   return (
     <>
-       {/* {wishlistData&&  */}
+       {wishlistData2&&wishlistData2.length>0&&isClient? 
         <div className='px-body'>
           <h1 className='sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5'>MY WISHLIST</h1>
           <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-8 sm:gap-y-10 gap-y-5 md:my-16 my-8'>
             {
-             wishlistData&&wishlistData.length>0&&isClient&&wishlistData.map((item: any, idx: number) => {
+             wishlistData2&&wishlistData2.length>0&&isClient&&wishlistData2.map((item: any, idx: number) => {
                 return <div key={idx} className='sm:mx-0 mx-5'>
                   <ProductCard product={item} mx={0} />
                 </div>
@@ -48,7 +61,14 @@ const WishlistComponent = ({ cookie }) => {
             }
           </div>
         </div>
-      {/* } */}
+        :
+      <div className='w-full flex justify-center items-center h-[70vh]'>
+          <h3 className='bg-secondary text-white sm:px-5 px-3 py-2  sm:text-base  text-xs font-medium'>Your wishlist  is empty !{" "} Add something !</h3>
+        </div>
+     } 
+      {/* <div className='w-full flex justify-center items-center h-[70vh]'>
+          <h3 className='bg-secondary text-white sm:px-5 px-3 py-2  sm:text-base  text-xs font-medium'>Your wishlist  is empty !{" "} Add something !</h3>
+        </div> */}
       {/* {similarData &&
         <div className='px-body'>
           <h1 className='sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5'>MY WISHLIST</h1>

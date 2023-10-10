@@ -156,92 +156,9 @@ const ImageBanner = ({ section, myKey = `` }) => {
       ?.image?.url;
 
   return (
-    // <div className={`px-body`} key={key}>
-    //   {/* {section?.sectionName && (
-    //     <div className="mx-auto w-auto flex justify-center mb-2">
-    //       <h3 className="mx-auto text-lg lg:text-3xl font-semibold">
-    //         {section?.sectionName}
-    //       </h3>
-    //     </div>
-    //   )} */}
-    //   {newImagesArr.length===1&&<div>
-    //      <div className="w-full flex justify-center items-center rounded-br-2xl  ">
-    //     <Image
-    //       src={image}
-    //       alt="banner"
-    //       width={100}
-    //       height={100}
-    //       layout="responsive"
-    //       className="flex-1 h-[280px] object-fit rounded-br-2xl"
-    //     />
-    //   </div>
-    //   </div>}
-    //   {newImagesArr.length===2&&<div className="flex w-full gap-3">
-    //      <div className="w-1/2 rounded-br-2xl  ">
-    //     <Image
-    //       src={image}
-    //       alt="banner"
-    //       width={1000}
-    //       height={1000}
-    //       // layout="responsive"
-    //       className="flex-1 h-[280px] object-fit rounded-br-2xl "
-    //     />
-    //   </div>
-    //   <div className="w-1/2  rounded-br-2xl ">
-    //     <Image
-    //       src={image}
-    //       alt="banner"
-    //       width={1000}
-    //       height={1000}
-    //       // layout="responsive"
-    //       className="flex-1 h-[280px] object-fit rounded-br-2xl "
-    //     />
-    //   </div>
-    //   </div>}
-    //   {newImagesArr.length===3&&<div className="flex w-full">
-    //      <div className="w-1/3 rounded-br-2xl ">
-    //     <Image
-    //       src={image}
-    //       alt="banner"
-    //       width={100}
-    //       height={100}
-    //       // layout="responsive"
-    //       className="flex-1 h-[280px] object-fit rounded-br-2xl"
-    //     />
-    //   </div>
-    //   <div className="w-1/3  rounded-br-2xl  ">
-    //     <Image
-    //       src={image}
-    //       alt="banner"
-    //       width={100}
-    //       height={100}
-    //       layout="responsive"
-    //       className="flex-1 h-[280px] object-fit rounded-br-2xl"
-    //     />
-    //   </div>
-    //   <div className="w-1/3  rounded-br-2xl  ">
-    //     <Image
-    //       src={image}
-    //       alt="banner"
-    //       width={100}
-    //       height={100}
-    //       layout="responsive"
-    //       className="flex-1 h-[280px] object-fit rounded-br-2xl"
-    //     />
-    //   </div>
-    //   </div>}
-    //   {/* <div className="w-full flex justify-center items-center rounded-lg  ">
-    //     <Image
-    //       src={image}
-    //       alt="banner"
-    //       width={100}
-    //       height={100}
-    //       layout="responsive"
-    //       className="flex-1 max-h-[450px] object-fill rounded-lg"
-    //     />
-    //   </div> */}
-    // </div>
-    // ${imagesArr.length===1?"px-0":"px-body"}
+  
+  
+   
 <div className={` w-full ${imagesArr.length===3?"px-body":imagesArr.length===2?"px-[1.5%]":"px-0"}   ${imagesArr.length===3?"lg:-mt-36 -mt-16":"-mt-0"} z-30`}>
 {/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
 
@@ -262,7 +179,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
             height={1000}
             // layout="responsive"
             style={{aspectRatio:"auto"}}
-            className={`flex-1 ${imagesArr.length===2?"sm:h-[25rem] h-[10rem]":"h-auto"} object-fit`   }
+            className={`flex-1 ${imagesArr.length===2?"sm:h-[25rem] h-[10rem]":"h-auto"} object-fit `   }
           />
         </div>
       ))}

@@ -22,6 +22,8 @@ import { toast } from "react-toastify";
 
 
 const CartItemCard = ({ item, mykey, cookie }) => {
+  // console.log(item,"item");
+  
   const dispatch = useDispatch();
   // const [wishlist, setWishlist] = useState(localStorage.getItem(`wishlist_${item.productId}`) === 'true');
   // const [isInitialRender, setIsInitialRender] = useState(true);
@@ -44,7 +46,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
 
   // console.log(userData, "from cart item card");
 // console.log(item,"item");
-console.log(item,"----------->");
+// console.log(item,"----------->");
 
 // useEffect(() => {
 //   // This useEffect is used to prevent localStorage updates on the initial render
@@ -165,7 +167,7 @@ console.log(item,"----------->");
  <div className="flex items-center gap-2  text-end cursor-pointer "
  onClick={()=>removeFromWishListHandler({userId:userData?.id,productId:item?.productId})}
       >
-      <FlatIcon icon={"flaticon-heart text-secondary font-normal text-2xl"} />
+        <FlatIcon icon={"flaticon-heart-fill text-2xl text-secondary font-normal "} />
       <h3 className="text-secondary font-semibold sm:text-base text-sm">
         Remove from Wishlist
       </h3>
