@@ -100,7 +100,7 @@ const Categories = () => {
 
   return (
     <div className="w-full bg-secondary px-body relative">
-    <div className=" relative   py-3.5  px-2.5">
+    <div className=" relative   py-3.5  ">
       <OutsideClickHandler
         onClick={() => {
           // setTab(0);
@@ -126,7 +126,7 @@ const Categories = () => {
                      hoveredCategory === "shopby" && ""
                    }  lg:gap-2 gap-1 items-center w-fit  hover:border-b-2  hover:border-primary  `}
               >
-                <h1 className="xl:text-sm text-xs   text-white  cursor-pointer ">
+                <h1 className="xl:text-sm text-xs   text-white  cursor-pointer font-medium ">
                  Whats New
                 </h1>
 
@@ -186,7 +186,7 @@ const Categories = () => {
                      lg:gap-2 gap-1 items-center w-fit  hover:border-b-2 hover:border-primary `}
                   >
                     <Link href={`/category-product/${category?.slug?.name}`}>
-                      <h1 className="xl:text-sm text-xs  text-white  cursor-pointer">
+                      <h1 className="xl:text-sm text-xs  text-white  cursor-pointer font-medium">
                         {category.name}
                       </h1>
                     </Link>
@@ -223,8 +223,8 @@ const Categories = () => {
         </div>
       </OutsideClickHandler>
     </div>
-    <div className="absolute right-0 bottom-0   bg-[#0092FF] cursor-pointer">
-              <div className="flex item-center justify-center lg:gap-2 gap-1  text-white   font-semibold  lg:px-6  px-3 xl:text-sm text-xs">
+    <div className="absolute right-0 bottom-0   bg-primary cursor-pointer rounded-tl-full rounded-bl-full">
+              <div className="flex item-center justify-center lg:gap-2 gap-1  text-white   font-medium  lg:px-14  px-3 xl:text-sm text-xs">
                 <p className="py-3.5 ">Men&apos;s Wear</p>
                 {/* <div className="py-3.5 border border-primary  "> */}
                   <FlatIcon className="flaticon-arrow text-white text-sm font-semibold rotate-180 " />

@@ -6,6 +6,9 @@ import FilterSection from "./filterSections";
 import ProductCard from "./productCard";
 import { useMediaQuery } from "@mui/material";
 import FlatIcon from "../flatIcon/flatIcon";
+import listImg from "../../images/list 1.svg"
+import gridImg from "../../images/grid 1.svg"
+import Image from "next/image"
 
 const CategoryProductComponent = ({ params }) => {
   const matches = useMediaQuery("(min-width:1024px)");
@@ -13,8 +16,8 @@ const CategoryProductComponent = ({ params }) => {
     queryKey: ["category-product", params?.slug],
     queryFn: () => fetchCategoryProducts(params?.slug,"category-product"),
   });
-  console.log(categoryProducts,"category Products");
-console.log(params,"from cat page");
+  // console.log(categoryProducts,"category Products");
+// console.log(params,"from cat page");
 
   return (
     <div className="flex flex-col px-body   h-full ">
@@ -40,12 +43,16 @@ console.log(params,"from cat page");
                   </div> */}
                   <h3 className="text-sm font-medium"> Best Selling</h3>
                   <div><FlatIcon className="flaticon-arrow-down text-xs font-bold text-secondary" /></div>
+                  <div className="flex items-center gap-7">
+                  <div><Image src={listImg} alt="" width={1000} height={1000} style={{aspectRatio:"auto",height:"24px",width:"24px"}}/></div>
+                  <div><Image src={gridImg} alt="" className="" width={1000} height={1000} style={{aspectRatio:"auto",height:"24px",width:"24px"}}/></div>
+                  </div>
                 </div>
               </div>
               {/* <hr className="mb-2" /> */}
             </>
           )}
-          <div className="w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid sm:gap-y-8 gap-y-4   md:mb-10  ">
+          <div className="w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4 grid sm:gap-y-8 gap-y-4   md:mb-10  ">
             {categoryProducts &&
               categoryProducts?.map((product: any) => {
                 return <ProductCard product={product} key={product?.id} mx={2.5} />;

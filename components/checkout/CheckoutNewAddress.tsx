@@ -9,6 +9,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 
 function CheckoutNewAddress(props) {
+  // console.log(props,"props");
+  
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
@@ -78,7 +80,7 @@ function CheckoutNewAddress(props) {
       </div>
       </div>
       <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[100%]  ">
-        <p className="text-[#555555] font-medium text-sm">Address Line 1*</p>
+        <p className="text-[#555555] font-medium text-sm">Address*</p>
         <input
           className="py-3 h-14  border border-[#838383] px-2 outline-0"
           type="text"
@@ -90,8 +92,20 @@ function CheckoutNewAddress(props) {
         />
       </div>
       <div className=" w-full flex sm:flex-row flex-col gap-y-3 gap-x-5 ">
-      <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[50%]  ">
+      {/* <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[50%]  ">
         <p className="text-[#555555] font-medium text-sm">Address Line 2*</p>
+        <input
+          className="py-3 h-14  border border-[#838383] px-2 outline-0"
+          type="text"
+          name="address2"
+          onChange={(e) => {
+            props.handleChange(e.target.name, e.target.value);
+          }}
+          id=""
+        />
+      </div>  */}
+      <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[50%]  ">
+        <p className="text-[#555555] font-medium text-sm">City *</p>
         <input
           className="py-3 h-14  border border-[#838383] px-2 outline-0"
           type="text"
@@ -101,13 +115,15 @@ function CheckoutNewAddress(props) {
           }}
           id=""
         />
-      </div> 
+      </div>
       <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[50%]   ">
         <p className="text-[#555555] font-medium text-sm">State *</p>
         <Listbox
           value={props.userAddress?.stateCode}
           onChange={(e: any) => {
             props.setUserAddress((val: any) => {
+              console.log(e,"e");
+              
               return { ...val, stateCode: e?.code, state: e?.state };
             });
           }}
@@ -117,9 +133,9 @@ function CheckoutNewAddress(props) {
               <span className="block truncate">
                 {props.userAddress?.state || "Select"}
               </span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              {/* <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 up icon
-              </span>
+              </span> */}
             </Listbox.Button>
             <Transition
               as={Fragment}
@@ -170,9 +186,10 @@ function CheckoutNewAddress(props) {
       </div>
       </div>
       {/* city  */}
-      <div className="w-full  flex sm:flex-row flex-col gap-y-3 gap-x-5">
+      {/* <div className="w-full  flex sm:flex-row flex-col gap-y-3 gap-x-5"> */}
+      <div className="w-full grid sm:grid-cols-2 grid-cols-1 gap-y-3 gap-x-5">
 
-      <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[50%]  ">
+      {/* <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[50%]  ">
         <p className="text-[#555555] font-medium text-sm">City *</p>
         <input
           className="py-3 h-14  border border-[#838383] px-2 outline-0"
@@ -183,9 +200,9 @@ function CheckoutNewAddress(props) {
           }}
           id=""
         />
-      </div>
+      </div> */}
       {/* city end  */}
-      <div className=" flex sm:gap-2 gap-1 flex-col w-full md:w-[50%]  ">
+      <div className=" flex sm:gap-2 gap-1 flex-col w-full   ">
         <p className="text-[#555555] font-medium text-sm">Pin Code *</p>
         <input
           className="py-3 h-14  border border-[#838383] px-2 outline-0"

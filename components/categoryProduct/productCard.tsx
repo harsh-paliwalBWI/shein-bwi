@@ -95,7 +95,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
           setHoveredProduct("");
         }}
       >
-        <div className=" white-triangle flex justify-center items-center">
+        <div className={`white-triangle flex justify-center items-center border ${ hoveredProduct === product?.id?"border-primary":"border-secondary"} `}>
           <div
             className={` green-triangle  border  ${
               hoveredProduct === product?.id
@@ -106,9 +106,9 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
             }`}
           ></div>
         </div>
-        <div className="border-[1px] border-secondary p-2 product-card ">
+        <div className={`border-[1px]  p-2 product-card ${ hoveredProduct === product?.id?"border-primary":"border-secondary"}`}>
           <div className=" relative  mb-2">
-            <div className="h-[180px] relative ">
+            <div className="h-[250px] relative ">
               <Image
                 src={image}
                 alt=""
@@ -155,16 +155,16 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
               </div>
             </div>
           </div>
-          <div className="flex  overflow-hidden truncate w-full text-sm font-medium text-primary capitalize mb-1">
+          <div className="flex  overflow-hidden truncate w-full text-sm font-medium text-primary capitalize mb-3">
             <h2 className="">{product?.prodName}</h2>
           </div>
-          <div className="flex    w-full text-sm font-semibold mb-3 ">
+          {/* <div className="flex    w-full text-sm font-semibold mb-3 ">
             <h2 className="">Calcium Magnesium Zinc </h2>
-          </div>
+          </div> */}
           <div className="flex items-center gap-4">
             <div className="text-ellipsis overflow-hidden ... truncate text-center ">
               <p className="text-ellipsis overflow-hidden ... truncate text-center  text-primary font-bold text-lg">
-                {constant.currency} {product?.discountedPrice.toFixed(2)}
+                {constant?.currency} {product?.discountedPrice?.toFixed(2)}
               </p>
             </div>
             {checkIfPriceDiscounted({

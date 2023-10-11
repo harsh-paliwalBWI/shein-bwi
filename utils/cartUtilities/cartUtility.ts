@@ -61,8 +61,12 @@ function priceSlabsCheck(cartObj, product) {
 
     return cartObj;
 }
-function getCoverPic(product, index) {
+function getCoverPic(product:any, index:any) {
+    console.log("product",product,"index",index);
+    
     const variant = product.priceList[index];
+    console.log(variant,"variant");
+    
     return 'images' in variant && variant.images.length ? variant.images[0] : product.coverPic;
 }
 
@@ -119,9 +123,11 @@ async function updatedCartFromBackend(cartData: any[]) {
             let latestProducts = [];
             let updatedCartPdts = [];
             for (let index = 0; index < cartProducts.length; index++) {
+                console.log(cartProducts[index].productId,"id");
+                
                 // let product = await this.afs.collection('products').doc(cartProducts[index].productId).valueChanges().pipe(first()).toPromise();
                 const product = await getDoc(doc(db, 'products', cartProducts[index].productId)).then((val => {
-                    if (val.exists) {
+                    if (val.exists()) {
                         return { ...val.data(), id: val.id }
                     }
                     return null
@@ -133,8 +139,11 @@ async function updatedCartFromBackend(cartData: any[]) {
 
             }
             if (latestProducts.length) {
+                console.log({latestProducts},"latestProducts");
                 updatedCartPdts = await getUpdatedPdts(latestProducts, cartProducts);
             }
+          
+            
             resolve(updatedCartPdts);
 
         } catch (error) {
@@ -148,6 +157,8 @@ async function getUpdatedPdts(pdts, cartPdts) {
     return new Promise<any[]>(async (resolve) => {
         for (let c of cartPdts) {
             const productIndex = pdts.findIndex(p => p.id === c.productId);
+            console.log("fgfgfh-",pdts[productIndex]);
+            
             if (productIndex !== -1) {
                 const dbProduct = pdts[productIndex];
                 c.name = dbProduct.prodName;
@@ -173,7 +184,7 @@ async function getUpdatedPdts(pdts, cartPdts) {
                 } else {
                     if (c.pack.variantType !== 'pieces') {
                         if (dbProduct) {
-                            dbProduct.priceList.forEach((pl) => {
+                            dbProduct?.priceList?.forEach((pl) => {
                                 if (pl.weight === c.pack.weight) {
                                     c.totalQty = pl.totalQuantity ? pl.totalQuantity : '';
                                     if (parseInt(pl.totalQuantity) && (c.quantity > parseInt(pl.totalQuantity))) {

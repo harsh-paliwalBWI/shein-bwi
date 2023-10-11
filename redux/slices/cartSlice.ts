@@ -13,6 +13,9 @@ const initialState: any = {
 
 
 export function getCartObj({ product, productID, quantity = 1 }: any) {
+
+    console.log(product,"from getCartObj ");
+    
     let cartObj: any = {
         name: product.prodName,
         quantity: quantity || 1,
@@ -71,6 +74,8 @@ export function getCartObj({ product, productID, quantity = 1 }: any) {
 }
 
 export function getPriceListCartObj({ product, index, quantity = 1 }) {
+    console.log(product,"from getPriceListCartObj");
+    
     let cartObj: any = {
         name: product.prodName,
         quantity: quantity || 1,

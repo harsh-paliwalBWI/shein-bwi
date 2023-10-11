@@ -18,12 +18,15 @@ import { db } from "../../config/firebase-config";
 import { moveToWishListHandler } from "../../utils/databaseService";
 import { removeFromWishListHandler,getUserWishlist } from "../../utils/databaseService";
 // import {getUserWishlist}
+import { toast } from "react-toastify";
 
 
 const CartItemCard = ({ item, mykey, cookie }) => {
+  // console.log(item,"item");
+  
   const dispatch = useDispatch();
-  const [wishlist, setWishlist] = useState(localStorage.getItem(`wishlist_${item.productId}`) === 'true');
-  const [isInitialRender, setIsInitialRender] = useState(true);
+  // const [wishlist, setWishlist] = useState(localStorage.getItem(`wishlist_${item.productId}`) === 'true');
+  // const [isInitialRender, setIsInitialRender] = useState(true);
 
   const { data: userData } = useQuery({
     queryKey: ["userData"],
@@ -37,67 +40,26 @@ const CartItemCard = ({ item, mykey, cookie }) => {
     queryFn: () => getUserWishlist(userData?.id),
     refetchInterval: 2000,
   })
-  console.log(wishlistData,"from wishlistData");
+  // console.log(wishlistData,"from wishlistData");
   
   // console.log();
 
   // console.log(userData, "from cart item card");
-console.log(item,"item");
-// console.log(item?.productId,"----------->");
+// console.log(item,"item");
+// console.log(item,"----------->");
 
-useEffect(() => {
-  // This useEffect is used to prevent localStorage updates on the initial render
-  if (!isInitialRender) {
-    localStorage.setItem(`wishlist_${item.productId}`, wishlist.toString());
-  } else {
-    setIsInitialRender(false);
-  }
-}, [wishlist, item.productId]);
-
-// useEffect(()=>{
-//   // getUserWishlist(userData.id)
-//   },[])
-  // const moveToWishListHandler = async () => {
-  //   const userId = userData?.id
-  //   const productId=item?.productId
-  //   try {
-  //     if (userId&&productId) {
-  //       console.log("inside if");
-  //       console.log(userId);
-  //       const collectionRef = collection(db, "users")
-  //       const docRef = doc(collectionRef, userId)
-  //       const refDoc = doc(db, "users", userId, "wishlist", productId);
-  //       await setDoc(refDoc, {createdAt: new Date(), id: productId }, { merge: true });
-    
-  //     } else {
-  //       console.log("inside else");
-  //     }
-  //   } catch (error) {
-  //     console.log(error, "error");
-  //   }
-  // }
-
-
-// const  removeFromWishListHandler=async()=>{
-//   const userId = userData?.id
-//   const productId=item?.productId
-// try{
-//   if (userId&&productId) {
-//     console.log("inside if start");
-//     console.log(userId,"userId");
-//     console.log(productId,"productId");
-//     // const refDoc = doc(db, "users", userId, "wishlist", productId);
-//     await deleteDoc(doc(db, "users", userId, "wishlist", productId));
-//     // await setDoc(refDoc, {createdAt: new Date(), id: productId }, { merge: true });
-//     console.log("inside if end");
-
+// useEffect(() => {
+//   // This useEffect is used to prevent localStorage updates on the initial render
+//   if (!isInitialRender) {
+//     localStorage.setItem(`wishlist_${item.productId}`, wishlist.toString());
 //   } else {
-//     console.log("inside else");
+//     setIsInitialRender(false);
 //   }
-// }catch(error){
-//   console.log(error);
-// }
-// }
+// }, [wishlist, item.productId]);
+
+
+
+
 
 
   return (
@@ -105,14 +67,14 @@ useEffect(() => {
       <div className="">
         <div className="flex sm:flex-row flex-col  gap-4  sm:items-start items-center ">
           <div className="flex flex-col gap-2 ">
-            <div className="">
+            <div className=" ">
               <Image
-                src={product1}
+                src={item?.img?.url}
                 alt="productalt"
                 width={1000}
                 height={1000}
                 style={{ width: "138px", height: "154px", aspectRatio: "auto" }}
-                className="object-contain"
+                className="object-fill"
               />
             </div>
             {/* <div className="flex gap-2  ">
@@ -201,14 +163,25 @@ useEffect(() => {
           </div>
         </div>
         <div className="flex sm:justify-end justify-center  ">
-
-        <div className="flex items-center gap-2  text-end cursor-pointer "
-            >
-            <FlatIcon icon={"flaticon-heart text-secondary font-normal text-2xl"} />
-            <h3 className="text-secondary font-semibold sm:text-base text-sm">
-              Move to Wishlist
-            </h3>
-          </div>
+{wishlistData&&wishlistData.length>0&&wishlistData.includes(`${item?.productId}`)?
+ <div className="flex items-center gap-2  text-end cursor-pointer "
+ onClick={()=>removeFromWishListHandler({userId:userData?.id,productId:item?.productId})}
+      >
+        <FlatIcon icon={"flaticon-heart-fill text-2xl text-secondary font-normal "} />
+      <h3 className="text-secondary font-semibold sm:text-base text-sm">
+        Remove from Wishlist
+      </h3>
+    </div>:
+ <div className="flex items-center gap-2  text-end cursor-pointer "
+ onClick={()=>moveToWishListHandler({userId:userData?.id,productId:item?.productId})}
+      >
+      <FlatIcon icon={"flaticon-heart text-secondary font-normal text-2xl "} />
+      <h3 className="text-secondary font-semibold sm:text-base text-sm">
+        Move to Wishlist
+      </h3>
+    </div>
+}
+     
         </div>
       </div>
     </div>

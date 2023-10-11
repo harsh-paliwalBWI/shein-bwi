@@ -121,8 +121,8 @@ const CategoriesSlider = ({ section, myKey }) => {
           ?.arr?.length !== 0 && (
           <div className=" px-body ">
             {section?.sectionName && (
-              <div className=" flex justify-center mb-2">
-                <h1 className="text-secondary sm:text-3xl text-xl font-bold ">
+              <div className=" flex justify-center my-5">
+                <h1 className="text-secondary sm:text-3xl text-xl font-bold  ">
                   {section?.sectionName}
                 </h1>
               </div>

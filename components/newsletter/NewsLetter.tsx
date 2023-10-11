@@ -1,11 +1,14 @@
 "use client"
-import React from 'react'
+import React,{useState} from 'react'
 import Image from "next/image";
 import logo from "../../images/Frame 34284.svg"
 import img1 from "../../images/delivery-status 1.svg"
 import img2 from "../../images/timing 1.svg"
 import img3 from "../../images/protection 1.svg"
 import FlatIcon from '../flatIcon/flatIcon';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../config/firebase-config';
+import { toast } from 'react-toastify';
 
 
 const data = [{ image: img1, heading: "30 DAYS RETURN", subHeading: "Simply return it within 30 days" }, { image: img2, heading: "FREE & FAST DELIVERY", subHeading: "On order over Rs 999" }
@@ -14,7 +17,27 @@ const data = [{ image: img1, heading: "30 DAYS RETURN", subHeading: "Simply retu
 
 const dummy_data = ["FDHGFHGH", "HJGHKJK", "FDGFGFH", "FDGFGFH", "FDGFGFH", "FDGFGFH", "FDGFGFH", "FDGFGFH", "FDGFGFH", "KKUIYU", "KKUIYU", "KKUIYU", "KKUIYU"]
 
+
+
+
 const NewsLetter = () => {
+  const [email,setEmail]=useState("")
+
+  const onSubscribeSumbitHandler=async()=>{
+  const data={
+    email:email,
+    createdAt:new Date(),
+  }
+    console.log("submitted");
+    await addDoc(collection(db, "newsletter"), data)
+    toast.success("Subscribed !")
+    setEmail("")
+    // .then((result) => {
+    //   console.log("Document written with ID: ", result.id);
+    // })
+    // const docRef = await addDoc(collection(db, "newsletters"), data);
+    // console.log("Document written with ID: ", docRef.id);
+  }
   return (
     <div className='w-full'>
       <div className='bg-secondary py-2  '>
@@ -31,8 +54,8 @@ const NewsLetter = () => {
           <p className='text-center text-[#555555] font-semibold mb-1 md:text-base sm:text-sm text-xs '>Join now and get 10% off on your next purchase and Be the first to know about </p>
           <p className='text-center text-[#555555] font-semibold  md:text-base sm:text-sm text-xs '>new collections and exclusive offers.</p>
           <div className='flex sm:w-[60%] w-[100%] mx-auto justify-between mb-2 sm:mt-[100px] mt-[50px] email-container  items-center gap-3'>
-            <input type='email' className=' w-full outline-0' placeholder='Your email address ' />
-            <div className='flex gap-2 text-secondary md:text-base text-xs font-semibold cursor-pointer'><p>SUBSCRIBE</p>
+            <input value={email} onChange={(e)=>setEmail(e.target.value)}  type='email' className=' w-full outline-0' placeholder='Your email address' />
+            <div onClick={()=>onSubscribeSumbitHandler()} className='flex gap-2 text-secondary md:text-base text-xs font-semibold cursor-pointer'><p>SUBSCRIBE</p>
               <FlatIcon icon={"flaticon-arrow rotate-180 text-secondary text-xl"} />
             </div>
           </div>

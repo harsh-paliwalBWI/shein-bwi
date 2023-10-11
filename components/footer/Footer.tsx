@@ -20,6 +20,9 @@ import facebookImg from "../../images/facebook (2) 1.svg"
 import instagram from "../../images/instagram (3) 1.svg"
 import pinterest from "../../images/pinterest (1) 1.svg"
 import twitter from "../../images/twitter 2.svg"
+import { getStoreDetails } from "../../utils/databaseService";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 const Footer = () => {
   const DUMMY_DATA = [
     {
@@ -67,6 +70,13 @@ const Footer = () => {
     { image: img4 },
 
   ];
+  const { data: storeData } = useQuery({
+    queryKey: ["storeDetails"],
+    queryFn: () => getStoreDetails(),
+    keepPreviousData: true,
+  });
+  // console.log(storeData,"storeData");
+  
   const pyamentModeImages = [{ image: codImg }, { image: americanExpImg }, { image: masterCardImg }, { image: visaImg }, { image: gpayImg }, { image: paytmImg }]
   return (
     <div className="  h-fit">
@@ -99,11 +109,32 @@ const Footer = () => {
                   <div className="bg-primary   absolute bottom-[-12px] p-[1px] w-[55px] h-[2px]"></div>
                 </h3>
                 <div className="flex flex-col gap-4 mt-4 text-sm text-[#555555] font-semibold ">
-                  <div className="flex gap-3"><div><FlatIcon className="flaticon-address text-2xl font-bold text-secondary " /></div><p>3517 W. Gray St. Utica, Pennsylvania 57867</p></div>
-                  <div className="flex gap-3"><div><FlatIcon className="flaticon-contact text-2xl font-bold text-secondary" /></div><p>(217) 555-0113, (217) 555-0113</p></div>
+                  <div className="flex gap-3"><div><FlatIcon className="flaticon-address text-2xl font-bold text-secondary " /></div>
+                  <p>
+                    {storeData?.storeAddress?.address}
+                    {/* 3517 W. Gray St. Utica, Pennsylvania 57867 */}
+                    </p>
+                  </div>
+                  <div className="flex gap-3"><div><FlatIcon className="flaticon-contact text-2xl font-bold text-secondary" /></div><p>
+                    {/* (217) 555-0113, (217) 555-0113 */}
+                    {storeData?.storePhone}
+                    </p></div>
                   <div className="flex gap-3"><div><FlatIcon className="flaticon-contact-1 text-2xl font-bold text-secondary" /></div><p>support@shein.com</p></div>
                   <div className="text-secondary text-base font-semibold"><span>Follow us on social media get</span> <span className="text-primary">1000 Bonus </span>Points *<span></span></div>
-                  <div className="flex gap-4"><div><Image src={facebookImg} alt="" /></div><div><Image src={instagram} alt="" /></div><div><Image src={pinterest} alt="" /></div><div><Image src={twitter} alt="" /></div></div>
+                  <div className="flex gap-4">
+                    <Link href={storeData?storeData?.facebookUrl:""}>
+                    <div><Image src={facebookImg} alt="" /></div>
+                    </Link>
+                    <Link href={storeData?storeData?.instagramUrl:""}>
+                    <div><Image src={instagram} alt="" /></div>
+                    </Link>
+                    <Link href={storeData?storeData?.facebookUrl:""}>
+                    <div><Image src={pinterest} alt="" /></div>
+                    </Link>
+                    <Link href={storeData?storeData?.twitterUrl:""}>
+                    <div><Image src={twitter} alt="" /></div>
+                    </Link>
+                    </div>
                 </div>
               </div>
             </div>

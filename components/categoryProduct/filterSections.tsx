@@ -4,6 +4,9 @@ import Slider from "rc-slider";
 import { useState } from "react";
 import "rc-slider/assets/index.css";
 import FlatIcon from "../flatIcon/flatIcon";
+import listImg from "../../images/list 1.svg"
+import gridImg from "../../images/grid 1.svg"
+import Image from "next/image"
 
 const FilterSection = () => {
   const [sliderValue, setSliderValue] = useState([1000, 10000]);
@@ -28,11 +31,13 @@ const FilterSection = () => {
             <option value="">Best Selling</option>
           </select> */}
 
-<h3 className="text-sm font-medium"> Best Selling</h3>
+{/* <h3 className="text-sm font-medium"> Best Selling</h3> */}
                   <div><FlatIcon className="flaticon-arrow-down text-xs font-bold text-secondary" /></div>
+                  {/* <div><Image src={listImg} alt=""/></div>
+                  <div><Image src={gridImg} alt=""/></div> */}
         </div>
       </div>
-      <div className="hidden lg:flex flex-col flex-[0.35]  filter-border mt-3">
+      <div className="hidden lg:flex flex-col flex-[0.25]  filter-border mt-3">
         <div className="px-3">
           <h4 className="font-semibold text-sm text-secondary my-4">CATEGORIES</h4>
           <div className="flex items-center justify-between mb-2 "><p className="text-primary font-semibold ">Tops</p>
