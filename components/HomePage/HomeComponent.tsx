@@ -49,8 +49,8 @@ const HomeComponent = ({ cookie }) => {
       // case "text-block":
       //   return <TextBlock myKey={idx} section={section} />;
       // fetchTextBlock(section, regionId);
-      // case "product-list":
-      //   return <ProductList myKey={idx} section={section} />;
+      case "product-list":
+        return <ProductList myKey={idx} section={section} />;
       // fetchProductList(section, regionId);
       case "image-block":
         return <ImageBlock myKey={idx} section={section} />;

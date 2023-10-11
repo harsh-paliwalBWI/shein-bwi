@@ -175,6 +175,8 @@ const handleChange = (name, value) => {
   useEffect(() => {
     getPaymentSummary();
   }, [addressToDeliver]);
+
+  
   function renderTabs() {
     switch (selectedTab) {
       case tabs[0]:
