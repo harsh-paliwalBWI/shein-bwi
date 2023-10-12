@@ -3,7 +3,7 @@ import Link from "next/link";
 // import logo from "../../images/MedX-Pharmacy-Logo-R-01 1 (1).svg";
 // import Logo from "../../images/Group 34330.png"
 // import logo from "../../images/Frame 34430.svg";
-import logo from "../../images/Frame 34284.svg";
+import logo from "../../images/Group 34291.png";
 import axios from "axios";
 import { toast } from "react-toastify";
 import React, { useEffect, useState, Fragment } from "react";
@@ -26,14 +26,21 @@ import { handleTypesenseSearch } from "../../config/typesense";
 import FlatIcon from "../flatIcon/flatIcon";
 import Modal from "../Modal/modal";
 import SearchResults from "../SeachResults/SearchResults";
-import { addCartObjToUser, fetchSingleProduct, } from "../../utils/databaseService";
+import {
+  addCartObjToUser,
+  fetchSingleProduct,
+} from "../../utils/databaseService";
 import { useAppSelector } from "../../redux/hooks";
 import SideMenuLogin from "../sideMenuLogin/SideMenuLogin";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
-// import { Image } from "next/image";
-// import { usePathname } from "next/navigation";
-// import { log } from "console";
+import {
+  checkIfItemExistInCart,
+  getProductIndexFromCart,
+  getProductFromCart,
+  checkIfPriceDiscounted,
+} from "../../utils/utilities";
+import { updateCartItemQuantity } from "../../redux/slices/cartSlice";
 import {
   addToCart,
   getCartObj,
@@ -46,8 +53,11 @@ import {
 } from "../../redux/slices/loginModalSlice";
 import { deleteCookie } from "cookies-next";
 import { dividerClasses } from "@mui/material";
+import { constant } from "../../utils/constants";
+import OutsideClickHandler from "../../utils/OutsideClickHandler";
 
 const NavbarClient = ({ cookie }: any) => {
+  const cart = useAppSelector((state) => state.cartReducer.cart);
   const isLoginOpen = useAppSelector(
     (state: any) => state.loginReducer.isLoginOpen
   );
@@ -68,16 +78,15 @@ const NavbarClient = ({ cookie }: any) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [variant, setVariant] = useState(0);
+
   // console.log(pathname,"name");
 
   const handleLoginClick = () => {
     // setShowLogin(true);
-
     dispatch(openLoginModal());
     setShowLogin(true);
     document.body.classList.add("no-scroll");
   };
-
 
   const closeLoginMenu = () => {
     setShowLogin(false);
@@ -92,11 +101,10 @@ const NavbarClient = ({ cookie }: any) => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(cookie),
-    // 
+    //
     // keepPreviousData: true,
-    enabled: isClient,
   });
-// console.log(cookie,"cookie");
+  // console.log(cookie,"cookie");
 
   // console.log(userData,"userData---------->");
 
@@ -108,15 +116,13 @@ const NavbarClient = ({ cookie }: any) => {
   //   queryKey: ["search", searchQuery],
   //   queryFn: () => handleTypesenseSearch(searchQuery),
   //   keepPreviousData: false,
-  //   
+  //
   // });
 
   // console.log(searchData,"saearch data---------");
 
-
   async function fetchSearchedProducts(searchquery: any) {
-    // console.log(searchquery, "fdgfdh");
-    let res: any
+    let res: any;
     if (debouncedSearch) {
       res = await handleTypesenseSearch(searchquery);
       // console.log(res, "res from fetchSearchedProducts");
@@ -129,21 +135,16 @@ const NavbarClient = ({ cookie }: any) => {
   async function handleLogout() {
     signOut(auth)
       .then(async () => {
-        toast.success("Logged out");
         await axios.get(`/api/logout`);
-        queryClient.invalidateQueries({ queryKey: ["userData"] });
-        queryClient.refetchQueries({ queryKey: ["userData"] });
-        // Sign-out successful.
-        deleteCookie("uid");
-        router.replace("/");
+        await queryClient.setQueryData(["userData"], null);
+        toast.success("Logged out");
+        router.push("/");
       })
       .catch((error) => {
         // An error happened.
         toast.error("cannot Logout at the moment");
       });
   }
-
-
 
   useEffect(() => {
     if (isClient) {
@@ -154,24 +155,19 @@ const NavbarClient = ({ cookie }: any) => {
 
   useEffect(() => {
     if (searchQuery === "") {
-      // console.log("inside if");
       setSearchedProducts([]);
     }
     if (debouncedSearch) {
-      console.log("inside else");
-      // console.log(debouncedSearch,"debouncedSearch------------------>");
       fetchSearchedProducts(debouncedSearch);
       // fetch(`/api/search?q=${debouncedSearch}`);
     }
   }, [debouncedSearch]);
 
-
   const searchResultsHandler = (query) => {
     // console.log(query,"from searchResultsHandler function");
-
-  }
-  async function addItemToCart(product:any) {
-    console.log(product,"from addItemToCart start");
+  };
+  async function addItemToCart(product: any) {
+    // console.log(product,"from addItemToCart start");
 
     let data: any = {
       product,
@@ -184,15 +180,15 @@ const NavbarClient = ({ cookie }: any) => {
 
     const cartObject = product?.isPriceList
       ? getPriceListCartObj({
-        product: product,
-        quantity: 1,
-        index:  data.index,
-      })
+          product: product,
+          quantity: 1,
+          index: data.index,
+        })
       : getCartObj({
-        product: product,
-        productID: product?.productDocId,
-        quantity: 1,
-      });
+          product: product,
+          productID: product?.productDocId,
+          quantity: 1,
+        });
     if (auth.currentUser) {
       const docId = await addCartObjToUser(cartObject);
       cartObject["id"] = docId;
@@ -209,10 +205,22 @@ const NavbarClient = ({ cookie }: any) => {
           <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body z-10 ">
             <div className="flex items-center   w-full  justify-between lg:gap-5  ">
               <div className="flex items-center lg:gap-8 gap-4 lg:w-1/3 w-[18%] ">
-                <div> <FlatIcon className="flaticon-facebook lg:text-base text-sm" /> </div>
-                <div> <FlatIcon className="flaticon-twitter lg:text-xl text-lg" /></div>
-                <div> <FlatIcon className="flaticon-instagram lg:text-lg text-base" /></div>
-                <div> <FlatIcon className="flaticon-youtube lg:text-xl text-lg" /></div>
+                <div>
+                  {" "}
+                  <FlatIcon className="flaticon-facebook lg:text-base text-sm" />{" "}
+                </div>
+                <div>
+                  {" "}
+                  <FlatIcon className="flaticon-twitter lg:text-xl text-lg" />
+                </div>
+                <div>
+                  {" "}
+                  <FlatIcon className="flaticon-instagram lg:text-lg text-base" />
+                </div>
+                <div>
+                  {" "}
+                  <FlatIcon className="flaticon-youtube lg:text-xl text-lg" />
+                </div>
               </div>
               {/* <div className="flex justify-center  w-2/3 border border-white">
                 <span className="text-secondary font-bold">New Users Only</span>
@@ -262,7 +270,13 @@ const NavbarClient = ({ cookie }: any) => {
                       >
                         <div className="relative w-full h-full flex items-center border border-[#999999] px-4 justify-between gap-3 search-container z-10 ">
                           {/* <div className="flex w-full gap-3 items-center border border-[red]"> */}
-                          <div><FlatIcon className={"flaticon-camera  text-xl text-[#999999]"} /></div>
+                          <div>
+                            <FlatIcon
+                              className={
+                                "flaticon-camera  text-xl text-[#999999]"
+                              }
+                            />
+                          </div>
                           <input
                             type="text"
                             placeholder="What are you Looking for"
@@ -272,12 +286,17 @@ const NavbarClient = ({ cookie }: any) => {
                             className="py-3 px-4  w-full outline-none focus:border-none  bg-transparent "
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
-                              console.log(searchQuery, "searchQuery from input field");
+                              // console.log(searchQuery, "searchQuery from input field");
                               // searchResultsHandler(searchQuery)
-
                             }}
                           />
-                          <div><FlatIcon className={"flaticon-search  text-xl text-[#999999]"} /></div>
+                          <div>
+                            <FlatIcon
+                              className={
+                                "flaticon-search  text-xl text-[#999999]"
+                              }
+                            />
+                          </div>
                           {/* code before change start */}
                           {/* <Link
                             href={`/search?q=${searchQuery}`}
@@ -291,43 +310,246 @@ const NavbarClient = ({ cookie }: any) => {
                           </Link> */}
                           {/* code before change end */}
                           {/* </div> */}
-                          {
-                            searchedProducts.length !== 0 &&
+                          {searchedProducts.length !== 0 &&
                             pathname !== "/search" && (
-                              <div className="absolute top-[45px] left-0 rounded-lg  shadow-md bg-white w-full lg:min-h-[100px] lg:max-h-[500px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
-                                {/* <div> */}
-                                {searchedProducts?.map((prod, idx) => {
-                                  return (
-                                    // <Link
-                                    //   key={idx}
-                                    //   href={`/product/${prod?.slug?.name}`}
-                                    // >
-                                    <div className=" flex justify-between items-center  border-t-gray-300  border-t py-4 " key={idx}>
-                                      <div className=" flex w-[100%] gap-x-3 ">
-                                        <div className="w-[40%] h-[80px] "><Image src={prod.coverPic?.url} alt="" height={1000} width={1000} className="object-fill" style={{height:"100%",width:"100%",aspectRatio:"auto"}}/></div>
-                                        <div className="flex flex-col gap-y-1.5 w-[60%]">
-                                          <h1 className="xl:text-sm text-xs font-medium truncate">{prod?.prodName}</h1>
-                                          <h4 className="text-gray-500  text-xs font-medium"><span>1.3lb</span>/<span>vanilla</span></h4>
-                                          {/* <div className=" font-bold text-xl"> <span>AED 150.00</span> <span className="text-sm text-gray-500">200 AED</span></div> */}
-                                          <div className="flex lg:flex-row flex-col lg:items-center gap-x-2 font-bold xl:text-base text-sm truncate"> <h1>AED 150.00</h1><h3 className="text-sm text-gray-500 font-medium">200 AED</h3></div>
+                              <OutsideClickHandler
+                              onClick={()=>{
+                                setSearchedProducts([]);
+                                setSearchQuery("")
+                              }}
+                              >
+                                <div className="absolute top-[45px] left-0 rounded-lg  shadow-md bg-white xl:w-full w-[300px] lg:min-h-[100px] lg:max-h-[500px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
+                                  {/* <div> */}
+                                  {searchedProducts?.map((prod, idx) => {
+                                    return (
+                                      // <Link
+                                      //   key={idx}
+                                      //   href={`/product/${prod?.slug?.name}`}
+                                      // >
+                                      <div
+                                        className=" flex justify-between items-center  border-t-gray-300  border-t py-4 "
+                                        key={idx}
+                                      >
+                                        <div className=" flex w-full gap-x-3 z-10 ">
+                                          <div className="w-[30%] h-[80px] ">
+                                            <Image
+                                              src={prod.coverPic?.url}
+                                              alt=""
+                                              height={1000}
+                                              width={1000}
+                                              className="object-fill"
+                                              style={{
+                                                height: "100%",
+                                                width: "100%",
+                                                aspectRatio: "auto",
+                                              }}
+                                            />
+                                          </div>
+                                          <div className="flex flex-col gap-y-1.5 w-[60%]">
+                                            <h1 className="xl:text-sm text-xs font-medium truncate">
+                                              {prod?.prodName}
+                                            </h1>
+                                            {/* <h4 className="text-gray-500  text-xs font-medium">
+                                            <span>1.3lb</span>/
+                                            <span>vanilla</span>
+                                          </h4> */}
+                                            {/* <div className=" font-bold text-xl"> <span>AED 150.00</span> <span className="text-sm text-gray-500">200 AED</span></div> */}
+                                            <div className="flex lg:flex-row flex-col lg:items-center  gap-x-2 font-bold xl:text-base text-sm truncate">
+                                              {" "}
+                                              <h1>
+                                                {constant.currency}{" "}
+                                                {prod?.discountedPrice}
+                                              </h1>
+                                              {checkIfPriceDiscounted({
+                                                price: prod?.prodPrice,
+                                                discountedPrice:
+                                                  prod?.discountedPrice,
+                                              }) && (
+                                                <h3 className="text-xs text-gray-500 font-medium line-through ">
+                                                  {constant.currency}{" "}
+                                                  {prod?.prodPrice}
+                                                </h3>
+                                              )}
+                                            </div>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="w-[20%] flex justify-end">
-                                        <div
+                                        <div className="w-[20%] flex justify-end z-30">
+                                          {/* new start  */}
+                                          {checkIfItemExistInCart(
+                                            cart,
+                                            prod,
+                                            0
+                                          ) ? (
+                                            <div
+                                              className=" my-auto flex justify-center  items-center right-2 "
+                                              onClick={(e) => {
+                                                // e.preventDefault();
+                                                console.log("CLICKED");
+                                              }}
+                                            >
+                                              <div className="flex items-center ">
+                                                <div
+                                                  // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
+                                                  className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
+                                                  onClick={() => {
+                                                    if (
+                                                      getProductIndexFromCart(
+                                                        cart,
+                                                        prod
+                                                      ) >= 0
+                                                    ) {
+                                                      dispatch(
+                                                        updateCartItemQuantity({
+                                                          type: "dec",
+                                                          addedQty:
+                                                            prod?.minQty || 1,
+                                                          index:
+                                                            getProductIndexFromCart(
+                                                              cart,
+                                                              prod
+                                                            ),
+                                                        })
+                                                      );
+                                                    }
+                                                  }}
+                                                >
+                                                  <FlatIcon
+                                                    icon={
+                                                      "flaticon-minus text-secondary font-normal text-[10px]"
+                                                    }
+                                                  />
+                                                </div>
+                                                <div className="px-3">
+                                                  {
+                                                    getProductFromCart(
+                                                      cart,
+                                                      prod
+                                                    )?.quantity
+                                                  }
+                                                </div>
+                                                <div
+                                                  className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
+                                                  // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
+                                                  onClick={() => {
+                                                    if (
+                                                      getProductIndexFromCart(
+                                                        cart,
+                                                        prod
+                                                      ) >= 0
+                                                    ) {
+                                                      let currQty =
+                                                        cart[
+                                                          getProductIndexFromCart(
+                                                            cart,
+                                                            prod
+                                                          )
+                                                        ]?.quantity;
+                                                      if (prod.isPriceList) {
+                                                        if (
+                                                          currQty +
+                                                            (prod?.minQty ||
+                                                              1) >
+                                                          parseFloat(
+                                                            prod?.priceList[0]
+                                                              ?.totalQuantity
+                                                          )
+                                                        ) {
+                                                          toast.error(
+                                                            "Cannot add more of this item"
+                                                          );
+                                                        } else {
+                                                          dispatch(
+                                                            updateCartItemQuantity(
+                                                              {
+                                                                type: "inc",
+                                                                addedQty:
+                                                                  prod?.minQty ||
+                                                                  1,
+                                                                index:
+                                                                  getProductIndexFromCart(
+                                                                    cart,
+                                                                    prod
+                                                                  ),
+                                                              }
+                                                            )
+                                                          );
+                                                        }
+                                                      } else {
+                                                        if (
+                                                          currQty +
+                                                            (prod?.minQty ||
+                                                              1) >
+                                                          parseFloat(
+                                                            prod?.productQty
+                                                          )
+                                                        ) {
+                                                          toast.error(
+                                                            "Cannot add more of this item"
+                                                          );
+                                                        } else {
+                                                          dispatch(
+                                                            updateCartItemQuantity(
+                                                              {
+                                                                type: "inc",
+                                                                addedQty:
+                                                                  prod?.minQty ||
+                                                                  1,
+                                                                index:
+                                                                  getProductIndexFromCart(
+                                                                    cart,
+                                                                    prod
+                                                                  ),
+                                                              }
+                                                            )
+                                                          );
+                                                          // setQuantity((val) => val + (product?.minQty || 1));
+                                                        }
+                                                      }
+                                                    }
+                                                  }}
+                                                >
+                                                  <FlatIcon
+                                                    icon={
+                                                      "flaticon-plus-1  font-normal text-xs "
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ) : (
+                                            <div
+                                              onClick={() => {
+                                                addItemToCart(prod);
+                                              }}
+                                              className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer "
+                                            >
+                                              <FlatIcon
+                                                icon={
+                                                  "flaticon-plus-1  font-normal text-xs "
+                                                }
+                                              />
+                                            </div>
+                                          )}
+
+                                          {/* new end  */}
+
+                                          {/* old add code start  */}
+                                          {/* <div
                                           onClick={() => {
                                             addItemToCart(prod)
                                           }}
                                           className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer">
                                             <FlatIcon icon={"flaticon-plus-1  font-normal text-xs "} />
-                                            {/* + */}
-                                            </div>
+                                            </div> */}
+                                          {/* old add code end  */}
+                                        </div>
                                       </div>
-                                    </div>
-                                    // </Link>
-                                  );
-                                })}
-                                {/* </div> */}
-                              </div>
+                                      // </Link>
+                                    );
+                                  })}
+                                  {/* </div> */}
+                                </div>
+                              </OutsideClickHandler>
                             )}
                           {/* {searchQuery&&<SearchResults/>} */}
                         </div>
@@ -336,7 +558,6 @@ const NavbarClient = ({ cookie }: any) => {
                   </div>
                   {/* // ) : ( */}
                   <div className=" w-[30%] flex justify-center">
-
                     <Link href={"/"}>
                       <Image
                         src={logo}
@@ -346,35 +567,42 @@ const NavbarClient = ({ cookie }: any) => {
                         height={1000}
                         style={{
                           aspectRatio: "auto",
-                          width: "150px",
+                          width: "180px",
                           height: "auto",
                         }}
                       />
                     </Link>
                   </div>
                   <div className="flex items-center justify-end gap-7  w-[30%]">
-                  {cookie?.value || (userData.length>0) ? (
-                    UserDropDown(userData, handleLogout)
-                  ) : !isLoginOpen ? (
-                    <div
-                      className="flex items-center gap-2 cursor-pointer"
-                      onClick={handleLoginClick}
-                    >
-                        <FlatIcon icon={"flaticon-user-fill text-2xl"}/>
-                      <h3>Login</h3>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2 cursor-pointer">
-                        <FlatIcon icon={"flaticon-user-fill text-2xl"}/>
-                      <h3>Login</h3>
-                    </div>
-                  )}
+                    {userData ? (
+                      UserDropDown(userData, handleLogout)
+                    ) : !isLoginOpen ? (
+                      <div
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={handleLoginClick}
+                      >
+                        <FlatIcon icon={"flaticon-user-fill text-2xl"} />
+                        <h3>Login</h3>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <FlatIcon icon={"flaticon-user-fill text-2xl"} />
+                        <h3>Login</h3>
+                      </div>
+                    )}
                     <Link href={"/wishlist"}>
-                      <div className="cursor-pointer"><FlatIcon icon={"flaticon-heart-fill text-2xl "} /></div>
+                      <div className="cursor-pointer">
+                        <FlatIcon icon={"flaticon-heart-fill text-2xl "} />
+                      </div>
                     </Link>
-                    <Link href={"/cart"} className="flex items-center  gap-2 cursor-pointer relative">
+                    <Link
+                      href={"/cart"}
+                      className="flex items-center  gap-2 cursor-pointer relative"
+                    >
                       <FlatIcon icon={"flaticon-bag-fill text-2xl"} />
-                      <div className="h-[15px] w-[15px] rounded-full bg-primary absolute top-0 -right-1 flex items-center justify-center text-[8px] text-white">1</div>
+                      <div className="h-[15px] w-[15px] rounded-full bg-primary absolute top-0 -right-1 flex items-center justify-center text-[8px] text-white">
+                        {cart.length > 0 ? cart.length : 0}
+                      </div>
                       {/* <h3>My Cart</h3> */}
                     </Link>
                   </div>
@@ -382,12 +610,12 @@ const NavbarClient = ({ cookie }: any) => {
               </div>
             </div>
             <Categories />
-            <Modal
+            {/* <Modal
               isOpen={isPrescriptionUpload}
               setOpen={setIsPrescriptionUpload}
             >
               <div className="bg-white">Prescription</div>
-            </Modal>
+            </Modal> */}
           </div>
         </>
       )}
@@ -405,8 +633,6 @@ const NavbarClient = ({ cookie }: any) => {
 
 export default NavbarClient;
 
-
-
 function UserDropDown(userData: any, handleLogout: any): React.ReactNode {
   return (
     <div className=" flex items-center justify-center">
@@ -417,7 +643,7 @@ function UserDropDown(userData: any, handleLogout: any): React.ReactNode {
         <div className="flex justify-center items-center">
           <Menu.Button className="">
             <div className="flex items-center  gap-2">
-            <FlatIcon icon={"flaticon-user-fill text-2xl"}/>
+              <FlatIcon icon={"flaticon-user-fill text-2xl"} />
               {(userData && userData?.name) || "User "}
             </div>
           </Menu.Button>
@@ -437,8 +663,9 @@ function UserDropDown(userData: any, handleLogout: any): React.ReactNode {
                 {({ active }) => (
                   <Link href={"/profilepage"}>
                     <button
-                      className={`${active ? "bg-primary text-white" : "text-gray-900"
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      className={`${
+                        active ? "bg-primary text-white" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                     >
                       {/* {active ? "active" : "notActive"} */}
                       Profile
@@ -450,15 +677,15 @@ function UserDropDown(userData: any, handleLogout: any): React.ReactNode {
                 {({ active }) => (
                   <button
                     onClick={handleLogout}
-                    className={`${active ? "bg-primary text-white" : "text-gray-900"
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    className={`${
+                      active ? "bg-primary text-white" : "text-gray-900"
+                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   >
                     {/* {active ? "active" : "notActive"} */}
                     Logout
                   </button>
                 )}
               </Menu.Item>
-
             </div>
           </Menu.Items>
         </Transition>

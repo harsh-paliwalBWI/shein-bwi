@@ -1,71 +1,87 @@
-"use client"
-import React, { useState, useEffect } from 'react'
+"use client";
+import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from '../../config/firebase-config';
+import { db } from "../../config/firebase-config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getUserData,getUserWishlistData} from "../../utils/databaseService";
-import { getUserWishlistData2 } from '../../utils/databaseService';
-import { fetchSimilarProductsForCart } from '../../config/typesense';
-import ProductCard from '../categoryProduct/productCard';
-
+import {
+  getUserData,
+  getUserWishlist,
+  getUserWishlistData,
+} from "../../utils/databaseService";
+import { getUserWishlistData2 } from "../../utils/databaseService";
+import { fetchSimilarProductsForCart } from "../../config/typesense";
+import ProductCard from "../categoryProduct/productCard";
+import Loading from "../../app/loading";
 
 const WishlistComponent = ({ cookie }) => {
   const [isClient, setIsClient] = useState(false);
-  const { data: similarData } = useQuery({
-    queryKey: ["product", "caricature-cartoon", "similar-product"],
-    queryFn: () => fetchSimilarProductsForCart({ searchKeywords: ["Gentlemen's Collection", 'Nike'] })
-  })
 
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    // 
+    //
     // keepPreviousData: true,
     // enabled: isClient,
   });
+  const { data: wishlistData } = useQuery({
+    queryKey: ["wishlistData"],
+    queryFn: () => getUserWishlist(userData?.id),
+  });
 
-  console.log(userData,"user");
-  
+  // console.log(userData,"user");
+
   // const {data:wishlistData}=useQuery({
   //   queryKey: ["wishlistData"],
   //   queryFn: () => getUserWishlistData(userData?.id),
-  //   
+  //
   // })
 
-// console.log(wishlistData,"wishlistData");
+  // console.log(wishlistData,"wishlistData");
 
-const {data:wishlistData2}=useQuery({
-  queryKey: ["wishlistData"],
-  queryFn: () => getUserWishlistData2(null),
-  
-})
-console.log(wishlistData2,"wishlistData2-------");
-
+  const { data: wishlistData2, isLoading } = useQuery({
+    queryKey: ["wishlistData-products"],
+    queryFn: () => getUserWishlistData2(cookie),
+  });
+  // console.log(wishlistData2,"wishlistData2-------");
 
   useEffect(() => {
     setIsClient(true);
   }, [wishlistData2]);
   return (
     <>
-       {wishlistData2&&wishlistData2.length>0&&isClient? 
-        <div className='px-body'>
-          <h1 className='sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5'>MY WISHLIST</h1>
-          <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-8 sm:gap-y-10 gap-y-5 md:my-16 my-8'>
-            {
-             wishlistData2&&wishlistData2.length>0&&isClient&&wishlistData2.map((item: any, idx: number) => {
-                return <div key={idx} className='sm:mx-0 mx-5'>
-                  <ProductCard product={item} mx={0} />
-                </div>
-              })
-            }
+      {wishlistData2 && wishlistData2.length > 0 && isClient ? (
+        <div className="px-body">
+          <h1 className="sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5">
+            My Wishlist
+          </h1>
+          <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-x-8 sm:gap-y-10 gap-y-5 md:my-10 my-6">
+            {wishlistData2 &&
+              wishlistData2.length > 0 &&
+              isClient &&
+              wishlistData2.map((item: any, idx: number) => {
+                return (
+                  <div key={idx} className="sm:mx-0 mx-5">
+                    <ProductCard product={item} mx={0} />
+                  </div>
+                );
+              })}
           </div>
         </div>
-        :
-      <div className='w-full flex justify-center items-center h-[70vh]'>
-          <h3 className='bg-secondary text-white sm:px-5 px-3 py-2  sm:text-base  text-xs font-medium'>Your wishlist  is empty !{" "} Add something !</h3>
+      ) : isLoading ? (
+        <div className="px-body">
+          <h1 className="sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5">
+            MY WISHLIST
+          </h1>
+          <Loading />
         </div>
-     } 
+      ) : (
+        <div className="w-full flex justify-center items-center h-[70vh]">
+          <h3 className="bg-secondary text-white sm:px-5 px-3 py-2  sm:text-base  text-xs font-medium">
+            Your wishlist is empty ! Add something !
+          </h3>
+        </div>
+      )}
       {/* <div className='w-full flex justify-center items-center h-[70vh]'>
           <h3 className='bg-secondary text-white sm:px-5 px-3 py-2  sm:text-base  text-xs font-medium'>Your wishlist  is empty !{" "} Add something !</h3>
         </div> */}
@@ -84,7 +100,7 @@ console.log(wishlistData2,"wishlistData2-------");
         </div>
       } */}
     </>
-  )
-}
+  );
+};
 
-export default WishlistComponent
+export default WishlistComponent;

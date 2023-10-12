@@ -5,6 +5,11 @@ export const checkIfPriceDiscounted = ({ discountedPrice, price }) => {
     return false
 }
 
+export const getDiscountedPercentage = ({ price, discountedPrice }: any) => {
+    return `${Math.ceil(((price - discountedPrice) / price) * 100)}%`
+};
+
+
 export const initialAddress = {
     address: "",
     city: "",
@@ -27,3 +32,22 @@ export const paymentMethods = [
 
 export const tabs = ["Shipping", "Payment", "Review"];
 
+export function checkIfItemExistInCart(cart, product, index = 0) {
+    if (product?.isPriceList) {
+        return cart?.filter((item) => item?.productId === product?.id && item?.description === product.priceList[index].weight)
+            .length !== 0;
+    } else {
+
+        return cart?.filter((item) => item?.productId === product?.id)
+            .length !== 0;
+    }
+}
+
+export function getProductIndexFromCart(cart, product) {
+    return cart.findIndex((item) => item?.productId === product?.id);
+}
+
+export function getProductFromCart(cart, product) {
+    return cart?.filter((item) => item?.productId === product?.id)
+        .length !== 0 ? cart?.filter((item) => item?.productId === product?.id)[0] : null;
+}

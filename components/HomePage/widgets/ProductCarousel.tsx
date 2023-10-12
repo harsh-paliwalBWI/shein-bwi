@@ -85,8 +85,12 @@ const ProductCarousel = ({ section, myKey,cookie }) => {
     ],
   };
 
-  function getProduct(product) {
+  function getProduct(product:any) {
     return product?.data || product;
+  }
+
+  function getProductId(product:any){
+return product?.id
   }
 
   function SampleNextArrow(props) {
@@ -148,10 +152,12 @@ const ProductCarousel = ({ section, myKey,cookie }) => {
                       homeData?.data
                         ?.filter((val: any) => val?.id === section?.widgetID)[0]
                         ?.arr?.map((product: any, idx: any) => {
+                          // console.log(product,"product carousel");  
                           const productData = getProduct(product);
+                          const productId = getProductId(product);
                           return (
                             <div className="flex-1  " key={idx}>
-                              <ProductCarouselCard product={productData}  />
+                              <ProductCarouselCard product={productData} id={productId} />
                             </div>
                           );
                         })}

@@ -13,6 +13,11 @@
   padding: 10px 0 10px !important;
 }
 
+
+.slick-track{
+  float: left !important;
+}
+
 /* . .slick-track{
   width: 100% !important;
 } */

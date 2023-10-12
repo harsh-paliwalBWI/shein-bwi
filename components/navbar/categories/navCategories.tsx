@@ -11,6 +11,8 @@ import { fetchCategories } from "../../../utils/databaseService";
 import { Transition } from "@headlessui/react";
 import Link from "next/link";
 import FlatIcon from "../../flatIcon/flatIcon";
+import { Prev } from "react-bootstrap/esm/PageItem";
+import PopUp from "../../popUp/PopUp";
 const data = [
   "dfgfghfhh",
   "dfgfghfhh",
@@ -224,7 +226,11 @@ const Categories = () => {
       </OutsideClickHandler>
     </div>
     <div className="absolute right-0 bottom-0   bg-primary cursor-pointer rounded-tl-full rounded-bl-full">
-              <div className="flex item-center justify-center lg:gap-2 gap-1  text-white   font-medium  lg:px-14  px-3 xl:text-sm text-xs">
+              <div 
+              // onClick={()=>{
+              //   setShowPopUp((prev)=>!prev)
+              // }}
+               className="flex item-center justify-center lg:gap-2 gap-1  text-white   font-medium  lg:px-14  px-3 xl:text-sm text-xs">
                 <p className="py-3.5 ">Men&apos;s Wear</p>
                 {/* <div className="py-3.5 border border-primary  "> */}
                   <FlatIcon className="flaticon-arrow text-white text-sm font-semibold rotate-180 " />
@@ -233,6 +239,7 @@ const Categories = () => {
                 {/* <div className="py-3.5 border border-[#0092FF] ">right arrow</div> */}
               </div>
             </div>
+           
     </div>
   );
 };

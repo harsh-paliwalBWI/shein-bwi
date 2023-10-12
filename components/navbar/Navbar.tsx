@@ -16,7 +16,7 @@ const Navbar = async () => {
   const cookie = cookies().get("uid");
   await queryClient.prefetchQuery(["categories"], fetchCategories);
   await queryClient.prefetchQuery(["userData"], () => getUserData(cookie));
-  await queryClient.prefetchQuery(["wishlistData"], () => getUserWishlist());
+  await queryClient.prefetchQuery(["wishlistData"], () => getUserWishlist(cookie?.value));
 
   // console.log(data,"data");
 

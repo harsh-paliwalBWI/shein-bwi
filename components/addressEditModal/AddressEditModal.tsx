@@ -12,7 +12,7 @@ import { initialAddress } from "../../utils/utilities";
 
 
 const AddressEditModal = ({ setIsAddressEdit, item }) => {
-  // console.log(item,"item");
+  console.log(item,"item");
   const [isLoading, setIsLoading] = useState(false)
   const [isClient, setIsClient] = useState(false);
   const [state, setState] = useState(item);

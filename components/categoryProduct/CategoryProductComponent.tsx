@@ -26,7 +26,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
 
   return (
     <div className="flex flex-col px-body   h-full ">
-      <div className="w-full flex flex-col lg:flex-row gap-x-4 gap-y-4 ">
+      <div className="w-full flex flex-col lg:flex-row gap-x-4 gap-y-4  mb-20">
         <FilterSection />
         {/* <div className="w-full h-1 bg-[red]"></div> */}
         <hr />
@@ -37,15 +37,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
                 <h4 className=" text-sm font-medium  ">
                   {categoryProducts?.products?.length} Items Found
                 </h4>
-                <div className="flex gap-20 items-center">
-                  {/* <h4 className="font-bold text-lg">Sorted By:</h4> */}
-                  {/* <div className=" py-2 px-3">
-                    <select name="" id="" className="font-bold outline-none">
-                      <option value="" className="font-bold outline-none">
-                        Best Selling
-                      </option>
-                    </select>
-                  </div> */}
+                {/* <div className="flex gap-20 items-center">
                   <h3 className="text-sm font-medium"> Best Selling</h3>
                   <div>
                     <FlatIcon className="flaticon-arrow-down text-xs font-bold text-secondary" />
@@ -79,7 +71,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               {/* <hr className="mb-2" /> */}
             </>
@@ -94,7 +86,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
           </div>
         </div>
       </div>
-      <div className="text-center flex justify-center items-center md:my-20 my-10   ">
+      {/* <div className="text-center flex justify-center items-center md:my-20 my-10   ">
         <button className="flex items-center gap-3 border-[2px] border-secondary py-3 px-7">
           <span>
             <FlatIcon className="flaticon-reload text-secondary text-xl font-bold" />
@@ -102,6 +94,8 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
           <span className="text-sm font-semibold">Load More</span>
         </button>
       </div>
+          <span><FlatIcon className="flaticon-reload text-secondary text-xl font-bold" /></span><span className="text-sm font-semibold">Load More</span></button>
+          </div> */}
     </div>
   );
 };

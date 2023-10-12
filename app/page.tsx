@@ -1,5 +1,5 @@
 import getQueryClient from "../utils/getQueryClient";
-import { fetchHomeSections } from "../utils/databaseService";
+import { fetchHomeSections, getUserWishlist } from "../utils/databaseService";
 import { dehydrate } from "@tanstack/react-query";
 import Hydrate from "../utils/hydrate.client";
 import HomeComponent from "../components/HomePage/HomeComponent";
@@ -12,7 +12,11 @@ export default async function Home() {
   const cookie = cookies().get("uid");
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["homeSections"], fetchHomeSections);
+  await queryClient.prefetchQuery(["wishlistData"], () =>
+    getUserWishlist(cookie?.value)
+  );
   const dehydratedState = dehydrate(queryClient);
+
   // log
 
   return (

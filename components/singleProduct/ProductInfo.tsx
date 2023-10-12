@@ -1,7 +1,25 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import React, { useRef, useState, useEffect } from "react";
 import { Disclosure } from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { auth } from "../../config/firebase-config";
+import { fetchSimilarProductsForCart } from "../../config/typesense";
+import masterCardImg from "../../images/MasterCard_Logo 1.svg";
+import discoverImg from "../../images/discover 1.svg";
+import paypalImg from "../../images/paypal 1.svg";
+import americanExpImg from "../../images/pngwing 1.svg";
+import visaImg from "../../images/visa 3.svg";
+import { useAppSelector } from "../../redux/hooks";
+import {
+  addToCart,
+  getCartObj,
+  getPriceListCartObj,
+  removeFromCart,
+} from "../../redux/slices/cartSlice";
+import { constant } from "../../utils/constants";
 import {
   addCartObjToUser,
   fetchSingleProduct,
@@ -10,48 +28,10 @@ import {
   moveToWishListHandler,
   removeFromWishListHandler,
 } from "../../utils/databaseService";
-import Image from "next/image";
-import { constant } from "../../utils/constants";
-import p1 from "../../images/p1.svg";
-import p2 from "../../images/p2.svg";
-import diamond from "../../images/diamond.svg";
-import Hr from "../Hr/Hr";
 import useOnScreen from "../../utils/visibleElement";
-import { Transition } from "@headlessui/react";
-import {
-  addToCart,
-  getCartObj,
-  getPriceListCartObj,
-  removeFromCart,
-} from "../../redux/slices/cartSlice";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/hooks";
-import { auth } from "../../config/firebase-config";
-import { fetchSimilarProductsForCart } from "../../config/typesense";
-import Modal from "../Modal/modal";
-import Headersection from "../headersection/Headersection";
-import img1 from "../../images/image 146.svg";
-import img2 from "../../images/da1cd32c-33a4-48a2-9873-f45c918d31f5 1.svg";
-import img3 from "../../images/image 147.svg";
-import img4 from "../../images/Fedex-logo 1.svg";
-import img5 from "../../images/pngkit_delivery-com-logo-png_5554386 1.svg";
-import codImg from "../../images/image 148.svg";
-import americanExpImg from "../../images/pngwing 1.svg";
-import masterCardImg from "../../images/MasterCard_Logo 1.svg";
-import visaImg from "../../images/visa 3.svg";
-import gpayImg from "../../images/google-pay 1.svg";
-import paytmImg from "../../images/Paytm-Logo 1.svg";
-import paypalImg from "../../images/paypal 1.svg";
-import discoverImg from "../../images/discover 1.svg";
 import SimilarProducts from "../SimilarProducts/SimilarProducts";
 import FlatIcon from "../flatIcon/flatIcon";
-import firstImg from "../../images/6840240711_1_1_1 1.svg";
-import secImg from "../../images/6840240711_2_1_1 2.svg";
-import thirdImg from "../../images/6840240711_2_3_1 1.svg";
-import fourImg from "../../images/6840240711_6_1_1 2.svg";
-import fiveImg from "../../images/6840240711_6_2_1 1.svg";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { checkIfItemExistInCart } from "../../utils/utilities";
 const features = [
   " 10 in stock",
   " Easy Return Policy",
@@ -80,6 +60,7 @@ const ProductInfo = ({ params }: any) => {
   const [colorTab, setColorTab] = useState(
     product?.options && product?.options[0]
   );
+  const [newProduct, setNewProduct] = useState("");
   // console.log(product, "product from single product---------->");
   //   console.log(product?.images, "images---------->");
   // console.log(product?.searchKeywords,"product?.searchKeywords");
@@ -90,7 +71,6 @@ const ProductInfo = ({ params }: any) => {
     queryFn: () =>
       fetchSimilarProductsForCart({ searchKeywords: product?.searchKeywords }),
   });
-  // console.log(similarData,"similarData--------->");
 
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = product ? useOnScreen(ref) : false;
@@ -100,15 +80,11 @@ const ProductInfo = ({ params }: any) => {
   }, []);
   const [quantity, setQuantity] = useState((product && product?.minQty) || 1);
   const [variant, setVariant] = useState(0);
-  // const similarDataHandler=()=>{
-  // if(similarData){
-  //   setSimilarProductData(similarData)
-  //   console.log(similarData,"similarDataHandler");
-  // }
-  // }
-  //   useEffect(()=>{
-  // similarDataHandler()
-  //   },[similarProductData])
+  const [option1, setOption1] = useState("");
+  const [option2, setOption2] = useState("");
+
+  console.log({ quantity });
+
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
@@ -116,8 +92,6 @@ const ProductInfo = ({ params }: any) => {
     // keepPreviousData: true,
     // enabled: isClient,
   });
-
-  // console.log(userData, "user data");
 
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlistData"],
@@ -135,9 +109,38 @@ const ProductInfo = ({ params }: any) => {
     }
     return constant?.errImage;
   }
-  async function addItemToCart() {
-    console.log("START");
+  // useEffect(()=>{
+  //   console.log(prodTab,"prodTab");
 
+  //   },[])
+
+  //   useEffect(()=>{
+  //     console.log(prodTab,"prodTab changes");
+
+  //     },[prodTab])
+
+  function getSelectedVariant() {
+    if (!option1 && !option2) {
+      setVariant(0);
+      setOption1(product.priceList[0]?.weight.split("/")[0]?.trim());
+      setOption2(product.priceList[0]?.weight.split("/")[1]?.trim());
+      return;
+    } else {
+      let weight = `${option1} / ${option2}`;
+      let index = product?.priceList?.findIndex((x) => x.weight === weight);
+      if (index !== -1) {
+        setVariant(index);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (product && product.isPriceList) {
+      getSelectedVariant();
+    }
+  }, [option1, option2]);
+  async function addItemToCart() {
+    // console.log("START");
     let data: any = {
       product,
       productID: product?.id,
@@ -171,6 +174,8 @@ const ProductInfo = ({ params }: any) => {
       index: variant,
       isPriceList: product?.isPriceList,
     };
+    // console.log(data);
+
     dispatch(removeFromCart(data));
   }
 
@@ -210,24 +215,12 @@ const ProductInfo = ({ params }: any) => {
               <div className="flex lg:flex-row flex-col w-full  sm:gap-16 gap-6">
                 <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  ">
                   <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] sm:h-[300px] h-auto ">
-                    {/* <Image
-                      src={getImage(product, 0)}
-                      // src={secImg}
-                      alt={product?.prodName || ""}
-                      width={1000}
-                      height={1000}
-                      // style={{ width: "100%", height: "595px" }}
-                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
-                    /> */}
-
                     <Image
                       src={tabImage}
-                      // src={secImg}
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}
-                      // style={{ width: "100%", height: "595px" }}
-                      className="w-[100%]   object-contain lg:h-[595px] h-[300px]"
+                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
                     />
                   </div>
                 </div>
@@ -289,18 +282,21 @@ const ProductInfo = ({ params }: any) => {
                         <div className="flex gap-3 ">
                           {product.options.map((item: any, idx: number) => {
                             // console.log(item.color.code,"cocloe");
+
                             return (
                               <div
                                 onClick={() => setColorTab(item)}
                                 key={idx}
-                                
-                                className={`${colorTab.color?.code===item.color?.code && "bg-black"}  border  border-[#E6DBD7] p-[3px] rounded-full flex justify-center items-center cursor-pointer`}
+                                className={`border border-[#E6DBD7] p-[3px]  rounded-full flex justify-center items-center cursor-pointer ${
+                                  item?.color?.code === colorTab?.color?.code &&
+                                  "bg-black"
+                                }`}
                               >
                                 <div
-                                style={{
-                                  background: `${item?.color?.code}`
-                                }}
                                   className={`h-[25px] w-[25px] rounded-full `}
+                                  style={{
+                                    backgroundColor: `${item.color.code}`,
+                                  }}
                                 ></div>
                               </div>
                             );
@@ -334,10 +330,16 @@ const ProductInfo = ({ params }: any) => {
                           product.priceList.map((item: any, idx: number) => {
                             return (
                               <div
-                                onClick={() => setProdTab(item)}
-                                className={`sm:px-3 px-3 sm:py-2 py-2 border  cursor-pointer ${
+                                onClick={() => {
+                                  setVariant(idx);
+
+                                  setProdTab(item);
+                                }}
+                                className={`sm:px-3 px-4 sm:py-2 py-2 border rounded-md  cursor-pointer
+                                
+                                ${
                                   prodTab === item
-                                    ? "border-secondary"
+                                    ? "border-white bg-primary text-white "
                                     : "border-[#C6C6C6]"
                                 }`}
                               >
@@ -353,31 +355,40 @@ const ProductInfo = ({ params }: any) => {
                     <h3 className="text-secondary sm:text-sm text-xs font-semibold mb-3 mt-6 ">
                       QUANTITY :
                     </h3>
-                    <div className="flex sm:items-center sm:flex-row flex-col gap-y-4 justify-between   sm:mb-10 mb-5 ">
-                      <div className=" flex border border-[#C6C6C6]  w-fit  ">
-                        <div
-                          className=" text-[#CCCCCC] flex-[0.4] flex justify-center items-center text-lg font-bold cursor-pointer select-none px-3 py-3 "
+                    <div className="flex sm:items-center sm:flex-row   flex-col gap-y-4 justify-between   sm:mb-10 mb-5 ">
+                      <div className=" flex border border-[#C6C6C6]  w-auto  ">
+                        <button
+                          className=" text-[#CCCCCC] flex-[0.4] flex justify-center items-center text-lg font-bold cursor-pointer select-none px-3 py-1 "
                           onClick={() => {
-                            setQuantity((val) => val - product?.minQty || 1);
+                            let updatedQty = quantity;
+                            let prodMin = product?.minQty || 1;
+
+                            setQuantity((updatedQty - prodMin)||1);
+                            // setQuantity(
+                            //   (quantity - product?.minQty) || product?.minQty || 1
+                            // );
+                            // setQuantity((val) =>  - product?.minQty || 1);
                           }}
                         >
                           -
-                        </div>
+                        </button>
 
-                        <div className="flex-1 flex justify-center items-center  px-10 py-3 bg-gray-200 border-r-[1px] border-r-[#C6C6C6] border-l-[1px] border-l-[#C6C6C6]">
+                        <div className="flex-1 flex justify-center items-center  px-10 py-1 bg-gray-200 border-r-[1px] border-r-[#C6C6C6] border-l-[1px] border-l-[#C6C6C6]">
                           <p className="">{quantity}</p>
                         </div>
-                        <div
-                          className=" flex-[0.4] text-[#CCCCCC]  flex justify-center items-center text-lg font-bold cursor-pointer select-none  px-3 py-3 "
+                        <button
+                          className=" flex-[0.4] text-[#CCCCCC]  flex justify-center items-center text-lg font-bold cursor-pointer select-none  px-3 py-1 "
                           onClick={() => {
-                            setQuantity((val) => val + product?.minQty || 1);
+                            setQuantity(quantity + (product?.minQty || 1));
+                            // setQuantity((val) => val + product?.minQty || 1);
                           }}
                         >
                           +
-                        </div>
+                        </button>
                       </div>
 
-                      {wishlistData &&
+                      {isClient &&
+                      wishlistData &&
                       wishlistData.length > 0 &&
                       wishlistData.includes(`${product?.id}`) ? (
                         <div
@@ -387,7 +398,7 @@ const ProductInfo = ({ params }: any) => {
                               productId: product?.id,
                             })
                           }
-                          className="flex items-center gap-2 "
+                          className="flex items-center gap-2 cursor-pointer"
                         >
                           <p>
                             <FlatIcon icon={"flaticon-heart-fill text-2xl"} />
@@ -404,7 +415,7 @@ const ProductInfo = ({ params }: any) => {
                               productId: product?.id,
                             })
                           }
-                          className="flex items-center gap-2 "
+                          className="flex items-center gap-2 cursor-pointer"
                         >
                           <p>
                             <FlatIcon icon={"flaticon-heart text-2xl"} />
@@ -414,15 +425,6 @@ const ProductInfo = ({ params }: any) => {
                           </h3>
                         </div>
                       )}
-
-                      {/* <div onClick={()=>moveToWishListHandler({userId:userData?.id,productId:product?.id})} className="flex items-center gap-2 ">
-                        <p>
-                          <FlatIcon icon={"flaticon-heart text-2xl"} />
-                        </p>
-                        <h3 className="text-secondary font-semibold sm:text-sm text-xs">
-                          Add to Wishlist
-                        </h3>
-                      </div> */}
                     </div>
                     {/* <div className="flex items-center gap-2 text-sm font-bold  mb-3">
                       <div className="">
@@ -513,56 +515,28 @@ const ProductInfo = ({ params }: any) => {
                       {/* old code end  */}
                     </div>
                   </div>
-                  {/* <h2 className="lg:hidden sm:text-2xl text-xl font-bold">
-                    {constant?.currency}{" "}
-                    {parseFloat(product?.prodPrice).toFixed(2)}
-                  </h2> */}
+
                   <div
                     className="flex justify-between lg:flex w-full "
                     ref={ref}
                   >
-                    {/* <div className=" w-full flex gap-x-3 text-xs font-bold">
-                      <Link href={"/cart"} className="bg-[#EBEDF1] w-[50%] text-center py-4 cursor-pointer">
-                      <div className="">
-                        <button>ADD TO BAG</button>
-                        </div>
-                      </Link>
-                      <div className="bg-secondary text-white w-[50%] text-center py-4 cursor-pointer"><button>BUY NOW</button></div>
-                    </div> */}
-
-                    {/* previous button with functionality start */}
-                    {/* {isClient &&
-                      cart?.filter((item) => item?.productId === product?.id)
-                        .length == 0 && (
-                        <div className="flex-1 lg:flex-none w-[48%] h-14 bg-black rounded-br-[10px] flex justify-center items-center py-2 border  cursor-pointer">
-                          <button className="text-white text-lg font-normal">
-                            "Add To Wishlist"
-                          </button>
-                        </div>
-                      )} */}
                     <div className="w-full flex gap-3 ">
-                      {isClient && (
-                        <div
-                          className="flex-1 lg:flex-none w-[48%]  sm:h-14 bg-[#EBEDF1] h-12  flex justify-center items-center py-2  cursor-pointer"
-                          onClick={
-                            cart?.filter(
-                              (item) => item?.productId === product?.id
-                            ).length !== 0
-                              ? () => {
-                                  handleRemoveFromCart();
-                                }
-                              : addItemToCart
-                          }
-                        >
-                          <button className=" text-secondary font-semibold  sm:text-lg text-base">
-                            {cart?.filter(
-                              (item) => item?.productId === product?.id
-                            ).length !== 0
-                              ? "REMOVE FROM BAG"
-                              : "ADD TO BAG"}
-                          </button>
-                        </div>
-                      )}
+                      <div
+                        className="flex-1 lg:flex-none w-[48%]  sm:h-14 bg-[#EBEDF1] h-12  flex justify-center items-center py-2  cursor-pointer"
+                        onClick={
+                          checkIfItemExistInCart(cart, product, variant)
+                            ? () => {
+                                handleRemoveFromCart();
+                              }
+                            : addItemToCart
+                        }
+                      >
+                        <button className=" text-secondary font-semibold  sm:text-lg text-base">
+                          {checkIfItemExistInCart(cart, product, variant)
+                            ? "REMOVE FROM BAG"
+                            : "ADD TO BAG"}
+                        </button>
+                      </div>
 
                       <div
                         className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
@@ -575,7 +549,7 @@ const ProductInfo = ({ params }: any) => {
                     </div>
                     {/* previous button with functionality end*/}
                   </div>
-                  <h3 className="font-medium sm:text-sm text-xs my-5">
+                  <h3 className="font-semibold sm:text-sm text-xs my-5">
                     GUARANTEED SAFE CHECKOUT:
                   </h3>
                   <div className="flex items-center sm:flex-nowrap flex-wrap gap-6">
@@ -622,7 +596,7 @@ const ProductInfo = ({ params }: any) => {
                       </div>
                     </div>
                   </div>
-                  <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
+                  {/* <div className="w-full bg-[#CCCCCC] h-[1px]"></div> */}
                   {/* <div className=" ">
                     <div className="my-3 flex items-center justify-between">
                       <h2 className="font-medium sm:text-base  text-sm ">
@@ -638,7 +612,7 @@ const ProductInfo = ({ params }: any) => {
                     {({ open }) => (
                       <>
                         <Disclosure.Button
-                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${
+                          className={`flex border-t border-b border-[#CCCCCC] py-4 items-center sm:text-base font-medium text-xs  justify-between text-gray-400 ${
                             open ? "font-semibold" : ""
                           } `}
                         >
@@ -649,7 +623,7 @@ const ProductInfo = ({ params }: any) => {
                             icon={"flaticon-plus text-[#999999] text-xs"}
                           />
                         </Disclosure.Button>
-                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
+                        <Disclosure.Panel className="  pt-0 pb-2 text-base text-gray-500">
                           <div
                             dangerouslySetInnerHTML={{
                               __html: product?.prodDesc,
@@ -660,8 +634,7 @@ const ProductInfo = ({ params }: any) => {
                       </>
                     )}
                   </Disclosure>
-
-                  <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
+                  {/* <div className="w-full bg-[#CCCCCC] h-[1px]"></div> */}
                   {/* <div className="flex items-center justify-between sm:text-base font-medium text-xs  my-5 text-gray-400">
                     <h3>Reviews & Ratings</h3>
                     <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
@@ -671,7 +644,7 @@ const ProductInfo = ({ params }: any) => {
                     {({ open }) => (
                       <>
                         <Disclosure.Button
-                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${
+                          className={`flex border-b border-[#CCCCCC] py-4 items-center sm:text-base font-medium text-xs justify-between text-gray-400 ${
                             open ? "font-semibold" : ""
                           } `}
                         >
@@ -680,37 +653,13 @@ const ProductInfo = ({ params }: any) => {
                             icon={"flaticon-plus text-[#999999] text-xs"}
                           />
                         </Disclosure.Button>
-                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
-                          gfjh
+                        <Disclosure.Panel className=" mt-3 pt-0 pb-2 text-base text-gray-500">
+                          No Reviews Yet
                         </Disclosure.Panel>
                       </>
                     )}
                   </Disclosure>
-                  <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
-                  {/* <div className="flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400">
-                    <h3>Reviews & Ratings</h3>
-                    <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
-                  </div> */}
-                  <Disclosure>
-                    {({ open }) => (
-                      <>
-                        <Disclosure.Button
-                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${
-                            open ? "font-semibold" : ""
-                          } `}
-                        >
-                          <span>Reviews & Ratings</span>
-                          <FlatIcon
-                            icon={"flaticon-plus text-[#999999] text-xs"}
-                          />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
-                          gfjh
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                  <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
+                  {/* <div className="w-full bg-[#CCCCCC] h-[1px]"></div> */}
 
                   {/* old code start  */}
                   {/* <div className="flex gap-2 flex-col">
@@ -727,61 +676,7 @@ const ProductInfo = ({ params }: any) => {
                 </div>
               </div>
             </div>
-            {/* old code start  */}
-            {/* <div className="border border-primary ">
-              <div className="flex flex-col gap-[2rem] ">
-                <div className="flex justify-between">
-                  <div
-                    className={`font-medium text-xl md:text-2xl leading-tight  ${
-                      selectedTab === "description"
-                        ? "text-red-600 underline underline-offset-4"
-                        : "text-[#555555]"
-                    }`}
-                    onClick={() => setSelectedTab("description")}
-                  >
-                    Description
-                  </div>
-                  <div
-                    className={`font-medium text-xl md:text-2xl leading-tight  ${
-                      selectedTab === "additionalInfo"
-                        ? "text-red-600 underline underline-offset-4"
-                        : "text-[#555555]"
-                    }`}
-                    onClick={() => setSelectedTab("additionalInfo")}
-                  >
-                    Additional Information
-                  </div>
-                  <div
-                    className={`font-medium text-xl md:text-2xl leading-tight  ${
-                      selectedTab === "review"
-                        ? "text-red-600 underline underline-offset-4"
-                        : "text-[#555555]"
-                    }`}
-                    onClick={() => setSelectedTab("review")}
-                  >
-                    Review
-                  </div>
-                </div>
-                <div className="text-sm font-normal leading-[27px] mt-2 md:mt-4">
-                  {selectedTab === "description" && (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
-                    />
-                  )}
-                  {selectedTab === "additionalInfo" && (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: product?.prodaddinfo }}
-                    />
-                  )}
-                  {selectedTab === "review" && (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: product?.prodreview }}
-                    />
-                  )}
-                </div>
-              </div>
-            </div> */}
-            {/* old code end  */}
+
             <div className=" w-full h-[1px] border-b border-b-[#CCCCCC] border-dashed md:my-20 my-10"></div>
           </div>
           <div>
@@ -798,40 +693,6 @@ const ProductInfo = ({ params }: any) => {
               from="info"
             />
           </div>
-          {/* old code start  */}
-          {/* <Transition
-            show={!isVisible}
-            enter="transition-opacity duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-            className="lg:hidden"
-          >
-            <div className="fixed bottom-0 w-full bg-white py-2 px-body">
-              <div className="flex gap-2">
-                <div className="flex-1 flex border border-black p-px">
-                  <div className="bg-gray-100 flex-[0.4] flex justify-center items-center text-lg font-bold">
-                    -
-                  </div>
-                  <div className="flex-1 flex justify-center items-center">
-                    <p className="">{quantity}</p>
-                  </div>
-                  <div className="bg-gray-100 flex-[0.4] flex justify-center items-center text-lg font-bold">
-                    +
-                  </div>
-                </div>
-                <div
-                  className="flex-1 bg-highlight flex justify-center items-center py-2 border border-[#a9e1fc]"
-                  onClick={addItemToCart}
-                >
-                  <button className="text-white font-bold">Add To Cart</button>
-                </div>
-              </div>
-            </div>
-          </Transition> */}
-          {/* old code end  */}
         </div>
       )}
     </>

@@ -7,7 +7,7 @@ import Slider from "react-slick";
 
 const SimilarProducts = ({ heading, similarProductData,from }) => {
   // console.log(similarProductData, "dfgggfdh---------");
-console.log(from,"from");
+// console.log(from,"from");
 
   const [similarProducts, setSimilarProducts] = useState([])
   const slider = useRef<any>(null);

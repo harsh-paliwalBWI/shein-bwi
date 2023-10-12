@@ -44,7 +44,7 @@ const CartComponent = ({cookie}) => {
   
   async function updateCart() {
     // console.log("hii");
-    console.log(updateCart.length);
+    // console.log(updateCart.length);
     
     if (updatedCart.length !== 0) {
       const newCart = await updatedCartFromBackend(updatedCart);
@@ -59,19 +59,19 @@ const CartComponent = ({cookie}) => {
 
   useEffect(() => {
     if (loading) {
-      console.log("inside if");
+      // console.log("inside if");
       
       updateCart();
     } else {
-      console.log("inside elss");
+      // console.log("inside elss");
       setUpdatedCart(cart);
     }
   }, [cart]);
 
-  useEffect(() => {
- console.log("updatedCart",updatedCart);
+//   useEffect(() => {
+//  console.log("updatedCart",updatedCart);
  
-  }, [cart]);
+//   }, [cart]);
 
   if (!updatedCart || updatedCart?.length === 0) {
     return (

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import CategoryCard from "../../categoryCard/CategoryCard";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeSections } from "../../../utils/databaseService";
@@ -9,8 +9,11 @@ import Slider from "react-slick";
 import CategoryGrid from "./CategoryGrid";
 import { getDocFromWidget } from "../../../utils/databaseService";
 import FlatIcon from "../../flatIcon/flatIcon";
+import PopUp from "../../popUp/PopUp";
 
 const CategoriesSlider = ({ section, myKey }) => {
+  const [showPopUp,setShowPopUp]=useState(false)
+
   const { data: homeData } = useQuery({
     queryKey: ["homeSections"],
     queryFn: fetchHomeSections,
@@ -23,7 +26,7 @@ const CategoriesSlider = ({ section, myKey }) => {
   const { data: widgetData } = useQuery({
     queryKey: ["widgetDoc"],
     queryFn: () => getDocFromWidget(section?.widgetID),
-    refetchInterval: 2000,
+    
   });
 
   // console.log(widgetData,"widgetData");
@@ -122,7 +125,11 @@ const CategoriesSlider = ({ section, myKey }) => {
           ?.arr?.length !== 0 && (
           <div className=" px-body ">
             {section?.sectionName && (
-              <div className=" flex justify-center my-5">
+              <div 
+              //     onClick={()=>{
+              //   setShowPopUp((prev)=>!prev)
+              // }}
+              className=" flex justify-center my-5">
                 <h1 className="text-secondary sm:text-3xl text-xl font-bold  ">
                   {section?.sectionName}
                 </h1>
@@ -199,6 +206,9 @@ const CategoriesSlider = ({ section, myKey }) => {
 </div> */}
           </div>
         )}
+        {/* {
+  showPopUp&&<PopUp  setShowPopUp={setShowPopUp}/>
+} */}
     </>
   );
 };
