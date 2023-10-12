@@ -109,7 +109,7 @@ export const getUserAddresses = async (cookieData) => {
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
         // console.log(uid,"uid");
-        
+
     }
     if (cookie?.value) {
         uid = cookie?.value;
@@ -468,7 +468,7 @@ export const addAddressToUser = async (address) => {
 export const moveToWishListHandler = async ({ userId, productId }) => {
     try {
         if (userId && productId) {
-            console.log(userId);
+            // console.log(userId);
             const collectionRef = collection(db, "users")
             const docRef = doc(collectionRef, userId)
             const refDoc = doc(db, "users", userId, "wishlist", productId);
@@ -512,9 +512,9 @@ export const getUserWishlist = async (userId = "") => {
 }
 
 export const getUserWishlistData = async (userId = "") => {
-    console.log(userId,"userId");
+    // console.log(userId,"userId");
     if (userId) {
-        console.log("inside if");
+        // console.log("inside if");
         const querySnapshot = await getDocs(collection(db, "users", userId, "wishlist"));
         const arr = [];
         querySnapshot.forEach((doc) => {
@@ -532,10 +532,10 @@ export const getUserWishlistData = async (userId = "") => {
                 console.log("No such document!");
             }
         });
-        console.log(prodPromises,"prodPromises");
-        
+        // console.log(prodPromises,"prodPromises");
+
         await Promise.all(prodPromises);
-        console.log(prodPromises,"prodPromises");
+        // console.log(prodPromises,"prodPromises");
         return products;
     } else {
         // console.log("inside if");
@@ -556,7 +556,7 @@ export const getUserWishlistData = async (userId = "") => {
 //     if (auth.currentUser?.uid) {
 //         uid = auth.currentUser?.uid;
 //         console.log(uid,"uid");
-        
+
 //     }
 //     if (cookie?.value) {
 //         uid = cookie?.value;
@@ -589,7 +589,7 @@ export const getUserWishlistData = async (userId = "") => {
 //             }
 //         });
 //         console.log(products,"prodPromises before");
-        
+
 //         await Promise.all(prodPromises);
 //         console.log(products,"prodPromises");
 //         return products;
@@ -597,99 +597,46 @@ export const getUserWishlistData = async (userId = "") => {
 //         return [];
 //     }
 // }
-export const getUserWishlistData2=async(cookieData) =>{
-        let cookie;
+export const getUserWishlistData2 = async (cookieData) => {
+    let cookie;
     if (cookieData) {
         cookie = cookieData;
     } else {
         cookie = { value: getCookie('uid') }
     }
-        let uid;
+    let uid;
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
-        console.log(uid,"uid");
-        
+        console.log(uid, "uid");
+
     }
     if (cookie?.value) {
         uid = cookie?.value;
     }
     try {
-
-
-        const wishlistCollRef =  collection(db, `users/${uid}/wishlist`);
+        const wishlistCollRef = collection(db, `users/${uid}/wishlist`);
         const querySnapshot = await getDocs(wishlistCollRef);
         const wishlists = [];
-    
         querySnapshot.forEach((doc) => {
-          wishlists.push(doc.id);
+            wishlists.push(doc.id);
         });
-    
         const productsCollRef = collection(db, 'products');
         const productPromises = wishlists.map(async (wishlistId) => {
-          const productDocRef = doc(productsCollRef, wishlistId);
-          const productDocSnapshot = await getDoc(productDocRef);
-    
-          if (productDocSnapshot.exists()) {
-            return productDocSnapshot.data();
-          }
-          return null;
+            const productDocRef = doc(productsCollRef, wishlistId);
+            const productDocSnapshot = await getDoc(productDocRef);
+
+            if (productDocSnapshot.exists()) {
+                return productDocSnapshot.data();
+            }
+            return null;
         });
-    
         const productsData = await Promise.all(productPromises);
-    
-        console.log('products', productsData);
-return productsData
-    //   const wishlistCollRef = collection(db, 'wishlists');
-  
-    //   const querySnapshot =  await getDocs(collection(db, `users/${uid}/wishlist`));
-
-    //   const wishlists = [];
-  
-    //   querySnapshot.forEach((doc) => {
-    //     wishlists.push(doc.id);
-    //   });
-
-    //   console.log(wishlists,"wishlists");
-      
-
-    //   const data2 = [];
-  
-//     //   const productsCollRef = collection(db, 'products');
-//       for (const id of wishlists) {
-//         const docRef = doc(db, "products", id);
-//                     const docSnap = await getDoc(docRef);
-//                     console.log("docSnap",docSnap.data());
-//                     const data=docSnap.data()
-//                     lo
-                    
-//         // const q = query(productsCollRef, where(db.app.options, '==', id));
-//         // const querySnapshot = await getDocs(q);
-// data2.push(data)
-//         // querySnapshot.forEach((productDoc) => {
-//         //   data.push(productDoc.data());
-//         // });
-//       }
-// console.log("data2 arr",data2);
-
-
-    // const productsData = [];
-
-    // const productsCollRef = collection(db, 'products');
-    // for (const wishlistId of wishlists) {
-    //   const productDocRef = doc(productsCollRef, wishlistId);
-    //   const productDocSnapshot = await getDoc(productDocRef);
-
-    //   if (productDocSnapshot.exists()) {
-    //     productsData.push(productDocSnapshot.data());
-    //   }
-    // }
-  
-    //   console.log('products', productsData);
-    //   return productsData
+        // console.log('products', productsData);
+        return productsData
     } catch (error) {
-      console.error('Error occurred while retrieving products:', error);
+        console.error('Error occurred while retrieving products:', error);
     }
-  }
+}
 
 
 export const getDocFromWidget = async (docId) => {
@@ -770,15 +717,36 @@ export async function getStoreDetails() {
     return (await getDoc(doc(db, 'settings', 'store'))).data();
 }
 
-export async function deleteUserAddress({ userId, docId }){
-    console.log(userId,docId);
+// export async function deleteUserAddress({ userId, docId }){
+//     console.log(userId,docId);
+//     try {
+//         if (userId && docId) {
+//             await deleteDoc(doc(db, "users", userId, "addresses", docId));
+//         } else {
+//             console.log("inside else");
+//         }
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+export async function fetchPrivacyData() {
+    const docRef = doc(db, "settings", "policies");
+    const docSnap = await getDoc(docRef);
+    // console.log(docSnap,"docSnap");
+
     try {
-        if (userId && docId) {
-            await deleteDoc(doc(db, "users", userId, "addresses", docId));
+        if (docSnap.exists()) {
+            const data = docSnap.data()
+            //  console.log("privacydata" ,data);
+
+            return data
         } else {
-            console.log("inside else");
+            console.log("No such document!");
+            // return false
         }
     } catch (error) {
         console.log(error);
+
     }
 }

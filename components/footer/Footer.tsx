@@ -28,36 +28,36 @@ const Footer = () => {
     {
       heading: "SHEIN STYLE STORES",
       subLinks: [
-        { name: "About" },
-        { name: "Careers" },
-        { name: "Influencer Program" },
-        { name: "Social Responsibility" },
-        { name: "Business Enquiries" },
-        { name: "Become a Partner" },
-        { name: "Fraud Alert" },
+        { name: "About",href:"about" },
+        { name: "Careers",href:"careers" },
+        { name: "Influencer Program",href:"influencer-program" },
+        { name: "Social Responsibility",href:"social-responsibility" },
+        { name: "Business Enquiries",href:"business-enquiries" },
+        { name: "Become a Partner",href:"bacome-a-partner" },
+        { name: "Fraud Alert",href:"fraud-alert" },
       ],
     },
     {
       heading: "HELP & SUPPORT",
       subLinks: [
-        { name: "FAQS" },
-        { name: "Happy Customers" },
-        { name: "Brand Feedback" },
-        { name: "Track Order" },
-        { name: "Size Guide" },
-        { name: "Loyalty Program" },
+        { name: "FAQS",href:"faqs"},
+        { name: "Happy Customers",href:"happy-customers" },
+        { name: "Brand Feedback",href:"brand-feedback" },
+        { name: "Track Order",href:"track-order" },
+        { name: "Size Guide",href:"size-guide" },
+        { name: "Loyalty Program",href:"loyality-program" },
 
       ],
     },
     {
       heading: "OUR SERVICE",
       subLinks: [
-        { name: "Return and Exchange" },
-        { name: "Privacy Policy" },
-        { name: "Terms & Conditions" },
-        { name: "Shipping Terms" },
-        { name: "Cookies Policy" },
-        { name: "Accessibility" },
+        { name: "Return and Exchange",href:"return-and-exchange" },
+        { name: "Privacy Policy",href:"privacy-policy" },
+        { name: "Terms & Conditions",href:"terms-and-conditions" },
+        { name: "Shipping Terms",href:"shipping-terms" },
+        { name: "Cookies Policy",href:"cookies-policy" },
+        { name: "Accessibility",href:"accessbility" },
       ],
     },
 
@@ -91,12 +91,14 @@ const Footer = () => {
                       {item.heading}
                       <div className="bg-primary   absolute bottom-[-12px] p-[1px] w-[55px] h-[2px]"></div>
                     </h3>
-                    <div className="flex flex-col gap-4 mt-4">
+                    <div className="flex flex-col gap-4 mt-4 cursor-pointer">
                       {item.subLinks.map((item: any, idx: number) => {
                         return (
-                          <p key={idx} className="text-sm text-[#555555] font-medium">
+                          <Link key={idx} href={`${item.href}`}>
+                          <p  className="text-sm text-[#555555] font-medium">
                             {item.name}
                           </p>
+                          </Link>
                         );
                       })}
                     </div>
@@ -109,18 +111,18 @@ const Footer = () => {
                   <div className="bg-primary   absolute bottom-[-12px] p-[1px] w-[55px] h-[2px]"></div>
                 </h3>
                 <div className="flex flex-col gap-4 mt-4 text-sm text-[#555555] font-semibold ">
-                  <div className="flex gap-3"><div><FlatIcon className="flaticon-address text-2xl font-bold text-secondary " /></div>
+                  <div className="flex gap-3 cursor-pointer"><div><FlatIcon className="flaticon-address text-2xl font-bold text-secondary " /></div>
                   <p>
                     {storeData?.storeAddress?.address}
                     {/* 3517 W. Gray St. Utica, Pennsylvania 57867 */}
                     </p>
                   </div>
-                  <div className="flex gap-3"><div><FlatIcon className="flaticon-contact text-2xl font-bold text-secondary" /></div><p>
+                  <div className="flex gap-3 cursor-pointer"><div><FlatIcon className="flaticon-contact text-2xl font-bold text-secondary" /></div><p>
                     {/* (217) 555-0113, (217) 555-0113 */}
                     {storeData?.storePhone}
                     </p></div>
-                  <div className="flex gap-3"><div><FlatIcon className="flaticon-contact-1 text-2xl font-bold text-secondary" /></div><p>support@shein.com</p></div>
-                  <div className="text-secondary text-base font-semibold"><span>Follow us on social media get</span> <span className="text-primary">1000 Bonus </span>Points *<span></span></div>
+                  <div className="flex gap-3 cursor-pointer"><div><FlatIcon className="flaticon-contact-1 text-2xl font-bold text-secondary" /></div><p>support@shein.com</p></div>
+                  <div className="text-secondary text-base font-semibold cursor-pointer"><span>Follow us on social media get</span> <span className="text-primary">1000 Bonus </span>Points *<span></span></div>
                   <div className="flex gap-4">
                     <Link href={storeData?storeData?.facebookUrl:""}>
                     <div><Image src={facebookImg} alt="" /></div>
@@ -142,7 +144,7 @@ const Footer = () => {
               <div className="flex md:items-center md:flex-row flex-col gap-y-4 justify-between gap-x-3">
                 <div className="flex flex-col">
                   <div className=" md:text-2xl sm:text-xl text-lg font-semibold text-secondary mb-3"><h2>We Accept</h2></div>
-                  <div className="flex items-center lg:flex-nowrap flex-wrap md:gap-x-6 gap-x-4 gap-y-2 ">
+                  <div className="flex items-center lg:flex-nowrap flex-wrap md:gap-x-6 gap-x-4 gap-y-2 cursor-pointer">
                     {pyamentModeImages.map((item: any, idx: number) => {
                       return <div key={idx}><Image src={item.image} alt="" /></div>
                     })}
@@ -150,7 +152,7 @@ const Footer = () => {
                 </div>
                 <div className="flex flex-col">
                   <div className=" md:text-2xl sm:text-xl text-lg font-semibold text-secondary mb-3 md:text-end"><h2>Delivery Partners</h2></div>
-                  <div className="flex items-center md:justify-end lg:flex-nowrap flex-wrap md:gap-x-6 gap-x-4  gap-y-2 ">
+                  <div className="flex items-center md:justify-end lg:flex-nowrap flex-wrap md:gap-x-6 gap-x-4  gap-y-2 cursor-pointer">
                     {images.map((item: any, idx: number) => {
                       return <div key={idx}><Image src={item.image} alt="" /></div>
                     })}
@@ -167,8 +169,8 @@ const Footer = () => {
             <div className="">
               <div className="text-secondary md:text-base text-sm font-medium mb-3">Download App and Get 10% Extra Discount</div>
               <div className="flex sm:flex-row flex-row items-center sm:gap-x-6 gap-x-2 gap-y-4">
-                <div><Image src={playStoreImg} alt="" height={1000} width={1000} className="aspect-auto sm:w-[170px] w-[150px] h-auto" /></div>
-                <div><Image src={appStoreImg} alt="" height={1000} width={1000} className="aspect-auto sm:w-[170px] w-[150px]  h-auto" /></div>
+                <div className="cursor-pointer"><Image src={playStoreImg} alt="" height={1000} width={1000} className="aspect-auto sm:w-[170px] w-[150px] h-auto" /></div>
+                <div className="cursor-pointer"><Image src={appStoreImg} alt="" height={1000} width={1000} className="aspect-auto sm:w-[170px] w-[150px]  h-auto" /></div>
               </div>
             </div>
           </div>

@@ -61,11 +61,13 @@ function priceSlabsCheck(cartObj, product) {
 
     return cartObj;
 }
+
+
 function getCoverPic(product:any, index:any) {
-    console.log("product",product,"index",index);
+    // console.log("product",product,"index",index);
     
     const variant = product.priceList[index];
-    console.log(variant,"variant");
+    // console.log(variant,"variant");
     
     return 'images' in variant && variant.images.length ? variant.images[0] : product.coverPic;
 }
@@ -115,7 +117,7 @@ async function getUserCartDetails(cookie) {
 
 
 async function updatedCartFromBackend(cartData: any[]) {
-    console.log(cartData, "from updatedCartFromBackend");
+    // console.log(cartData, "from updatedCartFromBackend");
 
     return new Promise<any[]>(async (resolve, reject) => {
         try {
@@ -123,7 +125,7 @@ async function updatedCartFromBackend(cartData: any[]) {
             let latestProducts = [];
             let updatedCartPdts = [];
             for (let index = 0; index < cartProducts.length; index++) {
-                console.log(cartProducts[index].productId,"id");
+                // console.log(cartProducts[index].productId,"id");
                 
                 // let product = await this.afs.collection('products').doc(cartProducts[index].productId).valueChanges().pipe(first()).toPromise();
                 const product = await getDoc(doc(db, 'products', cartProducts[index].productId)).then((val => {
@@ -139,7 +141,7 @@ async function updatedCartFromBackend(cartData: any[]) {
 
             }
             if (latestProducts.length) {
-                console.log({latestProducts},"latestProducts");
+                // console.log({latestProducts},"latestProducts");
                 updatedCartPdts = await getUpdatedPdts(latestProducts, cartProducts);
             }
           
@@ -157,7 +159,7 @@ async function getUpdatedPdts(pdts, cartPdts) {
     return new Promise<any[]>(async (resolve) => {
         for (let c of cartPdts) {
             const productIndex = pdts.findIndex(p => p.id === c.productId);
-            console.log("fgfgfh-",pdts[productIndex]);
+            // console.log("fgfgfh-",pdts[productIndex]);
             
             if (productIndex !== -1) {
                 const dbProduct = pdts[productIndex];

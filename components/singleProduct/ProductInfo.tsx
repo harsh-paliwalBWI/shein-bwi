@@ -78,17 +78,21 @@ const ProductInfo = ({ params }: any) => {
   });
   const [prodTab, setProdTab] = useState(product?.priceList[0])
   const [colorTab,setColorTab]=useState(product?.options&&product?.options[0])
+  const [newProduct,setNewProduct]=useState("")
   // console.log(product, "product from single product---------->");
   //   console.log(product?.images, "images---------->");
   // console.log(product?.searchKeywords,"product?.searchKeywords");
   // console.log(params.slug,"params slug");
 
+
+
+  
   const { data: similarData } = useQuery({
     queryKey: ["product", params?.slug, "similar-product"],
     queryFn: () =>
       fetchSimilarProductsForCart({ searchKeywords: product?.searchKeywords }),
   });
-  // console.log(similarData,"similarData--------->");
+ 
 
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = product ? useOnScreen(ref) : false;
@@ -98,24 +102,15 @@ const ProductInfo = ({ params }: any) => {
   }, []);
   const [quantity, setQuantity] = useState((product && product?.minQty) || 1);
   const [variant, setVariant] = useState(0);
-  // const similarDataHandler=()=>{
-  // if(similarData){
-  //   setSimilarProductData(similarData)
-  //   console.log(similarData,"similarDataHandler");
-  // }
-  // }
-  //   useEffect(()=>{
-  // similarDataHandler()
-  //   },[similarProductData])
+  const [option1, setOption1] = useState("");
+  const [option2, setOption2] = useState("");
+
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
     refetchInterval: 2000,
-    // keepPreviousData: true,
-    // enabled: isClient,
   });
 
-  // console.log(userData, "user data");
 
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlistData"],
@@ -124,16 +119,43 @@ const ProductInfo = ({ params }: any) => {
   })
   const [tabImage, setTabImage] = useState(getImage(product, 0))
   function getImage(product: any, idx: number) {
-    // console.log(product)
-    // console.log("gggggggggg")
     if (product?.images && product?.images[idx]?.url) {
       return product?.images[idx]?.url;
     }
     return constant?.errImage;
   }
-  async function addItemToCart() {
-    console.log("START");
+  // useEffect(()=>{
+  //   console.log(prodTab,"prodTab");
     
+  //   },[])
+
+  //   useEffect(()=>{
+  //     console.log(prodTab,"prodTab changes");
+      
+  //     },[prodTab])
+
+  function getSelectedVariant() {
+    if (!option1 && !option2) {
+      setVariant(0);
+      setOption1(product.priceList[0]?.weight.split("/")[0]?.trim());
+      setOption2(product.priceList[0]?.weight.split("/")[1]?.trim());
+      return;
+    } else {
+      let weight = `${option1} / ${option2}`;
+      let index = product?.priceList?.findIndex((x) => x.weight === weight);
+      if (index !== -1) {
+        setVariant(index);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (product && product.isPriceList) {
+      getSelectedVariant();
+    }
+  }, [option1, option2]);
+  async function addItemToCart() {
+    // console.log("START");
     let data: any = {
       product,
       productID: product?.id,
@@ -146,6 +168,7 @@ const ProductInfo = ({ params }: any) => {
         product: product,
         quantity: quantity,
         index: data.index,
+      
       })
       : getCartObj({
         product: product,
@@ -167,6 +190,8 @@ const ProductInfo = ({ params }: any) => {
       index: variant,
       isPriceList: product?.isPriceList,
     };
+    // console.log(data);
+    
     dispatch(removeFromCart(data));
   }
 
@@ -203,24 +228,11 @@ const ProductInfo = ({ params }: any) => {
               <div className="flex lg:flex-row flex-col w-full  sm:gap-16 gap-6">
                 <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  ">
                   <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] sm:h-[300px] h-auto ">
-                    {/* <Image
-                      src={getImage(product, 0)}
-                      // src={secImg}
-                      alt={product?.prodName || ""}
-                      width={1000}
-                      height={1000}
-                      // style={{ width: "100%", height: "595px" }}
-                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
-                    /> */}
-
-
                     <Image
                       src={tabImage}
-                      // src={secImg}
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}
-                      // style={{ width: "100%", height: "595px" }}
                       className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
                     />
                   </div>
@@ -235,11 +247,9 @@ const ProductInfo = ({ params }: any) => {
                   <div className="flex sm:flex-row flex-col gap-y-2  gap-x-4 sm:items-center ">
                     <h2 className=" md:text-2xl text-lg  sm:text-center text-start text-secondary font-bold  ">
                       {constant?.currency}{" "}
-                      {product?.isPriceList ? prodTab.discountedPrice : parseFloat(product?.prodPrice).toFixed(2)}
+                      {product?.isPriceList ? prodTab.price : parseFloat(product?.prodPrice).toFixed(2)}
                       {/* {parseFloat(product?.prodPrice).toFixed(2)} */}
                     </h2>
-
-
                     {/* reviews code start  */}
                     {/* <div className="flex items-center gap-2 text-start ">
                       <div className="text-primary text-xl flex ">
@@ -293,7 +303,7 @@ const ProductInfo = ({ params }: any) => {
                               className="  border border-[#E6DBD7] p-1 rounded-full flex justify-center items-center cursor-pointer"
                             >
                              
-                              <div className={`h-[25px] w-[25px] rounded-full bg-[${item.color.code}]`}></div>
+                              <div className={`h-[25px] w-[25px] rounded-full `} style={{backgroundColor:`${item.color.code}`}}></div>
                             </div>
                           );
                         })}
@@ -323,7 +333,11 @@ const ProductInfo = ({ params }: any) => {
                     {
                       product.priceList && product.priceList.length > 0 && <div className="flex gap-3 text-[#555555] text-sm font-semibold ">
                         {product.priceList && product.priceList.map((item: any, idx: number) => {
-                          return <div onClick={() => setProdTab(item)} className={`sm:px-3 px-3 sm:py-2 py-2 border  cursor-pointer ${prodTab===item?"border-secondary":"border-[#C6C6C6]"}`}>
+                          return <div key={idx} onClick={() => {
+                            setProdTab(item)
+                            setVariant(idx)
+                            setNewProduct({...product,})
+                          }} className={`sm:px-3 px-3 sm:py-2 py-2 border  cursor-pointer ${prodTab===item?"border-secondary":"border-[#C6C6C6]"}`}>
                             <h2 className="sm:text-sm text-xs font-normal">{item.weight}</h2>
                           </div>
                         })}
@@ -358,7 +372,7 @@ const ProductInfo = ({ params }: any) => {
                       </div>
 
                       {wishlistData && wishlistData.length > 0 && wishlistData.includes(`${product?.id}`) ?
-                        <div onClick={() => removeFromWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 ">
+                        <div onClick={() => removeFromWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 cursor-pointer">
                           <p>
                             <FlatIcon icon={"flaticon-heart-fill text-2xl"} />
                           </p>
@@ -367,7 +381,7 @@ const ProductInfo = ({ params }: any) => {
                           </h3>
                         </div>
                         :
-                        <div onClick={() => moveToWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 ">
+                        <div onClick={() => moveToWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 cursor-pointer">
                           <p>
                             <FlatIcon icon={"flaticon-heart text-2xl"} />
                           </p>
@@ -377,14 +391,7 @@ const ProductInfo = ({ params }: any) => {
                         </div>
                       }
 
-                      {/* <div onClick={()=>moveToWishListHandler({userId:userData?.id,productId:product?.id})} className="flex items-center gap-2 ">
-                        <p>
-                          <FlatIcon icon={"flaticon-heart text-2xl"} />
-                        </p>
-                        <h3 className="text-secondary font-semibold sm:text-sm text-xs">
-                          Add to Wishlist
-                        </h3>
-                      </div> */}
+                   
                     </div>
                     {/* <div className="flex items-center gap-2 text-sm font-bold  mb-3">
                       <div className="">
@@ -475,33 +482,12 @@ const ProductInfo = ({ params }: any) => {
                       {/* old code end  */}
                     </div>
                   </div>
-                  {/* <h2 className="lg:hidden sm:text-2xl text-xl font-bold">
-                    {constant?.currency}{" "}
-                    {parseFloat(product?.prodPrice).toFixed(2)}
-                  </h2> */}
+               
                   <div
                     className="flex justify-between lg:flex w-full "
                     ref={ref}
                   >
-                    {/* <div className=" w-full flex gap-x-3 text-xs font-bold">
-                      <Link href={"/cart"} className="bg-[#EBEDF1] w-[50%] text-center py-4 cursor-pointer">
-                      <div className="">
-                        <button>ADD TO BAG</button>
-                        </div>
-                      </Link>
-                      <div className="bg-secondary text-white w-[50%] text-center py-4 cursor-pointer"><button>BUY NOW</button></div>
-                    </div> */}
-
-                    {/* previous button with functionality start */}
-                    {/* {isClient &&
-                      cart?.filter((item) => item?.productId === product?.id)
-                        .length == 0 && (
-                        <div className="flex-1 lg:flex-none w-[48%] h-14 bg-black rounded-br-[10px] flex justify-center items-center py-2 border  cursor-pointer">
-                          <button className="text-white text-lg font-normal">
-                            "Add To Wishlist"
-                          </button>
-                        </div>
-                      )} */}
+            
                     <div className="w-full flex gap-3 ">
                       {isClient && (
                         <div
@@ -608,7 +594,7 @@ const ProductInfo = ({ params }: any) => {
                           </h2>
                           <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
                         </Disclosure.Button>
-                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
+                        <Disclosure.Panel className="  pt-0 pb-2 text-base text-gray-500">
                           <div
                             dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
                             className="sm:text-sm text-xs  mb-7 mt-4" />
@@ -616,7 +602,6 @@ const ProductInfo = ({ params }: any) => {
                       </>
                     )}
                   </Disclosure>
-
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
                   {/* <div className="flex items-center justify-between sm:text-base font-medium text-xs  my-5 text-gray-400">
                     <h3>Reviews & Ratings</h3>
@@ -633,34 +618,14 @@ const ProductInfo = ({ params }: any) => {
                           <span>Reviews & Ratings</span>
                           <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
                         </Disclosure.Button>
-                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
+                        <Disclosure.Panel className="  pt-0 pb-2 text-base text-gray-500">
                           gfjh
                         </Disclosure.Panel>
                       </>
                     )}
                   </Disclosure>
                   <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
-                  {/* <div className="flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400">
-                    <h3>Reviews & Ratings</h3>
-                    <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
-                  </div> */}
-                  <Disclosure >
-                    {({ open }) => (
-                      <>
-                        <Disclosure.Button
-                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${open ? "font-semibold" : ""
-                            } `}
-                        >
-                          <span>Reviews & Ratings</span>
-                          <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
-                          gfjh
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                  <div className="w-full bg-[#CCCCCC] h-[1px]"></div>
+               
 
                   {/* old code start  */}
                   {/* <div className="flex gap-2 flex-col">
@@ -677,61 +642,7 @@ const ProductInfo = ({ params }: any) => {
                 </div>
               </div>
             </div>
-            {/* old code start  */}
-            {/* <div className="border border-primary ">
-              <div className="flex flex-col gap-[2rem] ">
-                <div className="flex justify-between">
-                  <div
-                    className={`font-medium text-xl md:text-2xl leading-tight  ${
-                      selectedTab === "description"
-                        ? "text-red-600 underline underline-offset-4"
-                        : "text-[#555555]"
-                    }`}
-                    onClick={() => setSelectedTab("description")}
-                  >
-                    Description
-                  </div>
-                  <div
-                    className={`font-medium text-xl md:text-2xl leading-tight  ${
-                      selectedTab === "additionalInfo"
-                        ? "text-red-600 underline underline-offset-4"
-                        : "text-[#555555]"
-                    }`}
-                    onClick={() => setSelectedTab("additionalInfo")}
-                  >
-                    Additional Information
-                  </div>
-                  <div
-                    className={`font-medium text-xl md:text-2xl leading-tight  ${
-                      selectedTab === "review"
-                        ? "text-red-600 underline underline-offset-4"
-                        : "text-[#555555]"
-                    }`}
-                    onClick={() => setSelectedTab("review")}
-                  >
-                    Review
-                  </div>
-                </div>
-                <div className="text-sm font-normal leading-[27px] mt-2 md:mt-4">
-                  {selectedTab === "description" && (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
-                    />
-                  )}
-                  {selectedTab === "additionalInfo" && (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: product?.prodaddinfo }}
-                    />
-                  )}
-                  {selectedTab === "review" && (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: product?.prodreview }}
-                    />
-                  )}
-                </div>
-              </div>
-            </div> */}
-            {/* old code end  */}
+           
             <div className=" w-full h-[1px] border-b border-b-[#CCCCCC] border-dashed md:my-20 my-10"></div>
           </div>
           <div>
@@ -748,40 +659,7 @@ const ProductInfo = ({ params }: any) => {
               from="info"
             />
           </div>
-          {/* old code start  */}
-          {/* <Transition
-            show={!isVisible}
-            enter="transition-opacity duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-            className="lg:hidden"
-          >
-            <div className="fixed bottom-0 w-full bg-white py-2 px-body">
-              <div className="flex gap-2">
-                <div className="flex-1 flex border border-black p-px">
-                  <div className="bg-gray-100 flex-[0.4] flex justify-center items-center text-lg font-bold">
-                    -
-                  </div>
-                  <div className="flex-1 flex justify-center items-center">
-                    <p className="">{quantity}</p>
-                  </div>
-                  <div className="bg-gray-100 flex-[0.4] flex justify-center items-center text-lg font-bold">
-                    +
-                  </div>
-                </div>
-                <div
-                  className="flex-1 bg-highlight flex justify-center items-center py-2 border border-[#a9e1fc]"
-                  onClick={addItemToCart}
-                >
-                  <button className="text-white font-bold">Add To Cart</button>
-                </div>
-              </div>
-            </div>
-          </Transition> */}
-          {/* old code end  */}
+      
         </div>
       )}
     </>

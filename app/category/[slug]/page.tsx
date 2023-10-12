@@ -1,4 +1,3 @@
-"use client"
 import React from 'react'
 import SubCategoryProductComponent from '../../../components/subCategoryProductComponent/SubCategoryProductComponent'
 import Hydrate from "../../../utils/hydrate.client";

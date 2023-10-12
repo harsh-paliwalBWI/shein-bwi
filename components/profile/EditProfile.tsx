@@ -84,7 +84,7 @@ const EditProfile = () => {
         <label className="text-[#555555] font-medium text-sm">
           Phone No.
         </label>
-        <input className="py-3 border-[1px] border-[#838383] outline-0 px-3 bg-gray-200"
+        <input className="py-3 border-[1px]  outline-0 px-3 bg-gray-200"
           value={isClient && state?.phone} disabled 
           // onChange={(e) => setState({ ...state, phone: e.target.value })} 
           />

@@ -21,7 +21,7 @@ const CategoryProductComponent = ({ params }) => {
 
   return (
     <div className="flex flex-col px-body   h-full ">
-      <div className="w-full flex flex-col lg:flex-row gap-x-4 gap-y-4 ">
+      <div className="w-full flex flex-col lg:flex-row gap-x-4 gap-y-4  mb-20">
         <FilterSection />
         {/* <div className="w-full h-1 bg-[red]"></div> */}
         <hr />
@@ -60,9 +60,10 @@ const CategoryProductComponent = ({ params }) => {
           </div>
         </div>
       </div>
-      <div className="text-center flex justify-center items-center md:my-20 my-10   ">
+      {/* <div className="text-center flex justify-center items-center md:my-20 my-10   ">
         <button className="flex items-center gap-3 border-[2px] border-secondary py-3 px-7">
-          <span><FlatIcon className="flaticon-reload text-secondary text-xl font-bold" /></span><span className="text-sm font-semibold">Load More</span></button></div>
+          <span><FlatIcon className="flaticon-reload text-secondary text-xl font-bold" /></span><span className="text-sm font-semibold">Load More</span></button>
+          </div> */}
     </div>
   );
 };

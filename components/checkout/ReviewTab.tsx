@@ -69,17 +69,17 @@ useEffect
           <h4 className="font-bold text-black xl:text-lg text-lg  ">Billing Details</h4>
           <div className="flex flex-col gap-1 ">
             <p className="text-secondary text-base font-semibold">
-              {/* {addressToDeliver?.name} */}
-              Theresa Webb
+              {addressToDeliver?.name}
+              {/* Theresa Webb */}
             </p>
             <p className="text-secondary text-base font-semibold">
-              {addressToDeliver?.address1}{" "}{addressToDeliver?.address2} 
+              {addressToDeliver?.address}
               {/* 2972 Westheimer Rd. Santa Ana, Illinois 85486 */}
             </p>
             <p className="text-secondary text-base font-semibold">
               {/* {addressToDeliver?.phoneNo} */}
-              (319) 555-0115
-              {/* {addressToDeliver?.phoneNo} */}
+              {/* (319) 555-0115 */}
+              {addressToDeliver?.phoneNo}
             </p>
           </div>
           <div className=" "><button className="bg-secondary text-white flex items-center gap-1 py-1 px-7 xl:text-base text-base font-semibold"><span><FlatIcon icon={"flaticon-plus-1 text-[10px] font-bold"} /></span><span>Add Address</span></button></div>
@@ -97,18 +97,18 @@ useEffect
                 )[0]?.name
               }
             </div>
-            <div className="">
+            {/* <div className="">
               <h3 className="font-semibold xl:text-sm text-sm mb-1">Card Number</h3>
               <h3 className="text-[#999999] xl:text-text-sm text-sm font-semibold">1232 * * * * * * * * 2762 (Visa)</h3>
-            </div>
-            <div className="">
+            </div> */}
+            {/* <div className="">
               <h3 className="font-semibold xl:text-sm text-sm mb-1">Card Holder</h3>
               <h3 className="text-[#999999] xl:text-text-sm text-sm font-semibold">Arjun Rawat</h3>
-            </div>
-            <div className="">
+            </div> */}
+            {/* <div className="">
               <h3 className="font-semibold xl:text-sm text-sm mb-1">Expired</h3>
               <h3 className="text-[#999999] xl:text-text-sm text-sm font-semibold">May 2025</h3>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

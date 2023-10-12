@@ -27,3 +27,16 @@ export const paymentMethods = [
 
 export const tabs = ["Shipping", "Payment", "Review"];
 
+export function checkIfItemExistInCart(cart, product) {
+    return cart?.filter((item) => item?.productId === product?.id)
+        .length !== 0;
+}
+
+export function getProductIndexFromCart(cart, product) {
+    return cart.findIndex((item) => item?.productId === product?.id);
+}
+
+export function getProductFromCart(cart, product) {
+    return cart?.filter((item) => item?.productId === product?.id)
+        .length !== 0 ? cart?.filter((item) => item?.productId === product?.id)[0] : null;
+}

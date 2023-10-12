@@ -10,14 +10,22 @@ import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserData } from "../../utils/databaseService";
-import { db } from "../../config/firebase-config";
+import { db,auth } from "../../config/firebase-config";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MdModeEdit } from "react-icons/md"
 import {CiEdit} from "react-icons/ci"
 import {RiEdit2Fill} from "react-icons/ri"
+import { signOut } from "firebase/auth";
+import { toast } from "react-toastify";
+// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+
 
 const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
   // console.log(userId,"user id");
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -61,6 +69,25 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
 
     }
   }
+
+  async function handleLogout() {
+    signOut(auth)
+      .then(async () => {
+        toast.success("Logged out");
+        await axios.get(`/api/logout`);
+        queryClient.invalidateQueries({ queryKey: ["userData"] });
+      
+        // Sign-out successful.
+        router.replace("/");
+        queryClient.refetchQueries({ queryKey: ["userData"] });
+      })
+      .catch((error) => {
+        // An error happened.
+        toast.error("cannot Logout at the moment");
+      });
+  }
+
+
   async function uploadTask(userPic: any) {
     // setLoading(true)
     // console.log(userPic,"FROM uploadTask");
@@ -135,7 +162,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
             <div><FlatIcon icon={"flaticon-share  font-normal text-2xl"} /></div><h4 className=" font-semibold text-sm">Refer and Earn</h4>
           </div>
         </Link>
-        <div className='flex gap-3 items-center   py-4 px-6 cursor-pointer text-secondary hover:text-primary'>
+        <div onClick={()=>handleLogout()} className='flex gap-3 items-center   py-4 px-6 cursor-pointer text-secondary hover:text-primary'>
           <div><FlatIcon icon={"flaticon-logout  font-normal text-2xl"} /></div><h4 className=" font-semibold text-sm">Logout</h4>
         </div>
 

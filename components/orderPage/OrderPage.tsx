@@ -21,7 +21,7 @@ const OrderPage = () => {
         // enabled: isClient,
     })
 
-      console.log(orderList,"orderList");
+    //   console.log(orderList,"orderList");
 
     return (
         <>
@@ -57,7 +57,7 @@ const OrderPage = () => {
                                                         </div>
                                                         <div className='flex items-center gap-x-2'>
                                                             <div className='h-[10px] w-[10px] rounded-full bg-[#6AC113]'></div>
-                                                            <div><h3 className='text-gray-500 md:text-sm text-xs font-semibold'>Delivered on 19 Oct, 2022</h3></div>
+                                                            <div><h3 className='text-gray-500 md:text-sm text-xs font-semibold '>{orders?.status}</h3></div>
                                                         </div>
 
 

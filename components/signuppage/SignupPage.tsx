@@ -275,7 +275,8 @@ const Signup: FC<Props> = () => {
             }}><button>Ok</button></div>
           </div>
         </div>
-      </div>}
+      </div>
+      }
     </>
   );
 };

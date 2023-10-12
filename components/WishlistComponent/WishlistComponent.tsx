@@ -25,7 +25,7 @@ const WishlistComponent = ({ cookie }) => {
     // enabled: isClient,
   });
 
-  console.log(userData,"user");
+  // console.log(userData,"user");
   
   // const {data:wishlistData}=useQuery({
   //   queryKey: ["wishlistData"],
@@ -40,7 +40,7 @@ const {data:wishlistData2}=useQuery({
   queryFn: () => getUserWishlistData2(null),
   refetchInterval: 2000,
 })
-console.log(wishlistData2,"wishlistData2-------");
+// console.log(wishlistData2,"wishlistData2-------");
 
 
   useEffect(() => {
