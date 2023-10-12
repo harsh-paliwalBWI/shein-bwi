@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import CategoryGrid from "./CategoryGrid";
-import {getDocFromWidget} from "../../../utils/databaseService"
+import { getDocFromWidget } from "../../../utils/databaseService";
 import FlatIcon from "../../flatIcon/flatIcon";
 
 const CategoriesSlider = ({ section, myKey }) => {
@@ -20,21 +20,23 @@ const CategoriesSlider = ({ section, myKey }) => {
   //   queryKey: ["homeSections"],
   //   queryFn: getDocFromWidget(section?.widgetID),
   // })
-  const {data:widgetData}=useQuery({
-    queryKey:["widgetDoc"],
-    queryFn:()=>getDocFromWidget(section?.widgetID),
-    refetchInterval:2000
-  })
+  const { data: widgetData } = useQuery({
+    queryKey: ["widgetDoc"],
+    queryFn: () => getDocFromWidget(section?.widgetID),
+    refetchInterval: 2000,
+  });
 
   // console.log(widgetData,"widgetData");
-  
+
   // console.log(homeData.data,"homedata from CategoriesSlider ");
-  const data=homeData?.data?.filter((val: any) => val?.id === section?.widgetID)
+  const data = homeData?.data?.filter(
+    (val: any) => val?.id === section?.widgetID
+  );
   // console.log(homeData.data,"home data");
-  
+
   // console.log(data,"data-------------------->");
-  
-// console.log(section,"section");
+
+  // console.log(section,"section");
 
   const slider = useRef<any>(null);
   const settings = {
@@ -104,13 +106,12 @@ const CategoriesSlider = ({ section, myKey }) => {
   const arrowButtonClass =
     "absolute top-0 bottom-0 my-auto  w-10 h-10 block text-white cursor-pointer z-20";
 
-// console.log(widgetData&&widgetData[0]?.style?.itemStyle?.style,"style");
+  // console.log(widgetData&&widgetData[0]?.style?.itemStyle?.style,"style");
 
+  // if(widgetData&&widgetData[0]?.style?.itemStyle?.style!=="one"){
+  //    return <CategoryGrid section={section}/>
 
-// if(widgetData&&widgetData[0]?.style?.itemStyle?.style!=="one"){
-//    return <CategoryGrid section={section}/>
-     
-// }
+  // }
 
   return (
     <>
@@ -133,7 +134,7 @@ const CategoriesSlider = ({ section, myKey }) => {
                   className={`${arrowButtonClass} left-0 lg:-left-4 flex justify-center items-center `}
                   onClick={() => slider.current?.slickPrev()}
                 >
-                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary"/>
+                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary" />
                   {/* L */}
                 </button>
               </div>
@@ -168,6 +169,11 @@ const CategoriesSlider = ({ section, myKey }) => {
                                 cat={cat}
                                 heading={cat?.name}
                                 slug={cat?.slug?.name}
+                                path={
+                                  cat?.isSubcategories
+                                    ? `/category/${cat?.slug?.name}`
+                                    : `/shop/category/${cat?.slug?.name}`
+                                }
                               />
                             </div>
                           );
@@ -181,21 +187,17 @@ const CategoriesSlider = ({ section, myKey }) => {
                   className={`${arrowButtonClass} right-0 lg:-right-4 flex justify-center items-center -rotate-180 `}
                   onClick={() => slider.current?.slickNext()}
                 >
-                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary"/>
+                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary" />
                   {/* R */}
                 </button>
               </div>
             </div>
 
             {/* category grid start  */}
-{/* <div>
+            {/* <div>
   <CategoryGrid section={section}/>
 </div> */}
-
           </div>
-
-
-
         )}
     </>
   );

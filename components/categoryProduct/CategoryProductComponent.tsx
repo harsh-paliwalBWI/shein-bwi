@@ -6,18 +6,23 @@ import FilterSection from "./filterSections";
 import ProductCard from "./productCard";
 import { useMediaQuery } from "@mui/material";
 import FlatIcon from "../flatIcon/flatIcon";
-import listImg from "../../images/list 1.svg"
-import gridImg from "../../images/grid 1.svg"
-import Image from "next/image"
+import listImg from "../../images/list 1.svg";
+import gridImg from "../../images/grid 1.svg";
+import Image from "next/image";
 
-const CategoryProductComponent = ({ params }) => {
+const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
   const matches = useMediaQuery("(min-width:1024px)");
   const { data: categoryProducts } = useQuery({
-    queryKey: ["category-product", params?.slug],
-    queryFn: () => fetchCategoryProducts(params?.slug,"category-product"),
+    queryKey: queryKey,
+    queryFn: () =>
+      fetchCategoryProducts({
+        slug: params?.slug,
+        subCatSlug: params?.subCategorySlug,
+        subSubCatSlug: params?.subSubCategorySlug,
+      }),
   });
   // console.log(categoryProducts,"category Products");
-// console.log(params,"from cat page");
+  // console.log(params,"from cat page");
 
   return (
     <div className="flex flex-col px-body   h-full ">
@@ -30,7 +35,7 @@ const CategoryProductComponent = ({ params }) => {
             <>
               <div className="flex justify-between mt-4 mb-5 items-center border border-[#EEF0F5] px-5 py-4">
                 <h4 className=" text-sm font-medium  ">
-                    {categoryProducts?.length}  Items Found
+                  {categoryProducts?.products?.length} Items Found
                 </h4>
                 <div className="flex gap-20 items-center">
                   {/* <h4 className="font-bold text-lg">Sorted By:</h4> */}
@@ -42,10 +47,37 @@ const CategoryProductComponent = ({ params }) => {
                     </select>
                   </div> */}
                   <h3 className="text-sm font-medium"> Best Selling</h3>
-                  <div><FlatIcon className="flaticon-arrow-down text-xs font-bold text-secondary" /></div>
+                  <div>
+                    <FlatIcon className="flaticon-arrow-down text-xs font-bold text-secondary" />
+                  </div>
                   <div className="flex items-center gap-7">
-                  <div><Image src={listImg} alt="" width={1000} height={1000} style={{aspectRatio:"auto",height:"24px",width:"24px"}}/></div>
-                  <div><Image src={gridImg} alt="" className="" width={1000} height={1000} style={{aspectRatio:"auto",height:"24px",width:"24px"}}/></div>
+                    <div>
+                      <Image
+                        src={listImg}
+                        alt=""
+                        width={1000}
+                        height={1000}
+                        style={{
+                          aspectRatio: "auto",
+                          height: "24px",
+                          width: "24px",
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Image
+                        src={gridImg}
+                        alt=""
+                        className=""
+                        width={1000}
+                        height={1000}
+                        style={{
+                          aspectRatio: "auto",
+                          height: "24px",
+                          width: "24px",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -54,15 +86,22 @@ const CategoryProductComponent = ({ params }) => {
           )}
           <div className="w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4 grid sm:gap-y-8 gap-y-4   md:mb-10  ">
             {categoryProducts &&
-              categoryProducts?.map((product: any) => {
-                return <ProductCard product={product} key={product?.id} mx={2.5} />;
+              categoryProducts?.products?.map((product: any) => {
+                return (
+                  <ProductCard product={product} key={product?.id} mx={2.5} />
+                );
               })}
           </div>
         </div>
       </div>
       <div className="text-center flex justify-center items-center md:my-20 my-10   ">
         <button className="flex items-center gap-3 border-[2px] border-secondary py-3 px-7">
-          <span><FlatIcon className="flaticon-reload text-secondary text-xl font-bold" /></span><span className="text-sm font-semibold">Load More</span></button></div>
+          <span>
+            <FlatIcon className="flaticon-reload text-secondary text-xl font-bold" />
+          </span>
+          <span className="text-sm font-semibold">Load More</span>
+        </button>
+      </div>
     </div>
   );
 };

@@ -229,5 +229,53 @@ export async function fetchSimilarProductsForCart({ cart = null, searchKeywords 
 }
 
 
+export async function fetchProductsForShopPage({ catId, filters }) {
+    const client: any = await typesense_initClient();
+    if (client) {
+        let searchParameters = {
+            q: '*',
+            query_by: 'prodName, categories',
+            filter_by: `categories:=[${catId}}]`
+        };
+
+        if (filters?.price) {
+            searchParameters.filter_by += ` && discountedPrice:>${filters?.price[0]} && discountedPrice:<${filters?.price[1]}`
+        }
+
+        // console.log("SEARCH PARAMS", searchParameters, filters);
+
+
+        let projectId = firebaseConfig?.projectId;
+        try {
+            const data = await client
+                .collections(`${projectId}-products`)
+                .documents()
+                .search(searchParameters);
+
+            if (data && data?.hits) {
+                let arr = [];
+                for (const prod of data?.hits) {
+                    let priceList = [];
+                    if (prod?.document?.priceList && prod?.document?.priceList?.length > 2) {
+                        priceList = JSON.parse(prod?.document?.priceList)
+                    }
+                    if (prod?.document?.status) {
+                        arr.push({ ...prod?.document, priceList })
+                    }
+                }
+
+                return arr;
+            }
+            return data;
+        } catch (error) {
+            console.log(error, "error ISIDE CATCH");
+            return [];
+        }
+    }
+
+    return []
+}
+
+
 // new code end 
 

@@ -31,14 +31,14 @@ const CartItemCard = ({ item, mykey, cookie }) => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(cookie),
-    refetchInterval: 2000,
+    
     // keepPreviousData: true,
     // enabled: isClient,
   });
   const {data:wishlistData}=useQuery({
     queryKey: ["wishlistData"],
     queryFn: () => getUserWishlist(userData?.id),
-    refetchInterval: 2000,
+    
   })
   // console.log(wishlistData,"from wishlistData");
   

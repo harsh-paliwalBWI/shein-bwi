@@ -13,8 +13,7 @@ export default async function Home() {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["homeSections"], fetchHomeSections);
   const dehydratedState = dehydrate(queryClient);
-console.log(cookie,"cookie");
-// log
+  // log
 
   return (
     <Hydrate state={dehydratedState}>

@@ -19,7 +19,7 @@ const CouponCode = () => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    refetchInterval: 2000,
+    
     keepPreviousData: true,
   });
 // console.log(userData,"DATA----------");

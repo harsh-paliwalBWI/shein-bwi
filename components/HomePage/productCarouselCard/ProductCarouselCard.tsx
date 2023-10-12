@@ -1,14 +1,17 @@
 // "use client";
-import React, { useState } from "react";
-import { constant } from "../../../utils/constants";
 import { useMediaQuery } from "@mui/material";
-import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { constant } from "../../../utils/constants";
+import {
+  getUserData,
+  getUserWishlist,
+  moveToWishListHandler,
+} from "../../../utils/databaseService";
 import { checkIfPriceDiscounted } from "../../../utils/utilities";
 import FlatIcon from "../../flatIcon/flatIcon";
-import {moveToWishListHandler, removeFromWishListHandler,getUserData,getUserWishlist} from "../../../utils/databaseService";
-import { useQuery } from "@tanstack/react-query";
-
 
 const ProductCarouselCard = ({ product }) => {
   const [image, setImage] = useState(
@@ -17,50 +20,61 @@ const ProductCarouselCard = ({ product }) => {
       : constant.errImage
   );
   const matchesSm = useMediaQuery("(min-width:640px)");
-// console.log(product,"product");
+  // console.log(product,"product");
 
   const [hoveredProduct, setHoveredProduct] = useState("");
-
 
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    refetchInterval: 2000,
-    // keepPreviousData: true,
-    // enabled: isClient,
   });
-// console.log(userData,"user");
-// console.log(product,"product");
-const {data:wishlistData}=useQuery({
-  queryKey: ["wishlistData"],
-  queryFn: () => getUserWishlist(userData?.id),
-  refetchInterval: 2000,
-})
-// console.log(pr);
-// console.log(wishlistData);
+  // console.log(userData,"user");
+  // console.log(product,"product");
+  const { data: wishlistData } = useQuery({
+    queryKey: ["wishlistData"],
+    queryFn: () => getUserWishlist(userData?.id),
+  });
+  // console.log(pr);
+  // console.log(wishlistData);
 
+  console.log({ product });
 
   return (
-
     <Link href={`/product/${product?.slug?.name}`}>
       <div
         className="flex flex-col  mx-2.5 relative   bordered-shape overflow-hidden"
         // key={product?.id || Math.random().toString()}
-        onMouseEnter={() => {          
+        onMouseEnter={() => {
           setHoveredProduct(product?.id);
         }}
         onMouseLeave={() => {
           setHoveredProduct("");
         }}
       >
-        <div className={`white-triangle flex justify-center items-center border ${ hoveredProduct === product?.id?"border-primary":"border-secondary"} `}>
+        <div
+          className={`white-triangle flex justify-center items-center border ${
+            hoveredProduct === product?.id
+              ? "border-primary"
+              : "border-secondary"
+          } `}
+        >
           <div
             className={` green-triangle  border  
-             ${ hoveredProduct === product?.id? "border-secondary": "border-primary"}
+             ${
+               hoveredProduct === product?.id
+                 ? "border-secondary"
+                 : "border-primary"
+             }
             ${hoveredProduct === product?.id ? "bg-secondary" : "bg-primary"}`}
           ></div>
         </div>
-        <div className={`border-[1px]  p-2 product-card ${ hoveredProduct === product?.id?"border-primary":"border-secondary"}`}>
+        <div
+          className={`border-[1px]  p-2 product-card ${
+            hoveredProduct === product?.id
+              ? "border-primary"
+              : "border-secondary"
+          }`}
+        >
           <div className=" relative  mb-2">
             <div className="h-[250px] lg:h-[250px] relative ">
               <Image
@@ -89,13 +103,27 @@ const {data:wishlistData}=useQuery({
                   </div>
                 </div>
               </div>
-              <div className={`absolute right-[15px] top-[20px] ${hoveredProduct === product?.id ? "visible" : "invisible"} flex flex-col gap-y-2 items-center`}>
-            <div 
-            onClick={()=>moveToWishListHandler({userId:userData?.id,productId:product?.id})} 
-            className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-center" >
-          <FlatIcon icon={"flaticon-heart text-secondary font-normal text-base rounded-full text-secondary "} />
-            </div>
-            {/* {wishlistData&&wishlistData.length>0&&wishlistData.includes(`${product?.id}`)?
+              <div
+                className={`absolute right-[15px] top-[20px] ${
+                  hoveredProduct === product?.id ? "visible" : "invisible"
+                } flex flex-col gap-y-2 items-center`}
+              >
+                <div
+                  onClick={() =>
+                    moveToWishListHandler({
+                      userId: userData?.id,
+                      productId: product?.id,
+                    })
+                  }
+                  className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-center"
+                >
+                  <FlatIcon
+                    icon={
+                      "flaticon-heart text-secondary font-normal text-base rounded-full text-secondary "
+                    }
+                  />
+                </div>
+                {/* {wishlistData&&wishlistData.length>0&&wishlistData.includes(`${product?.id}`)?
 <div 
  onClick={()=>removeFromWishListHandler({userId:userData?.id,productId:product?.id})} 
 className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-center" >
@@ -112,10 +140,12 @@ className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-ce
   <FlatIcon icon={"flaticon-heart text-secondary font-normal text-base rounded-full text-secondary "} />
     </div>
 } */}
-            <div className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-center">
-            <FlatIcon className={"flaticon-search  text-lg text-secondary"} /> 
-            </div>
-          </div> 
+                <div className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-center">
+                  <FlatIcon
+                    className={"flaticon-search  text-lg text-secondary"}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex  overflow-hidden truncate w-full text-xs font-medium text-primary capitalize mb-1">
@@ -146,7 +176,6 @@ className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-ce
         </div>
       </div>
     </Link>
-
   );
 };
 
@@ -177,7 +206,7 @@ export default ProductCarouselCard;
 //   const { data: userData } = useQuery({
 //     queryKey: ["userData"],
 //     queryFn: () => getUserData(null),
-//     refetchInterval: 2000,
+//
 //     // keepPreviousData: true,
 //     // enabled: isClient,
 //   });
@@ -198,7 +227,7 @@ export default ProductCarouselCard;
 
 //         onMouseEnter={() => {
 //           // console.log("hiii   onMouseEnte");
-          
+
 //           setHoveredProduct(product?.id);
 //         }}
 //         onMouseLeave={() => {
@@ -255,9 +284,9 @@ export default ProductCarouselCard;
 //           <FlatIcon icon={"flaticon-heart text-secondary font-normal text-base rounded-full text-secondary "} />
 //             </div>
 //             <div className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-center">
-//             <FlatIcon className={"flaticon-search  text-lg text-secondary"} /> 
+//             <FlatIcon className={"flaticon-search  text-lg text-secondary"} />
 //             </div>
-//           </div> 
+//           </div>
 //             </div>
 //           </div>
 //           <div className="flex  overflow-hidden truncate w-full text-xs font-medium text-primary capitalize mb-1">
@@ -268,7 +297,6 @@ export default ProductCarouselCard;
 //               {product?.prodName || "Calcium Magnesium Zinc"}{" "}
 //             </h2>
 //           </div>
-        
 
 //           <div className="flex items-center gap-2">
 //             <div className="text-ellipsis overflow-hidden ... truncate text-center ">

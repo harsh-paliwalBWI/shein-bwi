@@ -43,20 +43,20 @@
 
 // export default CategoryCard;
 
-import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { constant } from "../../utils/constants";
-import discountBg from "../../images/Vector (2).svg";
-import btnBg from "../../images/image (8).png";
 
-const CategoryCard = ({ cat, heading, slug }) => {
+const CategoryCard = ({ cat, heading, slug, path = null }) => {
   return (
     <Link
+      key={cat?.id}
       href={
-        cat?.isSubcategories
+        path
+          ? path
+          : cat?.isSubcategories
           ? `/category/${cat?.slug?.name}`
-          : `/category-product/${cat?.slug?.name} `
+          : `#`
       }
     >
       <div className="flex flex-col  mx-1 relative  ">
@@ -75,9 +75,7 @@ const CategoryCard = ({ cat, heading, slug }) => {
             {/* <div className="absolute left-0 border-[10px] border-[green] w-full h-full"></div> */}
 
             <div className="absolute  bottom-0 left-1/2 transform -translate-x-1/2 half-circle z-10  h-fit  flex justify-center items-center">
-              <div
-                className="absolute bottom-0 second-half w-full h-[47%] "
-              ></div>
+              <div className="absolute bottom-0 second-half w-full h-[47%] "></div>
             </div>
           </div>
           {/* </div> */}
@@ -91,4 +89,3 @@ const CategoryCard = ({ cat, heading, slug }) => {
 };
 
 export default CategoryCard;
-

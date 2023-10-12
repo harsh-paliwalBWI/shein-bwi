@@ -14,13 +14,13 @@ function CheckoutNewAddress(props) {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    refetchInterval: 2000,
+    
     keepPreviousData: true,
   });
   const { data: userAddresses } = useQuery({
     queryKey: ["userAddresses"],
     queryFn: () => getUserAddresses(null),
-    refetchInterval: 2000,
+    
     keepPreviousData: true,
   });
   return (

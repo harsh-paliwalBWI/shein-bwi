@@ -92,7 +92,7 @@ const NavbarClient = ({ cookie }: any) => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(cookie),
-    // refetchInterval: 2000,
+    // 
     // keepPreviousData: true,
     enabled: isClient,
   });
@@ -108,7 +108,7 @@ const NavbarClient = ({ cookie }: any) => {
   //   queryKey: ["search", searchQuery],
   //   queryFn: () => handleTypesenseSearch(searchQuery),
   //   keepPreviousData: false,
-  //   refetchInterval: 2000,
+  //   
   // });
 
   // console.log(searchData,"saearch data---------");

@@ -20,21 +20,6 @@ export const GET = async (request) => {
                 subcategories
             })
         }
-
-        // querySnapshot.forEach(async (doc) => {
-        //     // doc.data() is never undefined for query doc snapshots
-
-        //     let value = doc.data();
-        //     let subcategories = null;
-        //     if (value?.isSubcategories) {
-        //         subcategories = await fetchSubCategories(doc.id)
-        //     }
-        //     categories?.push({
-        //         category: { ...value, id: doc.id },
-        //         subcategories
-        //     })
-        // });
-
         return JSON.parse(JSON.stringify(categories));
 
     }

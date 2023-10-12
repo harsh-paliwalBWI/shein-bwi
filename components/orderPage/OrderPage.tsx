@@ -7,7 +7,7 @@ const OrderPage = () => {
     const { data: userData } = useQuery({
         queryKey: ["userData"],
         queryFn: () => getUserData(null),
-        refetchInterval: 2000,
+        
         // keepPreviousData: true,
         // enabled: isClient,
     });
@@ -16,7 +16,7 @@ const OrderPage = () => {
     const { data: orderList } = useQuery({
         queryKey: ["orderData"],
         queryFn: () => fetchUsersOrdersList(userData?.id),
-        refetchInterval: 2000,
+        
         // keepPreviousData: true,
         // enabled: isClient,
     })

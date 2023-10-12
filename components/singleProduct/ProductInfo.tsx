@@ -76,8 +76,10 @@ const ProductInfo = ({ params }: any) => {
     queryKey: ["product", params?.slug],
     queryFn: () => fetchSingleProduct(params?.slug),
   });
-  const [prodTab, setProdTab] = useState(product?.priceList[0])
-  const [colorTab,setColorTab]=useState(product?.options&&product?.options[0])
+  const [prodTab, setProdTab] = useState(product?.priceList[0]);
+  const [colorTab, setColorTab] = useState(
+    product?.options && product?.options[0]
+  );
   // console.log(product, "product from single product---------->");
   //   console.log(product?.images, "images---------->");
   // console.log(product?.searchKeywords,"product?.searchKeywords");
@@ -110,7 +112,7 @@ const ProductInfo = ({ params }: any) => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    refetchInterval: 2000,
+
     // keepPreviousData: true,
     // enabled: isClient,
   });
@@ -120,12 +122,14 @@ const ProductInfo = ({ params }: any) => {
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlistData"],
     queryFn: () => getUserWishlist(userData?.id),
-    refetchInterval: 2000,
-  })
-  const [tabImage, setTabImage] = useState(getImage(product, 0))
+  });
+  const [tabImage, setTabImage] = useState(getImage(product, 0));
   function getImage(product: any, idx: number) {
     // console.log(product)
     // console.log("gggggggggg")
+    if (product?.coverPic?.url) {
+      return product?.coverPic?.url;
+    }
     if (product?.images && product?.images[idx]?.url) {
       return product?.images[idx]?.url;
     }
@@ -133,7 +137,7 @@ const ProductInfo = ({ params }: any) => {
   }
   async function addItemToCart() {
     console.log("START");
-    
+
     let data: any = {
       product,
       productID: product?.id,
@@ -143,15 +147,15 @@ const ProductInfo = ({ params }: any) => {
     };
     const cartObject = data.isPriceList
       ? getPriceListCartObj({
-        product: product,
-        quantity: quantity,
-        index: data.index,
-      })
+          product: product,
+          quantity: quantity,
+          index: data.index,
+        })
       : getCartObj({
-        product: product,
-        productID: data?.productID,
-        quantity: data?.quantity,
-      });
+          product: product,
+          productID: data?.productID,
+          quantity: data?.quantity,
+        });
     if (auth.currentUser) {
       const docId = await addCartObjToUser(cartObject);
       cartObject["id"] = docId;
@@ -186,19 +190,22 @@ const ProductInfo = ({ params }: any) => {
             <div className="flex flex-col lg:flex-row gap-6 mt-10  ">
               <div className=" md:flex lg:flex-col md:flex-row   gap-4   hidden ">
                 {product.images.map((item: any, idx: number) => {
-                  return <div onClick={() => setTabImage(getImage(product, idx))} className="   cursor-pointer">
-                    <Image
-                      src={getImage(product, idx)}
-                      // src={item.url}
-                      alt=""
-                      className=" w-[139px] h-[135px] aspect-auto object-cover"
-                      width={1000}
-                      height={1000}
-
-                    />
-                  </div>
+                  return (
+                    <div
+                      onClick={() => setTabImage(getImage(product, idx))}
+                      className="   cursor-pointer"
+                    >
+                      <Image
+                        src={getImage(product, idx)}
+                        // src={item.url}
+                        alt=""
+                        className=" w-[139px] h-[135px] aspect-auto object-cover"
+                        width={1000}
+                        height={1000}
+                      />
+                    </div>
+                  );
                 })}
-
               </div>
               <div className="flex lg:flex-row flex-col w-full  sm:gap-16 gap-6">
                 <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  ">
@@ -213,7 +220,6 @@ const ProductInfo = ({ params }: any) => {
                       className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
                     /> */}
 
-
                     <Image
                       src={tabImage}
                       // src={secImg}
@@ -221,10 +227,9 @@ const ProductInfo = ({ params }: any) => {
                       width={1000}
                       height={1000}
                       // style={{ width: "100%", height: "595px" }}
-                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
+                      className="w-[100%]   object-contain lg:h-[595px] h-[300px]"
                     />
                   </div>
-
                 </div>
                 <div className="flex flex-col lg:w-[50%] w-[100%]   ">
                   <div className="flex items-center  sm:mb-3 mb-1">
@@ -235,10 +240,11 @@ const ProductInfo = ({ params }: any) => {
                   <div className="flex sm:flex-row flex-col gap-y-2  gap-x-4 sm:items-center ">
                     <h2 className=" md:text-2xl text-lg  sm:text-center text-start text-secondary font-bold  ">
                       {constant?.currency}{" "}
-                      {product?.isPriceList ? prodTab.discountedPrice : parseFloat(product?.prodPrice).toFixed(2)}
+                      {product?.isPriceList
+                        ? prodTab.discountedPrice
+                        : parseFloat(product?.prodPrice).toFixed(2)}
                       {/* {parseFloat(product?.prodPrice).toFixed(2)} */}
                     </h2>
-
 
                     {/* reviews code start  */}
                     {/* <div className="flex items-center gap-2 text-start ">
@@ -262,7 +268,7 @@ const ProductInfo = ({ params }: any) => {
                         1.2k reviews
                       </h4>
                     </div> */}
-                     {/* reviews code end  */}
+                    {/* reviews code end  */}
                   </div>
                   {/* <div className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 ">
                    
@@ -273,36 +279,38 @@ const ProductInfo = ({ params }: any) => {
                   {/* <div
                     dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
                     className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 " /> */}
-{
-  product?.options && product?.options?.length > 0 &&
-                  <div className=" mt-4">
-                    <h4 className="text-secondary sm:text-sm text-xs font-semibold mb-3 ">
-                      {/* COLOR : DARK OLIVE GREEN */}
-                      COLOR : {colorTab.color.name}
-
-                    </h4>
-                    {product?.options && product?.options?.length > 0 &&
-                      <div className="flex gap-3 ">
-                        {product.options.map((item: any, idx: number) => {
-                          // console.log(item.color.code,"cocloe");
-
-                          return (
-                            <div
-                            onClick={()=>setColorTab(item)}
-                              key={idx}
-                              className="  border border-[#E6DBD7] p-1 rounded-full flex justify-center items-center cursor-pointer"
-                            >
-                             
-                              <div className={`h-[25px] w-[25px] rounded-full bg-[${item.color.code}]`}></div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    }
-                  </div>
-}
+                  {product?.options && product?.options?.length > 0 && (
+                    <div className=" mt-4">
+                      <h4 className="text-secondary sm:text-sm text-xs font-semibold mb-3 ">
+                        {/* COLOR : DARK OLIVE GREEN */}
+                        COLOR : {colorTab.color.name}
+                      </h4>
+                      {product?.options && product?.options?.length > 0 && (
+                        <div className="flex gap-3 ">
+                          {product.options.map((item: any, idx: number) => {
+                            // console.log(item.color.code,"cocloe");
+                            return (
+                              <div
+                                onClick={() => setColorTab(item)}
+                                key={idx}
+                                
+                                className={`${colorTab.color?.code===item.color?.code && "bg-black"}  border  border-[#E6DBD7] p-[3px] rounded-full flex justify-center items-center cursor-pointer`}
+                              >
+                                <div
+                                style={{
+                                  background: `${item?.color?.code}`
+                                }}
+                                  className={`h-[25px] w-[25px] rounded-full `}
+                                ></div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
                   <div className="flex flex-col ">
-                    {product.priceList && product.priceList.length > 0 &&
+                    {product.priceList && product.priceList.length > 0 && (
                       <div className="flex items-center gap-6 sm:text-sm text-xs  font-semibold mb-3 sm:mt-4 mt-4 ">
                         <div className="flex gap-1 items-center">
                           <h4 className="    ">SIZE : </h4>
@@ -319,16 +327,28 @@ const ProductInfo = ({ params }: any) => {
                           <h4 className="underline ">Size Chart</h4>
                         </div>
                       </div>
-                    }
-                    {
-                      product.priceList && product.priceList.length > 0 && <div className="flex gap-3 text-[#555555] text-sm font-semibold ">
-                        {product.priceList && product.priceList.map((item: any, idx: number) => {
-                          return <div onClick={() => setProdTab(item)} className={`sm:px-3 px-3 sm:py-2 py-2 border  cursor-pointer ${prodTab===item?"border-secondary":"border-[#C6C6C6]"}`}>
-                            <h2 className="sm:text-sm text-xs font-normal">{item.weight}</h2>
-                          </div>
-                        })}
+                    )}
+                    {product.priceList && product.priceList.length > 0 && (
+                      <div className="flex gap-3 text-[#555555] text-sm font-semibold ">
+                        {product.priceList &&
+                          product.priceList.map((item: any, idx: number) => {
+                            return (
+                              <div
+                                onClick={() => setProdTab(item)}
+                                className={`sm:px-3 px-3 sm:py-2 py-2 border  cursor-pointer ${
+                                  prodTab === item
+                                    ? "border-secondary"
+                                    : "border-[#C6C6C6]"
+                                }`}
+                              >
+                                <h2 className="sm:text-sm text-xs font-normal">
+                                  {item.weight}
+                                </h2>
+                              </div>
+                            );
+                          })}
                       </div>
-                    }
+                    )}
 
                     <h3 className="text-secondary sm:text-sm text-xs font-semibold mb-3 mt-6 ">
                       QUANTITY :
@@ -357,8 +377,18 @@ const ProductInfo = ({ params }: any) => {
                         </div>
                       </div>
 
-                      {wishlistData && wishlistData.length > 0 && wishlistData.includes(`${product?.id}`) ?
-                        <div onClick={() => removeFromWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 ">
+                      {wishlistData &&
+                      wishlistData.length > 0 &&
+                      wishlistData.includes(`${product?.id}`) ? (
+                        <div
+                          onClick={() =>
+                            removeFromWishListHandler({
+                              userId: userData?.id,
+                              productId: product?.id,
+                            })
+                          }
+                          className="flex items-center gap-2 "
+                        >
                           <p>
                             <FlatIcon icon={"flaticon-heart-fill text-2xl"} />
                           </p>
@@ -366,8 +396,16 @@ const ProductInfo = ({ params }: any) => {
                             Remove from Wishlist
                           </h3>
                         </div>
-                        :
-                        <div onClick={() => moveToWishListHandler({ userId: userData?.id, productId: product?.id })} className="flex items-center gap-2 ">
+                      ) : (
+                        <div
+                          onClick={() =>
+                            moveToWishListHandler({
+                              userId: userData?.id,
+                              productId: product?.id,
+                            })
+                          }
+                          className="flex items-center gap-2 "
+                        >
                           <p>
                             <FlatIcon icon={"flaticon-heart text-2xl"} />
                           </p>
@@ -375,7 +413,7 @@ const ProductInfo = ({ params }: any) => {
                             Add to Wishlist
                           </h3>
                         </div>
-                      }
+                      )}
 
                       {/* <div onClick={()=>moveToWishListHandler({userId:userData?.id,productId:product?.id})} className="flex items-center gap-2 ">
                         <p>
@@ -511,8 +549,8 @@ const ProductInfo = ({ params }: any) => {
                               (item) => item?.productId === product?.id
                             ).length !== 0
                               ? () => {
-                                handleRemoveFromCart();
-                              }
+                                  handleRemoveFromCart();
+                                }
                               : addItemToCart
                           }
                         >
@@ -528,7 +566,7 @@ const ProductInfo = ({ params }: any) => {
 
                       <div
                         className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
-                      // onClick={handleRemoveFromCart}
+                        // onClick={handleRemoveFromCart}
                       >
                         <button className="text-white font-bold">
                           BUY NOW
@@ -596,22 +634,28 @@ const ProductInfo = ({ params }: any) => {
                       dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
                       className="sm:text-sm text-xs  mb-7 mt-4" />
                   </div> */}
-                  <Disclosure >
+                  <Disclosure>
                     {({ open }) => (
                       <>
                         <Disclosure.Button
-                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${open ? "font-semibold" : ""
-                            } `}
+                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${
+                            open ? "font-semibold" : ""
+                          } `}
                         >
                           <h2 className="font-medium sm:text-base  text-sm ">
                             Product Info
                           </h2>
-                          <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
+                          <FlatIcon
+                            icon={"flaticon-plus text-[#999999] text-xs"}
+                          />
                         </Disclosure.Button>
                         <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
                           <div
-                            dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
-                            className="sm:text-sm text-xs  mb-7 mt-4" />
+                            dangerouslySetInnerHTML={{
+                              __html: product?.prodDesc,
+                            }}
+                            className="sm:text-sm text-xs  mb-7 mt-4"
+                          />
                         </Disclosure.Panel>
                       </>
                     )}
@@ -623,15 +667,18 @@ const ProductInfo = ({ params }: any) => {
                     <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
                   </div> */}
 
-                  <Disclosure >
+                  <Disclosure>
                     {({ open }) => (
                       <>
                         <Disclosure.Button
-                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${open ? "font-semibold" : ""
-                            } `}
+                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${
+                            open ? "font-semibold" : ""
+                          } `}
                         >
                           <span>Reviews & Ratings</span>
-                          <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
+                          <FlatIcon
+                            icon={"flaticon-plus text-[#999999] text-xs"}
+                          />
                         </Disclosure.Button>
                         <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
                           gfjh
@@ -644,15 +691,18 @@ const ProductInfo = ({ params }: any) => {
                     <h3>Reviews & Ratings</h3>
                     <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
                   </div> */}
-                  <Disclosure >
+                  <Disclosure>
                     {({ open }) => (
                       <>
                         <Disclosure.Button
-                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${open ? "font-semibold" : ""
-                            } `}
+                          className={`flex items-center sm:text-base font-medium text-xs   my-5 justify-between text-gray-400 ${
+                            open ? "font-semibold" : ""
+                          } `}
                         >
                           <span>Reviews & Ratings</span>
-                          <FlatIcon icon={"flaticon-plus text-[#999999] text-xs"} />
+                          <FlatIcon
+                            icon={"flaticon-plus text-[#999999] text-xs"}
+                          />
                         </Disclosure.Button>
                         <Disclosure.Panel className="border-b border-gray-300  pt-0 pb-2 text-base text-gray-500">
                           gfjh

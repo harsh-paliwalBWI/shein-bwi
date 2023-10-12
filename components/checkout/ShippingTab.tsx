@@ -10,7 +10,7 @@ function ShippingTab(props) {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    refetchInterval: 2000,
+    
     keepPreviousData: true,
   });
   // console.log(userData,"user");
@@ -18,7 +18,7 @@ function ShippingTab(props) {
   const { data: userAddresses } = useQuery({
     queryKey: ["userAddresses"],
     queryFn: () => getUserAddresses(null),
-    refetchInterval: 2000,
+    
     keepPreviousData: true,
   });
   const [isClient,setIsClient]=useState(false)

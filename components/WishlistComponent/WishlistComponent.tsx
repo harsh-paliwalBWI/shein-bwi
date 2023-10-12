@@ -20,7 +20,7 @@ const WishlistComponent = ({ cookie }) => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    // refetchInterval: 2000,
+    // 
     // keepPreviousData: true,
     // enabled: isClient,
   });
@@ -30,7 +30,7 @@ const WishlistComponent = ({ cookie }) => {
   // const {data:wishlistData}=useQuery({
   //   queryKey: ["wishlistData"],
   //   queryFn: () => getUserWishlistData(userData?.id),
-  //   refetchInterval: 2000,
+  //   
   // })
 
 // console.log(wishlistData,"wishlistData");
@@ -38,7 +38,7 @@ const WishlistComponent = ({ cookie }) => {
 const {data:wishlistData2}=useQuery({
   queryKey: ["wishlistData"],
   queryFn: () => getUserWishlistData2(null),
-  refetchInterval: 2000,
+  
 })
 console.log(wishlistData2,"wishlistData2-------");
 

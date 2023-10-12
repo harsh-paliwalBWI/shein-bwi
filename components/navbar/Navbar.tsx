@@ -23,7 +23,7 @@ const Navbar = async () => {
   // const { data: userData } = useQuery({
   //   queryKey: ["userData"],
   //   queryFn: () => getUserData(cookie),
-  //   refetchInterval: 2000,
+  //   
   //   keepPreviousData: true,
   //   // enabled: isClient,
   // });

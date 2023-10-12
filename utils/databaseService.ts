@@ -18,6 +18,7 @@ import {
 } from "firebase/firestore";
 
 import axios from "axios";
+import { fetchProductsForShopPage } from "../config/typesense";
 // import { addDoc, collection, doc, setDoc,deleteDoc } from "firebase/firestore";
 
 
@@ -109,7 +110,7 @@ export const getUserAddresses = async (cookieData) => {
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
         // console.log(uid,"uid");
-        
+
     }
     if (cookie?.value) {
         uid = cookie?.value;
@@ -350,53 +351,104 @@ async function fetchVideoBlock(section) {
 }
 
 
-export const fetchCategoryProducts = async (slug, type = "") => {
-    // console.log(slug,type,"hii");
-    // return [];
-    const catId = await getDocs(query(collection(db, "categories"), where('slug.name', '==', slug))).then((val: QuerySnapshot) => {
+export const fetchCategoryProducts = async ({ slug, subCatSlug = null, subSubCatSlug = null, filters = null }) => {
+    // console.log("INSIDE CHECK ", filters);
+
+    let categoryId;
+    let subCategoryId;
+    let subSubCategoryId;
+
+    let catId = await getDocs(query(collection(db, "categories"), where('slug.name', '==', slug))).then((val: QuerySnapshot) => {
         if (val.docs.length != 0) {
             return val.docs[0].id;
         } else {
             return "";
         }
     })
-    // console.log(catId,"id");
-    if (type === "category") {
-        const subcategoryDocs = await getDocs(collection(db, "categories", catId, "subcategories"));
-        const subcategories = [];
-        subcategoryDocs.forEach((doc) => {
-            if (doc?.data()?.status) {
-                // console.log(doc?.data()?.status,"status");
-                subcategories.push(doc.data());
+    categoryId = catId;
+    let subCatId = null;
+
+
+    if (subCatSlug) {
+        subCatId = await getDocs(query(collection(db, `categories/${catId}/subcategories`), where('slug.name', '==', subCatSlug))).then((val: QuerySnapshot) => {
+            if (val.docs.length != 0) {
+                return val.docs[0].id;
+            } else {
+                return "";
             }
-            // subcategories.push({ id: doc.id, data: doc.data() });
-        });
-        // console.log(subcategories,"sub arr");
-        return JSON.parse(JSON.stringify(subcategories));
-    } else {
-        if (catId) {
-            const products = await getDocs(query(collection(db, "products"), where('categories', 'array-contains', catId))).then((val: QuerySnapshot) => {
+        })
+        catId = subCatId;
+        subCategoryId = subCatId
+    }
+
+
+
+    let subsubcatId = null;
+
+    if (subSubCatSlug) {
+        if (subCatId) {
+            subsubcatId = await getDocs(query(collection(db, `categories/${categoryId}/subcategories/${subCategoryId}/subcategories`), where('slug.name', '==', subSubCatSlug))).then((val: QuerySnapshot) => {
                 if (val.docs.length != 0) {
-                    let arr = [];
-                    for (const doc of val.docs) {
-                        const docData = doc.data()
-                        // console.log(docData,"doc data");
-                        if (docData?.status) {
-                            arr.push({ ...docData, id: doc.id })
-                        }
-                    }
-                    // console.log(arr," overall arr");   
-                    return arr;
+                    return val.docs[0].id;
                 } else {
-                    return [];
+                    return "";
                 }
             })
-            return JSON.parse(JSON.stringify(products));
+
+            catId = subsubcatId;
+            subSubCategoryId = subsubcatId
         }
     }
+
+    if (catId) {
+        const products = await fetchProductsForShopPage({ catId, filters: filters })
+        if (!products || products.length === 0) {
+            if (subSubCatSlug) {
+                return await fetchCategoryProducts({ slug: slug, subCatSlug: subCatSlug, subSubCatSlug: null })
+            }
+            if (subCatId && !subSubCatSlug) {
+                return await fetchCategoryProducts({ slug: slug, subCatSlug: null, subSubCatSlug: null })
+            }
+        }
+
+        let minMax = null;
+
+        if (products.length !== 0) {
+            minMax = getMaxAndMinPriceForFilters(products);
+        }
+
+        return JSON.parse(JSON.stringify({ products, minMax }));
+    }
+
     return [];
 }
 
+
+
+
+export function getMaxAndMinPriceForFilters(arr) {
+    let min = Number.MAX_VALUE;
+
+
+    let max = 0;
+
+
+
+
+    arr.forEach(element => {
+        if (element?.discountedPrice > max) {
+            max = element?.discountedPrice
+        }
+
+        if (element.discountedPrice < min) {
+            min = element?.discountedPrice
+        }
+    });
+
+    let res = [Math.ceil(min), Math.ceil(max)];
+    return res
+
+}
 
 export const fetchSingleProduct = async (slug) => {
 
@@ -505,14 +557,13 @@ export const getUserWishlist = async (userId = "") => {
         return arr
     }
     else {
-        console.log("else");
         return []
     }
 
 }
 
 export const getUserWishlistData = async (userId = "") => {
-    console.log(userId,"userId");
+    console.log(userId, "userId");
     if (userId) {
         console.log("inside if");
         const querySnapshot = await getDocs(collection(db, "users", userId, "wishlist"));
@@ -532,10 +583,10 @@ export const getUserWishlistData = async (userId = "") => {
                 console.log("No such document!");
             }
         });
-        console.log(prodPromises,"prodPromises");
-        
+        console.log(prodPromises, "prodPromises");
+
         await Promise.all(prodPromises);
-        console.log(prodPromises,"prodPromises");
+        console.log(prodPromises, "prodPromises");
         return products;
     } else {
         // console.log("inside if");
@@ -556,7 +607,7 @@ export const getUserWishlistData = async (userId = "") => {
 //     if (auth.currentUser?.uid) {
 //         uid = auth.currentUser?.uid;
 //         console.log(uid,"uid");
-        
+
 //     }
 //     if (cookie?.value) {
 //         uid = cookie?.value;
@@ -589,7 +640,7 @@ export const getUserWishlistData = async (userId = "") => {
 //             }
 //         });
 //         console.log(products,"prodPromises before");
-        
+
 //         await Promise.all(prodPromises);
 //         console.log(products,"prodPromises");
 //         return products;
@@ -597,18 +648,18 @@ export const getUserWishlistData = async (userId = "") => {
 //         return [];
 //     }
 // }
-export const getUserWishlistData2=async(cookieData) =>{
-        let cookie;
+export const getUserWishlistData2 = async (cookieData) => {
+    let cookie;
     if (cookieData) {
         cookie = cookieData;
     } else {
         cookie = { value: getCookie('uid') }
     }
-        let uid;
+    let uid;
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
-        console.log(uid,"uid");
-        
+        console.log(uid, "uid");
+
     }
     if (cookie?.value) {
         uid = cookie?.value;
@@ -616,80 +667,80 @@ export const getUserWishlistData2=async(cookieData) =>{
     try {
 
 
-        const wishlistCollRef =  collection(db, `users/${uid}/wishlist`);
+        const wishlistCollRef = collection(db, `users/${uid}/wishlist`);
         const querySnapshot = await getDocs(wishlistCollRef);
         const wishlists = [];
-    
+
         querySnapshot.forEach((doc) => {
-          wishlists.push(doc.id);
+            wishlists.push(doc.id);
         });
-    
+
         const productsCollRef = collection(db, 'products');
         const productPromises = wishlists.map(async (wishlistId) => {
-          const productDocRef = doc(productsCollRef, wishlistId);
-          const productDocSnapshot = await getDoc(productDocRef);
-    
-          if (productDocSnapshot.exists()) {
-            return productDocSnapshot.data();
-          }
-          return null;
+            const productDocRef = doc(productsCollRef, wishlistId);
+            const productDocSnapshot = await getDoc(productDocRef);
+
+            if (productDocSnapshot.exists()) {
+                return productDocSnapshot.data();
+            }
+            return null;
         });
-    
+
         const productsData = await Promise.all(productPromises);
-    
+
         console.log('products', productsData);
-return productsData
-    //   const wishlistCollRef = collection(db, 'wishlists');
-  
-    //   const querySnapshot =  await getDocs(collection(db, `users/${uid}/wishlist`));
+        return productsData
+        //   const wishlistCollRef = collection(db, 'wishlists');
 
-    //   const wishlists = [];
-  
-    //   querySnapshot.forEach((doc) => {
-    //     wishlists.push(doc.id);
-    //   });
+        //   const querySnapshot =  await getDocs(collection(db, `users/${uid}/wishlist`));
 
-    //   console.log(wishlists,"wishlists");
-      
+        //   const wishlists = [];
 
-    //   const data2 = [];
-  
-//     //   const productsCollRef = collection(db, 'products');
-//       for (const id of wishlists) {
-//         const docRef = doc(db, "products", id);
-//                     const docSnap = await getDoc(docRef);
-//                     console.log("docSnap",docSnap.data());
-//                     const data=docSnap.data()
-//                     lo
-                    
-//         // const q = query(productsCollRef, where(db.app.options, '==', id));
-//         // const querySnapshot = await getDocs(q);
-// data2.push(data)
-//         // querySnapshot.forEach((productDoc) => {
-//         //   data.push(productDoc.data());
-//         // });
-//       }
-// console.log("data2 arr",data2);
+        //   querySnapshot.forEach((doc) => {
+        //     wishlists.push(doc.id);
+        //   });
+
+        //   console.log(wishlists,"wishlists");
 
 
-    // const productsData = [];
+        //   const data2 = [];
 
-    // const productsCollRef = collection(db, 'products');
-    // for (const wishlistId of wishlists) {
-    //   const productDocRef = doc(productsCollRef, wishlistId);
-    //   const productDocSnapshot = await getDoc(productDocRef);
+        //     //   const productsCollRef = collection(db, 'products');
+        //       for (const id of wishlists) {
+        //         const docRef = doc(db, "products", id);
+        //                     const docSnap = await getDoc(docRef);
+        //                     console.log("docSnap",docSnap.data());
+        //                     const data=docSnap.data()
+        //                     lo
 
-    //   if (productDocSnapshot.exists()) {
-    //     productsData.push(productDocSnapshot.data());
-    //   }
-    // }
-  
-    //   console.log('products', productsData);
-    //   return productsData
+        //         // const q = query(productsCollRef, where(db.app.options, '==', id));
+        //         // const querySnapshot = await getDocs(q);
+        // data2.push(data)
+        //         // querySnapshot.forEach((productDoc) => {
+        //         //   data.push(productDoc.data());
+        //         // });
+        //       }
+        // console.log("data2 arr",data2);
+
+
+        // const productsData = [];
+
+        // const productsCollRef = collection(db, 'products');
+        // for (const wishlistId of wishlists) {
+        //   const productDocRef = doc(productsCollRef, wishlistId);
+        //   const productDocSnapshot = await getDoc(productDocRef);
+
+        //   if (productDocSnapshot.exists()) {
+        //     productsData.push(productDocSnapshot.data());
+        //   }
+        // }
+
+        //   console.log('products', productsData);
+        //   return productsData
     } catch (error) {
-      console.error('Error occurred while retrieving products:', error);
+        console.error('Error occurred while retrieving products:', error);
     }
-  }
+}
 
 
 export const getDocFromWidget = async (docId) => {
@@ -770,8 +821,8 @@ export async function getStoreDetails() {
     return (await getDoc(doc(db, 'settings', 'store'))).data();
 }
 
-export async function deleteUserAddress({ userId, docId }){
-    console.log(userId,docId);
+export async function deleteUserAddress({ userId, docId }) {
+    console.log(userId, docId);
     try {
         if (userId && docId) {
             await deleteDoc(doc(db, "users", userId, "addresses", docId));

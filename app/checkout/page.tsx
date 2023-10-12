@@ -5,7 +5,12 @@ import { getGstAppilicableInfo } from "../../utils/cartUtilities/cartUtility";
 import { httpsCallable } from "firebase/functions";
 import { auth, db, functions } from "../../config/firebase-config";
 import { useQuery } from "@tanstack/react-query";
-import { addAddressToUser, fetchStates, getUserData, updateDefaultAddress, } from "../../utils/databaseService";
+import {
+  addAddressToUser,
+  fetchStates,
+  getUserData,
+  updateDefaultAddress,
+} from "../../utils/databaseService";
 import ShippingTab from "../../components/checkout/ShippingTab";
 import { initialAddress, paymentMethods, tabs } from "../../utils/utilities";
 import PaymentMethodTab from "../../components/checkout/PaymentMethodTab";
@@ -18,7 +23,7 @@ import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { reset } from "../../redux/slices/cartSlice";
 import FlatIcon from "../../components/flatIcon/flatIcon";
-import tag from "../../images/tag 1.svg"
+import tag from "../../images/tag 1.svg";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader";
@@ -29,7 +34,7 @@ const CheckoutPage = () => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-    refetchInterval: 2000,
+
     keepPreviousData: true,
   });
   // console.log(userData,"usre data");
@@ -43,7 +48,7 @@ const CheckoutPage = () => {
   const { data: couponAvl } = useQuery({
     queryKey: ["isCoupon"],
     queryFn: () => couponsAvailable(),
-    refetchInterval: 2000,
+
     // keepPreviousData: true,
   });
 
@@ -52,7 +57,7 @@ const CheckoutPage = () => {
   const { data: couponList } = useQuery({
     queryKey: ["couponlist"],
     queryFn: () => fetchCouponList(),
-    refetchInterval: 2000,
+
     // keepPreviousData: true,
   });
 
@@ -62,10 +67,10 @@ const CheckoutPage = () => {
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const [selectedTab, setSelectedTab] = useState("Shipping");
   const [paymentSummary, setPaymentSummary] = useState(null);
-  const [isCoupon, setIsCoupon] = useState(false)
-  const [coupon, setCoupon] = useState("")
-  const [couponDiscount, setCouponDiscount] = useState(null)
-  const [isLoading,setIsLoading]=useState(false)
+  const [isCoupon, setIsCoupon] = useState(false);
+  const [coupon, setCoupon] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [userAddress, setUserAddress] = useState(
     userData?.defaultAddress || initialAddress
   );
@@ -97,11 +102,13 @@ const CheckoutPage = () => {
   }
 
   async function getCouponDiscount(couponText: any) {
-   
     // console.log(couponText, "couponText");
     if (couponText) {
-      setIsLoading(true)
-      const getCouponDiscountDetails = httpsCallable(functions, "orders-verifyCouponCode")
+      setIsLoading(true);
+      const getCouponDiscountDetails = httpsCallable(
+        functions,
+        "orders-verifyCouponCode"
+      );
       const isGst = await getGstAppilicableInfo();
       let data = {
         userId: userData?.id,
@@ -109,33 +116,36 @@ const CheckoutPage = () => {
         code: couponText,
         isGstApplicable: isGst,
       };
-      const res = await getCouponDiscountDetails(data)
-      let res2 = await res.data
+      const res = await getCouponDiscountDetails(data);
+      let res2 = await res.data;
       if (res2["success"]) {
-        const couponDiscount = paymentSummary.totalPayable - res2["details"]["totalAmountToPaid"]
+        const couponDiscount =
+          paymentSummary.totalPayable - res2["details"]["totalAmountToPaid"];
         setPaymentSummary((prev: any) => {
-          return { ...prev, totalPayable: res2["details"]["totalAmountToPaid"] }
-        })
-        setCouponDiscount(couponDiscount)
-        toast.success("Coupon applied succesfully")
+          return {
+            ...prev,
+            totalPayable: res2["details"]["totalAmountToPaid"],
+          };
+        });
+        setCouponDiscount(couponDiscount);
+        toast.success("Coupon applied succesfully");
         setIsCoupon((prev) => !prev);
-        setIsLoading(false)
+        setIsLoading(false);
       } else {
-        const error = res2["failureMsg"]
-        toast.error(error)
+        const error = res2["failureMsg"];
+        toast.error(error);
         setIsCoupon((prev) => !prev);
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } else {
-      setIsLoading(false)
-      toast.error("Please apply coupon first.")
+      setIsLoading(false);
+      toast.error("Please apply coupon first.");
     }
   }
 
-
   const handleChange = (name, value) => {
     // console.log(name, "name", value, "value");
-    setUserAddress((val:any) => {
+    setUserAddress((val: any) => {
       return { ...val, [name]: value };
     });
   };
@@ -168,9 +178,8 @@ const CheckoutPage = () => {
       !lastName ||
       !name
     ) {
-
       // console.log("ENTER DETAILS CORRECTLY", userAddress);
-      toast.error("Enter all the details.")
+      toast.error("Enter all the details.");
       return;
     }
     if (makeDefaultAddress) {
@@ -219,12 +228,15 @@ const CheckoutPage = () => {
   const handleClick = () => {
     // console.log(selectedTab, "selectedTab");
     switch (selectedTab) {
-      case tabs[0]: handleAddressSubmit()
-        return
-      case tabs[1]: handlePaymentMethod()
-      default: break;
+      case tabs[0]:
+        handleAddressSubmit();
+        return;
+      case tabs[1]:
+        handlePaymentMethod();
+      default:
+        break;
     }
-  }
+  };
   async function placeOrder(isCod = true) {
     // console.log("inside placeOrder");
     // console.log(paymentSummary,"--");
@@ -290,16 +302,14 @@ const CheckoutPage = () => {
         // }
       }
     } else {
-      return orderId
+      return orderId;
     }
   }
-
 
   useEffect(() => {
     getPaymentSummary();
   }, [addressToDeliver]);
 
-  
   function renderTabs() {
     switch (selectedTab) {
       case tabs[0]:
@@ -329,7 +339,6 @@ const CheckoutPage = () => {
       case tabs[2]:
         return (
           <ReviewTab
-
             placeOrder={placeOrder}
             addressToDeliver={addressToDeliver}
             selectedPaymentMethod={selectedPaymentMethod}
@@ -345,7 +354,9 @@ const CheckoutPage = () => {
       <div className="w-full flex lg:flex-row flex-col-reverse sm:gap-y-8 gap-y-4 gap-x-16 lg:mt-10 mt-5 lg:mb-24 mb-5  ">
         <div className="w-full lg:w-[65%]  flex flex-col  ">
           <div className="flex justify-between sm:flex-row flex-col gap-y-3 items-center ">
-            <h2 className="xl:text-3xl text-xl font-bold text-black   uppercase">Checkout</h2>
+            <h2 className="xl:text-3xl text-xl font-bold text-black   uppercase">
+              Checkout
+            </h2>
             <div className="flex items-center sm:justify-center  ">
               <div className="flex  flex-row gap-2 ">
                 {tabs.map((tab, idx) => {
@@ -359,12 +370,12 @@ const CheckoutPage = () => {
                           setSelectedTab(tab);
                         }
                         // setSelectedTab(tab);
-
                       }}
                     >
                       <p
-                        className={`${tab === selectedTab && "text-primary  "
-                          } font-medium xl:text-base text-sm text-[#555555]`}
+                        className={`${
+                          tab === selectedTab && "text-primary  "
+                        } font-medium xl:text-base text-sm text-[#555555]`}
                       >
                         {tab}
                         {(idx === 0 || idx === 1) && " >"}
@@ -388,65 +399,130 @@ const CheckoutPage = () => {
             <div className="flex flex-col ">
               <div className="flex xl:items-end items-center  ">
                 <h2 className="xl:text-3xl  text-xl font-semibold text-black uppercase leading-[30px] tracking-wide">
-                  ORDER SUMMARY</h2>
-                <h4 className="xl:text-base text-sm font-semibold ">({cart.length} Item)</h4>
+                  ORDER SUMMARY
+                </h2>
+                <h4 className="xl:text-base text-sm font-semibold ">
+                  ({cart.length} Item)
+                </h4>
                 {/* <span className=" text-neutral-400 text-base font-normal lowercase leading-[30px] tracking-tight">({cart.length} Items)</span> */}
-
               </div>
               <div className="flex flex-col gap-y-4 ">
                 <div className="lg:mt-10 mt-4 flex flex-col gap-4   border border-gray-400 sm:px-6 px-2 sm:py-6 py-2">
-                  <div className="text-gray-500 font-semibold  text-base">Coupons</div>
+                  <div className="text-gray-500 font-semibold  text-base">
+                    Coupons
+                  </div>
                   <div onClick={() => setIsCoupon((prev) => !prev)}>
                     {/* <h5 className="  text-base font-semibold text-primary underline cursor-pointer">Coupons</h5> */}
                     <div className="flex border border-primary items-center  rounded-md lg:px-5 px-3 justify-between  py-2 cursor-pointer">
-                      <div className="flex items-center gap-2 text-primary w-full"><Image src={tag} alt="" />
-                        <input className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]" onChange={() => { () => setIsCoupon(true) }} /></div>
-                      <div><FlatIcon className="flaticon-close text-primary text-lg" /></div>
+                      <div className="flex items-center gap-2 text-primary w-full">
+                        <Image src={tag} alt="" />
+                        <input
+                          className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]"
+                          onChange={() => {
+                            () => setIsCoupon(true);
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <FlatIcon className="flaticon-close text-primary text-lg" />
+                      </div>
                     </div>
                   </div>
-                  {isCoupon && <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30 flex justify-center items-center">
-                    <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   px-5 py-5 flex flex-col justify-end gap-y-3 ">
-                      <div className="w-full flex justify-end items-center cursor-pointer " onClick={() => {
-                        setIsCoupon((prev) => !prev);
-                      }}><button className="bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center cursor-pointer"><FlatIcon icon={"flaticon-close text-secondary font-bold text-[10px]"} /></button>
-                      </div>
-                      <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  px-5 py-5 rounded-xl" >
-                        <h3 className="sm:text-lg text-base font-semibold text-center ">Apply Coupon</h3>
-                        <div className="my-4">
-                          <div className="flex border border-primary items-center  rounded-md lg:px-5 px-3 justify-between  py-2 cursor-pointer">
-                            <div className="flex items-center gap-2 text-primary w-full"><Image src={tag} alt="" />
-                              <input className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]" value={coupon} onChange={(e) => {
-                                // console.log(e.target.value);
+                  {isCoupon && (
+                    <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30 flex justify-center items-center">
+                      <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   px-5 py-5 flex flex-col justify-end gap-y-3 ">
+                        <div
+                          className="w-full flex justify-end items-center cursor-pointer "
+                          onClick={() => {
+                            setIsCoupon((prev) => !prev);
+                          }}
+                        >
+                          <button className="bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center cursor-pointer">
+                            <FlatIcon
+                              icon={
+                                "flaticon-close text-secondary font-bold text-[10px]"
+                              }
+                            />
+                          </button>
+                        </div>
+                        <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  px-5 py-5 rounded-xl">
+                          <h3 className="sm:text-lg text-base font-semibold text-center ">
+                            Apply Coupon
+                          </h3>
+                          <div className="my-4">
+                            <div className="flex border border-primary items-center  rounded-md lg:px-5 px-3 justify-between  py-2 cursor-pointer">
+                              <div className="flex items-center gap-2 text-primary w-full">
+                                <Image src={tag} alt="" />
+                                <input
+                                  className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]"
+                                  value={coupon}
+                                  onChange={(e) => {
+                                    // console.log(e.target.value);
 
-                                setCoupon(e.target.value)
-                              }} /></div>
-                            <div className="flex items-center gap-5">
-                             {coupon&&
-                               <div onClick={() => setCoupon("")}>
-                               <FlatIcon className="flaticon-close text-primary text-lg" />
-                             </div>
-                             }
-                              <div className="text-white bg-secondary px-5 py-1 text-sm" onClick={() => getCouponDiscount(coupon)}>Apply</div>
-                            </div>
-                          </div>
-                          {
-                            couponAvl && couponList && couponList.length > 0 &&
-                            <div>
-                              <h2 className="text-primary text-base font-semibold my-6">Coupons Available</h2>
-                              {couponAvl && couponList && couponList.length > 0 && couponList.map((item: any, idx: number) => {
-                                return <div className="flex justify-between items-center" key={idx}>
-                                  <div><h2>{item?.name}</h2><p className="text-sm text-[#555555] mt-1">{item?.description}</p></div>
-                                  <div className="cursor-pointer" onClick={() => getCouponDiscount(item.name)}><button className="text-white bg-secondary px-5 py-1 text-sm">Apply</button></div>
+                                    setCoupon(e.target.value);
+                                  }}
+                                />
+                              </div>
+                              <div className="flex items-center gap-5">
+                                {coupon && (
+                                  <div onClick={() => setCoupon("")}>
+                                    <FlatIcon className="flaticon-close text-primary text-lg" />
+                                  </div>
+                                )}
+                                <div
+                                  className="text-white bg-secondary px-5 py-1 text-sm"
+                                  onClick={() => getCouponDiscount(coupon)}
+                                >
+                                  Apply
                                 </div>
-                              })}
+                              </div>
                             </div>
-                          }
+                            {couponAvl &&
+                              couponList &&
+                              couponList.length > 0 && (
+                                <div>
+                                  <h2 className="text-primary text-base font-semibold my-6">
+                                    Coupons Available
+                                  </h2>
+                                  {couponAvl &&
+                                    couponList &&
+                                    couponList.length > 0 &&
+                                    couponList.map((item: any, idx: number) => {
+                                      return (
+                                        <div
+                                          className="flex justify-between items-center"
+                                          key={idx}
+                                        >
+                                          <div>
+                                            <h2>{item?.name}</h2>
+                                            <p className="text-sm text-[#555555] mt-1">
+                                              {item?.description}
+                                            </p>
+                                          </div>
+                                          <div
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              getCouponDiscount(item.name)
+                                            }
+                                          >
+                                            <button className="text-white bg-secondary px-5 py-1 text-sm">
+                                              Apply
+                                            </button>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                </div>
+                              )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>}
+                  )}
                   <div className="flex   justify-between gap-4  text-base">
-                    <p className="text-gray-500 font-semibold  text-base">Price</p>
+                    <p className="text-gray-500 font-semibold  text-base">
+                      Price
+                    </p>
                     <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
                       {constant.currency} {paymentSummary?.totalMrp?.toFixed(2)}
                     </p>
@@ -469,16 +545,18 @@ const CheckoutPage = () => {
                     </div>
                   )}
                   {/* coupon  start */}
-                  {couponDiscount && <div className="flex  justify-between ">
-                    <p className="text-gray-500 font-semibold  text-base">
-                      Coupon discount
-                    </p>
-                    <p className="font-semibold  text-base text-right   leading-tight tracking-tight">
-                      {constant.currency}{" "}
-                      {couponDiscount && couponDiscount.toFixed(2)}
-                      {/* {paymentSummary?.discountOnMrp.toFixed(2)} */}
-                    </p>
-                  </div>}
+                  {couponDiscount && (
+                    <div className="flex  justify-between ">
+                      <p className="text-gray-500 font-semibold  text-base">
+                        Coupon discount
+                      </p>
+                      <p className="font-semibold  text-base text-right   leading-tight tracking-tight">
+                        {constant.currency}{" "}
+                        {couponDiscount && couponDiscount.toFixed(2)}
+                        {/* {paymentSummary?.discountOnMrp.toFixed(2)} */}
+                      </p>
+                    </div>
+                  )}
                   {/* coupon  end */}
 
                   <div className="flex justify-between  ">
@@ -488,8 +566,11 @@ const CheckoutPage = () => {
                     <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
                       {paymentSummary?.delivery?.deliveryCost === 0
                         ? "Free"
-                        : `${constant.currency
-                        } ${paymentSummary?.delivery?.deliveryCost.toFixed(2)}`}
+                        : `${
+                            constant.currency
+                          } ${paymentSummary?.delivery?.deliveryCost.toFixed(
+                            2
+                          )}`}
                     </p>
                   </div>
                   {/* <div className="flex justify-between gap-4  text-base">
@@ -500,7 +581,9 @@ const CheckoutPage = () => {
                   </div> */}
                   <div className="  border-gray-400 border-t  "></div>
                   <div className="flex justify-between     ">
-                    <p className=" font-bold text-secondary   text-base leading-tight tracking-tight">Total</p>
+                    <p className=" font-bold text-secondary   text-base leading-tight tracking-tight">
+                      Total
+                    </p>
                     <p className=" font-bold text-secondary    text-base leading-tight tracking-tight">
                       {constant.currency}{" "}
                       {paymentSummary?.totalPayable.toFixed(2)}
@@ -508,29 +591,28 @@ const CheckoutPage = () => {
                   </div>
                 </div>
                 <div className="flex  ">
-
                   <button
                     className=" w-full text-white py-2 px-2 hover:bg-white hover:text-black cursor-pointer hover:border hover:border-secondary   md:h-[60px] h-[40px] bg-secondary  text-center  text-base font-semibold"
                     onClick={() => {
                       if (selectedTab === tabs[2]) {
                         // setIsStripeOpen(true);
-                        placeOrder()
+                        placeOrder();
                       } else {
                         handleClick();
                       }
                     }}
-                  //  previous onclick start 
-                  // onClick={() => {
-                  //   handleAddressSubmit();
-                  // }}
-                  //  previous onclick end
+                    //  previous onclick start
+                    // onClick={() => {
+                    //   handleAddressSubmit();
+                    // }}
+                    //  previous onclick end
                   >
                     {/* {tabs} */}
                     {selectedTab === tabs[2]
                       ? "Proceed To Payment"
                       : selectedTab === tabs[1]
-                        ? "Proceed To Review"
-                        : "Select Payment Method"}
+                      ? "Proceed To Review"
+                      : "Select Payment Method"}
                     {/* Proceed To Payment */}
                   </button>
                 </div>

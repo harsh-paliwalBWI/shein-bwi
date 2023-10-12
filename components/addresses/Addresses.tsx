@@ -13,7 +13,7 @@ const Addresses = ({userId}) => {
     const { data: userAddresses } = useQuery({
         queryKey: ["userAddresses"],
         queryFn: () => getUserAddresses(null),
-        // refetchInterval: 2000,
+        // 
         // keepPreviousData: true,
         // enabled: isClient,
     });
@@ -22,7 +22,7 @@ const Addresses = ({userId}) => {
     const { data: userData } = useQuery({
         queryKey: ["userData"],
         queryFn: () => getUserData(null),
-        refetchInterval: 2000,
+        
         // keepPreviousData: true,
         // enabled: isClient,
       });
