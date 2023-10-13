@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef,useState } from "react";
+import React, { useRef, useState } from "react";
 import CategoryCard from "../../categoryCard/CategoryCard";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeSections } from "../../../utils/databaseService";
@@ -10,15 +10,12 @@ import CategoryGrid from "./CategoryGrid";
 import { getDocFromWidget } from "../../../utils/databaseService";
 import FlatIcon from "../../flatIcon/flatIcon";
 import PopUp from "../../popUp/PopUp";
-
 const CategoriesSlider = ({ section, myKey }) => {
-  const [showPopUp,setShowPopUp]=useState(false)
-
+  const [showPopUp, setShowPopUp] = useState(false);
   const { data: homeData } = useQuery({
     queryKey: ["homeSections"],
     queryFn: fetchHomeSections,
   });
-
   // const {data:widgetData}=useQuery({
   //   queryKey: ["homeSections"],
   //   queryFn: getDocFromWidget(section?.widgetID),
@@ -26,21 +23,15 @@ const CategoriesSlider = ({ section, myKey }) => {
   const { data: widgetData } = useQuery({
     queryKey: ["widgetDoc"],
     queryFn: () => getDocFromWidget(section?.widgetID),
-    
   });
-
   // console.log(widgetData,"widgetData");
-
   // console.log(homeData.data,"homedata from CategoriesSlider ");
   const data = homeData?.data?.filter(
     (val: any) => val?.id === section?.widgetID
   );
   // console.log(homeData.data,"home data");
-
   // console.log(data,"data-------------------->");
-
   // console.log(section,"section");
-
   const slider = useRef<any>(null);
   const settings = {
     dots: false,
@@ -105,17 +96,12 @@ const CategoriesSlider = ({ section, myKey }) => {
       },
     ],
   };
-
   const arrowButtonClass =
     "absolute top-0 bottom-0 my-auto  w-10 h-10 block text-white cursor-pointer z-20";
-
   // console.log(widgetData&&widgetData[0]?.style?.itemStyle?.style,"style");
-
   // if(widgetData&&widgetData[0]?.style?.itemStyle?.style!=="one"){
   //    return <CategoryGrid section={section}/>
-
   // }
-
   return (
     <>
       {homeData &&
@@ -125,30 +111,30 @@ const CategoriesSlider = ({ section, myKey }) => {
           ?.arr?.length !== 0 && (
           <div className=" px-body ">
             {section?.sectionName && (
-              <div 
-              //     onClick={()=>{
-              //   setShowPopUp((prev)=>!prev)
-              // }}
-              className=" flex justify-center my-5">
+              <div
+                //     onClick={()=>{
+                //   setShowPopUp((prev)=>!prev)
+                // }}
+                className=" flex justify-center sm:mt-5 sm:mb-10 mb-5"
+              >
                 <h1 className="text-secondary sm:text-3xl text-xl font-bold  ">
                   {section?.sectionName}
                 </h1>
               </div>
             )}
-            <div className="flex justify-center items-center relative md:my-12 my-6 ">
-              <div className="">
+            {/* <div className="flex justify-center items-center relative md:my-12 my-6 "> */}
+            {/* <div className="">
                 <button
                   className={`${arrowButtonClass} left-0 lg:-left-4 flex justify-center items-center `}
                   onClick={() => slider.current?.slickPrev()}
                 >
-                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary" />
-                  {/* L */}
+                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary"/>
                 </button>
-              </div>
-
-              <div className="back ">
-                <div className="w-[85vw] lg:w-[90vw] h-auto ">
-                  <Slider
+              </div> */}
+            <div className="back ">
+              <div className="w-full h-auto   ">
+                <div className="grid xl:grid-cols-5  lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 ">
+                  {/* <Slider
                     ref={slider}
                     {...settings}
                     className=""
@@ -157,60 +143,56 @@ const CategoriesSlider = ({ section, myKey }) => {
                     nextArrow={<></>}
                     prevArrow={<></>}
                     draggable={true}
-                  >
-                    {homeData &&
-                      homeData?.data?.filter(
-                        (val: any) => val?.id === section?.widgetID
-                      ) &&
-                      homeData?.data?.filter(
-                        (val) => val?.id === section?.widgetID
-                      ) &&
-                      homeData?.data
-                        ?.filter((val: any) => val?.id === section?.widgetID)[0]
-                        ?.arr?.map((cat: any, idx: any) => {
-                          // console.log();
-
-                          return (
-                            <div className="" key={idx}>
-                              <CategoryCard
-                                cat={cat}
-                                heading={cat?.name}
-                                slug={cat?.slug?.name}
-                                path={
-                                  cat?.isSubcategories
-                                    ? `/category/${cat?.slug?.name}`
-                                    : `/shop/category/${cat?.slug?.name}`
-                                }
-                              />
-                            </div>
-                          );
-                        })}
-                  </Slider>
+                  > */}
+                  {homeData &&
+                    homeData?.data?.filter(
+                      (val: any) => val?.id === section?.widgetID
+                    ) &&
+                    homeData?.data?.filter(
+                      (val) => val?.id === section?.widgetID
+                    ) &&
+                    homeData?.data
+                      ?.filter((val: any) => val?.id === section?.widgetID)[0]
+                      ?.arr?.map((cat: any, idx: any) => {
+                        // console.log();
+                        return (
+                          <div className="" key={idx}>
+                            <CategoryCard
+                              cat={cat}
+                              heading={cat?.name}
+                              slug={cat?.slug?.name}
+                              path={
+                                cat?.isSubcategories
+                                  ? `/category/${cat?.slug?.name}`
+                                  : `/shop/category/${cat?.slug?.name}`
+                              }
+                            />
+                          </div>
+                        );
+                      })}
                 </div>
+                {/* </Slider> */}
               </div>
-
-              <div className="">
+            </div>
+            {/* <div className="">
                 <button
                   className={`${arrowButtonClass} right-0 lg:-right-4 flex justify-center items-center -rotate-180 `}
                   onClick={() => slider.current?.slickNext()}
                 >
-                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary" />
-                  {/* R */}
+                  <FlatIcon className="flaticon-left-arrow text-2xl font-bold text-secondary"/>
                 </button>
-              </div>
-            </div>
-
+              </div> */}
+            {/* </div> */}
             {/* category grid start  */}
             {/* <div>
   <CategoryGrid section={section}/>
 </div> */}
           </div>
         )}
-        {/* {
+      {/* {
   showPopUp&&<PopUp  setShowPopUp={setShowPopUp}/>
 } */}
     </>
   );
 };
-
 export default CategoriesSlider;
