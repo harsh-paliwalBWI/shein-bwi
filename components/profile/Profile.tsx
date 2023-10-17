@@ -86,7 +86,7 @@ const Profile = ({ cookie }) => {
 
   return (
     <div className="flex flex-col px-body gap-2 mt-2  h-full ">
-      <div className="w-full flex flex-col lg:flex-row gap-4 mt-5 sm:mb-20 mb-10">
+      <div className="w-full flex flex-col md:flex-row gap-4 mt-5 sm:mb-20 mb-10">
         <ProfileOptions cookie={cookie} setSelectedTab={setSelectedTab} selectedTab={selectedTab}/>
         <hr />
         <div className="w-full flex-1 ">

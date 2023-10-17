@@ -55,13 +55,13 @@ const WishlistComponent = ({ cookie }) => {
           <h1 className="sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5">
             My Wishlist
           </h1>
-          <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-x-8 sm:gap-y-10 gap-y-5 md:my-10 my-6">
+          <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:gap-x-8 gap-x-2 sm:gap-y-10 gap-y-5 md:my-10 my-6">
             {wishlistData2 &&
               wishlistData2.length > 0 &&
               isClient &&
               wishlistData2.map((item: any, idx: number) => {
                 return (
-                  <div key={idx} className="sm:mx-0 mx-5">
+                  <div key={idx} className="">
                     <ProductCard product={item} mx={0} />
                   </div>
                 );

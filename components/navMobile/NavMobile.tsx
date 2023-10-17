@@ -135,6 +135,23 @@ const Navmobile = ({cookie,handleLogout}) => {
                 Log In
               </Link> */}
 
+
+{(cookie?.value||userData)&&  <Link
+                href={"/profilepage"}
+                className={`${
+                  pathname.includes("/profilepage") && "text-primary"
+                } flex items-center justify-center gap-2  py-[5px]  cursor-pointer `}
+                onClick={async() => {
+                  setIsMobile(false);
+                  document.body.classList.remove("no-scroll");
+                  await queryClient.invalidateQueries({ queryKey: ["userData"],});
+                  await queryClient.refetchQueries({ queryKey: ["userData"] });
+             
+                }}
+              >
+                <div>Profile</div>
+                <div></div>
+              </Link>}
 {cookie?.value || userData ? (
                 <Link
                   href={"/#"}
@@ -166,6 +183,7 @@ const Navmobile = ({cookie,handleLogout}) => {
                   Log In
                 </Link>
               )}
+
             </div>
           </div>
         </div>

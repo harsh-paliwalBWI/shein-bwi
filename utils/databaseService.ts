@@ -665,8 +665,14 @@ export const getUserWishlistData2 = async (cookieData) => {
         uid = cookie?.value;
     }
     try {
-        const wishlistCollRef = collection(db, `users/${uid}/wishlist`);
-        const querySnapshot = await getDocs(wishlistCollRef);
+
+        // const orderedQuery = query(collection(db, "orders"), orderBy('createdAt', 'desc'));
+        // const querySnapshot = await getDocs(orderedQuery);
+
+
+        const orderedQuery = query(collection(db, `users/${uid}/wishlist`), orderBy('createdAt', 'asc'));
+        // const wishlistCollRef = collection(db, `users/${uid}/wishlist`);
+        const querySnapshot = await getDocs(orderedQuery);
         const wishlists = [];
         querySnapshot.forEach((doc) => {
             wishlists.push(doc.id);

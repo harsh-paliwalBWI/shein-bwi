@@ -57,11 +57,11 @@ const Addresses = ({ userId }) => {
                         // console.log(item,"item");
 
                         return <div key={idx} className=' border border-primary '>
-                            <div className='p-5'>
+                            <div className='lg:px-5 px-2 lg:py-5 py-3'>
 
                                 <div className='text-secondary text-lg font-semibold flex justify-between'>
                                     <h2>{item.name}{" "}{item?.lastName && item?.lastName}</h2>
-                                    {userData && userData?.defaultAddress?.address === item?.address && <div className=' sm:text-sm text-xs px-5 py-1.5 rounded-2xl font-medium bg-secondary text-white flex justify-center items-center'><h2>DEFAULT</h2></div>}
+                                    {userData && userData?.defaultAddress?.address === item?.address && <div className=' lg:text-sm text-xs lg:px-5 px-3 py-1.5 rounded-2xl font-medium bg-secondary text-white flex justify-center items-center'><h2>DEFAULT</h2></div>}
                                 </div>
                                 <div className='my-2 flex flex-col gap-1'>
                                     <div className='text-gray-500 text-sm font-semibold '>{item.address}</div>
@@ -71,7 +71,7 @@ const Addresses = ({ userId }) => {
                                 <div className='text-secondary text-sm font-semibold'><span className='text-gray-500 font-semibold '>Mobile</span>{" "}:{" "}{item.phoneNo}</div>
 
                             </div>
-                            <div className='flex w-full bg-[#FFEEF4]  border-t border-t-primary  text-base font-semibold'>
+                            <div className='flex w-full bg-[#FFEEF4]  border-t border-t-primary  md:text-base text-sm font-semibold'>
                                 <div onClick={() => deleteUserAddress({ userId: userId, docId: item?.id })} className='w-[50%] flex justify-center text-primary border-r border-r-primary py-3 cursor-pointer'><button>Remove</button></div>
                                 <div onClick={() => {
                                     setIsAddressEdit(true)

@@ -83,7 +83,7 @@ const ProductInfo = ({ params }: any) => {
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
 
-  console.log({ quantity });
+  // console.log({ quantity });
 
   const { data: userData } = useQuery({
     queryKey: ["userData"],

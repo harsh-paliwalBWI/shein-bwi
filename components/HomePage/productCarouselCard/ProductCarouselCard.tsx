@@ -75,7 +75,7 @@ const ProductCarouselCard = ({ product, id }) => {
         ) : (
           <div
             onClick={async () => {
-              console.log("move btn cgfh");
+              // console.log("move btn cgfh");
 
               await moveToWishListHandler({
                 userId: userData?.id,

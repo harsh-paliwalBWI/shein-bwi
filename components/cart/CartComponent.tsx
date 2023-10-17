@@ -23,7 +23,7 @@ import { toast } from 'react-toastify';
 
 const CartComponent = ({cookie}) => {
   const cart = useAppSelector((state) => state.cartReducer.cart);
-  console.log(cart,"cart--------------------");
+  // console.log(cart,"cart--------------------");
   const router=useRouter()
   const dispatch = useDispatch();
   const [updatedCart, setUpdatedCart] = useState(cart);
@@ -87,7 +87,7 @@ const CartComponent = ({cookie}) => {
   return (
     <>
     <div className="flex flex-col px-body  w-full md:mb-10 mb-5 md:mt-8 mt-4 ">
-      <div className="flex flex-col gap-10   border-gray-300   w-full ">
+      <div className="flex flex-col sm:gap-10 gap-5  border-gray-300   w-full ">
         <div className=" md:w-[100%] w-[100%]">
           <div className='flex items-center gap-2 md:mb-8 mb-4'>
             <h1 className='font-semibold md:text-2xl text-xl px-2 '>MY CART </h1>
@@ -101,7 +101,7 @@ const CartComponent = ({cookie}) => {
             ))}
             </div>
         </div>
-        <div className='flex  justify-center items-center w-full' onClick={()=>onCheckOutHandler()}><button className='bg-secondary text-white font-semibold w-[40%] text-center py-2 sm:text-base text-xs'>Checkout</button></div>
+        <div className='flex  justify-center items-center w-full' onClick={()=>onCheckOutHandler()}><button className='bg-secondary text-white font-semibold sm:w-[40%] w-full text-center py-2 sm:text-base text-xs'>Checkout</button></div>
 
         {/* <div className=" md:w-[30%] sm:w-[80%] w-[90%] md:mx-0 mx-auto">
           <div className='flex items-center gap-2 sm:mb-8 mb-4'>

@@ -158,11 +158,11 @@ const Footer = () => {
                         <Image src={instagram} alt="" />
                       </div>
                     </Link>
-                    <Link href={storeData ? storeData?.facebookUrl : ""} target="_blank">
-                      <div>
+                    {/* <Link href={""} target="_blank"> */}
+                      <div className="cursor-pointer">
                         <Image src={pinterest} alt="" />
                       </div>
-                    </Link>
+                    {/* </Link> */}
                     <Link href={storeData ? storeData?.twitterUrl : ""} target="_blank">
                       <div>
                         <Image src={twitter} alt="" />

@@ -104,7 +104,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
   // const dummyDATA=[{icon:}]
   return (
     <>
-      <div className=" flex-[0.25] filter-border  h-fit ">
+      <div className=" xl:flex-[0.25] md:flex-[0.45] filter-border  h-fit ">
         <div className="flex flex-col items-center mt-5 mb-7">
           <div className="border border-[#EEEEEE] rounded-full p-2 mb-2">
             <div className=" rounded-full  relative" >
@@ -130,7 +130,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
           </h6>
         </div>
         {/* <Link href={"/profilePage"}> */}
-        <div onClick={()=>setSelectedTab(1)} className={`flex gap-3 items-center border-t border-t-[#EEF0F5] border-b border-b-[#EEF0F5] py-4 px-6 hover:text-primary ${selectedTab===1?"text-primary":"text-secondary"}`}>
+        <div onClick={()=>setSelectedTab(1)} className={`flex gap-3 items-center border-t border-t-[#EEF0F5] border-b border-b-[#EEF0F5] py-4 px-6 hover:text-primary ${selectedTab===1?"text-primary":"text-secondary"} cursor-pointer`}>
           <div><FlatIcon icon={`flaticon-user-fill  font-normal text-2xl cursor-pointer`} /></div>
           <h4 className={` font-semibold text-sm `}>Profile Info</h4>
         </div>

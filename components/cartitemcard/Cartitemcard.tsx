@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { toast } from "react-toastify";
 import product1 from "../../images/productimg1.svg";
 import { constant } from "../../utils/constants";
 import { useDispatch } from "react-redux";
@@ -21,12 +22,13 @@ import {
   removeFromWishListHandler,
   getUserWishlist,
 } from "../../utils/databaseService";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { removeFromCart } from "../../redux/slices/cartSlice";
+// import { useQueryClient } from "@tanstack/react-query";
 
 const CartItemCard = ({ item, mykey, cookie }) => {
   // console.log(item);
-
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState((item && item?.minQty) || 1);
   const [variant, setVariant] = useState(0);
@@ -56,7 +58,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
   return (
     <div className="flex sm:flex-row flex-col gap-x-2 md:gap-y-0 gap-y-4 justify-between items-center  border border-gray-400 w-full h-fit px-3 py-3 ">
       <div className="">
-        <div className="flex sm:flex-row flex-col  gap-4  sm:items-start items-center ">
+        <div className="flex flex-row   gap-4  sm:items-start  ">
           <div className="flex flex-col gap-2 ">
             <div className=" ">
               <Image
@@ -70,10 +72,10 @@ const CartItemCard = ({ item, mykey, cookie }) => {
             </div>
           </div>
           <div className="flex flex-col">
-            <p className="  text-neutral-950 text-lg  font-semibold leading-[25px] tracking-tight  mb-1 ">
+            <p className="  text-neutral-950 md:text-lg text-base font-semibold leading-[25px] tracking-tight  mb-1 line-clamp-1">
               {item.name}
             </p>
-            <div className="flex items-center gap-2 text-[#555555] text-sm font-medium mb-1 ">
+            <div className="flex items-center gap-2 text-[#555555] md:text-sm text-xs font-medium mb-1 ">
               <span>Size : </span> <span>{item?.pack?.weight}</span>{" "}
               <span>|</span> <span>Color : </span>{" "}
               <span>{item?.color?.name}</span>
@@ -95,7 +97,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
               </h4>
             </div> */}
             <div className="flex items-center   gap-4 mt-3 ">
-              <p className="text-center text-black text-lg font-bold leading-[29px]">
+              <p className="text-center text-black md:text-lg text-base font-bold leading-[29px]">
                 {constant?.currency} {item?.price?.toFixed(2)}
               </p>
             </div>
@@ -112,15 +114,15 @@ const CartItemCard = ({ item, mykey, cookie }) => {
               icon={"flaticon-close text-[#FF0000] font-normal text-xs"}
             />
           </div>
-          <p className="text-[#FF0000] sm:text-sm text-sm font-semibold">
+          <p className="text-[#FF0000] md:text-sm text-xs font-semibold">
             Remove Item
           </p>
         </div>
       </div>
-      <div className="flex flex-col items-end gap-y-4  h-fit  text-end  ">
+      <div className="flex sm:flex-col flex-row gap-x-2 items-end justify-between gap-y-4  h-fit  text-end   sm:w-fit w-full ">
         <div className="  flex border border-[#C6C6C6]  w-fit text-end    ">
           <div
-            className=" text-[#000000] flex-[0.4] flex justify-center items-center text-lg font-bold cursor-pointer select-none px-3 py-3 "
+            className=" text-[#000000] flex-[0.4] flex justify-center items-center text-lg font-bold cursor-pointer select-none md:px-3 px-2 md:py-3 py-2 "
             onClick={() => {
               dispatch(
                 updateCartItemQuantity({
@@ -132,14 +134,14 @@ const CartItemCard = ({ item, mykey, cookie }) => {
             }}
           >
             <FlatIcon
-              icon={"flaticon-minus text-secondary font-normal text-[10px]"}
+              icon={"flaticon-minus text-secondary font-normal md:text-[10px] text-[8px]"}
             />
           </div>
-          <div className="flex-1 flex justify-center items-center  px-6 py-3 bg-gray-200 border-l  border-l-[#C6C6C6] border-r  border-r-[#C6C6C6] ">
+          <div className="flex-1 flex justify-center items-center md:text-sm text-xs md:px-6 px-4 md:py-3 py-2 bg-gray-200 border-l  border-l-[#C6C6C6] border-r  border-r-[#C6C6C6] ">
             <p className="">{item.quantity}</p>
           </div>
           <div
-            className=" flex-[0.4] text-[#CCCCCC]  flex justify-center items-center text-lg font-bold cursor-pointer select-none  px-3 py-3"
+            className=" flex-[0.4] text-[#CCCCCC]  flex justify-center items-center text-lg font-bold cursor-pointer select-none  md:px-3 px-2 md:py-3 py-2"
             onClick={() => {
               dispatch(
                 updateCartItemQuantity({
@@ -151,7 +153,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
             }}
           >
             <FlatIcon
-              icon={"flaticon-plus-1 text-secondary font-normal text-[10px]"}
+              icon={"flaticon-plus-1 text-secondary font-normal md:text-[10px] text-[8px]"}
             />
           </div>
         </div>
@@ -161,36 +163,44 @@ const CartItemCard = ({ item, mykey, cookie }) => {
           wishlistData.includes(`${item?.productId}`) ? (
             <div
               className="flex items-center gap-2  text-end cursor-pointer "
-              onClick={() =>
-                removeFromWishListHandler({
-                  userId: userData?.id,
-                  productId: item?.productId,
-                })
+              onClick={async() =>{
+                await removeFromWishListHandler({userId: userData?.id,productId: item?.productId,})
+                await queryClient.invalidateQueries({
+                  queryKey: ["wishlistData"],
+                });
+                toast.success("Product removed from wishlist.");
+              }
+                
               }
             >
               <FlatIcon
                 icon={
-                  "flaticon-heart-fill text-2xl text-secondary font-normal "
+                  "flaticon-heart-fill md:text-2xl text-xl text-secondary font-normal "
                 }
               />
-              <h3 className="text-secondary font-semibold sm:text-base text-sm">
+              <h3 className="text-secondary font-semibold  sm:text-sm md:text-base  text-xs  w-fit">
                 Remove from Wishlist
               </h3>
             </div>
           ) : (
             <div
               className="flex items-center gap-2  text-end cursor-pointer "
-              onClick={() =>
+              onClick={async() =>{
                 moveToWishListHandler({
                   userId: userData?.id,
                   productId: item?.productId,
                 })
+                await queryClient.invalidateQueries({
+                  queryKey: ["wishlistData"],
+                });
+                toast.success("Product added to wishlist.");
+              }
               }
             >
               <FlatIcon
-                icon={"flaticon-heart text-secondary font-normal text-2xl "}
+                icon={"flaticon-heart text-secondary font-normal md:text-2xl text-xl "}
               />
-              <h3 className="text-secondary font-semibold sm:text-base text-sm">
+              <h3 className="text-secondary font-semibold  sm:text-sm md:text-base text-xs ">
                 Move to Wishlist
               </h3>
             </div>
