@@ -19,7 +19,7 @@ const CategoryClient = () => {
       ) : (
         <>
           <h1 className="text-lg md:text-4xl font-semibold">Categories</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-4 sm:gap-x-10 gap-x-2 sm:gap-y-10 gap-y-5">
             {categories?.map((category) => {
               return (
                 <CategoryCard

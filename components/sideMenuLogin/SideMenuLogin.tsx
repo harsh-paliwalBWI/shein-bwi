@@ -23,6 +23,7 @@ import { closeLoginModal } from "../../redux/slices/loginModalSlice";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserData } from "../../utils/databaseService";
 import FlatIcon from "../flatIcon/flatIcon";
+import { useMediaQuery } from "@mui/material";
 
 function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
   const [email, setEmail] = useState<any>("");
@@ -37,6 +38,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
   const [verifying, setVerifying] = useState(false);
   const [showPhoneNumberInput, setShowPhoneNumberInput] = useState(true);
   const pathName = usePathname();
+  const matches = useMediaQuery("(max-width:767px)");
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
@@ -80,10 +82,10 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
   };
   const signInUserWithPhoneNumber = async () => {
     try {
-      console.log("inside try");
+      // console.log("inside try");
       
       if (phoneNumber) {
-        console.log("inside if");
+        // console.log("inside if");
         setLoading(true);
         const recaptchaVerifier = new RecaptchaVerifier(
           auth,
@@ -91,13 +93,13 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           {
             size: "invisible",
             callback: (response: any) => {
-              console.log(response);
+              // console.log(response);
             },
           }
         );
-        console.log("after recaptchaVerifier ");
+        // console.log("after recaptchaVerifier ");
         const formattedPhoneNumber = `+91${phoneNumber}`;
-        console.log(formattedPhoneNumber);
+        // console.log(formattedPhoneNumber);
         
         await signInWithPhoneNumber(
           auth,
@@ -105,7 +107,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           recaptchaVerifier
         )
           .then((confirmationResult) => {
-            console.log("inside then");
+            // console.log("inside then");
             // console.log("confirmationResult::::::::" ,confirmationResult );
             setOTPSent(confirmationResult);
 
@@ -128,12 +130,14 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
 
   const confirmOTP = () => {
     try {
+      // console.log("inside try");
+      
       setTimerStarted(false);
       setVerifying(true);
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
-          console.log(res, "User");
+          // console.log(res, "User");
           localStorage.setItem("auth", JSON.stringify(res.user.uid));
           if (res._tokenResponse.isNewUser) {
 
@@ -161,12 +165,12 @@ let newUser={ phoneNo: phoneNumber,
             //   setFromUI: true,
             //   wallet: { balance: 0, cashback: 0, lastTransactions: {} },
             // };
-            console.log(newUser, "user info");
+            // console.log(newUser, "user info");
             await setDoc(doc(db, `users/${res.user.uid}`), newUser, {
               merge: true,
             });
           } else {
-            console.log("user already exist");
+            // console.log("user already exist");
           }
 
           await axios.get(`/api/login?uid=${res.user.uid}`);
@@ -193,45 +197,46 @@ let newUser={ phoneNo: phoneNumber,
   return (
     <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50">
       <div
-        className={`fixed right-0 top-0 h-[100vh] z-30 sm:w-[67vh] w-full bg-white transform ${
+        className={`fixed  ${matches?"left-0":"right-0"} top-0 h-[100vh] z-30 sm:w-[67vh]  w-full bg-white transform md:rounded-none rounded-tr-md${
           isOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform ease-in-out duration-700`}
       >
         <div className="flex items-center justify-end p-4">
           <div
-            className="mt-4 mr-6 bg-[#F6F3FA] rounded-full p-3"
+            className="  bg-[#F6F3FA] rounded-full p-3"
             onClick={onClose}
           >
-            <FlatIcon className="text-gray-600 cursor-pointer flaticon-close" />
+            <FlatIcon className="text-gray-600 cursor-pointer flaticon-close md:text-sm text-xs " />
           </div>
         </div>
         <div className="p-4 flex flex-col items-center justify-center h-[85%] ">
           <Image
             src={logo}
             alt=""
-            width={200}
-            height={200}
+            width={1000}
+            height={1000}
             style={{
               maxWidth: "100%",
               height: "auto",
             }}
+            className="md:w-[200px] w-[150px] h-auto"
           />
           {/* <div className="font-bold sm:text-3xl text-xl mb-[30px]">Log In</div> */}
-          <div className="text-[#777777] text-xl my-[30px]">
+          <div className="text-[#777777] md:text-lg sm:text-base text-sm my-[30px]">
             Login with your Phone Number.
           </div>
 
           {/* code for login with phone number start  */}
           {showPhoneNumberInput && ( // Conditionally render phone number input and login button
-            <div className="mb-[20px] w-[90%]">
+            <div className="mb-[20px] w-[90%] mobile-container">
               <input
                 type="text"
                 placeholder="Enter phone number"
-                className="w-full px-[20px] py-[15px] mb-[15px] outline-0 border border-gray-300 "
+                className="w-full px-[20px] md:py-[15px] py-2  mb-[15px] outline-0 border border-gray-300 "
                 value={phoneNumber}
                 onChange={(e) => {
                   setPhoneNumber(e.target.value);
-                  console.log(e.target.value);
+                  // console.log(e.target.value);
                 }}
               />
 
@@ -241,7 +246,7 @@ let newUser={ phoneNo: phoneNumber,
                   setPhoneNumber("");
                   setShowPhoneNumberInput(false); // Hide phone number input and login button
                 }}
-                className="text-center bg-primary w-full py-[15px]  text-[white] cursor-pointer"
+                className="text-center bg-primary w-full md:py-[15px] py-2 md:text-base text-sm  text-[white] cursor-pointer "
               >
                 {loading ? "Sending Otp..." : "Log in"}
               </div>
@@ -250,11 +255,11 @@ let newUser={ phoneNo: phoneNumber,
           )}
 
           {!showPhoneNumberInput && ( // Conditionally render OTP input and verify OTP button
-            <div className="mb-[20px] w-[90%]">
+            <div className="mb-[20px] w-[90%] otp-container">
               <input
                 type="text"
                 placeholder="Enter OTP"
-                className="w-full px-[20px] py-[15px] mb-[15px] outline-0 border border-gray-300 "
+                className="w-full px-[20px] md:py-[15px] py-2 mb-[15px] outline-0 border border-gray-300 "
                 id="otp"
                 value={OTP}
                 onChange={(e) => {
@@ -264,7 +269,7 @@ let newUser={ phoneNo: phoneNumber,
               />
               <div
                 onClick={() => confirmOTP()}
-                className="text-center bg-primary w-full py-[15px]  text-[white] cursor-pointer"
+                className="text-center bg-primary w-full md:py-[15px] py-2 md:text-base text-sm  text-[white] cursor-pointer"
               >
                 {verifying ? "Verifying Otp" : "Proceed"}
               </div>

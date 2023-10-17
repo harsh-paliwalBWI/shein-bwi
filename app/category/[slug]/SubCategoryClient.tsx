@@ -12,10 +12,10 @@ const SubCategoryClient = ({ params }: any) => {
     queryFn: () => fetchCategories(),
   });
 
-  console.log(
-    "Checing",
-    categories?.filter((cat) => cat?.category?.slug?.name === params?.slug)
-  );
+  // console.log(
+  //   "Checing",
+  //   categories?.filter((cat) => cat?.category?.slug?.name === params?.slug)
+  // );
 
   return (
     <div className="flex flex-col px-body py-6">
@@ -32,7 +32,7 @@ const SubCategoryClient = ({ params }: any) => {
               )[0]?.category?.name
             }
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mt-4 sm:gap-x-10 gap-x-2 sm:gap-y-10 gap-y-5">
             {categories
               ?.filter((cat) => cat?.category?.slug?.name === params?.slug)[0]
               ?.subcategories?.map((subCat) => {

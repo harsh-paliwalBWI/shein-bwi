@@ -78,6 +78,7 @@ const NavbarClient = ({ cookie }: any) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [variant, setVariant] = useState(0);
+  
 
   // console.log(pathname,"name");
 
@@ -199,7 +200,7 @@ const NavbarClient = ({ cookie }: any) => {
   return (
     <>
       {matches ? (
-        <NavMobile />
+        <NavMobile cookie={cookie} handleLogout={handleLogout}/>
       ) : (
         <>
           <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body z-10 ">

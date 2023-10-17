@@ -18,7 +18,7 @@ const CategoryCard = ({ cat, heading, slug, path = null }) => {
           {/* <div className="h-[190px] w-[220px] border-[10px] border-[yellow]"> */}
           {/* <div className=" h-[190px] w-[190px]  relative z-30 ">
             <div className="h-[100%] w-[100%]   p-1 "> */}
-          <div className=" h-[220px] w-full  relative z-30 ">
+          <div className=" sm:h-[220px] h-[150px] w-full  relative z-30 ">
             <div className="h-[100%] w-[100%]   p-1 ">
               <Image
                 src={cat?.image?.url || cat?.image?.mob || constant?.errImage}

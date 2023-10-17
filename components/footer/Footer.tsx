@@ -148,22 +148,22 @@ const Footer = () => {
                     <span></span>
                   </div>
                   <div className="flex gap-4">
-                    <Link href={storeData ? storeData?.facebookUrl : ""}>
+                    <Link href={storeData ? storeData?.facebookUrl : ""} target="_blank">
                       <div>
                         <Image src={facebookImg} alt="" />
                       </div>
                     </Link>
-                    <Link href={storeData ? storeData?.instagramUrl : ""}>
+                    <Link href={storeData ? storeData?.instagramUrl : ""} target="_blank">
                       <div>
                         <Image src={instagram} alt="" />
                       </div>
                     </Link>
-                    <Link href={storeData ? storeData?.facebookUrl : ""}>
+                    <Link href={storeData ? storeData?.facebookUrl : ""} target="_blank">
                       <div>
                         <Image src={pinterest} alt="" />
                       </div>
                     </Link>
-                    <Link href={storeData ? storeData?.twitterUrl : ""}>
+                    <Link href={storeData ? storeData?.twitterUrl : ""} target="_blank">
                       <div>
                         <Image src={twitter} alt="" />
                       </div>

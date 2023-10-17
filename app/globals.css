@@ -217,3 +217,17 @@ border-bottom: none !important;
 /* .border-container:last-of-type {
   border-bottom: none !important;
 } */
+.mobile-container input[type="text"]::placeholder{
+
+}
+
+@media screen and (max-width: 768px) {
+  .mobile-container input[type="text"]::placeholder{
+font-size: small;
+/* color: #BC2D72; */
+  }
+  .otp-container input[type="text"]::placeholder{
+    font-size: small;
+    /* color: #BC2D72; */
+      }
+}
