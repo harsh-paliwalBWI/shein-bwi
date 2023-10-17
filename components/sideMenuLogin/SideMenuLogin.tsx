@@ -197,13 +197,13 @@ let newUser={ phoneNo: phoneNumber,
   return (
     <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50">
       <div
-        className={`fixed  ${matches?"left-0":"right-0"} top-0 h-[100vh] z-30 sm:w-[67vh]  w-full bg-white transform md:rounded-none rounded-tr-md${
+        className={`fixed  ${matches?"left-0":"right-0"} top-0 h-[100vh] z-30 md:w-[35vw] sm:w-[50vw]  w-full bg-white transform md:rounded-none rounded-tr-md${
           isOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform ease-in-out duration-700`}
       >
         <div className="flex items-center justify-end p-4">
           <div
-            className="  bg-[#F6F3FA] rounded-full p-3"
+            className="  bg-[#F6F3FA] rounded-full p-2 md:p-3"
             onClick={onClose}
           >
             <FlatIcon className="text-gray-600 cursor-pointer flaticon-close md:text-sm text-xs " />
@@ -219,10 +219,10 @@ let newUser={ phoneNo: phoneNumber,
               maxWidth: "100%",
               height: "auto",
             }}
-            className="md:w-[200px] w-[150px] h-auto"
+            className="md:w-[200px] sm:w-[175px] w-[150px] h-auto"
           />
           {/* <div className="font-bold sm:text-3xl text-xl mb-[30px]">Log In</div> */}
-          <div className="text-[#777777] md:text-lg sm:text-base text-sm my-[30px]">
+          <div className="text-[#777777] text-center md:text-lg sm:text-base text-sm my-[30px]">
             Login with your Phone Number.
           </div>
 
@@ -232,7 +232,7 @@ let newUser={ phoneNo: phoneNumber,
               <input
                 type="text"
                 placeholder="Enter phone number"
-                className="w-full px-[20px] md:py-[15px] py-2  mb-[15px] outline-0 border border-gray-300 "
+                className="w-full px-[10px] md:px-[20px] md:py-[15px] py-2 md:text-base text-sm mb-[8px] md:mb-[15px] outline-0 border border-gray-300 "
                 value={phoneNumber}
                 onChange={(e) => {
                   setPhoneNumber(e.target.value);
@@ -259,7 +259,7 @@ let newUser={ phoneNo: phoneNumber,
               <input
                 type="text"
                 placeholder="Enter OTP"
-                className="w-full px-[20px] md:py-[15px] py-2 mb-[15px] outline-0 border border-gray-300 "
+                className="w-full px-[10px] md:px-[20px] md:py-[15px] py-2 md:text-base text-sm mb-[8px] md:mb-[15px] outline-0 border border-gray-300 "
                 id="otp"
                 value={OTP}
                 onChange={(e) => {

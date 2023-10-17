@@ -101,12 +101,14 @@ const ProductInfo = ({ params }: any) => {
   function getImage(product: any, idx: number) {
     // console.log(product)
     // console.log("gggggggggg")
-    if (product?.coverPic?.url) {
-      return product?.coverPic?.url;
-    }
     if (product?.images && product?.images[idx]?.url) {
       return product?.images[idx]?.url;
     }
+
+    if (product?.coverPic?.url) {
+      return product?.coverPic?.url;
+    }
+    
     return constant?.errImage;
   }
   // useEffect(()=>{
@@ -191,9 +193,9 @@ const ProductInfo = ({ params }: any) => {
       {product && (
         <div className="sm:pb-10 ">
           {/* <Headersection heading={product?.prodName} /> */}
-          <div className="flex flex-col px-body   ">
-            <div className="flex flex-col lg:flex-row gap-6 mt-10  ">
-              <div className=" md:flex lg:flex-col md:flex-row   gap-4   hidden ">
+          <div className="flex flex-col px-body  ">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-6 mt-10 ">
+              <div className=" md:flex md:flex-col flex-row   gap-4   hidden ">
                 {product.images.map((item: any, idx: number) => {
                   return (
                     <div
@@ -212,9 +214,9 @@ const ProductInfo = ({ params }: any) => {
                   );
                 })}
               </div>
-              <div className="flex lg:flex-row flex-col w-full  sm:gap-16 gap-6">
-                <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  ">
-                  <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] sm:h-[300px] h-auto ">
+              <div className="flex md:flex-row flex-col w-full sm:gap-8 md:gap-12 lg:gap-16 gap-6 " >
+                <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  justify-center">
+                  <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] md:h-[400px] sm:h-[300px] h-auto ">
                     <Image
                       src={tabImage}
                       alt={product?.prodName || ""}
@@ -224,14 +226,14 @@ const ProductInfo = ({ params }: any) => {
                     />
                   </div>
                 </div>
-                <div className="flex flex-col lg:w-[50%] w-[100%]   ">
-                  <div className="flex items-center  sm:mb-3 mb-1">
-                    <h2 className="md:text-xl text-lg   font-semibold leading-[35px] text-[#555555] ">
+                <div className="flex flex-col md:w-[50%] w-[100%]   ">
+                  <div className="flex items-center  sm:mb-2 md:mb-3 mb-1">
+                    <h2 className="md:text-xl text-lg   font-semibold  text-[#555555] ">
                       {product?.prodName}
                     </h2>
                   </div>
                   <div className="flex sm:flex-row flex-col gap-y-2  gap-x-4 sm:items-center ">
-                    <h2 className=" md:text-2xl text-lg  sm:text-center text-start text-secondary font-bold  ">
+                    <h2 className=" lg:text-2xl md:text-xl sm:text-lg text-base sm:text-center text-start text-secondary font-bold  ">
                       {constant?.currency}{" "}
                       {product?.isPriceList
                         ? prodTab.discountedPrice
@@ -274,12 +276,12 @@ const ProductInfo = ({ params }: any) => {
                     className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 " /> */}
                   {product?.options && product?.options?.length > 0 && (
                     <div className=" mt-4">
-                      <h4 className="text-secondary sm:text-sm text-xs font-semibold mb-3 ">
+                      <h4 className="text-secondary md:text-sm sm:text-xs text-[10px] font-semibold mb-3 ">
                         {/* COLOR : DARK OLIVE GREEN */}
                         COLOR : {colorTab.color.name}
                       </h4>
                       {product?.options && product?.options?.length > 0 && (
-                        <div className="flex gap-3 ">
+                        <div className="flex gap-2 md:gap-3 ">
                           {product.options.map((item: any, idx: number) => {
                             // console.log(item.color.code,"cocloe");
 
@@ -356,9 +358,9 @@ const ProductInfo = ({ params }: any) => {
                       QUANTITY :
                     </h3>
                     <div className="flex sm:items-center sm:flex-row   flex-col gap-y-4 justify-between   sm:mb-10 mb-5 ">
-                      <div className=" flex border border-[#C6C6C6]  w-auto  ">
+                      <div className=" flex border border-[#C6C6C6]    ">
                         <button
-                          className=" text-[#CCCCCC] flex-[0.4] flex justify-center items-center text-lg font-bold cursor-pointer select-none px-3 py-1 "
+                          className=" text-[#CCCCCC] flex-1 flex justify-center items-center text-base md:text-lg font-bold cursor-pointer select-none px-1 sm:px-2 md:px-3 py-0.5 md:py-1 "
                           onClick={() => {
                             let updatedQty = quantity;
                             let prodMin = product?.minQty || 1;
@@ -373,11 +375,11 @@ const ProductInfo = ({ params }: any) => {
                           -
                         </button>
 
-                        <div className="flex-1 flex justify-center items-center  px-10 py-1 bg-gray-200 border-r-[1px] border-r-[#C6C6C6] border-l-[1px] border-l-[#C6C6C6]">
-                          <p className="">{quantity}</p>
+                        <div className="flex-1 flex justify-center items-center px-5 md:px-10 py-1 bg-gray-200 border-r-[1px] border-r-[#C6C6C6] border-l-[1px] border-l-[#C6C6C6]">
+                          <p className="text-base md:text-lg">{quantity}</p>
                         </div>
                         <button
-                          className=" flex-[0.4] text-[#CCCCCC]  flex justify-center items-center text-lg font-bold cursor-pointer select-none  px-3 py-1 "
+                          className="flex-1  text-[#CCCCCC]  flex justify-center items-center text-base md:text-lg font-bold cursor-pointer select-none px-1 sm:px-2 md:px-3 py-0.5 md:py-1 "
                           onClick={() => {
                             setQuantity(quantity + (product?.minQty || 1));
                             // setQuantity((val) => val + product?.minQty || 1);
@@ -522,7 +524,7 @@ const ProductInfo = ({ params }: any) => {
                   >
                     <div className="w-full flex gap-3 ">
                       <div
-                        className="flex-1 lg:flex-none w-[48%]  sm:h-14 bg-[#EBEDF1] h-12  flex justify-center items-center py-2  cursor-pointer"
+                        className="flex-1 lg:flex-none w-[48%]  lg:h-14 md:h-12 sm:h-10 bg-[#EBEDF1] h-8  flex justify-center items-center py-2  cursor-pointer"
                         onClick={
                           checkIfItemExistInCart(cart, product, variant)
                             ? () => {
@@ -531,7 +533,7 @@ const ProductInfo = ({ params }: any) => {
                             : addItemToCart
                         }
                       >
-                        <button className=" text-secondary font-semibold  sm:text-lg text-base">
+                        <button className=" text-secondary font-semibold sm:text-sm md:text-base text-xs">
                           {checkIfItemExistInCart(cart, product, variant)
                             ? "REMOVE FROM BAG"
                             : "ADD TO BAG"}
@@ -542,7 +544,7 @@ const ProductInfo = ({ params }: any) => {
                         className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
                         // onClick={handleRemoveFromCart}
                       >
-                        <button className="text-white font-bold">
+                        <button className="text-white font-bold sm:text-sm md:text-base text-xs">
                           BUY NOW
                         </button>
                       </div>
@@ -552,23 +554,24 @@ const ProductInfo = ({ params }: any) => {
                   <h3 className="font-semibold sm:text-sm text-xs my-5">
                     GUARANTEED SAFE CHECKOUT:
                   </h3>
-                  <div className="flex items-center sm:flex-nowrap flex-wrap gap-6">
+                  <div className="flex items-center sm:flex-nowrap flex-wrap gap-2 md:gap-4 lg:gap-6">
                     {pyamentModeImages.map((item: any, idx: number) => {
                       return (
                         <div
                           key={idx}
-                          className=" bg-[#f5f5f5ff] flex justify-center items-center px-3 py-2"
+                          className=" bg-[#f5f5f5ff] flex justify-center items-center w-[30px] h-auto  md:w-[50px] md:h-auto md:px-3 md:py-2"
                         >
                           <Image
                             src={item.image}
                             alt=""
                             width={1000}
                             height={1000}
-                            style={{
-                              aspectRatio: "auto",
-                              width: "40px",
-                              height: "20px",
-                            }}
+                            // style={{
+                            //   aspectRatio: "auto",
+                            //   width: "40px",
+                            //   height: "20px",
+                            // }}
+                            className="w-full h-full"
                           />
                         </div>
                       );
