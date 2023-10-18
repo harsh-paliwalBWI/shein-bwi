@@ -165,7 +165,8 @@ export const fetchHomeSections = async () => {
 
         //  { next: { revalidate: 60 * 60 * 24 } }
 
-        { cache: 'no-cache' }
+        { cache: 'no-store', method: "POST" }
+
     );
     const data = await res.json();
     // console.log(data,"from fetchHomeSections ");

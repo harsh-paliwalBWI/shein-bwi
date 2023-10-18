@@ -2,7 +2,7 @@ import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebas
 import { db } from "../../../config/firebase-config";
 import { NextResponse } from "next/server";
 
-export const GET = async (request) => {
+export const POST = async (request) => {
 
     const fetchHomeSections = async () => {
         const docRef = doc(db, "pages", 'homepage');
