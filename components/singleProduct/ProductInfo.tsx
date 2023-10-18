@@ -61,7 +61,7 @@ const ProductInfo = ({ params }: any) => {
     product?.options && product?.options[0]
   );
   const [newProduct, setNewProduct] = useState("");
-  // console.log(product, "product from single product---------->");
+  console.log(product, "product from single product---------->");
   //   console.log(product?.images, "images---------->");
   // console.log(product?.searchKeywords,"product?.searchKeywords");
   // console.log(params.slug,"params slug");
@@ -98,6 +98,8 @@ const ProductInfo = ({ params }: any) => {
     queryFn: () => getUserWishlist(userData?.id),
   });
   const [tabImage, setTabImage] = useState(getImage(product, 0));
+
+  
   function getImage(product: any, idx: number) {
     // console.log(product)
     // console.log("gggggggggg")
@@ -106,6 +108,9 @@ const ProductInfo = ({ params }: any) => {
     }
     if (product?.images && product?.images[idx]?.url) {
       return product?.images[idx]?.url;
+    }
+    if (product?.coverPic?.url) {
+      return product?.coverPic?.url;
     }
     return constant?.errImage;
   }
@@ -195,10 +200,13 @@ const ProductInfo = ({ params }: any) => {
             <div className="flex flex-col lg:flex-row gap-6 mt-10  ">
               <div className=" md:flex lg:flex-col md:flex-row   gap-4   hidden ">
                 {product.images.map((item: any, idx: number) => {
+                  console.log(idx);
+                  
                   return (
                     <div
                       onClick={() => setTabImage(getImage(product, idx))}
                       className="   cursor-pointer"
+                      
                     >
                       <Image
                         src={getImage(product, idx)}
