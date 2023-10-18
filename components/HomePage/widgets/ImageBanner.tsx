@@ -21,6 +21,9 @@ const ImageBanner = ({ section, myKey = `` }) => {
 // console.log(imagesArr,"img arr");
 
   const newImagesArr = imagesArr.slice(0, 3);
+// console.log(newImagesArr,"newImagesArr");
+
+
 
   const settings = {
     dots: true,
@@ -110,44 +113,83 @@ const ImageBanner = ({ section, myKey = `` }) => {
   // if(imagesArr.length>3){
   //   ima
   // }
-  if (imagesArr.length > 3) {
+  // if (imagesArr.length > 3) {
+  //   // console.log(true);
+    
+  //   return (
+  //     <div
+  //       className={` only-carousel border border-green-600 `}
+  //       onMouseEnter={() => {
+  //         setHoveredProduct(true);
+  //       }}
+  //       onMouseLeave={() => {
+  //         setHoveredProduct(false);
+  //       }}
+  //     >
+  //       <Slider
+  //         {...settings}
+  //         className=""
+  //         dotsClass={`slick-dots `}
+  //         nextArrow={<SampleNextArrow />}
+  //         prevArrow={<SamplePrevArrow />}
+  //         draggable={true}
+  //       >
+  //         {imagesArr?.map((image: any,idx:number) => {
+  //           return (
+  //             <div className="rounded-lg px-[10%]" key={idx}>
+  //               <Image
+  //                 src={image?.image?.org}
+  //                 alt="banner"
+  //                 width={100}
+  //                 height={100}
+  //                 layout="responsive"
+  //                 className="flex-1 max-h-[450px] object-fill rounded-lg cursor-pointer"
+  //               />
+  //             </div>
+  //           );
+  //         })}
+  //       </Slider>
+  //     </div>
+  //   );
+  // }
+
+  // new start 
+  if (imagesArr.length ===7) {
     return (
       <div
         className={` only-carousel `}
-        onMouseEnter={() => {
-          setHoveredProduct(true);
-        }}
-        onMouseLeave={() => {
-          setHoveredProduct(false);
-        }}
+        // onMouseEnter={() => {
+        //   setHoveredProduct(true);
+        // }}
+        // onMouseLeave={() => {
+        //   setHoveredProduct(false);
+        // }}
       >
-        <Slider
-          {...settings}
-          className=""
-          dotsClass={`slick-dots `}
-          nextArrow={<SampleNextArrow />}
-          prevArrow={<SamplePrevArrow />}
-          draggable={true}
-        >
-          {imagesArr?.map((image: any,idx:number) => {
-            return (
-              <div className="rounded-lg px-[10%]" key={idx}>
-                <Image
-                  src={image?.image?.org}
-                  alt="banner"
-                  width={100}
-                  height={100}
-                  layout="responsive"
-                  className="flex-1 max-h-[450px] object-fill rounded-lg cursor-pointer"
-                />
-              </div>
-            );
-          })}
-        </Slider>
+        <div className="grid md:grid-cols-2 md:grid-cols-1  gap-x-5 gap-y-5">
+      <div className="md:h-[450px] h-[200px]"><Image src={imagesArr[0].image?.org} alt="" width={1000} height={1000} className="h-full"/></div>
+      <div className="grid grid-cols-3 md:h-[450px] h-[200px] ">
+        <div className="md:h-[225px] h-[100px] ">
+          <Image src={imagesArr[6].image?.org}  alt="" width={1000} height={1000} className="h-full border"/>
+          </div>
+        <div className="md:h-[225px] h-[100px] "><Image src={imagesArr[5].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
+        </div>
+        <div className="md:h-[225px] h-[100px] ">
+          <Image src={imagesArr[4].image?.org}  alt="" width={1000} height={1000} className="h-full" />
+          </div>
+        <div className="md:h-[225px] h-[100px] ">
+          <Image src={imagesArr[3].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
+        </div>
+        <div className="md:h-[225px] h-[100px] ">
+          <Image src={imagesArr[2].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
+        </div>
+        <div className="md:h-[225px] h-[100px] ">
+          <Image src={imagesArr[1].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
+        </div>
+      </div>
+      </div>
       </div>
     );
   }
-
   const image =
     (homeData?.data?.filter((val) => val?.id === section?.widgetID)[0]?.arr &&
       homeData?.data?.filter((val) => val?.id === section?.widgetID)[0]?.arr[0]
@@ -159,7 +201,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
   
   
    
-<div className={` w-full ${imagesArr.length===3?"px-body":imagesArr.length===2?"px-[1.5%]":"px-0"}   ${imagesArr.length===3?"lg:-mt-36 -mt-16":"-mt-0"} z-30`}>
+<div className={` w-full  ${imagesArr.length===3?"px-body":imagesArr.length===2?"px-[1.5%]":"px-0"}   ${imagesArr.length===3?"lg:-mt-36 -mt-16":"-mt-0"} z-30`}>
 {/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
 
     <div className={` w-full  flex  items-center ${imagesArr.length===3?"sm:gap-7":"sm:gap-2"} `} key={myKey}>

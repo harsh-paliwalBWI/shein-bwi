@@ -164,10 +164,29 @@ const res = await Promise.allSettled(promiseArr).then((values: any) => {
         })
     }
 
+    // async function fetchImageBanner(section) {
+    //     return new Promise(async (resolve) => {
+
+    //         const querySnapshot = query(collection(db, `widgets/${section?.widgetID}/webSlides`), where('active', '==', true));
+    //         const res = await getDocs(querySnapshot);
+    //         if (res.docs) {
+    //             let arr = [];
+    //             for (const slid of res.docs) {
+    //                 arr.push({ ...slid?.data(), id: slid?.id })
+    //             }
+
+    //             resolve({ status: true, arr, id: section?.widgetID });
+    //         }
+    //         return resolve({
+    //             status: false
+    //         });
+    //     })
+    // }
+
     async function fetchImageBanner(section) {
         return new Promise(async (resolve) => {
 
-            const querySnapshot = query(collection(db, `widgets/${section?.widgetID}/webSlides`), where('active', '==', true));
+            const querySnapshot = query(collection(db, `widgets/${section?.widgetID}/webSlides`), where('active', '==', true), orderBy('createdAt', 'desc'));
             const res = await getDocs(querySnapshot);
             if (res.docs) {
                 let arr = [];
