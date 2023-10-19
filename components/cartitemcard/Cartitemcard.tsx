@@ -27,10 +27,11 @@ import { removeFromCart } from "../../redux/slices/cartSlice";
 // import { useQueryClient } from "@tanstack/react-query";
 
 const CartItemCard = ({ item, mykey, cookie }) => {
-  // console.log(item);
+  console.log(item);
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState((item && item?.minQty) || 1);
+  const [color,setColor]=useState(item?.pack?.weight?.split("/"))
   const [variant, setVariant] = useState(0);
   const { data: userData } = useQuery({
     queryKey: ["userData"],
@@ -39,6 +40,11 @@ const CartItemCard = ({ item, mykey, cookie }) => {
     // keepPreviousData: true,
     // enabled: isClient,
   });
+
+
+  // let weight =item?.pack?.weight.split("/")
+  // console.log(weight&&weight,"weight");
+  
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlistData"],
     queryFn: () => getUserWishlist(userData?.id),
@@ -62,7 +68,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
           <div className="flex flex-col gap-2 ">
             <div className=" ">
               <Image
-                src={item?.img?.url}
+                src={item?.img?.url?item?.img?.url:constant.errImage}
                 alt="productalt"
                 width={1000}
                 height={1000}
@@ -76,9 +82,16 @@ const CartItemCard = ({ item, mykey, cookie }) => {
               {item.name}
             </p>
             <div className="flex items-center gap-2 text-[#555555] md:text-sm text-xs font-medium mb-1 ">
-              <span>Size : </span> <span>{item?.pack?.weight}</span>{" "}
+              <span>Size : </span> <span>
+                {/* {item?.pack?.weight} */}
+                {item?.pack?.weight?.split("/")&&item?.pack?.weight?.split("/")[0]}
+                </span>{" "}
               <span>|</span> <span>Color : </span>{" "}
-              <span>{item?.color?.name}</span>
+              <span>
+                {/* {item?.color?.name} */}
+                {item?.pack?.weight?.split("/")&&item?.pack?.weight?.split("/")[1]}
+
+                </span>
             </div>
             {/* <div className="flex items-center sm:justify-start justify-center gap-2 my-3">
               <div className="text-primary text-xl flex ">

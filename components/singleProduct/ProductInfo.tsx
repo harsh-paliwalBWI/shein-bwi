@@ -56,12 +56,12 @@ const ProductInfo = ({ params }: any) => {
     queryKey: ["product", params?.slug],
     queryFn: () => fetchSingleProduct(params?.slug),
   });
-  const [prodTab, setProdTab] = useState(product?.priceList[0]);
+  const [prodTab, setProdTab] = useState(product?.variants?.option1[0]);
   const [colorTab, setColorTab] = useState(
-    product?.options && product?.options[0]
+    product?.variants?.option2&& product?.variants?.option2[0]
   );
   const [newProduct, setNewProduct] = useState("");
-  console.log(product, "product from single product---------->");
+  // console.log(product, "product from single product---------->");
   //   console.log(product?.images, "images---------->");
   // console.log(product?.searchKeywords,"product?.searchKeywords");
   // console.log(params.slug,"params slug");
@@ -80,8 +80,8 @@ const ProductInfo = ({ params }: any) => {
   }, []);
   const [quantity, setQuantity] = useState((product && product?.minQty) || 1);
   const [variant, setVariant] = useState(0);
-  const [option1, setOption1] = useState("");
-  const [option2, setOption2] = useState("");
+  const [option1, setOption1] = useState(product.priceList[0]?.weight.split("/")[0]?.trim());
+  const [option2, setOption2] = useState(product.priceList[0]?.weight.split("/")[1]?.trim());
 
   // console.log({ quantity });
 
@@ -123,6 +123,10 @@ const ProductInfo = ({ params }: any) => {
 
   //     },[prodTab])
 
+ 
+
+
+
   function getSelectedVariant() {
     if (!option1 && !option2) {
       setVariant(0);
@@ -131,13 +135,21 @@ const ProductInfo = ({ params }: any) => {
       return;
     } else {
       let weight = `${option1} / ${option2}`;
+      // console.log("weight",weight);
+      
       let index = product?.priceList?.findIndex((x) => x.weight === weight);
+      // console.log(index,"index");
+      
       if (index !== -1) {
         setVariant(index);
+      }else{
+        setVariant(0)
       }
     }
   }
 
+
+  
   useEffect(() => {
     if (product && product.isPriceList) {
       getSelectedVariant();
@@ -199,7 +211,7 @@ const ProductInfo = ({ params }: any) => {
             <div className="flex flex-col md:flex-row gap-3 md:gap-6 mt-10 ">
               <div className=" md:flex md:flex-col flex-row   gap-4   hidden ">
                 {product.images.map((item: any, idx: number) => {
-                  console.log(idx);
+                  // console.log(idx);
                   
                   return (
                     <div
@@ -240,10 +252,14 @@ const ProductInfo = ({ params }: any) => {
                   <div className="flex sm:flex-row flex-col gap-y-2  gap-x-4 sm:items-center ">
                     <h2 className=" lg:text-2xl md:text-xl sm:text-lg text-base sm:text-center text-start text-secondary font-bold  ">
                       {constant?.currency}{" "}
-                      {product?.isPriceList
-                        ? prodTab.discountedPrice
-                        : parseFloat(product?.prodPrice).toFixed(2)}
+                      {/* {product?.isPriceList
+                        ? product?.discountedPrice
+                        : parseFloat(product?.prodPrice).toFixed(2)} */}
                       {/* {parseFloat(product?.prodPrice).toFixed(2)} */}
+
+                      {product?.isPriceList
+                        ? product?.priceList[variant].discountedPrice
+                        : parseFloat(product?.prodPrice).toFixed(2)}
                     </h2>
 
                     {/* reviews code start  */}
@@ -279,30 +295,33 @@ const ProductInfo = ({ params }: any) => {
                   {/* <div
                     dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
                     className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 " /> */}
-                  {product?.options && product?.options?.length > 0 && (
+                    
+                  {product?.variants?.option2 && product?.variants?.option2.length > 0 && (
                     <div className=" mt-4">
                       <h4 className="text-secondary md:text-sm sm:text-xs text-[10px] font-semibold mb-3 ">
-                        {/* COLOR : DARK OLIVE GREEN */}
-                        COLOR : {colorTab.color.name}
+                        COLOR : {colorTab}
                       </h4>
-                      {product?.options && product?.options?.length > 0 && (
+                      {product?.variants?.option2 && product?.variants?.option2?.length > 0 && (
                         <div className="flex gap-2 md:gap-3 ">
-                          {product.options.map((item: any, idx: number) => {
-                            // console.log(item.color.code,"cocloe");
+                          {product?.variants?.option2.map((item: any, idx: number) => {
+                            // console.log(item,"cocloe");
 
                             return (
                               <div
-                                onClick={() => setColorTab(item)}
+                                onClick={() => {setColorTab(item)
+                                  setOption2(item);
+                                }
+                                }
                                 key={idx}
                                 className={`border border-[#E6DBD7] p-[3px]  rounded-full flex justify-center items-center cursor-pointer ${
-                                  item?.color?.code === colorTab?.color?.code &&
+                                  item === colorTab&&
                                   "bg-black"
                                 }`}
                               >
                                 <div
                                   className={`h-[25px] w-[25px] rounded-full `}
                                   style={{
-                                    backgroundColor: `${item.color.code}`,
+                                    backgroundColor: `${item}`,
                                   }}
                                 ></div>
                               </div>
@@ -313,11 +332,19 @@ const ProductInfo = ({ params }: any) => {
                     </div>
                   )}
                   <div className="flex flex-col ">
-                    {product.priceList && product.priceList.length > 0 && (
+
+{/* {product?.variants?.option1&&product?.variants?.option1.length > 0 &&
+
+} */}
+
+
+                    {product?.variants?.option1&&product?.variants?.option1.length > 0 && (
                       <div className="flex items-center gap-6 sm:text-sm text-xs  font-semibold mb-3 sm:mt-4 mt-4 ">
                         <div className="flex gap-1 items-center">
                           <h4 className="    ">SIZE : </h4>
-                          <h4>{prodTab?.weight}</h4>
+                          <h4>
+                            {prodTab}
+                          </h4>
                         </div>
                         <div className="flex items-center gap-2">
                           <div>
@@ -331,15 +358,17 @@ const ProductInfo = ({ params }: any) => {
                         </div>
                       </div>
                     )}
-                    {product.priceList && product.priceList.length > 0 && (
+                    {product?.variants?.option1 && product?.variants?.option1.length > 0 && (
                       <div className="flex gap-3 text-[#555555] text-sm font-semibold ">
-                        {product.priceList &&
-                          product.priceList.map((item: any, idx: number) => {
+                        {product.variants.option1 &&
+                          product.variants.option1.map((item: any, idx: number) => {
+                            // console.log(item,"item");
+                            
                             return (
                               <div
                                 onClick={() => {
                                   setVariant(idx);
-
+                                  setOption1(item);
                                   setProdTab(item);
                                 }}
                                 className={`sm:px-3 px-4 sm:py-2 py-2 border rounded-md  cursor-pointer
@@ -351,7 +380,7 @@ const ProductInfo = ({ params }: any) => {
                                 }`}
                               >
                                 <h2 className="sm:text-sm text-xs font-normal">
-                                  {item.weight}
+                                  {item}
                                 </h2>
                               </div>
                             );

@@ -56,6 +56,7 @@ import { dividerClasses } from "@mui/material";
 import { constant } from "../../utils/constants";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
 
+
 const NavbarClient = ({ cookie }: any) => {
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const isLoginOpen = useAppSelector(
@@ -322,32 +323,38 @@ const NavbarClient = ({ cookie }: any) => {
                                 <div className="absolute top-[45px] left-0 rounded-lg  shadow-md bg-white xl:w-full w-[300px] lg:min-h-[100px] lg:max-h-[500px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
                                   {/* <div> */}
                                   {searchedProducts?.map((prod, idx) => {
+                                    // console.log(prod);
+                                    
                                     return (
                                       // <Link
                                       //   key={idx}
                                       //   href={`/product/${prod?.slug?.name}`}
                                       // >
                                       <div
-                                        className=" flex justify-between items-center  border-t-gray-300  border-t py-4 "
+                                        className=" flex justify-between items-center gap-x-4 border-t-gray-300  border-t py-4  w-full"
                                         key={idx}
                                       >
-                                        <div className=" flex w-full gap-x-3 z-10 ">
+                                           <Link
+                                        key={idx}
+                                        href={`/product/${prod?.slug?.name}`}
+                                      >
+                                        <div className=" flex  gap-x-3 z-10  w-full ">
                                           <div className="w-[30%] h-[80px] ">
                                             <Image
-                                              src={prod.coverPic?.url}
+                                              src={prod.coverPic?.url?prod.coverPic?.url:constant.errImage}
                                               alt=""
                                               height={1000}
                                               width={1000}
-                                              className="object-fill"
-                                              style={{
-                                                height: "100%",
-                                                width: "100%",
-                                                aspectRatio: "auto",
-                                              }}
+                                              className="object-fill h-full w-full "
+                                              // style={{
+                                              //   height: "100%",
+                                              //   width: "100%",
+                                              //   // aspectRatio: "auto",
+                                              // }}
                                             />
                                           </div>
-                                          <div className="flex flex-col gap-y-1.5 w-[60%]">
-                                            <h1 className="xl:text-sm text-xs font-medium truncate">
+                                          <div className="flex flex-col gap-y-1.5 w-[70%]">
+                                            <h1 className="xl:text-sm text-xs font-medium line-clamp-1">
                                               {prod?.prodName}
                                             </h1>
                                             {/* <h4 className="text-gray-500  text-xs font-medium">
@@ -374,7 +381,8 @@ const NavbarClient = ({ cookie }: any) => {
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="w-[20%] flex justify-end z-30">
+</Link>
+                                        <div className="w-[20%] flex justify-end z-30 ">
                                           {/* new start  */}
                                           {checkIfItemExistInCart(
                                             cart,
@@ -385,7 +393,7 @@ const NavbarClient = ({ cookie }: any) => {
                                               className=" my-auto flex justify-center  items-center right-2 "
                                               onClick={(e) => {
                                                 // e.preventDefault();
-                                                console.log("CLICKED");
+                                                // console.log("CLICKED");
                                               }}
                                             >
                                               <div className="flex items-center ">
