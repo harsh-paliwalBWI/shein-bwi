@@ -69,8 +69,11 @@ export function getCartObj({ product, productID, quantity = 1 }: any) {
     }
 
     cartObj = priceSlabsCheck(cartObj, product);
+console.log(cartObj,"cartObj;");
 
     return cartObj;
+
+    
 }
 
 export function getPriceListCartObj({ product, index, quantity = 1 }) {

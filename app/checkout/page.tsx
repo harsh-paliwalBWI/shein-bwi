@@ -17,7 +17,7 @@ import PaymentMethodTab from "../../components/checkout/PaymentMethodTab";
 import ReviewTab from "../../components/checkout/ReviewTab";
 import Hr from "../../components/Hr/Hr";
 import { constant } from "../../utils/constants";
-import { Skeleton } from "@mui/material";
+import { CircularProgress, Skeleton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
@@ -28,6 +28,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader";
 import { couponsAvailable, fetchCouponList } from "../../utils/databaseService";
+import Modal from "../../components/Modal/modal";
 const CheckoutPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -64,6 +65,7 @@ const CheckoutPage = () => {
   // console.log(couponList, "couponList-------");
 
   const [completedSteps, setCompletedSteps] = useState([]);
+  const [isModalOpen,setIsModalOpen]=useState(false)
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const [selectedTab, setSelectedTab] = useState("Shipping");
   const [paymentSummary, setPaymentSummary] = useState(null);
@@ -104,6 +106,9 @@ const CheckoutPage = () => {
   async function getCouponDiscount(couponText: any) {
     // console.log(couponText, "couponText");
     if (couponText) {
+
+      setIsModalOpen(true)
+      document.body.classList.add("no-scroll");
       setIsLoading(true);
       const getCouponDiscountDetails = httpsCallable(
         functions,
@@ -119,6 +124,7 @@ const CheckoutPage = () => {
       const res = await getCouponDiscountDetails(data);
       let res2 = await res.data;
       if (res2["success"]) {
+       
         const couponDiscount =
           paymentSummary.totalPayable - res2["details"]["totalAmountToPaid"];
         setPaymentSummary((prev: any) => {
@@ -128,18 +134,27 @@ const CheckoutPage = () => {
           };
         });
         setCouponDiscount(couponDiscount);
+        document.body.classList.remove("no-scroll");
+        setIsModalOpen(false)
         toast.success("Coupon applied succesfully");
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
+        
       } else {
         const error = res2["failureMsg"];
+        document.body.classList.remove("no-scroll");
+        setIsModalOpen(false)
         toast.error(error);
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
+      
       }
     } else {
       setIsLoading(false);
+      document.body.classList.remove("no-scroll");
+      setIsModalOpen(false)
       toast.error("Please apply coupon first.");
+
     }
   }
 
@@ -429,6 +444,12 @@ const CheckoutPage = () => {
                       </div>
                     </div>
                   </div>
+                  <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
+        <div className="flex flex-col gap-2 justify-center items-center">
+          <CircularProgress className="!text-white"></CircularProgress>
+          <p className="text-white font-medium text-lg">Applying Coupon...</p>
+        </div>
+      </Modal>
                   {isCoupon && (
                     <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30 flex justify-center items-center">
                       <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   px-5 py-5 flex flex-col justify-end gap-y-3 ">

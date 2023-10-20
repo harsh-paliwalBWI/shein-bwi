@@ -1,5 +1,10 @@
+
+
+
+
+
 "use client";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebase-config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,19 +14,35 @@ import { toast } from "react-toastify";
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { initialAddress } from "../../utils/utilities";
+import Image from "next/image";
 
 
-const AddressEditModal = ({ setIsAddressEdit, item, }) => {
+import check from "../../images/Vector 28.svg";
+const NewProfileAddress = ({ onClose }) => {
   const queryClient = useQueryClient();
   // console.log(item,"item");
+  const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const [isClient, setIsClient] = useState(false);
-  const [state, setState] = useState(item);
+  const [state, setState] = useState({
+    address: "",
+    city: "",
+    country: "",
+    email: "",
+    lastName: "",
+    lat: "",
+    lng: "",
+    name: "",
+    phoneNo: "",
+    pincode: "",
+    state: "",
+    stateCode: ""
+  }
+
+  );
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
-
-
   });
   const { data: states } = useQuery({
     queryKey: ["stateCodes"],
@@ -32,31 +53,41 @@ const AddressEditModal = ({ setIsAddressEdit, item, }) => {
   const onConfirmHandler = async () => {
     setIsLoading(true)
     const userId = userData?.id
-    const docId = item?.id
-    if (userId && docId) {
-      const docRef = doc(db, 'users', userId, "addresses", docId);
-      await updateDoc(docRef, state, { merge: true });
-      await queryClient.invalidateQueries({ queryKey: ["userAddresses"] })
-      await queryClient.refetchQueries({ queryKey: ["userAddresses"] })
-      toast.success("Address updated successfully.")
+    if (userId && state.name && state.lastName && state.phoneNo && state.email && state.address && state.city && state.pincode && state.state) {
+      const docRef = collection(db, 'users', userId, "addresses");
+      await addDoc(docRef, state).then(async (document) => {
+        const newDocRef = doc(db, 'users', userId, "addresses", document.id);
+        await setDoc(newDocRef, { id: document.id }, { merge: true });
+      })
+      if (isChecked) {
+        const newDocRef = doc(db, 'users', userId);
+        const newDefaultAddress = { ...state, defaultAddress: true, }
+        await setDoc(newDocRef, { defaultAddress: newDefaultAddress }, { merge: true });
+      }
+      onClose(false)
+      toast.success("Address added successfully.")
       setIsLoading(false)
-      setIsAddressEdit(false)
     } else {
+      toast.error("Please fill all the fields.")
       setIsLoading(false)
-      setIsAddressEdit(false)
+      // onClose(false)
+
     }
   }
+  const toggleCheckbox = async () => {
+    setIsChecked(!isChecked);
 
+  };
 
   useEffect(() => {
     setIsClient(true)
   }, [])
 
   return (
-    <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.2)] fixed top-0 left-0  flex justify-center items-center z-30">
+    <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0  flex justify-center items-center z-30">
       <div className="lg:w-[50%] md:w-[70%] w-[90%] h-auto bg-[white] rounded-xl ">
         <div className="sm:px-8 px-4 sm:py-8 py-4 flex flex-col sm:gap-5 gap-3">
-          <div className="flex sm:flex-row flex-col items-center w-full gap-5">
+          <div className="flex sm:flex-row flex-col items-center w-full sm:gap-5 gap-3">
             <div className="sm:w-[50%] w-[100%]  flex flex-col gap-2 ">
               <label htmlFor="" className="text-[#555555] text-sm">
                 Name*
@@ -80,7 +111,7 @@ const AddressEditModal = ({ setIsAddressEdit, item, }) => {
               />
             </div>
           </div>
-          <div className="flex sm:flex-row flex-col items-center w-full gap-5">
+          <div className="flex sm:flex-row flex-col items-center w-full sm:gap-5 gap-3">
             <div className="sm:w-[50%] w-[100%] flex flex-col gap-2 ">
               <label htmlFor="" className="text-[#555555] text-sm">
                 Phone No*
@@ -104,7 +135,7 @@ const AddressEditModal = ({ setIsAddressEdit, item, }) => {
               />
             </div>
           </div>
-          <div className="flex sm:flex-row flex-col items-center w-full gap-5">
+          <div className="flex sm:flex-row flex-col items-center w-full sm:gap-5 gap-3">
             <div className="sm:w-[100%] w-[100%] flex flex-col gap-2 ">
               <label htmlFor="" className="text-[#555555] text-sm">
                 Address*
@@ -117,7 +148,7 @@ const AddressEditModal = ({ setIsAddressEdit, item, }) => {
               />
             </div>
           </div>
-          <div className="flex sm:flex-row flex-col items-center w-full gap-5">
+          <div className="flex sm:flex-row flex-col items-center w-full sm:gap-5 gap-3">
             <div className="sm:w-[50%] w-[100%] flex flex-col gap-2 ">
               <label htmlFor="" className="text-[#555555] text-sm">
                 City*
@@ -141,18 +172,12 @@ const AddressEditModal = ({ setIsAddressEdit, item, }) => {
               />
             </div>
           </div>
-          <div className="flex sm:flex-row flex-col items-center w-full gap-5">
+          <div className="flex sm:flex-row flex-col items-center w-full sm:gap-5 gap-3">
             {/* new start  */}
             <div className="w-full grid sm:grid-cols-2 grid-cols-1 gap-5 ">
               <div className=" flex sm:gap-2 gap-1 flex-col w-full    ">
                 <p className="text-[#555555] font-medium text-sm">State *</p>
                 <Listbox
-                  // value={userAddress?.stateCode}
-                  // onChange={(e: any) => {
-                  //   setUserAddress((val: any) => {
-                  //     return { ...val, stateCode: e?.code, state: e?.state };
-                  //   });
-                  // }}
                   value={state?.stateCode}
                   onChange={(e: any) => {
                     setState((val: any) => {
@@ -215,44 +240,39 @@ const AddressEditModal = ({ setIsAddressEdit, item, }) => {
                 </Listbox>
               </div>
             </div>
-            {/* new  end  */}
-            {/* old state code start  */}
-            {/* <div className="sm:w-[50%] w-[100%] flex flex-col gap-2 ">
-              <label htmlFor="" className="text-[#555555] text-sm">
-                State*
-              </label>
-              <input
-                type="text"
-                value={isClient&&state.state}
-                onChange={(e) => setState({ ...state, state: e.target.value })}
-                className="border-b border-b-[#838383] w-full outline-0 text-sm"
-              />
-            </div> */}
-            {/* old state code end */}
-            {/* <div className="sm:w-[50%] w-[100%] flex flex-col gap-2 ">
-              <label htmlFor="" className="text-[#555555] text-sm">
-                State Code*
-              </label>
-              <input
-                type="text"
-                value={isClient&&state.stateCode}
-                onChange={(e) => setState({ ...state, stateCode: e.target.value })}
-                className="border-b border-b-[#838383] w-full outline-0 text-sm"
-              />
-            </div> */}
-            {/* <div className='w-[50%]'>
-              <label htmlFor="" className='text-[#555555] text-sm'>State code*</label>
-              <input type="text" value={isClient&&item.stateCode} 
-              onChange={(e) => setState({ ...state, stateCode:e.target.value })}
-               className='border-b border-b-[#838383] w-full outline-0'/>
-              </div> */}
           </div>
-          <div className="flex items-center w-full gap-5 mt-4">
-            <div onClick={() => onConfirmHandler()} className="w-[50%] flex justify-center items-center cursor-pointer bg-primary text-white py-2">
-              <button>{isLoading ? <Loader /> : "Confirm"}</button>
+
+          <div className="flex items-start gap-3   w-full h-auto">
+            <div
+              className={`w-5 h-5 border-2 rounded-sm cursor-pointer flex justify-center items-center ${isChecked
+                ? "bg-primary border-primary"
+                : "bg-white border-gray-400"
+                }`}
+              onClick={toggleCheckbox}
+            >
+              {isChecked && (
+                <Image src={check} alt=""
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              )}
+            </div>
+            <div className="sm:text-sm text-xs w-fit font-bold">Make this default address. </div>
+          </div>
+
+          <div className="flex items-center w-full gap-5 sm:text-sm text-xs">
+            <div
+              onClick={() => onConfirmHandler()}
+              className="w-[50%] flex justify-center items-center cursor-pointer bg-primary text-white py-2">
+              <button>
+                {isLoading ? <Loader /> : "Save Changes"}
+                {/* Save Changes */}
+              </button>
             </div>
             <div
-              onClick={() => setIsAddressEdit(false)}
+              onClick={() => onClose(false)}
               className="w-[50%] flex justify-center items-center cursor-pointer bg-secondary text-white py-2"
             >
               <button>Cancel</button>
@@ -264,4 +284,4 @@ const AddressEditModal = ({ setIsAddressEdit, item, }) => {
   );
 };
 
-export default AddressEditModal;
+export default NewProfileAddress;

@@ -31,16 +31,18 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
   const [loading, setLoading] = useState(false)
   const client = useQueryClient()
   const pathname = usePathname();
+  // const [imgUrl,setImgUrl]=useState()
   const { data: userData } = useQuery({
     queryKey: ["userData"],
-    queryFn: () => getUserData(null),
+    queryFn: () => getUserData(cookie),
     
     // keepPreviousData: true,
     // enabled: isClient,
   });
-  console.log(userData,"data");
+  // console.log(userData,"data");
+  const [imgUrl,setImgUrl]=useState(userData?userData?.dP:"")
 
-  console.log(userData?.dP,"----------------------");
+  // console.log(userData?.dP,"----------------------");
 
 
 
@@ -59,6 +61,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
         await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
           await setDoc(doc(db, "users", userId), { dP: downloadURL }, { merge: true })
           console.log(downloadURL, "url");
+         await setImgUrl(downloadURL)
           await client.invalidateQueries({ queryKey: ['userData'] })
           await client.refetchQueries({ queryKey: ['userData'] })
            toast.success("Profile pic updated successfully.")
@@ -103,6 +106,10 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
   }
   useEffect(() => {
     setIsClient(true);
+    console.log(userData,"DATA AFTER RELOAD");
+
+    setImgUrl(userData&&userData.dP)
+    
   }, []);
 
 
@@ -113,7 +120,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
         <div className="flex flex-col items-center mt-5 mb-7">
           <div className="border border-[#EEEEEE] rounded-full p-2 mb-2">
             <div className=" rounded-full  relative" >
-              <Image src={userData?.dP} alt="" width={1000} height={1000} style={{ aspectRatio: "auto", width: "110px", height: "110px" }} className="rounded-full" />
+              <Image src={isClient&&userData?.dP&&userData?.dP} alt="" width={1000} height={1000} style={{ aspectRatio: "auto", width: "110px", height: "110px" }} className="rounded-full" />
               <div className="absolute bottom-0 right-0">
                 <input placeholder='Destination Image' type='file' accept="image/*" onChange={async (e) => {
                   // console.log(e.target.files[0],"from input");

@@ -8,21 +8,12 @@ const OrderPage = () => {
     const { data: userData } = useQuery({
         queryKey: ["userData"],
         queryFn: () => getUserData(null),
-        
-        // keepPreviousData: true,
-        // enabled: isClient,
     });
-
-    // console.log(userData, "DATA------------");
     const { data: orderList } = useQuery({
         queryKey: ["orderData"],
         queryFn: () => fetchUsersOrdersList(userData?.id),
-        
-        // keepPreviousData: true,
-        // enabled: isClient,
     })
 
-    //   console.log(orderList,"orderList");
 
     return (
         <>
@@ -51,7 +42,7 @@ const OrderPage = () => {
                                                         <div className='flex items-center sm:gap-x-8 gap-x-4 '>
                                                             <div className='h-[108px] w-[108px] '>
                                                                 {/* <Image src={item?.img?.url?item?.img?.url:constant.errImage} alt='' width={1000} height={1000} className='aspect-auto h-[100%] w-[100%] object-fill ' /> */}
-                                                                </div>
+                                                            </div>
                                                             <div className='flex flex-col gap-y-3'>
                                                                 <h2 className='md:text-base text-sm font-semibold line-clamp-1 '> {item?.name}</h2>
                                                                 <h5 className='text-gray-500 md:text-sm text-xs font-semibold'>Qty{" "}:{" "}{item?.quantity}</h5>

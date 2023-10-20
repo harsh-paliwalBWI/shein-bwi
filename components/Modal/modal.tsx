@@ -12,6 +12,7 @@ const Modal = ({ isOpen, children, setOpen }) => {
       <OutsideClickHandler
         onClick={() => {          
           setOpen(false);
+          document.body.classList.remove('no-scroll')
         }}
       >
         {children}

@@ -36,6 +36,8 @@ import {
   checkIfPriceDiscounted,
   getProductPriceDetails,
 } from "../../utils/utilities";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 const features = [
   " 10 in stock",
   " Easy Return Policy",
@@ -51,6 +53,7 @@ const pyamentModeImages = [
 ];
 
 const ProductInfo = ({ params }: any) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const cart = useAppSelector((state) => state.cartReducer.cart);
@@ -449,11 +452,19 @@ const ProductInfo = ({ params }: any) => {
                       wishlistData.length > 0 &&
                       wishlistData.includes(`${product?.id}`) ? (
                         <div
-                          onClick={() =>
-                            removeFromWishListHandler({
+                          onClick={async() =>{
+                           await removeFromWishListHandler({
                               userId: userData?.id,
                               productId: product?.id,
                             })
+                            await queryClient.invalidateQueries({
+                              queryKey: ["wishlistData"],
+                            });
+                            await queryClient.refetchQueries({
+                              queryKey: ["wishlistData"],
+                            });
+                            toast.success("Product removed from wishlist.");
+                          }
                           }
                           className="flex items-center gap-2 cursor-pointer"
                         >
@@ -466,11 +477,20 @@ const ProductInfo = ({ params }: any) => {
                         </div>
                       ) : (
                         <div
-                          onClick={() =>
-                            moveToWishListHandler({
+                          onClick={async() =>
+                            {
+                          await  moveToWishListHandler({
                               userId: userData?.id,
                               productId: product?.id,
                             })
+                            await queryClient.invalidateQueries({
+                              queryKey: ["wishlistData"],
+                            });
+                            await queryClient.refetchQueries({
+                              queryKey: ["wishlistData"],
+                            });
+                            toast.success("Product added to wishlist.");
+                          }
                           }
                           className="flex items-center gap-2 cursor-pointer"
                         >
@@ -501,20 +521,7 @@ const ProductInfo = ({ params }: any) => {
                         Check
                       </button>
                     </div> */}
-                    {/* old code start  */}
-                    {/* <h2 className="text-xl   font-medium leading-[35px] mb-1">Flavour:</h2>
-                <div className="flex gap-3">
-                  <div className="px-8 py-3 bg-[#F7F7F7] w-fit">
-                    <h2 className="text-sm font-normal">Vanila</h2>
-                  </div>
-                  <div className="px-8 py-3 bg-[#F7F7F7] w-fit">
-                    <h2 className="text-sm font-normal">Strawberry</h2>
-                  </div>
-                  <div className="px-8 py-3 bg-[#F7F7F7] w-fit">
-                    <h2 className="text-sm font-normal">Fruity Pebbles</h2>
-                  </div>
-                </div> */}
-                    {/* old code end  */}
+                 
                   </div>
                   <div className="flex flex-col gap-2">
                     {/* <div className="flex-1 lg:flex-none  flex border border-black p-px lg:w-[25%]">

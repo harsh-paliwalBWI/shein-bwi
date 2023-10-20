@@ -68,13 +68,11 @@ const NavbarClient = ({ cookie }: any) => {
   const pathname = usePathname();
   const mobile = useMediaQuery("(max-width:1080px)");
   const [searchedProducts, setSearchedProducts] = useState([]);
-  const [isCalorieCalculatorOpen, setIsCalorieCalculatorOpen] = useState(false);
-  const [isPrescriptionUpload, setIsPrescriptionUpload] = useState(false);
+  
   const matches = useMediaQuery("(max-width:767px)");
   const dispatch = useDispatch();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLogoVisible, setIsLogoVisible] = useState(true);
   const debouncedSearch = useDebounce(searchQuery, 500);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -530,7 +528,7 @@ const NavbarClient = ({ cookie }: any) => {
                                               onClick={() => {
                                                 addItemToCart(prod);
                                               }}
-                                              className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer "
+                                              className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer border border-primary "
                                             >
                                               <FlatIcon
                                                 icon={
