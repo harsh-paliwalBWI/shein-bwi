@@ -2,7 +2,7 @@
 import { doc, setDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebase-config";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserData, fetchStates } from "../../utils/databaseService";
 import Loader from "../loader/Loader";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ import { initialAddress } from "../../utils/utilities";
 
 
 const AddressEditModal = ({ setIsAddressEdit, item }) => {
+  const client=useQueryClient()
   console.log(item,"item");
   const [isLoading, setIsLoading] = useState(false)
   const [isClient, setIsClient] = useState(false);
@@ -50,6 +51,8 @@ const AddressEditModal = ({ setIsAddressEdit, item }) => {
       // console.log(state,"edited state");
       const docRef = doc(db, 'users', userId, "addresses", docId);
       await setDoc(docRef, state, { merge: true });
+      await client.invalidateQueries({ queryKey: ['userData'] })
+      await client.refetchQueries({ queryKey: ['userData'] })
       toast.success("Address updated successfully.")
       setIsLoading(false)
       setIsAddressEdit(false)
@@ -67,7 +70,7 @@ const AddressEditModal = ({ setIsAddressEdit, item }) => {
   }, [])
 
   return (
-    <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0  flex justify-center items-center z-30">
+    <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.2)] fixed top-0 left-0  flex justify-center items-center z-30">
       <div className="lg:w-[50%] md:w-[70%] w-[90%] h-auto bg-[white] rounded-xl ">
         <div className="px-8 py-8 flex flex-col gap-5">
           <div className="flex sm:flex-row flex-col items-center w-full gap-5">

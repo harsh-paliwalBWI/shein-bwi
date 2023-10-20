@@ -144,13 +144,13 @@ const CheckoutPage = () => {
   }
 
   const handleChange = (name, value) => {
-    // console.log(name, "name", value, "value");
+    console.log(name, "name", value, "value");
     setUserAddress((val: any) => {
       return { ...val, [name]: value };
     });
   };
   function handleAddressSubmit() {
-    // console.log(userAddress, "userAddress");
+    console.log(userAddress, "userAddress");
 
     const {
       address,
@@ -418,6 +418,7 @@ const CheckoutPage = () => {
                         <Image src={tag} alt="" />
                         <input
                           className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]"
+                          placeholder="Enter coupon code"
                           onChange={() => {
                             () => setIsCoupon(true);
                           }}
@@ -455,6 +456,7 @@ const CheckoutPage = () => {
                                 <Image src={tag} alt="" />
                                 <input
                                   className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]"
+                                  placeholder="Enter coupon code"
                                   value={coupon}
                                   onChange={(e) => {
                                     // console.log(e.target.value);

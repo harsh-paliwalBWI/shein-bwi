@@ -31,6 +31,8 @@ useEffect
         <div className="border border-gray-400     flex flex-col gap-4">
           {isClient && paymentSummary &&
             isClient && paymentSummary?.products?.map((product, idx) => {
+              console.log(product,"product,");
+              
               return (
                 <div className="flex sm:flex-row flex-col items-center sm:items-start px-4 py-4 gap-8 " key={idx}>
                   <div className="h-fit w-fit  ">
@@ -54,8 +56,8 @@ useEffect
                     </h3>
                     <div className="flex gap-2  text-[#555555] lg:text-sm text-xs font-semibold mb-1">Size : <span>L</span>  <span>|</span>  Color :  <span>Beige</span></div>
                     <h3 className="font-semibold text-black text-opacity-75 lg:text-sm text-xs   mb-6">Qty:
-                      {/* {" "}{product?.description} */}
-                      1
+                      {" "}{product?.quantity}
+                      {/* 1 */}
                     </h3>
                     <h3 className="font-bold  text-secondary lg:text-xl sm:text-xl text-base ">
                       {constant?.currency} {product?.price?.toFixed(2)}
