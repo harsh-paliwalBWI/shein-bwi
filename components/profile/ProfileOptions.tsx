@@ -35,12 +35,12 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
     queryKey: ["userData"],
     queryFn: () => getUserData(null),
     
-    keepPreviousData: true,
+    // keepPreviousData: true,
     // enabled: isClient,
   });
-  // console.log(userData,"data");
+  console.log(userData,"data");
 
-  // console.log(userData?.dP,"from oprtion ---->");
+  console.log(userData?.dP,"----------------------");
 
 
 
@@ -48,8 +48,8 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
   const uploadImage = async (userPic: any) => {
     if (userPic) {
       setLoading(true)
-      // console.log("inside if start")
-      // console.log(userPic,"FROM upload img");
+      console.log("inside if start")
+      console.log(userPic,"FROM upload img");
       let timeStamp = (new Date()).getMilliseconds()
       const userId = await userData.id
       // console.log(userId,"user id from if");
@@ -58,7 +58,10 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
       await uploadBytes(storageRef, userPic).then(async (snapshot) => {
         await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
           await setDoc(doc(db, "users", userId), { dP: downloadURL }, { merge: true })
-          // console.log(downloadURL, "url");
+          console.log(downloadURL, "url");
+          await client.invalidateQueries({ queryKey: ['userData'] })
+          await client.refetchQueries({ queryKey: ['userData'] })
+           toast.success("Profile pic updated successfully.")
 
         })
       })
@@ -75,11 +78,11 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
       .then(async () => {
         toast.success("Logged out");
         await axios.get(`/api/logout`);
-        queryClient.invalidateQueries({ queryKey: ["userData"] });
+       await queryClient.invalidateQueries({ queryKey: ["userData"] });
       
         // Sign-out successful.
         router.replace("/");
-        queryClient.refetchQueries({ queryKey: ["userData"] });
+       await queryClient.refetchQueries({ queryKey: ["userData"] });
       })
       .catch((error) => {
         // An error happened.
@@ -90,9 +93,11 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
 
   async function uploadTask(userPic: any) {
     // setLoading(true)
-    // console.log(userPic,"FROM uploadTask");
+    console.log(userPic,"FROM uploadTask");
     await uploadImage(userPic)
-    client.refetchQueries({ queryKey: ['userData'] })
+  //   await client.invalidateQueries({ queryKey: ['userData'] })
+  //  await client.refetchQueries({ queryKey: ['userData'] })
+  //   toast.success("Profile pic updated successfully.")
     // setLoading(false)
 
   }
@@ -108,7 +113,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
         <div className="flex flex-col items-center mt-5 mb-7">
           <div className="border border-[#EEEEEE] rounded-full p-2 mb-2">
             <div className=" rounded-full  relative" >
-              <Image src={isClient && userData?.dP&&profilePic} alt="" width={1000} height={1000} style={{ aspectRatio: "auto", width: "110px", height: "110px" }} className="rounded-full" />
+              <Image src={userData?.dP} alt="" width={1000} height={1000} style={{ aspectRatio: "auto", width: "110px", height: "110px" }} className="rounded-full" />
               <div className="absolute bottom-0 right-0">
                 <input placeholder='Destination Image' type='file' accept="image/*" onChange={async (e) => {
                   // console.log(e.target.files[0],"from input");

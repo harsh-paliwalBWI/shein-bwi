@@ -13,6 +13,7 @@ const Addresses = ({ userId }) => {
     const queryClient = useQueryClient();
     const [isAddressEdit, setIsAddressEdit] = useState(false)
     const [userAddress, setUserAddress] = useState("")
+    const [isLoading,setIsLoading]=useState(false)
     // const 
     // console.log(userId,"userId");
 
@@ -35,15 +36,20 @@ const Addresses = ({ userId }) => {
 
     async function deleteUserAddress({ userId, docId }) {
         console.log(userId, docId);
+        setIsLoading(true)
         try {
             if (userId && docId) {
                 await deleteDoc(doc(db, "users", userId, "addresses", docId));
                 await queryClient.invalidateQueries({ queryKey: ["userAddresses"] });
+                await queryClient.refetchQueries({ queryKey: ["userAddresses"] });
                 toast.success("Address deleted successfully.")
+                setIsLoading(false)
             } else {
+                setIsLoading(false)
                 console.log("inside else");
             }
         } catch (error) {
+            setIsLoading(false)
             console.log(error);
         }
     }

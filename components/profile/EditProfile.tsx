@@ -4,10 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserData } from '../../utils/databaseService';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+import Loader from '../loader/Loader';
+
 
 
 const EditProfile = () => {
+  const client = useQueryClient()
   const [isClient, setIsClient] = useState(false);
+  const [isLoading,setIsLoading]=useState(false)
 
     const { data: userData } = useQuery({
         queryKey: ["userData"],
@@ -31,7 +37,8 @@ const EditProfile = () => {
 
 
     const onSaveChangesHandler = async () => {
-        console.log("start");
+      setIsLoading(true)
+        // console.log("start");
         const newInfo = {
           name: state.firstName,
           lastName: state.lastName,
@@ -41,12 +48,18 @@ const EditProfile = () => {
           // currPass:state.currPassword,
           // newPass:state.newPassword
         }
-        console.log(newInfo, "fdg");
+        // console.log(newInfo, "fdg");
         const userId = await userData.id
         if (userId) {
-          console.log("inside if start");
+          // console.log("inside if start");
           await setDoc(doc(db, "users", userId), { name: state.firstName, lastName: state.lastName, email: state.email, phoneNo: state.phone, aboutMe: state.about }, { merge: true })
-          console.log("inside if end");
+          await client.invalidateQueries({ queryKey: ['userData'] })
+          await client.refetchQueries({ queryKey: ['userData'] })
+          toast.success("Changes saved succesfullly.")
+          // console.log("inside if end");
+          setIsLoading(false)
+        }else{
+          setIsLoading(false)
         }
         // console.log(newInfo,"new info");
       }
@@ -121,8 +134,8 @@ const EditProfile = () => {
       </div>
     </div> */}
     <div className="bg-secondary text-white text-center  py-3  text-sm font-medium cursor-pointer mt-10"
-      onClick={() => onSaveChangesHandler()}>
-      <button>Save Changes</button>
+      onClick={async() => await onSaveChangesHandler()}>
+      <button>{isLoading?<Loader/>:"Save Changes"}</button>
     </div>
   </div>
   )
