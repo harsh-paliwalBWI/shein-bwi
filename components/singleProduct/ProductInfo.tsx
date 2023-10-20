@@ -31,7 +31,11 @@ import {
 import useOnScreen from "../../utils/visibleElement";
 import SimilarProducts from "../SimilarProducts/SimilarProducts";
 import FlatIcon from "../flatIcon/flatIcon";
-import { checkIfItemExistInCart } from "../../utils/utilities";
+import {
+  checkIfItemExistInCart,
+  checkIfPriceDiscounted,
+  getProductPriceDetails,
+} from "../../utils/utilities";
 const features = [
   " 10 in stock",
   " Easy Return Policy",
@@ -58,7 +62,7 @@ const ProductInfo = ({ params }: any) => {
   });
   const [prodTab, setProdTab] = useState(product?.variants?.option1[0]);
   const [colorTab, setColorTab] = useState(
-    product?.variants?.option2&& product?.variants?.option2[0]
+    product?.variants?.option2 && product?.variants?.option2[0]
   );
   const [newProduct, setNewProduct] = useState("");
   // console.log(product, "product from single product---------->");
@@ -80,8 +84,12 @@ const ProductInfo = ({ params }: any) => {
   }, []);
   const [quantity, setQuantity] = useState((product && product?.minQty) || 1);
   const [variant, setVariant] = useState(0);
-  const [option1, setOption1] = useState(product.priceList[0]?.weight.split("/")[0]?.trim());
-  const [option2, setOption2] = useState(product.priceList[0]?.weight.split("/")[1]?.trim());
+  const [option1, setOption1] = useState(
+    product.priceList[0]?.weight.split("/")[0]?.trim()
+  );
+  const [option2, setOption2] = useState(
+    product.priceList[0]?.weight.split("/")[1]?.trim()
+  );
 
   // console.log({ quantity });
 
@@ -99,7 +107,6 @@ const ProductInfo = ({ params }: any) => {
   });
   const [tabImage, setTabImage] = useState(getImage(product, 0));
 
-  
   function getImage(product: any, idx: number) {
     // console.log(product)
     // console.log("gggggggggg")
@@ -110,7 +117,7 @@ const ProductInfo = ({ params }: any) => {
     if (product?.coverPic?.url) {
       return product?.coverPic?.url;
     }
-    
+
     return constant?.errImage;
   }
   // useEffect(()=>{
@@ -123,10 +130,6 @@ const ProductInfo = ({ params }: any) => {
 
   //     },[prodTab])
 
- 
-
-
-
   function getSelectedVariant() {
     if (!option1 && !option2) {
       setVariant(0);
@@ -136,20 +139,18 @@ const ProductInfo = ({ params }: any) => {
     } else {
       let weight = `${option1} / ${option2}`;
       // console.log("weight",weight);
-      
+
       let index = product?.priceList?.findIndex((x) => x.weight === weight);
       // console.log(index,"index");
-      
+
       if (index !== -1) {
         setVariant(index);
-      }else{
-        setVariant(0)
+      } else {
+        setVariant(0);
       }
     }
   }
 
-
-  
   useEffect(() => {
     if (product && product.isPriceList) {
       getSelectedVariant();
@@ -212,12 +213,11 @@ const ProductInfo = ({ params }: any) => {
               <div className=" md:flex md:flex-col flex-row   gap-4   hidden ">
                 {product.images.map((item: any, idx: number) => {
                   // console.log(idx);
-                  
+
                   return (
                     <div
                       onClick={() => setTabImage(getImage(product, idx))}
                       className="   cursor-pointer"
-                      
                     >
                       <Image
                         src={getImage(product, idx)}
@@ -231,7 +231,7 @@ const ProductInfo = ({ params }: any) => {
                   );
                 })}
               </div>
-              <div className="flex md:flex-row flex-col w-full sm:gap-8 md:gap-12 lg:gap-16 gap-6 " >
+              <div className="flex md:flex-row flex-col w-full sm:gap-8 md:gap-12 lg:gap-16 gap-6 ">
                 <div className=" h-fit lg:w-[50%] w-[100%] flex lg:flex-col sm:flex-row flex-col sm:gap-7 gap-7  justify-center">
                   <div className=" md:w-[100%]  sm:w-[50%] w-[100%] lg:h-[595px] md:h-[400px] sm:h-[300px] h-auto ">
                     <Image
@@ -252,15 +252,33 @@ const ProductInfo = ({ params }: any) => {
                   <div className="flex sm:flex-row flex-col gap-y-2  gap-x-4 sm:items-center ">
                     <h2 className=" lg:text-2xl md:text-xl sm:text-lg text-base sm:text-center text-start text-secondary font-bold  ">
                       {constant?.currency}{" "}
-                      {/* {product?.isPriceList
-                        ? product?.discountedPrice
-                        : parseFloat(product?.prodPrice).toFixed(2)} */}
-                      {/* {parseFloat(product?.prodPrice).toFixed(2)} */}
-
-                      {product?.isPriceList
-                        ? product?.priceList[variant].discountedPrice
-                        : parseFloat(product?.prodPrice).toFixed(2)}
+                      {isClient &&
+                        getProductPriceDetails({
+                          isDiscounted: true,
+                          product: product,
+                          index: variant,
+                        })}
                     </h2>
+                    {checkIfPriceDiscounted({
+                      discountedPrice: product?.isPriceList
+                        ? product?.priceList[variant]?.discountedPrice
+                        : product?.discountedPrice,
+                      price: product?.isPriceList
+                        ? product?.priceList[variant]?.price
+                        : product?.prodPrice,
+                    }) && (
+                      <div className="text-ellipsis overflow-hidden ... truncate  ">
+                        <p className="text-ellipsis overflow-hidden ... truncate   line-through text-xs md:text-sm text-[#ADADAD]">
+                          {isClient && constant?.currency}{" "}
+                          {isClient &&
+                            getProductPriceDetails({
+                              isDiscounted: false,
+                              product: product,
+                              index: variant,
+                            })}
+                        </p>
+                      </div>
+                    )}
 
                     {/* reviews code start  */}
                     {/* <div className="flex items-center gap-2 text-start ">
@@ -295,98 +313,101 @@ const ProductInfo = ({ params }: any) => {
                   {/* <div
                     dangerouslySetInnerHTML={{ __html: product?.prodDesc }}
                     className="text-xs text-[#777777] font-semibold  sm:my-6 my-4 " /> */}
-                    
-                  {product?.variants?.option2 && product?.variants?.option2.length > 0 && (
-                    <div className=" mt-4">
-                      <h4 className="text-secondary md:text-sm sm:text-xs text-[10px] font-semibold mb-3 ">
-                        COLOR : {colorTab}
-                      </h4>
-                      {product?.variants?.option2 && product?.variants?.option2?.length > 0 && (
-                        <div className="flex gap-2 md:gap-3 ">
-                          {product?.variants?.option2.map((item: any, idx: number) => {
-                            // console.log(item,"cocloe");
 
-                            return (
-                              <div
-                                onClick={() => {setColorTab(item)
-                                  setOption2(item);
+                  {product?.variants?.option2 &&
+                    product?.variants?.option2.length > 0 && (
+                      <div className=" mt-4">
+                        <h4 className="text-secondary md:text-sm sm:text-xs text-[10px] font-semibold mb-3 ">
+                          COLOR : {colorTab}
+                        </h4>
+                        {product?.variants?.option2 &&
+                          product?.variants?.option2?.length > 0 && (
+                            <div className="flex gap-2 md:gap-3 ">
+                              {product?.variants?.option2.map(
+                                (item: any, idx: number) => {
+                                  // console.log(item,"cocloe");
+
+                                  return (
+                                    <div
+                                      onClick={() => {
+                                        setColorTab(item);
+                                        setOption2(item);
+                                      }}
+                                      key={idx}
+                                      className={`border border-[#E6DBD7] p-[3px]  rounded-full flex justify-center items-center cursor-pointer ${
+                                        item === colorTab && "bg-black"
+                                      }`}
+                                    >
+                                      <div
+                                        className={`h-[25px] w-[25px] rounded-full `}
+                                        style={{
+                                          backgroundColor: `${item}`,
+                                        }}
+                                      ></div>
+                                    </div>
+                                  );
                                 }
-                                }
-                                key={idx}
-                                className={`border border-[#E6DBD7] p-[3px]  rounded-full flex justify-center items-center cursor-pointer ${
-                                  item === colorTab&&
-                                  "bg-black"
-                                }`}
-                              >
-                                <div
-                                  className={`h-[25px] w-[25px] rounded-full `}
-                                  style={{
-                                    backgroundColor: `${item}`,
-                                  }}
-                                ></div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                              )}
+                            </div>
+                          )}
+                      </div>
+                    )}
                   <div className="flex flex-col ">
-
-{/* {product?.variants?.option1&&product?.variants?.option1.length > 0 &&
+                    {/* {product?.variants?.option1&&product?.variants?.option1.length > 0 &&
 
 } */}
 
-
-                    {product?.variants?.option1&&product?.variants?.option1.length > 0 && (
-                      <div className="flex items-center gap-6 sm:text-sm text-xs  font-semibold mb-3 sm:mt-4 mt-4 ">
-                        <div className="flex gap-1 items-center">
-                          <h4 className="    ">SIZE : </h4>
-                          <h4>
-                            {prodTab}
-                          </h4>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div>
-                            <FlatIcon
-                              icon={
-                                "flaticon-measure text-[#777777]  font-normal text-3xl"
-                              }
-                            />
+                    {product?.variants?.option1 &&
+                      product?.variants?.option1.length > 0 && (
+                        <div className="flex items-center gap-6 sm:text-sm text-xs  font-semibold mb-3 sm:mt-4 mt-4 ">
+                          <div className="flex gap-1 items-center">
+                            <h4 className="    ">SIZE : </h4>
+                            <h4>{prodTab}</h4>
                           </div>
-                          <h4 className="underline ">Size Chart</h4>
+                          <div className="flex items-center gap-2">
+                            <div>
+                              <FlatIcon
+                                icon={
+                                  "flaticon-measure text-[#777777]  font-normal text-3xl"
+                                }
+                              />
+                            </div>
+                            <h4 className="underline ">Size Chart</h4>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                    {product?.variants?.option1 && product?.variants?.option1.length > 0 && (
-                      <div className="flex gap-3 text-[#555555] text-sm font-semibold ">
-                        {product.variants.option1 &&
-                          product.variants.option1.map((item: any, idx: number) => {
-                            // console.log(item,"item");
-                            
-                            return (
-                              <div
-                                onClick={() => {
-                                  setVariant(idx);
-                                  setOption1(item);
-                                  setProdTab(item);
-                                }}
-                                className={`sm:px-3 px-4 sm:py-2 py-2 border rounded-md  cursor-pointer
+                      )}
+                    {product?.variants?.option1 &&
+                      product?.variants?.option1.length > 0 && (
+                        <div className="flex gap-3 text-[#555555] text-sm font-semibold ">
+                          {product.variants.option1 &&
+                            product.variants.option1.map(
+                              (item: any, idx: number) => {
+                                // console.log(item,"item");
+
+                                return (
+                                  <div
+                                    onClick={() => {
+                                      setVariant(idx);
+                                      setOption1(item);
+                                      setProdTab(item);
+                                    }}
+                                    className={`sm:px-3 px-4 sm:py-2 py-2 border rounded-md  cursor-pointer
                                 
                                 ${
                                   prodTab === item
                                     ? "border-white bg-primary text-white "
                                     : "border-[#C6C6C6]"
                                 }`}
-                              >
-                                <h2 className="sm:text-sm text-xs font-normal">
-                                  {item}
-                                </h2>
-                              </div>
-                            );
-                          })}
-                      </div>
-                    )}
+                                  >
+                                    <h2 className="sm:text-sm text-xs font-normal">
+                                      {item}
+                                    </h2>
+                                  </div>
+                                );
+                              }
+                            )}
+                        </div>
+                      )}
 
                     <h3 className="text-secondary sm:text-sm text-xs font-semibold mb-3 mt-6 ">
                       QUANTITY :
@@ -399,7 +420,7 @@ const ProductInfo = ({ params }: any) => {
                             let updatedQty = quantity;
                             let prodMin = product?.minQty || 1;
 
-                            setQuantity((updatedQty - prodMin)||1);
+                            setQuantity(updatedQty - prodMin || 1);
                             // setQuantity(
                             //   (quantity - product?.minQty) || product?.minQty || 1
                             // );

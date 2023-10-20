@@ -30,6 +30,23 @@ export const paymentMethods = [
     },
 ];
 
+
+export function getProductPriceDetails({ isDiscounted = false, product, currRate = 1, index }) {
+    if (product?.isPriceList) {
+        if (isDiscounted) {
+            return (product?.priceList[index]?.discountedPrice * currRate)?.toFixed(2)
+        } else {
+            return (product?.priceList[index]?.price * currRate)?.toFixed(2)
+        }
+    } else {
+        if (isDiscounted) {
+            return (product?.discountedPrice * currRate)?.toFixed(2)
+        } else {
+            return (product?.prodPrice * currRate)?.toFixed(2)
+        }
+    }
+}
+
 export const tabs = ["Shipping", "Payment", "Review"];
 
 export function checkIfItemExistInCart(cart, product, index = 0) {
