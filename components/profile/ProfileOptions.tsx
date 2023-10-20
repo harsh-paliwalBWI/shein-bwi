@@ -50,8 +50,8 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
   const uploadImage = async (userPic: any) => {
     if (userPic) {
       setLoading(true)
-      console.log("inside if start")
-      console.log(userPic,"FROM upload img");
+      // console.log("inside if start")
+      // console.log(userPic,"FROM upload img");
       let timeStamp = (new Date()).getMilliseconds()
       const userId = await userData.id
       // console.log(userId,"user id from if");
@@ -60,7 +60,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
       await uploadBytes(storageRef, userPic).then(async (snapshot) => {
         await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
           await setDoc(doc(db, "users", userId), { dP: downloadURL }, { merge: true })
-          console.log(downloadURL, "url");
+          // console.log(downloadURL, "url");
          await setImgUrl(downloadURL)
           await client.invalidateQueries({ queryKey: ['userData'] })
           await client.refetchQueries({ queryKey: ['userData'] })
@@ -96,7 +96,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
 
   async function uploadTask(userPic: any) {
     // setLoading(true)
-    console.log(userPic,"FROM uploadTask");
+    // console.log(userPic,"FROM uploadTask");
     await uploadImage(userPic)
   //   await client.invalidateQueries({ queryKey: ['userData'] })
   //  await client.refetchQueries({ queryKey: ['userData'] })
@@ -106,7 +106,7 @@ const ProfileOptions = ({ cookie,setSelectedTab,selectedTab }) => {
   }
   useEffect(() => {
     setIsClient(true);
-    console.log(userData,"DATA AFTER RELOAD");
+    // console.log(userData,"DATA AFTER RELOAD");
 
     setImgUrl(userData&&userData.dP)
     

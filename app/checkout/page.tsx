@@ -171,15 +171,15 @@ const CheckoutPage = () => {
       address,
       // address2,
       city,
-      lat,
-      lng,
+      // lat,
+      // lng,
       name,
       lastName,
       phoneNo,
       pincode,
       state,
-      stateCode,
-      country,
+      // stateCode,
+      // country,
     } = userAddress;
     if (
       !address ||
@@ -188,8 +188,8 @@ const CheckoutPage = () => {
       !phoneNo ||
       !pincode ||
       !state ||
-      !stateCode ||
-      !country ||
+      // !stateCode ||
+      // !country ||
       !lastName ||
       !name
     ) {
@@ -281,7 +281,7 @@ const CheckoutPage = () => {
       storePickupObj: {},
       metaData: {
         source: "web",
-        inventoryManaged: autoConfirmOrder ? true : false,
+        inventoryManaged: false,
       },
       products: paymentSummary?.products,
       address: addressToDeliver,
@@ -290,7 +290,7 @@ const CheckoutPage = () => {
       createdAt: new Date(),
       payment: {
         completed: false,
-        mode: selectedPaymentMethod === "cod" ? "cod" : null,
+        mode: selectedPaymentMethod === "cod" ? "cash" : null,
         details: null,
       },
       userId: auth.currentUser?.uid,
@@ -303,19 +303,21 @@ const CheckoutPage = () => {
     dispatch(reset());
     // router.push("/");
     if (isCod) {
-      toast.success("Order Placed Successfully");
-      // router.push("/");
-      if (selectedPaymentMethod === "cod") {
-        // if (getCondition(userData, args)) {
-        //   await FirebaseFunctions.instance
-        //       .httpsCallable('wallet-orderPaymentWithWallet')
-        //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
-        // } else {
-        //   await FirebaseFunctions.instance
-        //       .httpsCallable('payments-ac_paymentWithCash')
-        //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
-        // }
-      }
+      if(orderObj.status=="Confirmed"){ toast.success("Order Placed Successfully"); 
+            router.push("/ordersucessfull");}
+      else {toast.error("Order Pending"); 
+            router.push("/notconfirm");}
+      // if (selectedPaymentMethod === "cod") {
+      //   // if (getCondition(userData, args)) {
+      //   //   await FirebaseFunctions.instance
+      //   //       .httpsCallable('wallet-orderPaymentWithWallet')
+      //   //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
+      //   // } else {
+      //   //   await FirebaseFunctions.instance
+      //   //       .httpsCallable('payments-ac_paymentWithCash')
+      //   //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
+      //   // }
+      // }
     } else {
       return orderId;
     }

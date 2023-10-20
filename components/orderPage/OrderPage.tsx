@@ -17,7 +17,10 @@ const OrderPage = () => {
 
     return (
         <>
-            <div className=' '>
+            <div className='w-full h-full '>
+                {orderList&&orderList.length===0?
+                <div className='w-full h-full flex  justify-center items-center sm:text-xl text-sm text-gray-500'>No Orders Found !</div>:
+                
                 <div className='w-full flex md:flex-row flex-col gap-x-8 gap-y-6  h-auto'>
                     {/* <div className='md:w-[25%] w-[100%] border border-primary h-fit md:px-5 px-3 md:py-5 py-3 cursor-pointer'>
                         <div className=''><h3 className='text-primary font-semibold md:text-base text-sm mb-1'>My Orders{" "}({orderList?.length})</h3></div>
@@ -41,7 +44,7 @@ const OrderPage = () => {
                                                     return <div className={`flex lg:flex-row flex-col lg:items-center justify-between gap-5 h-auto  py-5 md:px-5 px-3  cursor-pointer ${!(idx === orders?.products?.length - 1) && "border-b border-b-gray-400 "}`}>
                                                         <div className='flex items-center sm:gap-x-8 gap-x-4 '>
                                                             <div className='h-[108px] w-[108px] '>
-                                                                {/* <Image src={item?.img?.url?item?.img?.url:constant.errImage} alt='' width={1000} height={1000} className='aspect-auto h-[100%] w-[100%] object-fill ' /> */}
+                                                                <Image src={item?.img?.url?item?.img?.url:constant.errImage} alt='' width={1000} height={1000} className='aspect-auto h-[100%] w-[100%] object-fill ' />
                                                             </div>
                                                             <div className='flex flex-col gap-y-3'>
                                                                 <h2 className='md:text-base text-sm font-semibold line-clamp-1 '> {item?.name}</h2>
@@ -64,6 +67,7 @@ const OrderPage = () => {
                         }
                     </div>
                 </div>
+                }
             </div>
         </>
     )

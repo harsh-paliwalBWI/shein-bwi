@@ -54,7 +54,7 @@ useEffect
                       {/* Asymmetrical Frayed Bustier */}
                       {product?.name}
                     </h3>
-                    <div className="flex gap-2  text-[#555555] lg:text-sm text-xs font-semibold mb-1">Size : <span>L</span>  <span>|</span>  Color :  <span>Beige</span></div>
+                    <div className="flex gap-2  text-[#555555] lg:text-sm text-xs font-semibold mb-1">Size : <span> {product?.description?.split("/")[0]}</span>   {product?.description?.includes("/")? <div><span>|</span> Color :  <span>{product?.description?.split("/")[1]}</span></div>:null}</div>
                     <h3 className="font-semibold text-black text-opacity-75 lg:text-sm text-xs   mb-6">Qty:
                       {" "}{product?.quantity}
                       {/* 1 */}
@@ -84,7 +84,7 @@ useEffect
               {addressToDeliver?.phoneNo}
             </p>
           </div>
-          <div className=" "><button className="bg-secondary text-white flex items-center gap-1 py-1 px-7 xl:text-base text-base font-semibold"><span><FlatIcon icon={"flaticon-plus-1 text-[10px] font-bold"} /></span><span>Add Address</span></button></div>
+          {/* <div className=" "><button className="bg-secondary text-white flex items-center gap-1 py-1 px-7 xl:text-base text-base font-semibold"><span><FlatIcon icon={"flaticon-plus-1 text-[10px] font-bold"} /></span><span>Add Address</span></button></div> */}
         </div>
         <div className="border border-gray-400   flex flex-col p-4 gap-4">
           <h4 className="font-bold text-black xl:text-lg text-lg">Payment Method</h4>

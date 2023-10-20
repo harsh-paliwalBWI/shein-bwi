@@ -106,10 +106,9 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
   };
   const signInUserWithPhoneNumber = async () => {
     try {
-      // console.log("inside try");
-
+     
       if (phoneNumber) {
-        // console.log("inside if");
+        console.log("inside if");
         setLoading(true);
         const recaptchaVerifier = new RecaptchaVerifier(
           auth,
@@ -122,7 +121,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           }
         );
         // console.log("after recaptchaVerifier ");
-        console.log(dialcountry,"dialcountry");
+        // console.log(dialcountry,"dialcountry");
         
         const formattedPhoneNumber = `${dialcountry.dialCode}${phoneNumber}`;
         // console.log(formattedPhoneNumber);
@@ -139,6 +138,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
 
             setLoading(false);
             startTimer();
+            setShowPhoneNumberInput(false); 
           })
           .catch((error) => {
             console.log(error + "...please reload");
@@ -146,6 +146,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           });
       } else {
         if (!phoneNumber)
+        toast.error("Please enter phone number.")
           console.log("Please enter both name and phone number");
         setLoading(false);
       }
@@ -156,7 +157,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
 
   const confirmOTP = () => {
     try {
-      console.log("inside try");
+      // console.log("inside try");
 
       setTimerStarted(false);
       setVerifying(true);
@@ -166,7 +167,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           // console.log(res, "User");
           localStorage.setItem("auth", JSON.stringify(res.user.uid));
           if (res._tokenResponse.isNewUser) {
-            console.log("new user");
+            // console.log("new user");
             
             let newUser = {
               phoneNo:dialcountry.dialCode + phoneNumber,
@@ -181,37 +182,12 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
               wallet: { "balance": 0, "cashback": 0, 'lastTransactions': {} }
             }
 
-            // let user = {
-            //   phoneNo: phoneNumber,
-            //   createdAt: new Date(),
-            //   active: true,
-            //   lastAccessAt: new Date(),
-            //   role: "user",
-            //   name: "",
-            //   email: email,
-            //   dP: "assets/img/user-pic.gif",
-            //   setFromUI: true,
-            //   wallet: { balance: 0, cashback: 0, lastTransactions: {} },
-            // };
-            // console.log(newUser, "user info");
             await setDoc(doc(db, `users/${res.user.uid}`), newUser, {
               merge: true,
             });
           toast.success("Login successfully.")
 
           } else {
-            // let newUser = {
-            //   phoneNo:dialcountry.dialCode + phoneNumber,
-            //   createdAt: new Date(),
-            //   active: true,
-            //   lastAccessAt: new Date(),
-            //   role: "user",
-            //   name: "",
-            //   email: email,
-            //   dP: "",
-            //   setFromUI: true,
-            //   wallet: { "balance": 0, "cashback": 0, 'lastTransactions': {} }
-            // }
             await setDoc(doc(db, `users/${res.user.uid}`), 
             {lastAccessAt: new Date()}, 
           { merge: true,})
@@ -275,7 +251,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           {/* code for login with phone number start  */}
           {showPhoneNumberInput && ( // Conditionally render phone number input and login button
             <div className="mb-[20px] w-[90%] mobile-container">
-              <div className="flex w-full ">
+              <div className="flex w-full items-center ">
               <Menu
                 as="div"
                 className="w-[28%] relative text-left flex justify-center items-center  "
@@ -351,7 +327,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
               <input
                 type="text"
                 placeholder="Enter phone number"
-                className="w-full px-[10px] md:px-[20px] md:py-[15px] py-2 md:text-base text-sm mb-[8px] md:mb-[15px] outline-0 border border-gray-300 "
+                className="w-full px-[5px] sm:px-[10px] md:px-[15px] lg:px-[20px] py-[9px] sm:py-[11px] md:py-[13px] lg:py-[15px] mb-[15px] outline-0 border border-gray-300 lg:text-base md:text-sm text-xs "
                 value={phoneNumber}
                 onChange={(e) => {
                   setPhoneNumber(e.target.value);
@@ -364,7 +340,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
                 onClick={async () => {
                   await signInUserWithPhoneNumber();
                   // setPhoneNumber("");
-                  setShowPhoneNumberInput(false); // Hide phone number input and login button
+                 // Hide phone number input and login button
                 }}
                 className="text-center bg-primary w-full md:py-[15px] py-2 md:text-base text-sm  text-[white] cursor-pointer "
               >
