@@ -1,7 +1,8 @@
 import React , { useState } from "react";
 import { paymentMethods, tabs } from "../../utils/utilities";
 import FlatIcon from "../flatIcon/flatIcon";
-import cashImg from "../../images/credit-card (2) 1.svg"
+import cashImg from "../../images/cod.png"
+import cardImg from "../../images/credit-card (2) 1.svg"
 import phoneImg from "../../images/payment-method (1) 1.svg"
 import Image from "next/image";
 const PaymentMethodTab = ({
@@ -18,6 +19,7 @@ const PaymentMethodTab = ({
       <h6 className="font-medium  xl:text-base md:text-base text-sm ">Choose your preferred Payment Method</h6>
       <div className="flex flex-col gap-3 sm:mt-12 mt-4">
         {paymentMethods.map((method, idx) => {
+          // console.log(method.value)
           return (
             <div
               onClick={() => {
@@ -38,7 +40,12 @@ const PaymentMethodTab = ({
               key={idx}
             >
               <div className="flex sm:gap-8 gap-4 items-center">
-                <div className=""><Image src={cashImg} alt="" height={1000} width={1000} className="aspect-auto w-[50px]"/></div>
+                <div className=""><Image src={  
+                  method?.value === "cod"
+                        ? cashImg
+                        : cardImg
+                        } 
+                        alt="" height={1000} width={1000} className="aspect-auto w-[50px]"/></div>
                 <p className="text-black md:text-base text-sm font-semibold">{method.name}</p>
               </div>
               <div className="flex gap-4">

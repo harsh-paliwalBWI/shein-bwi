@@ -86,12 +86,17 @@ const CartItemCard = ({ item, mykey, cookie }) => {
                 {/* {item?.pack?.weight} */}
                 {item?.pack?.weight?.split("/")&&item?.pack?.weight?.split("/")[0]}
                 </span>{" "}
-              <span>|</span> <span>Color : </span>{" "}
-              <span>
-                {/* {item?.color?.name} */}
-                {item?.pack?.weight?.split("/")&&item?.pack?.weight?.split("/")[1]}
+                {item?.pack?.weight?.includes("/")? 
+                <div><span>|</span>  Color :  <span> 
+                    {/* {item?.color?.name} */}
+                  {item?.pack?.weight?.split("/")[1]}</span></div>:null}
+             
+             
+              {/* <span>
+                  {item?.pack?.weight?.split("/")&&item?.pack?.weight?.split("/")[1]}
+                </span> */}
 
-                </span>
+                
             </div>
             {/* <div className="flex items-center sm:justify-start justify-center gap-2 my-3">
               <div className="text-primary text-xl flex ">
@@ -207,6 +212,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
                   queryKey: ["wishlistData"],
                 });
                 toast.success("Product added to wishlist.");
+                handleRemoveFromCart(item);
               }
               }
             >
