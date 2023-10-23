@@ -31,7 +31,7 @@ useEffect
         <div className="border border-gray-400     flex flex-col gap-4">
           {isClient && paymentSummary &&
             isClient && paymentSummary?.products?.map((product, idx) => {
-              console.log(product,"product,");
+              // console.log(product,"product,");
               
               return (
                 <div className="flex sm:flex-row flex-col items-center sm:items-start px-4 py-4 gap-8 " key={idx}>

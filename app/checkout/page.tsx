@@ -61,6 +61,7 @@ const CheckoutPage = () => {
 
     // keepPreviousData: true,
   });
+  // console.log(couponList,"fghjkl");
 
   // console.log(couponList, "couponList-------");
 
@@ -87,6 +88,9 @@ const CheckoutPage = () => {
     !(userData && userData?.defaultAddress)
   );
 
+  const [appliedCoupons, setAppliedCoupons] = useState([])
+  const [showCod, setshowCod] = useState(true)
+
   async function getPaymentSummary() {
     const getPaymentSummaryDetails = httpsCallable(
       functions,
@@ -103,9 +107,19 @@ const CheckoutPage = () => {
     setPaymentSummary(res.data);
   }
 
+  
+//   function handleCouponApply(coupon) {
+//        console.log(coupon,"llllllll")
+//        console.log(coupon?.name,"hhhhhhh")
+//       // getCouponDiscount(coupon?.name);
+//       getCouponDiscount(coupon);
+//       // setAppliedCoupons((prev) => [...prev, coupon?.id]);
+// }
+  
+  
   async function getCouponDiscount(couponText: any) {
     // console.log(couponText, "couponText");
-    if (couponText) {
+    if (couponText.name) {
 
       setIsModalOpen(true)
       document.body.classList.add("no-scroll");
@@ -118,7 +132,7 @@ const CheckoutPage = () => {
       let data = {
         userId: userData?.id,
         paymentDetails: paymentSummary,
-        code: couponText,
+        code: couponText.name,
         isGstApplicable: isGst,
       };
       const res = await getCouponDiscountDetails(data);
@@ -137,6 +151,13 @@ const CheckoutPage = () => {
         document.body.classList.remove("no-scroll");
         setIsModalOpen(false)
         toast.success("Coupon applied succesfully");
+        setAppliedCoupons((prev) => [...prev, couponText?.id]);
+        // console.log(couponText?.codAvailable,"fifififififif")
+        if(couponText?.codAvailable!=true){
+          setshowCod(false)
+        }
+
+
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
         
@@ -145,6 +166,7 @@ const CheckoutPage = () => {
         document.body.classList.remove("no-scroll");
         setIsModalOpen(false)
         toast.error(error);
+        // toast.error("error");
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
       
@@ -158,6 +180,12 @@ const CheckoutPage = () => {
     }
   }
 
+
+
+
+
+
+  
   const handleChange = (name, value) => {
     console.log(name, "name", value, "value");
     setUserAddress((val: any) => {
@@ -165,7 +193,7 @@ const CheckoutPage = () => {
     });
   };
   function handleAddressSubmit() {
-    console.log(userAddress, "userAddress");
+    // console.log(userAddress, "userAddress");
 
     const {
       address,
@@ -351,6 +379,7 @@ const CheckoutPage = () => {
             setSelectedPaymentMethod={setSelectedPaymentMethod}
             setSelectedTab={setSelectedTab}
             setCompletedSteps={setCompletedSteps}
+            showCod={showCod}
           />
         );
       case tabs[2]:
@@ -502,6 +531,7 @@ const CheckoutPage = () => {
                                 </div>
                               </div>
                             </div>
+                            
                             {couponAvl &&
                               couponList &&
                               couponList.length > 0 && (
@@ -514,6 +544,7 @@ const CheckoutPage = () => {
                                     couponList &&
                                     couponList.length > 0 &&
                                     couponList.map((item: any, idx: number) => {
+                                      if (!appliedCoupons.includes(item.id)) {
                                       return (
                                         <div
                                           className="flex justify-between items-center"
@@ -528,7 +559,8 @@ const CheckoutPage = () => {
                                           <div
                                             className="cursor-pointer"
                                             onClick={() =>
-                                              getCouponDiscount(item.name)
+                                              // handleCouponApply(item)
+                                              getCouponDiscount(item)
                                             }
                                           >
                                             <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
@@ -537,10 +569,20 @@ const CheckoutPage = () => {
                                           </div>
                                         </div>
                                       );
+                                    }
+                                   else if (appliedCoupons.includes(item.id)) {
+                                    return  <div className="text-secondary flex gap-2  w-fit mb-4 px-5 py-1 text-sm">
+                                   <p className="text-primary">✔️</p> Coupon Applied <br></br> 
+                                  </div>;}
+                                  return null
                                     })}
                                     </div>
                                 </div>
-                              )}
+                              )
+                             
+                              
+                              
+                              }
                           </div>
                         </div>
                       </div>
