@@ -62,6 +62,7 @@ const CheckoutPage = ({ searchParams }) => {
 
     // keepPreviousData: true,
   });
+  // console.log(couponList,"fghjkl");
 
   // console.log(couponList, "couponList-------");
 
@@ -88,6 +89,9 @@ const CheckoutPage = ({ searchParams }) => {
     !(userData && userData?.defaultAddress)
   );
 
+  const [appliedCoupons, setAppliedCoupons] = useState([])
+  const [showCod, setshowCod] = useState(true)
+
   async function getPaymentSummary() {
     const getPaymentSummaryDetails = httpsCallable(
       functions,
@@ -106,10 +110,21 @@ const CheckoutPage = ({ searchParams }) => {
     setPaymentSummary(res.data);
   }
 
+  
+//   function handleCouponApply(coupon) {
+//        console.log(coupon,"llllllll")
+//        console.log(coupon?.name,"hhhhhhh")
+//       // getCouponDiscount(coupon?.name);
+//       getCouponDiscount(coupon);
+//       // setAppliedCoupons((prev) => [...prev, coupon?.id]);
+// }
+  
+  
   async function getCouponDiscount(couponText: any) {
     // console.log(couponText, "couponText");
-    if (couponText) {
-      setIsModalOpen(true);
+    if (couponText.name) {
+
+      setIsModalOpen(true)
       document.body.classList.add("no-scroll");
       setIsLoading(true);
       const getCouponDiscountDetails = httpsCallable(
@@ -120,7 +135,7 @@ const CheckoutPage = ({ searchParams }) => {
       let data = {
         userId: userData?.id,
         paymentDetails: paymentSummary,
-        code: couponText,
+        code: couponText.name,
         isGstApplicable: isGst,
       };
       const res = await getCouponDiscountDetails(data);
@@ -138,6 +153,13 @@ const CheckoutPage = ({ searchParams }) => {
         document.body.classList.remove("no-scroll");
         setIsModalOpen(false);
         toast.success("Coupon applied succesfully");
+        setAppliedCoupons((prev) => [...prev, couponText?.id]);
+        // console.log(couponText?.codAvailable,"fifififififif")
+        if(couponText?.codAvailable!=true){
+          setshowCod(false)
+        }
+
+
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
       } else {
@@ -145,6 +167,7 @@ const CheckoutPage = ({ searchParams }) => {
         document.body.classList.remove("no-scroll");
         setIsModalOpen(false);
         toast.error(error);
+        // toast.error("error");
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
       }
@@ -156,6 +179,12 @@ const CheckoutPage = ({ searchParams }) => {
     }
   }
 
+
+
+
+
+
+  
   const handleChange = (name, value) => {
     console.log(name, "name", value, "value");
     setUserAddress((val: any) => {
@@ -163,7 +192,7 @@ const CheckoutPage = ({ searchParams }) => {
     });
   };
   function handleAddressSubmit() {
-    console.log(userAddress, "userAddress");
+    // console.log(userAddress, "userAddress");
 
     const {
       address,
@@ -352,6 +381,7 @@ const CheckoutPage = ({ searchParams }) => {
             setSelectedPaymentMethod={setSelectedPaymentMethod}
             setSelectedTab={setSelectedTab}
             setCompletedSteps={setCompletedSteps}
+            showCod={showCod}
           />
         );
       case tabs[2]:
@@ -505,6 +535,7 @@ const CheckoutPage = ({ searchParams }) => {
                                 </div>
                               </div>
                             </div>
+                            
                             {couponAvl &&
                               couponList &&
                               couponList.length > 0 && (
@@ -512,42 +543,50 @@ const CheckoutPage = ({ searchParams }) => {
                                   <h2 className="text-primary text-base font-semibold my-6">
                                     Coupons Available
                                   </h2>
-                                  <div className=" flex flex-col gap-2">
-                                    {couponAvl &&
-                                      couponList &&
-                                      couponList.length > 0 &&
-                                      couponList.map(
-                                        (item: any, idx: number) => {
-                                          return (
-                                            <div
-                                              className="flex justify-between items-center"
-                                              key={idx}
-                                            >
-                                              <div>
-                                                <h2 className="sm:text-base text-sm">
-                                                  {item?.name}
-                                                </h2>
-                                                <p className="sm:text-sm text-xs text-[#555555] mt-1">
-                                                  {item?.description}
-                                                </p>
-                                              </div>
-                                              <div
-                                                className="cursor-pointer"
-                                                onClick={() =>
-                                                  getCouponDiscount(item.name)
-                                                }
-                                              >
-                                                <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
-                                                  Apply
-                                                </button>
-                                              </div>
-                                            </div>
-                                          );
-                                        }
-                                      )}
-                                  </div>
+                                 <div className=" flex flex-col gap-2">
+                                  {couponAvl &&
+                                    couponList &&
+                                    couponList.length > 0 &&
+                                    couponList.map((item: any, idx: number) => {
+                                      if (!appliedCoupons.includes(item.id)) {
+                                      return (
+                                        <div
+                                          className="flex justify-between items-center"
+                                          key={idx}
+                                        >
+                                          <div>
+                                            <h2 className="sm:text-base text-sm">{item?.name}</h2>
+                                            <p className="sm:text-sm text-xs text-[#555555] mt-1">
+                                              {item?.description}
+                                            </p>
+                                          </div>
+                                          <div
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              // handleCouponApply(item)
+                                              getCouponDiscount(item)
+                                            }
+                                          >
+                                            <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
+                                              Apply
+                                            </button>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                   else if (appliedCoupons.includes(item.id)) {
+                                    return  <div className="text-secondary flex gap-2  w-fit mb-4 px-5 py-1 text-sm">
+                                   <p className="text-primary">✔️</p> Coupon Applied <br></br> 
+                                  </div>;}
+                                  return null
+                                    })}
+                                    </div>
                                 </div>
-                              )}
+                              )
+                             
+                              
+                              
+                              }
                           </div>
                         </div>
                       </div>

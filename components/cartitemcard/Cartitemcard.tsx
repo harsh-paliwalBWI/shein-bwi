@@ -27,7 +27,7 @@ import { removeFromCart } from "../../redux/slices/cartSlice";
 // import { useQueryClient } from "@tanstack/react-query";
 
 const CartItemCard = ({ item, mykey, cookie }) => {
-  console.log(item);
+  // console.log(item);
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState((item && item?.minQty) || 1);
