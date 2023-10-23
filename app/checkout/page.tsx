@@ -28,7 +28,8 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader";
 import { couponsAvailable, fetchCouponList } from "../../utils/databaseService";
-const CheckoutPage = () => {
+
+const CheckoutPage = ({ searchParams }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { data: userData } = useQuery({
@@ -93,7 +94,9 @@ const CheckoutPage = () => {
     const isGst = await getGstAppilicableInfo();
     let data = {
       address: addressToDeliver,
-      products: cart,
+      products: searchParams?.source
+        ? [JSON.parse(searchParams?.source)]
+        : cart,
       isGstApplicable: isGst,
       customDeliverySettings: null,
     };
@@ -402,7 +405,7 @@ const CheckoutPage = () => {
                   ORDER SUMMARY
                 </h2>
                 <h4 className="xl:text-base text-sm font-semibold ">
-                  ({cart.length} Item)
+                  ({searchParams?.source ? "1" : cart.length} Item)
                 </h4>
                 {/* <span className=" text-neutral-400 text-base font-normal lowercase leading-[30px] tracking-tight">({cart.length} Items)</span> */}
               </div>

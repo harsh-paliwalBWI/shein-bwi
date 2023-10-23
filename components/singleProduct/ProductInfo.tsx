@@ -36,6 +36,8 @@ import {
   checkIfPriceDiscounted,
   getProductPriceDetails,
 } from "../../utils/utilities";
+import Link from "next/link";
+import { CircularProgress } from "@mui/material";
 const features = [
   " 10 in stock",
   " Easy Return Policy",
@@ -55,7 +57,7 @@ const ProductInfo = ({ params }: any) => {
 
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const dispatch: any = useDispatch();
-  const [similarProductData, setSimilarProductData] = useState([]);
+  const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
   const { data: product } = useQuery({
     queryKey: ["product", params?.slug],
     queryFn: () => fetchSingleProduct(params?.slug),
@@ -596,12 +598,59 @@ const ProductInfo = ({ params }: any) => {
                       </div>
 
                       <div
+                        onClick={async () => {
+                          let data: any = {
+                            product,
+                            productID: product?.id,
+                            quantity: quantity,
+                            index: variant,
+                            isPriceList: product?.isPriceList,
+                          };
+                          const cartObject = data.isPriceList
+                            ? getPriceListCartObj({
+                                product: product,
+                                quantity: quantity,
+                                index: data.index,
+                              })
+                            : getCartObj({
+                                product: product,
+                                productID: data?.productID,
+                                quantity: data?.quantity,
+                              });
+                          const urlData = encodeURIComponent(
+                            JSON.stringify(cartObject)
+                          );
+                          router.push(`/checkout?source=${urlData}`);
+
+                          // if (checkIfItemExistInCart(cart, product, variant)) {
+                          //   router.push("/checkout");
+                          // } else {
+                          //   setIsBuyNowLoading(true);
+                          //   await addItemToCart();
+                          //   setIsBuyNowLoading(false);
+                          //   router.push("/checkout");
+                          // }
+                        }}
                         className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
                         // onClick={handleRemoveFromCart}
                       >
-                        <button className="text-white font-bold sm:text-sm md:text-base text-xs">
-                          BUY NOW
-                        </button>
+                        <Link
+                          href={"/checkout"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                          }}
+                        >
+                          <button className="text-white font-bold sm:text-sm md:text-base text-xs">
+                            {isBuyNowLoading ? (
+                              <CircularProgress
+                                className="!text-white"
+                                size={25}
+                              ></CircularProgress>
+                            ) : (
+                              "BUY NOW"
+                            )}
+                          </button>
+                        </Link>
                       </div>
                     </div>
                     {/* previous button with functionality end*/}
