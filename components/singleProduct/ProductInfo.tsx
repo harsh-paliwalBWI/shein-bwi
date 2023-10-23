@@ -337,16 +337,18 @@ const ProductInfo = ({ params }: any) => {
                                         setOption2(item);
                                       }}
                                       key={idx}
-                                      className={`border border-[#E6DBD7] p-[3px]  rounded-full flex justify-center items-center cursor-pointer ${
-                                        item === colorTab && "bg-black"
+                                      className={`border border-[#E6DBD7] sm:px-3 px-4 sm:py-2 py-2 text-[#555555]  text-sm font-semibold rounded-md flex justify-center items-center cursor-pointer ${
+                                        item === colorTab && "bg-primary text-white"
                                       }`}
                                     >
                                       <div
-                                        className={`h-[25px] w-[25px] rounded-full `}
-                                        style={{
-                                          backgroundColor: `${item}`,
-                                        }}
-                                      ></div>
+                                        // className={`h-[25px] w-[25px] rounded-full `}
+                                        // style={{
+                                        //   backgroundColor: `${item}`,
+                                        // }}
+                                      >
+                                        {item}
+                                      </div>
                                     </div>
                                   );
                                 }

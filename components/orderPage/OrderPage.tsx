@@ -41,6 +41,8 @@ const OrderPage = () => {
                                         <div className=' h-auto flex flex-col border-container'>
                                             {
                                                 orders?.products.map((item: any, idx: number) => {
+                                                    console.log(item?.img?.url,"url---------",item.productId,item.name);
+                                                    
                                                     return <div className={`flex lg:flex-row flex-col lg:items-center justify-between gap-5 h-auto  py-5 md:px-5 px-3  cursor-pointer ${!(idx === orders?.products?.length - 1) && "border-b border-b-gray-400 "}`}>
                                                         <div className='flex items-center sm:gap-x-8 gap-x-4 '>
                                                             <div className='h-[108px] w-[108px] '>
@@ -52,8 +54,8 @@ const OrderPage = () => {
                                                             </div>
                                                         </div>
                                                         <div className='flex items-center gap-x-2'>
-                                                            <div className='h-[10px] w-[10px] rounded-full bg-[#6AC113]'></div>
-                                                            <div><h3 className='text-gray-500 md:text-sm text-xs font-semibold '>{orders?.status}</h3></div>
+                                                            <div className={`h-[10px] w-[10px] rounded-full ${orders?.status==="Confirmed"&&"bg-[#6AC113]"} ${orders?.status==="Cancelled"&&"bg-[red]"} ${orders?.status==="Returned"&&"bg-gray-500"} ${orders?.status==="Delivered"&&"bg-[blue]"} `}></div>
+                                                            <div><h3 className={` md:text-sm text-xs font-semibold ${orders?.status==="Cancelled"&&"text-[red]"||orders?.status==="Confirmed"&&"text-[#6AC113]"||orders?.status==="Returned"&&"text-gray-500"||orders?.status==="Confirmed"&&"text-[#6AC113]"||orders?.status==="Delivered"&&"text-[blue]"} `}>{orders?.status}</h3></div>
                                                         </div>
 
 

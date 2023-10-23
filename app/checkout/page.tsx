@@ -454,9 +454,9 @@ const CheckoutPage = () => {
       </Modal>
                   {isCoupon && (
                     <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30 flex justify-center items-center">
-                      <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   px-5 py-5 flex flex-col justify-end gap-y-3 ">
+                      <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   sm:px-5  py-5 flex flex-col justify-end gap-y-3 ">
                         <div
-                          className="w-full flex justify-end items-center cursor-pointer "
+                          className="w-full flex justify-end items-center cursor-pointer  "
                           onClick={() => {
                             setIsCoupon((prev) => !prev);
                           }}
@@ -469,7 +469,7 @@ const CheckoutPage = () => {
                             />
                           </button>
                         </div>
-                        <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  px-5 py-5 rounded-xl">
+                        <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  sm:px-5 px-3 py-5 rounded-xl ">
                           <h3 className="sm:text-lg text-base font-semibold text-center ">
                             Apply Coupon
                           </h3>
@@ -495,7 +495,7 @@ const CheckoutPage = () => {
                                   </div>
                                 )}
                                 <div
-                                  className="text-white bg-secondary px-5 py-1 text-sm"
+                                  className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs"
                                   onClick={() => getCouponDiscount(coupon)}
                                 >
                                   Apply
@@ -509,6 +509,7 @@ const CheckoutPage = () => {
                                   <h2 className="text-primary text-base font-semibold my-6">
                                     Coupons Available
                                   </h2>
+                                 <div className=" flex flex-col gap-2">
                                   {couponAvl &&
                                     couponList &&
                                     couponList.length > 0 &&
@@ -519,8 +520,8 @@ const CheckoutPage = () => {
                                           key={idx}
                                         >
                                           <div>
-                                            <h2>{item?.name}</h2>
-                                            <p className="text-sm text-[#555555] mt-1">
+                                            <h2 className="sm:text-base text-sm">{item?.name}</h2>
+                                            <p className="sm:text-sm text-xs text-[#555555] mt-1">
                                               {item?.description}
                                             </p>
                                           </div>
@@ -530,13 +531,14 @@ const CheckoutPage = () => {
                                               getCouponDiscount(item.name)
                                             }
                                           >
-                                            <button className="text-white bg-secondary px-5 py-1 text-sm">
+                                            <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
                                               Apply
                                             </button>
                                           </div>
                                         </div>
                                       );
                                     })}
+                                    </div>
                                 </div>
                               )}
                           </div>

@@ -231,3 +231,12 @@ font-size: small;
     /* color: #BC2D72; */
       }
 }
+.pop-up-email input[type="email"]::placeholder{
+
+}
+
+@media screen and (max-width: 768px) {
+  .pop-up-email input[type="email"]::placeholder{
+font-size: 13px;
+  }
+}

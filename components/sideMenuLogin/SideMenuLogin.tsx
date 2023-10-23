@@ -28,6 +28,7 @@ import { useMediaQuery } from "@mui/material";
 import { Menu } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
 import ReactCountryFlag from "react-country-flag";
+import Loader from "../loader/Loader";
 
 function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
   const [email, setEmail] = useState<any>("");
@@ -132,7 +133,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           recaptchaVerifier
         )
           .then((confirmationResult) => {
-            // console.log("inside then");
+            console.log("inside then");
             // console.log("confirmationResult::::::::" ,confirmationResult );
             setOTPSent(confirmationResult);
 
@@ -141,13 +142,20 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
             setShowPhoneNumberInput(false); 
           })
           .catch((error) => {
-            console.log(error + "...please reload");
+            // if(error==="reCAPTCHA has already been rendered in this element"){
+            //   console.log("fgfdh");
+              
+            // }
+            let newErr=error
+          //  toast.error(error)
+            // console.log(error + "...please reload");
+            toast.error(`${error}`)
             setLoading(false);
           });
       } else {
         if (!phoneNumber)
         toast.error("Please enter phone number.")
-          console.log("Please enter both name and phone number");
+          // console.log("Please enter both name and phone number");
         setLoading(false);
       }
     } catch (error) {
@@ -157,10 +165,11 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
 
   const confirmOTP = () => {
     try {
-      // console.log("inside try");
+      console.log("inside try");
 
       setTimerStarted(false);
       setVerifying(true);
+      setLoading(true)
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
@@ -209,8 +218,19 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           setLoading(false);
         })
         .catch((err: any) => {
-          toast.error("Incorrect OTP! Sign in failed!")
-          console.log("Incorrect OTP! Sign in failed!");
+          if(OTP===""){
+            setOTP("");
+            setVerifying(false);
+            toast.error("Please Enter OTP First !")
+          }else{
+            setOTP("");
+            setVerifying(false);
+ toast.error("Incorrect OTP! Sign In Failed!")
+          }
+          // console.log(err,"FROM CATCH");
+          
+         
+          // console.log("Incorrect OTP! Sign in failed!");
         });
     } catch (err) {
       console.log("error ", err);
