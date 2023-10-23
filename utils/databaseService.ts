@@ -732,7 +732,12 @@ export const fetchCouponList = async () => {
     const querySnapshot = await getDocs(collection(db, "features", "coupons", "codes"));
     const arr = []
     querySnapshot.forEach((doc) => {
+        console.log(doc.id,"doc");
+        
         const result = doc.data()
+        const obj=  {...result,id:doc.id}
+        console.log(obj);
+      
         arr.push(result)
     });
     return arr
@@ -808,3 +813,5 @@ export async function fetchPrivacyData() {
 
     }
 }
+
+

@@ -56,7 +56,6 @@ import { dividerClasses } from "@mui/material";
 import { constant } from "../../utils/constants";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
 
-
 const NavbarClient = ({ cookie }: any) => {
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const isLoginOpen = useAppSelector(
@@ -68,18 +67,15 @@ const NavbarClient = ({ cookie }: any) => {
   const pathname = usePathname();
   const mobile = useMediaQuery("(max-width:1080px)");
   const [searchedProducts, setSearchedProducts] = useState([]);
-  const [isCalorieCalculatorOpen, setIsCalorieCalculatorOpen] = useState(false);
-  const [isPrescriptionUpload, setIsPrescriptionUpload] = useState(false);
+  
   const matches = useMediaQuery("(max-width:767px)");
   const dispatch = useDispatch();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLogoVisible, setIsLogoVisible] = useState(true);
   const debouncedSearch = useDebounce(searchQuery, 500);
   const queryClient = useQueryClient();
   const router = useRouter();
   const [variant, setVariant] = useState(0);
-  
 
   // console.log(pathname,"name");
 
@@ -169,7 +165,7 @@ const NavbarClient = ({ cookie }: any) => {
     // console.log(query,"from searchResultsHandler function");
   };
   async function addItemToCart(product: any) {
-    // console.log(product,"from addItemToCart start");
+     console.log(product,"from addItemToCart start");
 
     let data: any = {
       product,
@@ -179,7 +175,7 @@ const NavbarClient = ({ cookie }: any) => {
       isPriceList: product?.isPriceList,
     };
     // console.log("inside");
-
+       console.log(product?.productDocId,"inside");
     const cartObject = product?.isPriceList
       ? getPriceListCartObj({
           product: product,
@@ -188,7 +184,7 @@ const NavbarClient = ({ cookie }: any) => {
         })
       : getCartObj({
           product: product,
-          productID: product?.productDocId,
+          productID: product?.id,
           quantity: 1,
         });
     if (auth.currentUser) {
@@ -201,7 +197,7 @@ const NavbarClient = ({ cookie }: any) => {
   return (
     <>
       {matches ? (
-        <NavMobile cookie={cookie} handleLogout={handleLogout}/>
+        <NavMobile cookie={cookie} handleLogout={handleLogout} />
       ) : (
         <>
           <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body z-10 ">
@@ -315,16 +311,16 @@ const NavbarClient = ({ cookie }: any) => {
                           {searchedProducts.length !== 0 &&
                             pathname !== "/search" && (
                               <OutsideClickHandler
-                              onClick={()=>{
-                                setSearchedProducts([]);
-                                setSearchQuery("")
-                              }}
+                                onClick={() => {
+                                  setSearchedProducts([]);
+                                  setSearchQuery("");
+                                }}
                               >
                                 <div className="absolute top-[45px] left-0 rounded-lg  shadow-md bg-white xl:w-full w-[300px] lg:min-h-[100px] lg:max-h-[500px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
                                   {/* <div> */}
                                   {searchedProducts?.map((prod, idx) => {
                                     // console.log(prod);
-                                    
+
                                     return (
                                       // <Link
                                       //   key={idx}
@@ -334,54 +330,58 @@ const NavbarClient = ({ cookie }: any) => {
                                         className=" flex justify-between items-center gap-x-4 border-t-gray-300  border-t py-4  w-full"
                                         key={idx}
                                       >
-                                           <Link
-                                        key={idx}
-                                        href={`/product/${prod?.slug?.name}`}
-                                      >
-                                        <div className=" flex  gap-x-3 z-10  w-full ">
-                                          <div className="w-[30%] h-[80px] ">
-                                            <Image
-                                              src={prod.coverPic?.url?prod.coverPic?.url:constant.errImage}
-                                              alt=""
-                                              height={1000}
-                                              width={1000}
-                                              className="object-fill h-full w-full "
-                                              // style={{
-                                              //   height: "100%",
-                                              //   width: "100%",
-                                              //   // aspectRatio: "auto",
-                                              // }}
-                                            />
-                                          </div>
-                                          <div className="flex flex-col gap-y-1.5 w-[70%]">
-                                            <h1 className="xl:text-sm text-xs font-medium line-clamp-1">
-                                              {prod?.prodName}
-                                            </h1>
-                                            {/* <h4 className="text-gray-500  text-xs font-medium">
+                                        <Link
+                                          key={idx}
+                                          href={`/product/${prod?.slug?.name}`}
+                                        >
+                                          <div className=" flex  gap-x-3 z-10  w-full ">
+                                            <div className="w-[30%] h-auto aspect-[1/1]">
+                                              <Image
+                                                src={
+                                                  prod.coverPic?.url
+                                                    ? prod.coverPic?.url
+                                                    : constant.errImage
+                                                }
+                                                alt=""
+                                                height={1000}
+                                                width={1000}
+                                                className="object-fill h-full w-full "
+                                                // style={{
+                                                //   height: "100%",
+                                                //   width: "100%",
+                                                //   // aspectRatio: "auto",
+                                                // }}
+                                              />
+                                            </div>
+                                            <div className="flex flex-col gap-y-1.5 w-[70%]">
+                                              <h1 className="xl:text-sm text-xs font-medium line-clamp-1">
+                                                {prod?.prodName}
+                                              </h1>
+                                              {/* <h4 className="text-gray-500  text-xs font-medium">
                                             <span>1.3lb</span>/
                                             <span>vanilla</span>
                                           </h4> */}
-                                            {/* <div className=" font-bold text-xl"> <span>AED 150.00</span> <span className="text-sm text-gray-500">200 AED</span></div> */}
-                                            <div className="flex lg:flex-row flex-col lg:items-center  gap-x-2 font-bold xl:text-base text-sm truncate">
-                                              {" "}
-                                              <h1>
-                                                {constant.currency}{" "}
-                                                {prod?.discountedPrice}
-                                              </h1>
-                                              {checkIfPriceDiscounted({
-                                                price: prod?.prodPrice,
-                                                discountedPrice:
-                                                  prod?.discountedPrice,
-                                              }) && (
-                                                <h3 className="text-xs text-gray-500 font-medium line-through ">
+                                              {/* <div className=" font-bold text-xl"> <span>AED 150.00</span> <span className="text-sm text-gray-500">200 AED</span></div> */}
+                                              <div className="flex lg:flex-row flex-col lg:items-center  gap-x-2 font-bold xl:text-base text-sm truncate">
+                                                {" "}
+                                                <h1>
                                                   {constant.currency}{" "}
-                                                  {prod?.prodPrice}
-                                                </h3>
-                                              )}
+                                                  {prod?.discountedPrice}
+                                                </h1>
+                                                {checkIfPriceDiscounted({
+                                                  price: prod?.prodPrice,
+                                                  discountedPrice:
+                                                    prod?.discountedPrice,
+                                                }) && (
+                                                  <h3 className="text-xs text-gray-500 font-medium line-through ">
+                                                    {constant.currency}{" "}
+                                                    {prod?.prodPrice}
+                                                  </h3>
+                                                )}
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
-</Link>
+                                        </Link>
                                         <div className="w-[20%] flex justify-end z-30 ">
                                           {/* new start  */}
                                           {checkIfItemExistInCart(
@@ -399,7 +399,7 @@ const NavbarClient = ({ cookie }: any) => {
                                               <div className="flex items-center ">
                                                 <div
                                                   // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
-                                                  className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
+                                                  className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
                                                   onClick={() => {
                                                     if (
                                                       getProductIndexFromCart(
@@ -407,11 +407,13 @@ const NavbarClient = ({ cookie }: any) => {
                                                         prod
                                                       ) >= 0
                                                     ) {
+                                                   let currQty = cart[getProductIndexFromCart(cart,prod)]?.quantity;
+                                                   let decqty = currQty > prod?.minQty ? 1 : prod?.minQty;
                                                       dispatch(
                                                         updateCartItemQuantity({
                                                           type: "dec",
-                                                          addedQty:
-                                                            prod?.minQty || 1,
+                                                          addedQty:decqty,
+                                                            // prod?.minQty || 1,
                                                           index:
                                                             getProductIndexFromCart(
                                                               cart,
@@ -423,8 +425,8 @@ const NavbarClient = ({ cookie }: any) => {
                                                   }}
                                                 >
                                                   <FlatIcon
-                                                    icon={
-                                                      "flaticon-minus text-secondary font-normal text-[10px]"
+                                                    className={
+                                                      "flaticon-minus text-secondary font-normal lg:text-xs text-[10px]"
                                                     }
                                                   />
                                                 </div>
@@ -437,7 +439,7 @@ const NavbarClient = ({ cookie }: any) => {
                                                   }
                                                 </div>
                                                 <div
-                                                  className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
+                                                  className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
                                                   // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
                                                   onClick={() => {
                                                     if (
@@ -453,6 +455,7 @@ const NavbarClient = ({ cookie }: any) => {
                                                             prod
                                                           )
                                                         ]?.quantity;
+                                                      let addqty = currQty < prod?.minQty ? prod?.minQty : 1;
                                                       if (prod.isPriceList) {
                                                         if (
                                                           currQty +
@@ -471,9 +474,9 @@ const NavbarClient = ({ cookie }: any) => {
                                                             updateCartItemQuantity(
                                                               {
                                                                 type: "inc",
-                                                                addedQty:
-                                                                  prod?.minQty ||
-                                                                  1,
+                                                                addedQty:addqty,
+                                                                  // prod?.minQty ||
+                                                                  // 1,
                                                                 index:
                                                                   getProductIndexFromCart(
                                                                     cart,
@@ -500,9 +503,9 @@ const NavbarClient = ({ cookie }: any) => {
                                                             updateCartItemQuantity(
                                                               {
                                                                 type: "inc",
-                                                                addedQty:
-                                                                  prod?.minQty ||
-                                                                  1,
+                                                                addedQty:addqty,
+                                                                  // prod?.minQty ||
+                                                                  // 1,
                                                                 index:
                                                                   getProductIndexFromCart(
                                                                     cart,
@@ -518,9 +521,9 @@ const NavbarClient = ({ cookie }: any) => {
                                                   }}
                                                 >
                                                   <FlatIcon
-                                                    icon={
-                                                      "flaticon-plus-1  font-normal text-xs "
-                                                    }
+                                                    className=
+                                                      "flaticon-plus-1  font-normal text-[10px] lg:text-xs "
+                                                    
                                                   />
                                                 </div>
                                               </div>
@@ -530,11 +533,11 @@ const NavbarClient = ({ cookie }: any) => {
                                               onClick={() => {
                                                 addItemToCart(prod);
                                               }}
-                                              className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer "
+                                              className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer "
                                             >
                                               <FlatIcon
-                                                icon={
-                                                  "flaticon-plus-1  font-normal text-xs "
+                                                className={
+                                                  "flaticon-plus-1  font-normal text-[10px] lg:text-xs"
                                                 }
                                               />
                                             </div>
@@ -590,25 +593,25 @@ const NavbarClient = ({ cookie }: any) => {
                         className="flex items-center gap-2 cursor-pointer"
                         onClick={handleLoginClick}
                       >
-                        <FlatIcon icon={"flaticon-user-fill text-2xl"} />
+                        <FlatIcon className={"flaticon-user-fill text-2xl"} />
                         <h3>Login</h3>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 cursor-pointer">
-                        <FlatIcon icon={"flaticon-user-fill text-2xl"} />
+                        <FlatIcon className={"flaticon-user-fill text-2xl"} />
                         <h3>Login</h3>
                       </div>
                     )}
                     <Link href={"/wishlist"}>
                       <div className="cursor-pointer">
-                        <FlatIcon icon={"flaticon-heart-fill text-2xl "} />
+                        <FlatIcon className="flaticon-heart-fill text-2xl " />
                       </div>
                     </Link>
                     <Link
                       href={"/cart"}
                       className="flex items-center  gap-2 cursor-pointer relative"
                     >
-                      <FlatIcon icon={"flaticon-bag-fill text-2xl"} />
+                      <FlatIcon className="flaticon-bag-fill text-2xl" />
                       <div className="h-[15px] w-[15px] rounded-full bg-primary absolute top-0 -right-1 flex items-center justify-center text-[8px] text-white">
                         {cart.length > 0 ? cart.length : 0}
                       </div>
@@ -652,7 +655,7 @@ function UserDropDown(userData: any, handleLogout: any): React.ReactNode {
         <div className="flex justify-center items-center">
           <Menu.Button className="">
             <div className="flex items-center  gap-2">
-              <FlatIcon icon={"flaticon-user-fill text-2xl"} />
+              <FlatIcon className="flaticon-user-fill text-2xl" />
               {(userData && userData?.name) || "User "}
             </div>
           </Menu.Button>

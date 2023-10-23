@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeSections } from "../../utils/databaseService";
 import BannerSlider from "./widgets/BannerSlider";
@@ -17,15 +17,26 @@ import ReviewSlider from "../reviews/ReviewSlider";
 import Advertisement from "../advertisement/Advertisement";
 import WatchShopSlider from "../watchAndShop/WatchShopSlider";
 import InstaFamilySlider from "../instaFamily/InstaFamilySlider";
+import PopUp from "../popUp/PopUp";
 // import CategoryGrid from "./widgets/CategoryGrid";
 
 const HomeComponent = ({ cookie }) => {
+  const [showPopup, setShowPopup] = useState(false);
   const { data: homeData } = useQuery({
     queryKey: ["homeSections"],
     queryFn: fetchHomeSections,
     cacheTime: 180,
   });
   // console.log("homeData");
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   function renderWidgets(section, idx) {
     // console.log("CHCOG", section?.widgetType);lo
@@ -87,6 +98,9 @@ const HomeComponent = ({ cookie }) => {
             }
           })}
       </div>
+
+
+      {showPopup&&<PopUp setShowPopup={setShowPopup}/>}
     </div>
   );
 };

@@ -17,7 +17,7 @@ import PaymentMethodTab from "../../components/checkout/PaymentMethodTab";
 import ReviewTab from "../../components/checkout/ReviewTab";
 import Hr from "../../components/Hr/Hr";
 import { constant } from "../../utils/constants";
-import { Skeleton } from "@mui/material";
+import { CircularProgress, Skeleton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
@@ -28,6 +28,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader";
 import { couponsAvailable, fetchCouponList } from "../../utils/databaseService";
+import Modal from "../../components/Modal/modal";
 
 const CheckoutPage = ({ searchParams }) => {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ const CheckoutPage = ({ searchParams }) => {
   // console.log(couponList, "couponList-------");
 
   const [completedSteps, setCompletedSteps] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const [selectedTab, setSelectedTab] = useState("Shipping");
   const [paymentSummary, setPaymentSummary] = useState(null);
@@ -107,6 +109,8 @@ const CheckoutPage = ({ searchParams }) => {
   async function getCouponDiscount(couponText: any) {
     // console.log(couponText, "couponText");
     if (couponText) {
+      setIsModalOpen(true);
+      document.body.classList.add("no-scroll");
       setIsLoading(true);
       const getCouponDiscountDetails = httpsCallable(
         functions,
@@ -131,17 +135,23 @@ const CheckoutPage = ({ searchParams }) => {
           };
         });
         setCouponDiscount(couponDiscount);
+        document.body.classList.remove("no-scroll");
+        setIsModalOpen(false);
         toast.success("Coupon applied succesfully");
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
       } else {
         const error = res2["failureMsg"];
+        document.body.classList.remove("no-scroll");
+        setIsModalOpen(false);
         toast.error(error);
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
       }
     } else {
       setIsLoading(false);
+      document.body.classList.remove("no-scroll");
+      setIsModalOpen(false);
       toast.error("Please apply coupon first.");
     }
   }
@@ -159,15 +169,15 @@ const CheckoutPage = ({ searchParams }) => {
       address,
       // address2,
       city,
-      lat,
-      lng,
+      // lat,
+      // lng,
       name,
       lastName,
       phoneNo,
       pincode,
       state,
-      stateCode,
-      country,
+      // stateCode,
+      // country,
     } = userAddress;
     if (
       !address ||
@@ -176,8 +186,8 @@ const CheckoutPage = ({ searchParams }) => {
       !phoneNo ||
       !pincode ||
       !state ||
-      !stateCode ||
-      !country ||
+      // !stateCode ||
+      // !country ||
       !lastName ||
       !name
     ) {
@@ -269,7 +279,7 @@ const CheckoutPage = ({ searchParams }) => {
       storePickupObj: {},
       metaData: {
         source: "web",
-        inventoryManaged: autoConfirmOrder ? true : false,
+        inventoryManaged: false,
       },
       products: paymentSummary?.products,
       address: addressToDeliver,
@@ -278,7 +288,7 @@ const CheckoutPage = ({ searchParams }) => {
       createdAt: new Date(),
       payment: {
         completed: false,
-        mode: selectedPaymentMethod === "cod" ? "cod" : null,
+        mode: selectedPaymentMethod === "cod" ? "cash" : null,
         details: null,
       },
       userId: auth.currentUser?.uid,
@@ -291,19 +301,24 @@ const CheckoutPage = ({ searchParams }) => {
     dispatch(reset());
     // router.push("/");
     if (isCod) {
-      toast.success("Order Placed Successfully");
-      // router.push("/");
-      if (selectedPaymentMethod === "cod") {
-        // if (getCondition(userData, args)) {
-        //   await FirebaseFunctions.instance
-        //       .httpsCallable('wallet-orderPaymentWithWallet')
-        //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
-        // } else {
-        //   await FirebaseFunctions.instance
-        //       .httpsCallable('payments-ac_paymentWithCash')
-        //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
-        // }
+      if (orderObj.status == "Confirmed") {
+        toast.success("Order Placed Successfully");
+        router.push("/ordersucessfull");
+      } else {
+        toast.error("Order Pending");
+        router.push("/notconfirm");
       }
+      // if (selectedPaymentMethod === "cod") {
+      //   // if (getCondition(userData, args)) {
+      //   //   await FirebaseFunctions.instance
+      //   //       .httpsCallable('wallet-orderPaymentWithWallet')
+      //   //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
+      //   // } else {
+      //   //   await FirebaseFunctions.instance
+      //   //       .httpsCallable('payments-ac_paymentWithCash')
+      //   //       .call({...orderObj, "createdAt": "", "orderDocId": orderID});
+      //   // }
+      // }
     } else {
       return orderId;
     }
@@ -432,11 +447,19 @@ const CheckoutPage = ({ searchParams }) => {
                       </div>
                     </div>
                   </div>
+                  <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
+                    <div className="flex flex-col gap-2 justify-center items-center">
+                      <CircularProgress className="!text-white"></CircularProgress>
+                      <p className="text-white font-medium text-lg">
+                        Applying Coupon...
+                      </p>
+                    </div>
+                  </Modal>
                   {isCoupon && (
                     <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30 flex justify-center items-center">
-                      <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   px-5 py-5 flex flex-col justify-end gap-y-3 ">
+                      <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   sm:px-5  py-5 flex flex-col justify-end gap-y-3 ">
                         <div
-                          className="w-full flex justify-end items-center cursor-pointer "
+                          className="w-full flex justify-end items-center cursor-pointer  "
                           onClick={() => {
                             setIsCoupon((prev) => !prev);
                           }}
@@ -449,7 +472,7 @@ const CheckoutPage = ({ searchParams }) => {
                             />
                           </button>
                         </div>
-                        <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  px-5 py-5 rounded-xl">
+                        <div className="flex flex-col gap-y-5 w-full h-auto  bg-white  sm:px-5 px-3 py-5 rounded-xl ">
                           <h3 className="sm:text-lg text-base font-semibold text-center ">
                             Apply Coupon
                           </h3>
@@ -475,7 +498,7 @@ const CheckoutPage = ({ searchParams }) => {
                                   </div>
                                 )}
                                 <div
-                                  className="text-white bg-secondary px-5 py-1 text-sm"
+                                  className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs"
                                   onClick={() => getCouponDiscount(coupon)}
                                 >
                                   Apply
@@ -489,34 +512,40 @@ const CheckoutPage = ({ searchParams }) => {
                                   <h2 className="text-primary text-base font-semibold my-6">
                                     Coupons Available
                                   </h2>
-                                  {couponAvl &&
-                                    couponList &&
-                                    couponList.length > 0 &&
-                                    couponList.map((item: any, idx: number) => {
-                                      return (
-                                        <div
-                                          className="flex justify-between items-center"
-                                          key={idx}
-                                        >
-                                          <div>
-                                            <h2>{item?.name}</h2>
-                                            <p className="text-sm text-[#555555] mt-1">
-                                              {item?.description}
-                                            </p>
-                                          </div>
-                                          <div
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              getCouponDiscount(item.name)
-                                            }
-                                          >
-                                            <button className="text-white bg-secondary px-5 py-1 text-sm">
-                                              Apply
-                                            </button>
-                                          </div>
-                                        </div>
-                                      );
-                                    })}
+                                  <div className=" flex flex-col gap-2">
+                                    {couponAvl &&
+                                      couponList &&
+                                      couponList.length > 0 &&
+                                      couponList.map(
+                                        (item: any, idx: number) => {
+                                          return (
+                                            <div
+                                              className="flex justify-between items-center"
+                                              key={idx}
+                                            >
+                                              <div>
+                                                <h2 className="sm:text-base text-sm">
+                                                  {item?.name}
+                                                </h2>
+                                                <p className="sm:text-sm text-xs text-[#555555] mt-1">
+                                                  {item?.description}
+                                                </p>
+                                              </div>
+                                              <div
+                                                className="cursor-pointer"
+                                                onClick={() =>
+                                                  getCouponDiscount(item.name)
+                                                }
+                                              >
+                                                <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
+                                                  Apply
+                                                </button>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                  </div>
                                 </div>
                               )}
                           </div>
