@@ -29,7 +29,8 @@ import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader";
 import { couponsAvailable, fetchCouponList } from "../../utils/databaseService";
 import Modal from "../../components/Modal/modal";
-const CheckoutPage = () => {
+
+const CheckoutPage = ({ searchParams }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { data: userData } = useQuery({
@@ -61,11 +62,12 @@ const CheckoutPage = () => {
 
     // keepPreviousData: true,
   });
+  // console.log(couponList,"fghjkl");
 
   // console.log(couponList, "couponList-------");
 
   const [completedSteps, setCompletedSteps] = useState([]);
-  const [isModalOpen,setIsModalOpen]=useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const [selectedTab, setSelectedTab] = useState("Shipping");
   const [paymentSummary, setPaymentSummary] = useState(null);
@@ -87,6 +89,9 @@ const CheckoutPage = () => {
     !(userData && userData?.defaultAddress)
   );
 
+  const [appliedCoupons, setAppliedCoupons] = useState([])
+  const [showCod, setshowCod] = useState(true)
+
   async function getPaymentSummary() {
     const getPaymentSummaryDetails = httpsCallable(
       functions,
@@ -95,7 +100,9 @@ const CheckoutPage = () => {
     const isGst = await getGstAppilicableInfo();
     let data = {
       address: addressToDeliver,
-      products: cart,
+      products: searchParams?.source
+        ? [JSON.parse(searchParams?.source)]
+        : cart,
       isGstApplicable: isGst,
       customDeliverySettings: null,
     };
@@ -103,9 +110,19 @@ const CheckoutPage = () => {
     setPaymentSummary(res.data);
   }
 
+  
+//   function handleCouponApply(coupon) {
+//        console.log(coupon,"llllllll")
+//        console.log(coupon?.name,"hhhhhhh")
+//       // getCouponDiscount(coupon?.name);
+//       getCouponDiscount(coupon);
+//       // setAppliedCoupons((prev) => [...prev, coupon?.id]);
+// }
+  
+  
   async function getCouponDiscount(couponText: any) {
     // console.log(couponText, "couponText");
-    if (couponText) {
+    if (couponText.name) {
 
       setIsModalOpen(true)
       document.body.classList.add("no-scroll");
@@ -118,13 +135,12 @@ const CheckoutPage = () => {
       let data = {
         userId: userData?.id,
         paymentDetails: paymentSummary,
-        code: couponText,
+        code: couponText.name,
         isGstApplicable: isGst,
       };
       const res = await getCouponDiscountDetails(data);
       let res2 = await res.data;
       if (res2["success"]) {
-       
         const couponDiscount =
           paymentSummary.totalPayable - res2["details"]["totalAmountToPaid"];
         setPaymentSummary((prev: any) => {
@@ -135,29 +151,40 @@ const CheckoutPage = () => {
         });
         setCouponDiscount(couponDiscount);
         document.body.classList.remove("no-scroll");
-        setIsModalOpen(false)
+        setIsModalOpen(false);
         toast.success("Coupon applied succesfully");
+        setAppliedCoupons((prev) => [...prev, couponText?.id]);
+        // console.log(couponText?.codAvailable,"fifififififif")
+        if(couponText?.codAvailable!=true){
+          setshowCod(false)
+        }
+
+
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
-        
       } else {
         const error = res2["failureMsg"];
         document.body.classList.remove("no-scroll");
-        setIsModalOpen(false)
+        setIsModalOpen(false);
         toast.error(error);
+        // toast.error("error");
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
-      
       }
     } else {
       setIsLoading(false);
       document.body.classList.remove("no-scroll");
-      setIsModalOpen(false)
+      setIsModalOpen(false);
       toast.error("Please apply coupon first.");
-
     }
   }
 
+
+
+
+
+
+  
   const handleChange = (name, value) => {
     console.log(name, "name", value, "value");
     setUserAddress((val: any) => {
@@ -165,7 +192,7 @@ const CheckoutPage = () => {
     });
   };
   function handleAddressSubmit() {
-    console.log(userAddress, "userAddress");
+    // console.log(userAddress, "userAddress");
 
     const {
       address,
@@ -303,10 +330,13 @@ const CheckoutPage = () => {
     dispatch(reset());
     // router.push("/");
     if (isCod) {
-      if(orderObj.status=="Confirmed"){ toast.success("Order Placed Successfully"); 
-            router.push("/ordersucessfull");}
-      else {toast.error("Order Pending"); 
-            router.push("/notconfirm");}
+      if (orderObj.status == "Confirmed") {
+        toast.success("Order Placed Successfully");
+        router.push("/ordersucessfull");
+      } else {
+        toast.error("Order Pending");
+        router.push("/notconfirm");
+      }
       // if (selectedPaymentMethod === "cod") {
       //   // if (getCondition(userData, args)) {
       //   //   await FirebaseFunctions.instance
@@ -351,6 +381,7 @@ const CheckoutPage = () => {
             setSelectedPaymentMethod={setSelectedPaymentMethod}
             setSelectedTab={setSelectedTab}
             setCompletedSteps={setCompletedSteps}
+            showCod={showCod}
           />
         );
       case tabs[2]:
@@ -419,7 +450,7 @@ const CheckoutPage = () => {
                   ORDER SUMMARY
                 </h2>
                 <h4 className="xl:text-base text-sm font-semibold ">
-                  ({cart.length} Item)
+                  ({searchParams?.source ? "1" : cart.length} Item)
                 </h4>
                 {/* <span className=" text-neutral-400 text-base font-normal lowercase leading-[30px] tracking-tight">({cart.length} Items)</span> */}
               </div>
@@ -447,11 +478,13 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                   <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <CircularProgress className="!text-white"></CircularProgress>
-          <p className="text-white font-medium text-lg">Applying Coupon...</p>
-        </div>
-      </Modal>
+                    <div className="flex flex-col gap-2 justify-center items-center">
+                      <CircularProgress className="!text-white"></CircularProgress>
+                      <p className="text-white font-medium text-lg">
+                        Applying Coupon...
+                      </p>
+                    </div>
+                  </Modal>
                   {isCoupon && (
                     <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-30 flex justify-center items-center">
                       <div className="xl:w-[40%] md:w-[50%] w-[90%] sm:w-[70%] h-auto   sm:px-5  py-5 flex flex-col justify-end gap-y-3 ">
@@ -502,6 +535,7 @@ const CheckoutPage = () => {
                                 </div>
                               </div>
                             </div>
+                            
                             {couponAvl &&
                               couponList &&
                               couponList.length > 0 && (
@@ -514,6 +548,7 @@ const CheckoutPage = () => {
                                     couponList &&
                                     couponList.length > 0 &&
                                     couponList.map((item: any, idx: number) => {
+                                      if (!appliedCoupons.includes(item.id)) {
                                       return (
                                         <div
                                           className="flex justify-between items-center"
@@ -528,7 +563,8 @@ const CheckoutPage = () => {
                                           <div
                                             className="cursor-pointer"
                                             onClick={() =>
-                                              getCouponDiscount(item.name)
+                                              // handleCouponApply(item)
+                                              getCouponDiscount(item)
                                             }
                                           >
                                             <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
@@ -537,10 +573,20 @@ const CheckoutPage = () => {
                                           </div>
                                         </div>
                                       );
+                                    }
+                                   else if (appliedCoupons.includes(item.id)) {
+                                    return  <div className="text-secondary flex gap-2  w-fit mb-4 px-5 py-1 text-sm">
+                                   <p className="text-primary">✔️</p> Coupon Applied <br></br> 
+                                  </div>;}
+                                  return null
                                     })}
                                     </div>
                                 </div>
-                              )}
+                              )
+                             
+                              
+                              
+                              }
                           </div>
                         </div>
                       </div>

@@ -7,10 +7,12 @@ const Modal = ({ isOpen, children, setOpen }) => {
     return <></>;
   }
 
+ 
+
   return (
-    <div className="absolute z-50  flex justify-center items-center top-0 left-0 w-full h-[100vh] bg-[rgba(0,0,0,0.5)] overscroll-none">
+    <div className="fixed z-50  flex justify-center items-center top-0 left-0 w-full h-[100vh] bg-[rgba(0,0,0,0.5)] overscroll-none">
       <OutsideClickHandler
-        onClick={() => {          
+        onClick={() => {
           setOpen(false);
           document.body.classList.remove('no-scroll')
         }}

@@ -1,16 +1,6 @@
-// import React from 'react'
-
-// const SideMenuLogin = () => {
-//   return (
-//     <div>SideMenuLogin</div>
-//   )
-// }
-
-// export default SideMenuLogin
-
 "use client";
 import { toast } from "react-toastify";
-import React, { useState, useEffect,Fragment, FC } from "react";
+import React, { useState, useEffect, Fragment, FC } from "react";
 import { auth, db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 import axios from "axios";
@@ -51,14 +41,15 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
 
   const router = useRouter();
 
-  
-  const [allowedCountries,setAllowedCountries]=useState([{
-    active : true,
-    countryCode: "In",
-    countryName: "India",
-    currencyCode: "INR",
-    dialCode: "+91"
-  }])
+  const [allowedCountries, setAllowedCountries] = useState([
+    {
+      active: true,
+      countryCode: "In",
+      countryName: "India",
+      currencyCode: "INR",
+      dialCode: "+91",
+    },
+  ]);
   // const [dialcountry, setdialcountry] = useState<any>([{
   //   active : true,
   //   countryCode: "In",
@@ -107,7 +98,6 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
   };
   const signInUserWithPhoneNumber = async () => {
     try {
-     
       if (phoneNumber) {
         console.log("inside if");
         setLoading(true);
@@ -123,7 +113,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
         );
         // console.log("after recaptchaVerifier ");
         // console.log(dialcountry,"dialcountry");
-        
+
         const formattedPhoneNumber = `${dialcountry.dialCode}${phoneNumber}`;
         // console.log(formattedPhoneNumber);
 
@@ -139,23 +129,22 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
 
             setLoading(false);
             startTimer();
-            setShowPhoneNumberInput(false); 
+            setShowPhoneNumberInput(false);
           })
           .catch((error) => {
             // if(error==="reCAPTCHA has already been rendered in this element"){
             //   console.log("fgfdh");
-              
+
             // }
-            let newErr=error
-          //  toast.error(error)
+            let newErr = error;
+            //  toast.error(error)
             // console.log(error + "...please reload");
-            toast.error(`${error}`)
+            toast.error(`${error}`);
             setLoading(false);
           });
       } else {
-        if (!phoneNumber)
-        toast.error("Please enter phone number.")
-          // console.log("Please enter both name and phone number");
+        if (!phoneNumber) toast.error("Please enter phone number.");
+        // console.log("Please enter both name and phone number");
         setLoading(false);
       }
     } catch (error) {
@@ -169,7 +158,7 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
 
       setTimerStarted(false);
       setVerifying(true);
-      setLoading(true)
+      setLoading(true);
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
@@ -177,9 +166,9 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           localStorage.setItem("auth", JSON.stringify(res.user.uid));
           if (res._tokenResponse.isNewUser) {
             // console.log("new user");
-            
+
             let newUser = {
-              phoneNo:dialcountry.dialCode + phoneNumber,
+              phoneNo: dialcountry.dialCode + phoneNumber,
               createdAt: new Date(),
               active: true,
               lastAccessAt: new Date(),
@@ -188,29 +177,30 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
               email: email,
               dP: "",
               setFromUI: true,
-              wallet: { "balance": 0, "cashback": 0, 'lastTransactions': {} }
-            }
+              wallet: { balance: 0, cashback: 0, lastTransactions: {} },
+            };
 
             await setDoc(doc(db, `users/${res.user.uid}`), newUser, {
               merge: true,
             });
-          toast.success("Login successfully.")
-
+            toast.success("Login successfully.");
           } else {
-            await setDoc(doc(db, `users/${res.user.uid}`), 
-            {lastAccessAt: new Date()}, 
-          { merge: true,})
-          toast.success("Login successfully.")
+            await setDoc(
+              doc(db, `users/${res.user.uid}`),
+              { lastAccessAt: new Date() },
+              { merge: true }
+            );
+            toast.success("Login successfully.");
             // console.log("user already exist");
           }
 
           await axios.get(`/api/login?uid=${res.user.uid}`);
-          setVerifying(false);
-          queryClient.invalidateQueries({ queryKey: ["userData"] });
-          queryClient.refetchQueries({ queryKey: ["userData"] });
-          router.replace(pathName);
+          await queryClient.invalidateQueries({ queryKey: ["userData"] });
+          await queryClient.refetchQueries({ queryKey: ["userData"] });
           dispatch(closeLoginModal());
+          setVerifying(false);
           document.body.classList.remove("no-scroll");
+          router.replace(pathName);
           setTime(60);
           setOTP("");
           setTimerStarted(false);
@@ -218,18 +208,17 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           setLoading(false);
         })
         .catch((err: any) => {
-          if(OTP===""){
+          if (OTP === "") {
             setOTP("");
             setVerifying(false);
-            toast.error("Please Enter OTP First !")
-          }else{
+            toast.error("Please Enter OTP First !");
+          } else {
             setOTP("");
             setVerifying(false);
- toast.error("Incorrect OTP! Sign In Failed!")
+            toast.error("Incorrect OTP! Sign In Failed!");
           }
           // console.log(err,"FROM CATCH");
-          
-         
+
           // console.log("Incorrect OTP! Sign in failed!");
         });
     } catch (err) {
@@ -240,8 +229,11 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
   return (
     <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50">
       <div
-        className={`fixed  ${matches ? "left-0" : "right-0"} top-0 h-[100vh] z-30 md:w-[35vw] sm:w-[50vw]  w-full bg-white transform md:rounded-none rounded-tr-md${isOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform ease-in-out duration-700`}
+        className={`fixed  ${
+          matches ? "left-0" : "right-0"
+        } top-0 h-[100vh] z-30 md:w-[35vw] sm:w-[50vw]  w-full bg-white transform md:rounded-none rounded-tr-md${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform ease-in-out duration-700`}
       >
         <div className="flex items-center justify-end p-4">
           <div
@@ -272,61 +264,61 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
           {showPhoneNumberInput && ( // Conditionally render phone number input and login button
             <div className="mb-[20px] w-[90%] mobile-container">
               <div className="flex w-full items-center ">
-              <Menu
-                as="div"
-                className="w-[28%] relative text-left flex justify-center items-center  "
-              >
-                <div className="flex justify-center items-center w-full">
-                  <Menu.Button className="w-full px-[4px] sm:px-[6px] md:px-[8px] lg:px-[10px] py-[9px] sm:py-[11px] md:py-[13px] lg:py-[15px]   mb-[15px]  bg-gray-100 border  border-gray-100  ">
-                    <div className="flex items-center gap-1 md:gap-2">
-                    <ReactCountryFlag
-                                  countryCode={dialcountry?.countryCode}
-                                  svg
-                                />
-                      <h4 className="lg:text-base md:text-sm text-xs">
-                        {dialcountry?.dialCode}
-                      </h4>
-                      <FlatIcon className="flaticon-arrow-down-2 text-xs md:text-sm" />
-                    </div>
-                  </Menu.Button>
-                </div>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
+                <Menu
+                  as="div"
+                  className="w-[28%] relative text-left flex justify-center items-center  "
                 >
-                  <Menu.Items className="z-50 absolute left-0  top-full w-52 sm:w-48 lg:w-56 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-[25vh] overflow-y-auto">
-                    {allowedCountries?.map((country, id) => {
-                      return (
-                        <div className="px-1 py-1 " key={id}>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                onClick={() => {
-                                  setdialcountry(country);
-                                }}
-                                className={`${
-                                  active
-                                    ? "bg-primary text-white"
-                                    : "text-gray-900"
-                                } group flex gap-4 w-full items-center rounded-md px-1 py-1 lg:px-2 lg:py-2 text-sm`}
-                              >
-                                <ReactCountryFlag
-                                  countryCode={country?.countryCode}
-                                  svg
-                                />
-                                {/* {active ? "active" : "notActive"} */}
-                                {country?.dialCode}
+                  <div className="flex justify-center items-center w-full">
+                    <Menu.Button className="w-full px-[4px] sm:px-[6px] md:px-[8px] lg:px-[10px] py-[9px] sm:py-[11px] md:py-[13px] lg:py-[15px]   mb-[15px]  bg-gray-100 border  border-gray-100  ">
+                      <div className="flex items-center gap-1 md:gap-2">
+                        <ReactCountryFlag
+                          countryCode={dialcountry?.countryCode}
+                          svg
+                        />
+                        <h4 className="lg:text-base md:text-sm text-xs">
+                          {dialcountry?.dialCode}
+                        </h4>
+                        <FlatIcon className="flaticon-arrow-down-2 text-xs md:text-sm" />
+                      </div>
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="z-50 absolute left-0  top-full w-52 sm:w-48 lg:w-56 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-[25vh] overflow-y-auto">
+                      {allowedCountries?.map((country, id) => {
+                        return (
+                          <div className="px-1 py-1 " key={id}>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  onClick={() => {
+                                    setdialcountry(country);
+                                  }}
+                                  className={`${
+                                    active
+                                      ? "bg-primary text-white"
+                                      : "text-gray-900"
+                                  } group flex gap-4 w-full items-center rounded-md px-1 py-1 lg:px-2 lg:py-2 text-sm`}
+                                >
+                                  <ReactCountryFlag
+                                    countryCode={country?.countryCode}
+                                    svg
+                                  />
+                                  {/* {active ? "active" : "notActive"} */}
+                                  {country?.dialCode}
 
-                                <h1 className=" line-clamp-1 text-left">
-                                  {country?.countryName}
-                                </h1>
+                                  <h1 className=" line-clamp-1 text-left">
+                                    {country?.countryName}
+                                  </h1>
 
-                                {/* <ReactCountryFlag
+                                  {/* <ReactCountryFlag
                 countryCode="US"
                 svg
                 style={{
@@ -335,32 +327,31 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
                 }}
                 title="US"
             /> */}
-                              </button>
-                            )}
-                          </Menu.Item>
-                        </div>
-                      );
-                    })}
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-              <input
-                type="text"
-                placeholder="Enter phone number"
-                className="w-full px-[5px] sm:px-[10px] md:px-[15px] lg:px-[20px] py-[9px] sm:py-[11px] md:py-[13px] lg:py-[15px] mb-[15px] outline-0 border border-gray-300 lg:text-base md:text-sm text-xs "
-                value={phoneNumber}
-                onChange={(e) => {
-                  setPhoneNumber(e.target.value);
-                  // console.log(e.target.value);
-                }}
-              />
-
-</div>
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </div>
+                        );
+                      })}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+                <input
+                  type="text"
+                  placeholder="Enter phone number"
+                  className="w-full px-[5px] sm:px-[10px] md:px-[15px] lg:px-[20px] py-[9px] sm:py-[11px] md:py-[13px] lg:py-[15px] mb-[15px] outline-0 border border-gray-300 lg:text-base md:text-sm text-xs "
+                  value={phoneNumber}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                    // console.log(e.target.value);
+                  }}
+                />
+              </div>
               <div
                 onClick={async () => {
                   await signInUserWithPhoneNumber();
                   // setPhoneNumber("");
-                 // Hide phone number input and login button
+                  // Hide phone number input and login button
                 }}
                 className="text-center bg-primary w-full md:py-[15px] py-2 md:text-base text-sm  text-[white] cursor-pointer "
               >

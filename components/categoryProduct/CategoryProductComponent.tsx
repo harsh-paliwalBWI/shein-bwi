@@ -76,7 +76,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
               {/* <hr className="mb-2" /> */}
             </>
           )}
-          <div className="w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-3 grid sm:gap-y-8 gap-y-4   md:mb-10  ">
+          <div className="w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 grid sm:gap-y-8 gap-y-4   md:mb-10  ">
             {categoryProducts &&
               categoryProducts?.products?.map((product: any) => {
                 return (

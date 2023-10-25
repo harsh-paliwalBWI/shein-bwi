@@ -36,6 +36,8 @@ import {
   checkIfPriceDiscounted,
   getProductPriceDetails,
 } from "../../utils/utilities";
+import Link from "next/link";
+import { CircularProgress } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 const features = [
@@ -58,7 +60,7 @@ const ProductInfo = ({ params }: any) => {
 
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const dispatch: any = useDispatch();
-  const [similarProductData, setSimilarProductData] = useState([]);
+  const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
   const { data: product } = useQuery({
     queryKey: ["product", params?.slug],
     queryFn: () => fetchSingleProduct(params?.slug),
@@ -338,14 +340,15 @@ const ProductInfo = ({ params }: any) => {
                                       }}
                                       key={idx}
                                       className={`border border-[#E6DBD7] sm:px-3 px-4 sm:py-2 py-2 text-[#555555]  text-sm font-semibold rounded-md flex justify-center items-center cursor-pointer ${
-                                        item === colorTab && "bg-primary text-white"
+                                        item === colorTab &&
+                                        "bg-primary text-white"
                                       }`}
                                     >
                                       <div
-                                        // className={`h-[25px] w-[25px] rounded-full `}
-                                        // style={{
-                                        //   backgroundColor: `${item}`,
-                                        // }}
+                                      // className={`h-[25px] w-[25px] rounded-full `}
+                                      // style={{
+                                      //   backgroundColor: `${item}`,
+                                      // }}
                                       >
                                         {item}
                                       </div>
@@ -454,11 +457,11 @@ const ProductInfo = ({ params }: any) => {
                       wishlistData.length > 0 &&
                       wishlistData.includes(`${product?.id}`) ? (
                         <div
-                          onClick={async() =>{
-                           await removeFromWishListHandler({
+                          onClick={async () => {
+                            await removeFromWishListHandler({
                               userId: userData?.id,
                               productId: product?.id,
-                            })
+                            });
                             await queryClient.invalidateQueries({
                               queryKey: ["wishlistData"],
                             });
@@ -466,8 +469,7 @@ const ProductInfo = ({ params }: any) => {
                               queryKey: ["wishlistData"],
                             });
                             toast.success("Product removed from wishlist.");
-                          }
-                          }
+                          }}
                           className="flex items-center gap-2 cursor-pointer"
                         >
                           <p>
@@ -479,12 +481,11 @@ const ProductInfo = ({ params }: any) => {
                         </div>
                       ) : (
                         <div
-                          onClick={async() =>
-                            {
-                          await  moveToWishListHandler({
+                          onClick={async () => {
+                            await moveToWishListHandler({
                               userId: userData?.id,
                               productId: product?.id,
-                            })
+                            });
                             await queryClient.invalidateQueries({
                               queryKey: ["wishlistData"],
                             });
@@ -492,8 +493,7 @@ const ProductInfo = ({ params }: any) => {
                               queryKey: ["wishlistData"],
                             });
                             toast.success("Product added to wishlist.");
-                          }
-                          }
+                          }}
                           className="flex items-center gap-2 cursor-pointer"
                         >
                           <p>
@@ -523,7 +523,6 @@ const ProductInfo = ({ params }: any) => {
                         Check
                       </button>
                     </div> */}
-                 
                   </div>
                   <div className="flex flex-col gap-2">
                     {/* <div className="flex-1 lg:flex-none  flex border border-black p-px lg:w-[25%]">
@@ -605,12 +604,59 @@ const ProductInfo = ({ params }: any) => {
                       </div>
 
                       <div
+                        onClick={async () => {
+                          let data: any = {
+                            product,
+                            productID: product?.id,
+                            quantity: quantity,
+                            index: variant,
+                            isPriceList: product?.isPriceList,
+                          };
+                          const cartObject = data.isPriceList
+                            ? getPriceListCartObj({
+                                product: product,
+                                quantity: quantity,
+                                index: data.index,
+                              })
+                            : getCartObj({
+                                product: product,
+                                productID: data?.productID,
+                                quantity: data?.quantity,
+                              });
+                          const urlData = encodeURIComponent(
+                            JSON.stringify(cartObject)
+                          );
+                          router.push(`/checkout?source=${urlData}`);
+
+                          // if (checkIfItemExistInCart(cart, product, variant)) {
+                          //   router.push("/checkout");
+                          // } else {
+                          //   setIsBuyNowLoading(true);
+                          //   await addItemToCart();
+                          //   setIsBuyNowLoading(false);
+                          //   router.push("/checkout");
+                          // }
+                        }}
                         className=" lg:flex w-[48%] flex-1  h-14 bg-black  hidden justify-center items-center py-2 cursor-pointer  "
                         // onClick={handleRemoveFromCart}
                       >
-                        <button className="text-white font-bold sm:text-sm md:text-base text-xs">
-                          BUY NOW
-                        </button>
+                        <Link
+                          href={"/checkout"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                          }}
+                        >
+                          <button className="text-white font-bold sm:text-sm md:text-base text-xs">
+                            {isBuyNowLoading ? (
+                              <CircularProgress
+                                className="!text-white"
+                                size={25}
+                              ></CircularProgress>
+                            ) : (
+                              "BUY NOW"
+                            )}
+                          </button>
+                        </Link>
                       </div>
                     </div>
                     {/* previous button with functionality end*/}

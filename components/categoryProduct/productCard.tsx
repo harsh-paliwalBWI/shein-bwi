@@ -82,7 +82,9 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
             className="w-[20px] h-[20px] sm:w-[25px] sm:h-[25px] md:w-[30px] md:h-[30px] rounded-full bg-white flex justify-center items-center cursor-pointer "
           >
             <FlatIcon
-              icon={"flaticon-heart-fill  text-sm md:text-base text-secondary font-normal "}
+              icon={
+                "flaticon-heart-fill  text-sm md:text-base text-secondary font-normal "
+              }
             />
           </div>
         ) : (
@@ -144,25 +146,41 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
                 height={1000}
                 className="w-full h-full object-fit"
               />
-              <div className="bg-primary absolute top-[4px] left-[4px] sm:top-[6px] sm:left-[6px] md:top-[8px] md:left-[8px]">
-                <div className="flex gap-0 md:gap-1 text-[8px] sm:text-[9px] md:text-[10px] text-white px-1.5 md:px-2.5 py-0.5 md:py-1">
-                  {" "}
-                  <p>
-                    {getDiscountedPercentage({
-                      price: product?.prodPrice,
-                      discountedPrice: product?.discountedPrice,
-                    })}
-                  </p>
-                  <p>OFF</p>
+              {checkIfPriceDiscounted({
+                discountedPrice: product?.isPriceList
+                  ? product?.priceList[0]?.discountedPrice
+                  : product?.discountedPrice,
+                price: product?.isPriceList
+                  ? product?.priceList[0]?.price
+                  : product?.prodPrice,
+              }) && (
+                <div className="bg-primary absolute top-[4px] left-[4px] sm:top-[6px] sm:left-[6px] md:top-[8px] md:left-[8px]">
+                  <div className="flex gap-0 md:gap-1 text-[8px] sm:text-[9px] md:text-[10px] text-white px-1.5 md:px-2.5 py-0.5 md:py-1">
+                    {" "}
+                    <p>
+                      {getDiscountedPercentage({
+                        price: product?.isPriceList
+                          ? product?.priceList[0]?.price
+                          : product?.prodPrice,
+                        discountedPrice: product?.isPriceList
+                          ? product?.priceList[0]?.discountedPrice
+                          : product?.discountedPrice,
+                      })}
+                    </p>
+                    <p>OFF</p>
+                  </div>
                 </div>
-              </div>
+              )}
+
               <div
                 className={`absolute bottom-0 left-0 w-full h-[25px] sm:h-[30px] md:h-[40px] lg:h-[45px] bg-primary flex items-center ${
                   hoveredProduct === product?.id ? "visible" : "invisible"
                 }`}
               >
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex items-center justify-center gap-1 w-full">
-                  <h2 className="text-xs sm:text-sm md:text-base">Add To Bag</h2>
+                  <h2 className="text-xs sm:text-sm md:text-base">
+                    Add To Bag
+                  </h2>
                   <div>
                     <FlatIcon className="flaticon-bag-fill text-base sm:text-lg md:text-xl" />
                   </div>
@@ -180,8 +198,12 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
               </p>
             </div>
             {checkIfPriceDiscounted({
-              discountedPrice: product?.discountedPrice,
-              price: product?.prodPrice,
+              discountedPrice: product?.isPriceList
+                ? product?.priceList[0]?.discountedPrice
+                : product?.discountedPrice,
+              price: product?.isPriceList
+                ? product?.priceList[0]?.price
+                : product?.prodPrice,
             }) && (
               <div className="text-ellipsis overflow-hidden ... truncate text-center ">
                 <p className="text-ellipsis overflow-hidden ... truncate text-center  line-through text-[10px] sm:text-xs md:text-sm text-gray-500 font-semibold">
