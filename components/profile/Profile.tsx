@@ -11,7 +11,6 @@ import { getUserData } from "../../utils/databaseService";
 import { db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 import EditProfile from "./EditProfile";
-import OrdersPage from "../../app/orders/page";
 import OrderPage from "../orderPage/OrderPage";
 import HelpAndSupport from "../helpAndSupport/HelpAndSupport";
 import Addresses from "../addresses/Addresses";
@@ -109,7 +108,6 @@ const onView=(state)=>{
              {
             selectedTab===5&&<HelpAndSupport/>
           }
-          {/* {selectedTab===6&&<OrderDetailsPage />} */}
            
         
         </div>

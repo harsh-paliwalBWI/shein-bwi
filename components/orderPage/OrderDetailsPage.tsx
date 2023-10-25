@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import Image from 'next/image';
 import { constant } from '../../utils/constants';
@@ -21,7 +22,7 @@ const OrderDetailsPage = ({singleOrder}) => {
         <div className='flex flex-col gap-7 '>
         {
           singleOrder.products.map((item:any,idx:number)=>{
-            return <div className='md:px-5 px-3 '>
+            return <div key={idx} className='md:px-5 px-3 '>
               <div className={`flex lg:flex-row flex-col lg:items-center justify-between gap-5 h-auto    cursor-pointer `}>
             <div className='flex items-center sm:gap-x-8 gap-x-4 '>
                 <div className='h-[108px] w-[108px] '>
