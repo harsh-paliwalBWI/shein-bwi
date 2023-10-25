@@ -7,8 +7,9 @@ import { constant } from '../../utils/constants';
 import OrderDetailsPage from './OrderDetailsPage';
 
 const OrderPage = ({setSelectedTab,selectedTab,onView}) => {
-    console.log(selectedTab,"tab");
+    // console.log(selectedTab,"tab");
     const [IsOrderPage,setIsOrderPage]=useState(false)
+    const [orderPageData,setOrderPageData]=useState("")
     
     const { data: userData } = useQuery({
         queryKey: ["userData"],
@@ -18,12 +19,12 @@ const OrderPage = ({setSelectedTab,selectedTab,onView}) => {
         queryKey: ["orderData"],
         queryFn: () => fetchUsersOrdersList(userData?.id),
     })
-console.log("orderList",orderList);
+// console.log("orderList",orderList);
 
 
     return (
         <>
-        {IsOrderPage?<OrderDetailsPage/>:
+        {IsOrderPage?<OrderDetailsPage singleOrder={orderPageData}/>:
         (
             <div className='w-full h-full '>
                 {orderList&&orderList.length===0?
@@ -41,11 +42,12 @@ console.log("orderList",orderList);
                                     <div className=' flex flex-col h-auto'>
                                         <div className='flex  items-center justify-between  md:px-5 px-3 py-3 border-b border-b-primary '>
                                             <h3 className='  md:text-sm text-xs font-semibold'>OD{orders.orderId}</h3>
-                                            <div className='flex items-center sm:gap-5 gap-2 md:text-sm text-xs font-semibold '>
+                                            <div className='flex items-center gap-5  md:text-sm text-xs font-semibold '>
                                                 <h3 >items{" "}:{" "}{orders?.products?.length}</h3>
                                                 <div onClick={()=>{
-                                                    console.log("clicked");
+                                                    // console.log("clicked");
                                                     setIsOrderPage(true)
+                                                    setOrderPageData(orders)
                                                     
                                                 }}><button className='text-primary '>View Order Details</button></div>
                                             </div>
@@ -85,7 +87,6 @@ console.log("orderList",orderList);
             </div>
         )
             }
-{/* {IsOrderPage&&<div>ghjhj</div>} */}
         </>
     )
 }
