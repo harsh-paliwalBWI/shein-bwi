@@ -15,6 +15,7 @@ import OrdersPage from "../../app/orders/page";
 import OrderPage from "../orderPage/OrderPage";
 import HelpAndSupport from "../helpAndSupport/HelpAndSupport";
 import Addresses from "../addresses/Addresses";
+import OrderDetailsPage from "../orderPage/OrderDetailsPage";
 
 
 const Profile = ({ cookie }) => {
@@ -79,6 +80,12 @@ const Profile = ({ cookie }) => {
 //     }
 //   }
 
+const onView=(state)=>{
+  console.log(state);
+  
+  setSelectedTab(state)
+}
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -94,7 +101,7 @@ const Profile = ({ cookie }) => {
             selectedTab===1&&<EditProfile/>
           }
           {
-            selectedTab===2&&<OrderPage/>
+            selectedTab===2&&<OrderPage setSelectedTab={setSelectedTab} selectedTab={selectedTab} onView={onView}/>
           }
           {
             selectedTab===3&&<Addresses userId={userData?.id}/>
@@ -102,6 +109,7 @@ const Profile = ({ cookie }) => {
              {
             selectedTab===5&&<HelpAndSupport/>
           }
+          {/* {selectedTab===6&&<OrderDetailsPage />} */}
            
         
         </div>

@@ -4,7 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchUsersOrdersList, getUserData } from '../../utils/databaseService';
 import Image from 'next/image';
 import { constant } from '../../utils/constants';
-const OrderPage = () => {
+import OrderDetailsPage from './OrderDetailsPage';
+
+const OrderPage = ({setSelectedTab,selectedTab,onView}) => {
+    console.log(selectedTab,"tab");
+    const [IsOrderPage,setIsOrderPage]=useState(false)
+    
     const { data: userData } = useQuery({
         queryKey: ["userData"],
         queryFn: () => getUserData(null),
@@ -13,10 +18,13 @@ const OrderPage = () => {
         queryKey: ["orderData"],
         queryFn: () => fetchUsersOrdersList(userData?.id),
     })
+console.log("orderList",orderList);
 
 
     return (
         <>
+        {IsOrderPage?<OrderDetailsPage/>:
+        (
             <div className='w-full h-full '>
                 {orderList&&orderList.length===0?
                 <div className='w-full h-full flex  justify-center items-center sm:text-xl text-sm text-gray-500'>No Orders Found !</div>:
@@ -24,7 +32,7 @@ const OrderPage = () => {
                 <div className='w-full flex md:flex-row flex-col gap-x-8 gap-y-6  h-auto'>
                     {/* <div className='md:w-[25%] w-[100%] border border-primary h-fit md:px-5 px-3 md:py-5 py-3 cursor-pointer'>
                         <div className=''><h3 className='text-primary font-semibold md:text-base text-sm mb-1'>My Orders{" "}({orderList?.length})</h3></div>
-                        <h4 className='text-gray-500 text-xs font-semibold'>View Order Status</h4>
+                        <h4 onClick={()=>setSelectedTab(6)} className='text-gray-500 text-xs font-semibold'>View Order Status</h4>
                     </div> */}
                     <div className='md:w-[100%] w-[100%] flex flex-col gap-y-5 h-auto'>
                         {
@@ -35,13 +43,17 @@ const OrderPage = () => {
                                             <h3 className='  md:text-sm text-xs font-semibold'>OD{orders.orderId}</h3>
                                             <div className='flex items-center sm:gap-5 gap-2 md:text-sm text-xs font-semibold '>
                                                 <h3 >items{" "}:{" "}{orders?.products?.length}</h3>
-                                                {/* <div><button className='text-primary '>View Order Details</button></div> */}
+                                                <div onClick={()=>{
+                                                    console.log("clicked");
+                                                    setIsOrderPage(true)
+                                                    
+                                                }}><button className='text-primary '>View Order Details</button></div>
                                             </div>
                                         </div>
                                         <div className=' h-auto flex flex-col border-container'>
                                             {
                                                 orders?.products.map((item: any, idx: number) => {
-                                                    console.log(item?.img?.url,"url---------",item.productId,item.name);
+                                                    // console.log(item?.img?.url,"url---------",item.productId,item.name);
                                                     
                                                     return <div className={`flex lg:flex-row flex-col lg:items-center justify-between gap-5 h-auto  py-5 md:px-5 px-3  cursor-pointer ${!(idx === orders?.products?.length - 1) && "border-b border-b-gray-400 "}`}>
                                                         <div className='flex items-center sm:gap-x-8 gap-x-4 '>
@@ -71,6 +83,9 @@ const OrderPage = () => {
                 </div>
                 }
             </div>
+        )
+            }
+{/* {IsOrderPage&&<div>ghjhj</div>} */}
         </>
     )
 }
