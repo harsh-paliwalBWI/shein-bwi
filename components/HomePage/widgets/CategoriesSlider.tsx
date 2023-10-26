@@ -10,6 +10,7 @@ import CategoryGrid from "./CategoryGrid";
 import { getDocFromWidget } from "../../../utils/databaseService";
 import FlatIcon from "../../flatIcon/flatIcon";
 import PopUp from "../../popUp/PopUp";
+import Link from "next/link";
 const CategoriesSlider = ({ section, myKey }) => {
   const [showPopUp, setShowPopUp] = useState(false);
   const { data: homeData } = useQuery({
@@ -115,13 +116,22 @@ const CategoriesSlider = ({ section, myKey }) => {
                 //     onClick={()=>{
                 //   setShowPopUp((prev)=>!prev)
                 // }}
-                className=" flex justify-center sm:mt-5 sm:mb-10 mb-5"
+                className=" flex  flex-col items-center gap-2 justify-center sm:mt-5 sm:mb-10 mb-5"
               >
                 <h1 className="text-secondary sm:text-3xl text-xl font-bold  ">
                   {section?.sectionName}
                 </h1>
+                <div className="">
+                  <Link
+                    href={`/view-all?type=${section?.widgetType}&id=${section?.widgetID}&name=${section?.sectionName}`}
+                    className="text-primary font-medium underline"
+                  >
+                    View All
+                  </Link>
+                </div>
               </div>
             )}
+
             {/* <div className="flex justify-center items-center relative md:my-12 my-6 "> */}
             {/* <div className="">
                 <button

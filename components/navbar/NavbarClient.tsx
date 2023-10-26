@@ -67,7 +67,7 @@ const NavbarClient = ({ cookie }: any) => {
   const pathname = usePathname();
   const mobile = useMediaQuery("(max-width:1080px)");
   const [searchedProducts, setSearchedProducts] = useState([]);
-  
+
   const matches = useMediaQuery("(max-width:767px)");
   const dispatch = useDispatch();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -165,7 +165,7 @@ const NavbarClient = ({ cookie }: any) => {
     // console.log(query,"from searchResultsHandler function");
   };
   async function addItemToCart(product: any) {
-     console.log(product,"from addItemToCart start");
+    console.log(product, "from addItemToCart start");
 
     let data: any = {
       product,
@@ -175,7 +175,7 @@ const NavbarClient = ({ cookie }: any) => {
       isPriceList: product?.isPriceList,
     };
     // console.log("inside");
-       console.log(product?.productDocId,"inside");
+    console.log(product?.productDocId, "inside");
     const cartObject = product?.isPriceList
       ? getPriceListCartObj({
           product: product,
@@ -249,54 +249,34 @@ const NavbarClient = ({ cookie }: any) => {
                 <div className="  flex items-center w-full  justify-between   ">
                   <div className="min-h-[100px] flex items-center   w-[30%]  ">
                     {/* {isSearchOpen ? ( */}
-                    <Transition
-                      appear={true}
-                      show={true}
-                      // show={isSearchOpen}
-                      className={
-                        "w-full z-40 h-full flex items-center justify-center "
-                      }
-                    >
-                      <Transition.Child
-                        className="transition duration-300 w-full h-full flex items-center"
-                        enter="ease-in-out"
-                        enterFrom=" opacity-0"
-                        enterTo=" opacity-100"
-                        leave="ease-out"
-                        leaveFrom=" opacity-100"
-                        leaveTo=" opacity-0"
-                      >
-                        <div className="relative w-full h-full flex items-center border border-[#999999] px-4 justify-between gap-3 search-container z-10 ">
-                          {/* <div className="flex w-full gap-3 items-center border border-[red]"> */}
-                          <div>
-                            <FlatIcon
-                              className={
-                                "flaticon-camera  text-xl text-[#999999]"
-                              }
-                            />
-                          </div>
-                          <input
-                            type="text"
-                            placeholder="What are you Looking for"
-                            name=""
-                            id=""
-                            value={searchQuery}
-                            className="py-3 px-4  w-full outline-none focus:border-none  bg-transparent "
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value);
-                              // console.log(searchQuery, "searchQuery from input field");
-                              // searchResultsHandler(searchQuery)
-                            }}
-                          />
-                          <div>
-                            <FlatIcon
-                              className={
-                                "flaticon-search  text-xl text-[#999999]"
-                              }
-                            />
-                          </div>
-                          {/* code before change start */}
-                          {/* <Link
+
+                    <div className="relative w-full h-full flex items-center border border-[#999999] px-4 justify-between gap-3 search-container z-10 ">
+                      {/* <div className="flex w-full gap-3 items-center border border-[red]"> */}
+                      <div>
+                        <FlatIcon
+                          className={"flaticon-camera  text-xl text-[#999999]"}
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="What are you Looking for"
+                        name=""
+                        id=""
+                        value={searchQuery}
+                        className="py-3 px-4  w-full outline-none focus:border-none  bg-transparent "
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          // console.log(searchQuery, "searchQuery from input field");
+                          // searchResultsHandler(searchQuery)
+                        }}
+                      />
+                      <div>
+                        <FlatIcon
+                          className={"flaticon-search  text-xl text-[#999999]"}
+                        />
+                      </div>
+                      {/* code before change start */}
+                      {/* <Link
                             href={`/search?q=${searchQuery}`}
                             onClick={() => {
                               // setSearchedProducts([]);
@@ -306,114 +286,181 @@ const NavbarClient = ({ cookie }: any) => {
                               Search
                             </button>
                           </Link> */}
-                          {/* code before change end */}
-                          {/* </div> */}
-                          {searchedProducts.length !== 0 &&
-                            pathname !== "/search" && (
-                              <OutsideClickHandler
-                                onClick={() => {
-                                  setSearchedProducts([]);
-                                  setSearchQuery("");
-                                }}
-                              >
-                                <div className="absolute top-[45px] left-0 rounded-lg  shadow-md bg-white xl:w-full w-[300px] lg:min-h-[100px] lg:max-h-[500px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
-                                  {/* <div> */}
-                                  {searchedProducts?.map((prod, idx) => {
-                                    // console.log(prod);
+                      {/* code before change end */}
+                      {/* </div> */}
+                      {searchedProducts.length !== 0 &&
+                        pathname !== "/search" && (
+                          <OutsideClickHandler
+                            onClick={() => {
+                              setSearchedProducts([]);
+                              setSearchQuery("");
+                            }}
+                          >
+                            <div className="absolute top-[45px] left-0 rounded-lg  shadow-md bg-white xl:w-full w-[300px] lg:min-h-[100px] lg:max-h-[500px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
+                              {/* <div> */}
+                              {searchedProducts?.map((prod, idx) => {
+                                // console.log(prod);
 
-                                    return (
-                                      // <Link
-                                      //   key={idx}
-                                      //   href={`/product/${prod?.slug?.name}`}
-                                      // >
-                                      <div
-                                        className=" flex justify-between items-center gap-x-4 border-t-gray-300  border-t py-4  w-full"
-                                        key={idx}
-                                      >
-                                        <Link
-                                          key={idx}
-                                          href={`/product/${prod?.slug?.name}`}
-                                        >
-                                          <div className=" flex  gap-x-3 z-10  w-full ">
-                                            <div className="w-[30%] h-auto aspect-[1/1]">
-                                              <Image
-                                                src={
-                                                  prod.coverPic?.url
-                                                    ? prod.coverPic?.url
-                                                    : constant.errImage
-                                                }
-                                                alt=""
-                                                height={1000}
-                                                width={1000}
-                                                className="object-fill h-full w-full "
-                                                // style={{
-                                                //   height: "100%",
-                                                //   width: "100%",
-                                                //   // aspectRatio: "auto",
-                                                // }}
-                                              />
-                                            </div>
-                                            <div className="flex flex-col gap-y-1.5 w-[70%]">
-                                              <h1 className="xl:text-sm text-xs font-medium line-clamp-1">
-                                                {prod?.prodName}
-                                              </h1>
-                                              {/* <h4 className="text-gray-500  text-xs font-medium">
+                                return (
+                                  // <Link
+                                  //   key={idx}
+                                  //   href={`/product/${prod?.slug?.name}`}
+                                  // >
+                                  <div
+                                    className=" flex justify-between items-center gap-x-4 border-t-gray-300  border-t py-4  w-full"
+                                    key={idx}
+                                  >
+                                    <Link
+                                      key={idx}
+                                      href={`/product/${prod?.slug?.name}`}
+                                    >
+                                      <div className=" flex  gap-x-3 z-10  w-full ">
+                                        <div className="w-[30%] h-auto aspect-[1/1]">
+                                          <Image
+                                            src={
+                                              prod.coverPic?.url
+                                                ? prod.coverPic?.url
+                                                : constant.errImage
+                                            }
+                                            alt=""
+                                            height={1000}
+                                            width={1000}
+                                            className="object-fill h-full w-full "
+                                            // style={{
+                                            //   height: "100%",
+                                            //   width: "100%",
+                                            //   // aspectRatio: "auto",
+                                            // }}
+                                          />
+                                        </div>
+                                        <div className="flex flex-col gap-y-1.5 w-[70%]">
+                                          <h1 className="xl:text-sm text-xs font-medium line-clamp-1">
+                                            {prod?.prodName}
+                                          </h1>
+                                          {/* <h4 className="text-gray-500  text-xs font-medium">
                                             <span>1.3lb</span>/
                                             <span>vanilla</span>
                                           </h4> */}
-                                              {/* <div className=" font-bold text-xl"> <span>AED 150.00</span> <span className="text-sm text-gray-500">200 AED</span></div> */}
-                                              <div className="flex lg:flex-row flex-col lg:items-center  gap-x-2 font-bold xl:text-base text-sm truncate">
-                                                {" "}
-                                                <h1>
-                                                  {constant.currency}{" "}
-                                                  {prod?.discountedPrice}
-                                                </h1>
-                                                {checkIfPriceDiscounted({
-                                                  price: prod?.prodPrice,
-                                                  discountedPrice:
-                                                    prod?.discountedPrice,
-                                                }) && (
-                                                  <h3 className="text-xs text-gray-500 font-medium line-through ">
-                                                    {constant.currency}{" "}
-                                                    {prod?.prodPrice}
-                                                  </h3>
-                                                )}
-                                              </div>
-                                            </div>
+                                          {/* <div className=" font-bold text-xl"> <span>AED 150.00</span> <span className="text-sm text-gray-500">200 AED</span></div> */}
+                                          <div className="flex lg:flex-row flex-col lg:items-center  gap-x-2 font-bold xl:text-base text-sm truncate">
+                                            {" "}
+                                            <h1>
+                                              {constant.currency}{" "}
+                                              {prod?.discountedPrice}
+                                            </h1>
+                                            {checkIfPriceDiscounted({
+                                              price: prod?.prodPrice,
+                                              discountedPrice:
+                                                prod?.discountedPrice,
+                                            }) && (
+                                              <h3 className="text-xs text-gray-500 font-medium line-through ">
+                                                {constant.currency}{" "}
+                                                {prod?.prodPrice}
+                                              </h3>
+                                            )}
                                           </div>
-                                        </Link>
-                                        <div className="w-[20%] flex justify-end z-30 ">
-                                          {/* new start  */}
-                                          {checkIfItemExistInCart(
-                                            cart,
-                                            prod,
-                                            0
-                                          ) ? (
+                                        </div>
+                                      </div>
+                                    </Link>
+                                    <div className="w-[20%] flex justify-end z-30 ">
+                                      {/* new start  */}
+                                      {checkIfItemExistInCart(cart, prod, 0) ? (
+                                        <div
+                                          className=" my-auto flex justify-center  items-center right-2 "
+                                          onClick={(e) => {
+                                            // e.preventDefault();
+                                            // console.log("CLICKED");
+                                          }}
+                                        >
+                                          <div className="flex items-center ">
                                             <div
-                                              className=" my-auto flex justify-center  items-center right-2 "
-                                              onClick={(e) => {
-                                                // e.preventDefault();
-                                                // console.log("CLICKED");
-                                              }}
-                                            >
-                                              <div className="flex items-center ">
-                                                <div
-                                                  // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
-                                                  className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
-                                                  onClick={() => {
-                                                    if (
+                                              // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
+                                              className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
+                                              onClick={() => {
+                                                if (
+                                                  getProductIndexFromCart(
+                                                    cart,
+                                                    prod
+                                                  ) >= 0
+                                                ) {
+                                                  let currQty =
+                                                    cart[
                                                       getProductIndexFromCart(
                                                         cart,
                                                         prod
-                                                      ) >= 0
+                                                      )
+                                                    ]?.quantity;
+                                                  let decqty =
+                                                    currQty > prod?.minQty
+                                                      ? 1
+                                                      : prod?.minQty;
+                                                  dispatch(
+                                                    updateCartItemQuantity({
+                                                      type: "dec",
+                                                      addedQty: decqty,
+                                                      // prod?.minQty || 1,
+                                                      index:
+                                                        getProductIndexFromCart(
+                                                          cart,
+                                                          prod
+                                                        ),
+                                                    })
+                                                  );
+                                                }
+                                              }}
+                                            >
+                                              <FlatIcon
+                                                className={
+                                                  "flaticon-minus text-secondary font-normal lg:text-xs text-[10px]"
+                                                }
+                                              />
+                                            </div>
+                                            <div className="px-3">
+                                              {
+                                                getProductFromCart(cart, prod)
+                                                  ?.quantity
+                                              }
+                                            </div>
+                                            <div
+                                              className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
+                                              // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
+                                              onClick={() => {
+                                                if (
+                                                  getProductIndexFromCart(
+                                                    cart,
+                                                    prod
+                                                  ) >= 0
+                                                ) {
+                                                  let currQty =
+                                                    cart[
+                                                      getProductIndexFromCart(
+                                                        cart,
+                                                        prod
+                                                      )
+                                                    ]?.quantity;
+                                                  let addqty =
+                                                    currQty < prod?.minQty
+                                                      ? prod?.minQty
+                                                      : 1;
+                                                  if (prod.isPriceList) {
+                                                    if (
+                                                      currQty +
+                                                        (prod?.minQty || 1) >
+                                                      parseFloat(
+                                                        prod?.priceList[0]
+                                                          ?.totalQuantity
+                                                      )
                                                     ) {
-                                                   let currQty = cart[getProductIndexFromCart(cart,prod)]?.quantity;
-                                                   let decqty = currQty > prod?.minQty ? 1 : prod?.minQty;
+                                                      toast.error(
+                                                        "Cannot add more of this item"
+                                                      );
+                                                    } else {
                                                       dispatch(
                                                         updateCartItemQuantity({
-                                                          type: "dec",
-                                                          addedQty:decqty,
-                                                            // prod?.minQty || 1,
+                                                          type: "inc",
+                                                          addedQty: addqty,
+                                                          // prod?.minQty ||
+                                                          // 1,
                                                           index:
                                                             getProductIndexFromCart(
                                                               cart,
@@ -422,151 +469,78 @@ const NavbarClient = ({ cookie }: any) => {
                                                         })
                                                       );
                                                     }
-                                                  }}
-                                                >
-                                                  <FlatIcon
-                                                    className={
-                                                      "flaticon-minus text-secondary font-normal lg:text-xs text-[10px]"
-                                                    }
-                                                  />
-                                                </div>
-                                                <div className="px-3">
-                                                  {
-                                                    getProductFromCart(
-                                                      cart,
-                                                      prod
-                                                    )?.quantity
-                                                  }
-                                                </div>
-                                                <div
-                                                  className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer"
-                                                  // className="bg-slate-200 p-1 cursor-pointer hover:bg-primary hover:text-white"
-                                                  onClick={() => {
+                                                  } else {
                                                     if (
-                                                      getProductIndexFromCart(
-                                                        cart,
-                                                        prod
-                                                      ) >= 0
+                                                      currQty +
+                                                        (prod?.minQty || 1) >
+                                                      parseFloat(
+                                                        prod?.productQty
+                                                      )
                                                     ) {
-                                                      let currQty =
-                                                        cart[
-                                                          getProductIndexFromCart(
-                                                            cart,
-                                                            prod
-                                                          )
-                                                        ]?.quantity;
-                                                      let addqty = currQty < prod?.minQty ? prod?.minQty : 1;
-                                                      if (prod.isPriceList) {
-                                                        if (
-                                                          currQty +
-                                                            (prod?.minQty ||
-                                                              1) >
-                                                          parseFloat(
-                                                            prod?.priceList[0]
-                                                              ?.totalQuantity
-                                                          )
-                                                        ) {
-                                                          toast.error(
-                                                            "Cannot add more of this item"
-                                                          );
-                                                        } else {
-                                                          dispatch(
-                                                            updateCartItemQuantity(
-                                                              {
-                                                                type: "inc",
-                                                                addedQty:addqty,
-                                                                  // prod?.minQty ||
-                                                                  // 1,
-                                                                index:
-                                                                  getProductIndexFromCart(
-                                                                    cart,
-                                                                    prod
-                                                                  ),
-                                                              }
-                                                            )
-                                                          );
-                                                        }
-                                                      } else {
-                                                        if (
-                                                          currQty +
-                                                            (prod?.minQty ||
-                                                              1) >
-                                                          parseFloat(
-                                                            prod?.productQty
-                                                          )
-                                                        ) {
-                                                          toast.error(
-                                                            "Cannot add more of this item"
-                                                          );
-                                                        } else {
-                                                          dispatch(
-                                                            updateCartItemQuantity(
-                                                              {
-                                                                type: "inc",
-                                                                addedQty:addqty,
-                                                                  // prod?.minQty ||
-                                                                  // 1,
-                                                                index:
-                                                                  getProductIndexFromCart(
-                                                                    cart,
-                                                                    prod
-                                                                  ),
-                                                              }
-                                                            )
-                                                          );
-                                                          // setQuantity((val) => val + (product?.minQty || 1));
-                                                        }
-                                                      }
+                                                      toast.error(
+                                                        "Cannot add more of this item"
+                                                      );
+                                                    } else {
+                                                      dispatch(
+                                                        updateCartItemQuantity({
+                                                          type: "inc",
+                                                          addedQty: addqty,
+                                                          // prod?.minQty ||
+                                                          // 1,
+                                                          index:
+                                                            getProductIndexFromCart(
+                                                              cart,
+                                                              prod
+                                                            ),
+                                                        })
+                                                      );
+                                                      // setQuantity((val) => val + (product?.minQty || 1));
                                                     }
-                                                  }}
-                                                >
-                                                  <FlatIcon
-                                                    className=
-                                                      "flaticon-plus-1  font-normal text-[10px] lg:text-xs "
-                                                    
-                                                  />
-                                                </div>
-                                              </div>
-                                            </div>
-                                          ) : (
-                                            <div
-                                              onClick={() => {
-                                                addItemToCart(prod);
-                                              }}
-                                              className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer "
-                                            >
-                                              <FlatIcon
-                                                className={
-                                                  "flaticon-plus-1  font-normal text-[10px] lg:text-xs"
+                                                  }
                                                 }
-                                              />
+                                              }}
+                                            >
+                                              <FlatIcon className="flaticon-plus-1  font-normal text-[10px] lg:text-xs " />
                                             </div>
-                                          )}
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div
+                                          onClick={() => {
+                                            addItemToCart(prod);
+                                          }}
+                                          className=" shadow-lg  rounded-md p-0.5 md:p-1.5 lg:p-2.5  text-lg text-gray-500 flex justify-center items-center cursor-pointer "
+                                        >
+                                          <FlatIcon
+                                            className={
+                                              "flaticon-plus-1  font-normal text-[10px] lg:text-xs"
+                                            }
+                                          />
+                                        </div>
+                                      )}
 
-                                          {/* new end  */}
+                                      {/* new end  */}
 
-                                          {/* old add code start  */}
-                                          {/* <div
+                                      {/* old add code start  */}
+                                      {/* <div
                                           onClick={() => {
                                             addItemToCart(prod)
                                           }}
                                           className=" shadow-lg  rounded-md h-[30px] w-[30px]  text-lg text-gray-500 flex justify-center items-center cursor-pointer">
                                             <FlatIcon icon={"flaticon-plus-1  font-normal text-xs "} />
                                             </div> */}
-                                          {/* old add code end  */}
-                                        </div>
-                                      </div>
-                                      // </Link>
-                                    );
-                                  })}
-                                  {/* </div> */}
-                                </div>
-                              </OutsideClickHandler>
-                            )}
-                          {/* {searchQuery&&<SearchResults/>} */}
-                        </div>
-                      </Transition.Child>
-                    </Transition>
+                                      {/* old add code end  */}
+                                    </div>
+                                  </div>
+                                  // </Link>
+                                );
+                              })}
+                              {/* </div> */}
+                            </div>
+                          </OutsideClickHandler>
+                        )}
+                      {/* {searchQuery&&<SearchResults/>} */}
+                    </div>
                   </div>
                   {/* // ) : ( */}
                   <div className=" w-[30%] flex justify-center">
