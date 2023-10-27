@@ -1,24 +1,23 @@
-import React from 'react'
-import Profile from '../../components/profile/Profile'
-import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import Profile from "../../components/profile/Profile";
+import { dehydrate, useQuery } from "@tanstack/react-query";
 import { getUserData } from "../../utils/databaseService";
 import { cookies } from "next/dist/client/components/headers";
+import getQueryClient from "../../utils/getQueryClient";
+import Hydrate from "../../utils/hydrate.client";
 
-
-const ProfilePage = async() => {
+const ProfilePage = async () => {
   const cookie = cookies().get("uid");
 
-//   const { data: userData } = useQuery({
-//     queryKey: ["userData"],
-//     queryFn: () => getUserData(cookie),
-//     
-//     keepPreviousData: true,
-//     // enabled: isClient,
-//   });
-// console.log(userData,"userData from page");
-  return (
-    <div><Profile cookie={cookie}/></div>
-  )
-}
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery(["userData"], () => getUserData(cookie));
+  const dehydratedState = dehydrate(queryClient);
 
-export default ProfilePage
+  return (
+    <Hydrate state={dehydratedState}>
+      <Profile cookie={cookie} />
+    </Hydrate>
+  );
+};
+
+export default ProfilePage;
