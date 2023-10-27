@@ -194,7 +194,10 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
           <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
             <div className="text-ellipsis overflow-hidden ... truncate text-center ">
               <p className="text-ellipsis overflow-hidden ... truncate text-center  text-primary font-bold text-sm sm:text-base md:text-lg">
-                {constant?.currency} {product?.discountedPrice?.toFixed(2)}
+                {constant?.currency}{" "}
+                {product?.isPriceList
+                  ? product?.priceList[0]?.discountedPrice.toFixed(2)
+                  : product?.discountedPrice.toFixed(2)}
               </p>
             </div>
             {checkIfPriceDiscounted({
@@ -207,7 +210,10 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
             }) && (
               <div className="text-ellipsis overflow-hidden ... truncate text-center ">
                 <p className="text-ellipsis overflow-hidden ... truncate text-center  line-through text-[10px] sm:text-xs md:text-sm text-gray-500 font-semibold">
-                  {constant.currency} {product?.prodPrice}
+                  {constant.currency}{" "}
+                  {product?.isPriceList
+                    ? product?.priceList[0]?.price
+                    : product?.prodPrice.toFixed(2)}
                 </p>
               </div>
             )}

@@ -1,6 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import CheckoutNewAddress from "./CheckoutNewAddress";
-import { getUserAddresses, getUserData, updateDefaultAddress } from "../../utils/databaseService";
+import {
+  getUserAddresses,
+  getUserData,
+  updateDefaultAddress,
+} from "../../utils/databaseService";
 import { initialAddress } from "../../utils/utilities";
 import React, { useState, useEffect } from "react";
 import Modal from "../Modal/modal";
@@ -33,6 +37,8 @@ function ShippingTab(props) {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  
   return (
     <div className="flex flex-col md:mt-2 mt-4 w-full  ">
       <h6 className="font-medium  xl:text-base md:text-base text-sm  ">
@@ -140,6 +146,7 @@ function ShippingTab(props) {
                               className="px-4 py-2 bg-primary rounded-md text-white"
                               onClick={async () => {
                                 setIsAddressUpdating(true);
+                                props.setUserAddress(address);
                                 await updateDefaultAddress(address);
                                 await queryClient.invalidateQueries({
                                   queryKey: ["userData"],
@@ -161,8 +168,6 @@ function ShippingTab(props) {
               </div>
             </div>
           </Modal>
-
-
         </div>
       ) : (
         <CheckoutNewAddress

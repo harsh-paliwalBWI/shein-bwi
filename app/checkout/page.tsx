@@ -68,6 +68,7 @@ const CheckoutPage = ({ searchParams }) => {
 
   const [completedSteps, setCompletedSteps] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [removingCoupon, setRemovingCoupon] = useState(false);
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const [selectedTab, setSelectedTab] = useState("Shipping");
   const [paymentSummary, setPaymentSummary] = useState(null);
@@ -89,8 +90,8 @@ const CheckoutPage = ({ searchParams }) => {
     !(userData && userData?.defaultAddress)
   );
 
-  const [appliedCoupons, setAppliedCoupons] = useState([])
-  const [showCod, setshowCod] = useState(true)
+  const [appliedCoupons, setAppliedCoupons] = useState(null);
+  const [showCod, setshowCod] = useState(true);
 
   async function getPaymentSummary() {
     const getPaymentSummaryDetails = httpsCallable(
@@ -110,21 +111,10 @@ const CheckoutPage = ({ searchParams }) => {
     setPaymentSummary(res.data);
   }
 
-  
-//   function handleCouponApply(coupon) {
-//        console.log(coupon,"llllllll")
-//        console.log(coupon?.name,"hhhhhhh")
-//       // getCouponDiscount(coupon?.name);
-//       getCouponDiscount(coupon);
-//       // setAppliedCoupons((prev) => [...prev, coupon?.id]);
-// }
-  
-  
   async function getCouponDiscount(couponText: any) {
     // console.log(couponText, "couponText");
     if (couponText.name) {
-
-      setIsModalOpen(true)
+      setIsModalOpen(true);
       document.body.classList.add("no-scroll");
       setIsLoading(true);
       const getCouponDiscountDetails = httpsCallable(
@@ -140,6 +130,7 @@ const CheckoutPage = ({ searchParams }) => {
       };
       const res = await getCouponDiscountDetails(data);
       let res2 = await res.data;
+
       if (res2["success"]) {
         const couponDiscount =
           paymentSummary.totalPayable - res2["details"]["totalAmountToPaid"];
@@ -150,15 +141,14 @@ const CheckoutPage = ({ searchParams }) => {
           };
         });
         setCouponDiscount(couponDiscount);
+        setAppliedCoupons(couponText);
         document.body.classList.remove("no-scroll");
         setIsModalOpen(false);
         toast.success("Coupon applied succesfully");
-        setAppliedCoupons((prev) => [...prev, couponText?.id]);
         // console.log(couponText?.codAvailable,"fifififififif")
-        if(couponText?.codAvailable!=true){
-          setshowCod(false)
+        if (couponText?.codAvailable != true) {
+          setshowCod(false);
         }
-
 
         setIsCoupon((prev) => !prev);
         setIsLoading(false);
@@ -179,18 +169,13 @@ const CheckoutPage = ({ searchParams }) => {
     }
   }
 
-
-
-
-
-
-  
   const handleChange = (name, value) => {
     console.log(name, "name", value, "value");
     setUserAddress((val: any) => {
       return { ...val, [name]: value };
     });
   };
+
   function handleAddressSubmit() {
     // console.log(userAddress, "userAddress");
 
@@ -201,13 +186,13 @@ const CheckoutPage = ({ searchParams }) => {
       // lat,
       // lng,
       name,
-      lastName,
       phoneNo,
       pincode,
       state,
       // stateCode,
       // country,
     } = userAddress;
+
     if (
       !address ||
       // !address2 ||
@@ -217,7 +202,6 @@ const CheckoutPage = ({ searchParams }) => {
       !state ||
       // !stateCode ||
       // !country ||
-      !lastName ||
       !name
     ) {
       // console.log("ENTER DETAILS CORRECTLY", userAddress);
@@ -459,24 +443,47 @@ const CheckoutPage = ({ searchParams }) => {
                   <div className="text-gray-500 font-semibold  text-base">
                     Coupons
                   </div>
-                  <div onClick={() => setIsCoupon((prev) => !prev)}>
+                  <div>
                     {/* <h5 className="  text-base font-semibold text-primary underline cursor-pointer">Coupons</h5> */}
                     <div className="flex border border-primary items-center  rounded-md lg:px-5 px-3 justify-between  py-2 cursor-pointer">
                       <div className="flex items-center gap-2 text-primary w-full">
                         <Image src={tag} alt="" />
                         <input
+                          onClick={() => setIsCoupon((prev) => !prev)}
                           className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]"
                           placeholder="Enter coupon code"
+                          value={
+                            !appliedCoupons
+                              ? ""
+                              : `${appliedCoupons?.name} (Applied)`
+                          }
                           onChange={() => {
                             () => setIsCoupon(true);
                           }}
                         />
                       </div>
-                      <div>
+                      <div
+                        onClick={async () => {
+                          setRemovingCoupon(true);
+                          const res = await getPaymentSummary();
+                          setAppliedCoupons(null);
+                          setRemovingCoupon(false);
+                        }}
+                      >
                         <FlatIcon className="flaticon-close text-primary text-lg" />
                       </div>
                     </div>
                   </div>
+
+                  <Modal isOpen={removingCoupon} setOpen={setRemovingCoupon}>
+                    <div className="flex flex-col gap-2 justify-center items-center">
+                      <CircularProgress className="!text-white"></CircularProgress>
+                      <p className="text-white font-medium text-lg">
+                        Removing Coupon...
+                      </p>
+                    </div>
+                  </Modal>
+
                   <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
                     <div className="flex flex-col gap-2 justify-center items-center">
                       <CircularProgress className="!text-white"></CircularProgress>
@@ -535,7 +542,7 @@ const CheckoutPage = ({ searchParams }) => {
                                 </div>
                               </div>
                             </div>
-                            
+
                             {couponAvl &&
                               couponList &&
                               couponList.length > 0 && (
@@ -543,50 +550,53 @@ const CheckoutPage = ({ searchParams }) => {
                                   <h2 className="text-primary text-base font-semibold my-6">
                                     Coupons Available
                                   </h2>
-                                 <div className=" flex flex-col gap-2">
-                                  {couponAvl &&
-                                    couponList &&
-                                    couponList.length > 0 &&
-                                    couponList.map((item: any, idx: number) => {
-                                      if (!appliedCoupons.includes(item.id)) {
-                                      return (
-                                        <div
-                                          className="flex justify-between items-center"
-                                          key={idx}
-                                        >
-                                          <div>
-                                            <h2 className="sm:text-base text-sm">{item?.name}</h2>
-                                            <p className="sm:text-sm text-xs text-[#555555] mt-1">
-                                              {item?.description}
-                                            </p>
-                                          </div>
-                                          <div
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              // handleCouponApply(item)
-                                              getCouponDiscount(item)
-                                            }
-                                          >
-                                            <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
-                                              Apply
-                                            </button>
-                                          </div>
-                                        </div>
-                                      );
-                                    }
-                                   else if (appliedCoupons.includes(item.id)) {
-                                    return  <div className="text-secondary flex gap-2  w-fit mb-4 px-5 py-1 text-sm">
-                                   <p className="text-primary">✔️</p> Coupon Applied <br></br> 
-                                  </div>;}
-                                  return null
-                                    })}
-                                    </div>
+                                  <div className=" flex flex-col gap-2">
+                                    {couponAvl &&
+                                      couponList &&
+                                      couponList.length > 0 &&
+                                      couponList.map(
+                                        (item: any, idx: number) => {
+                                          return (
+                                            <div
+                                              className="flex justify-between items-center"
+                                              key={idx}
+                                            >
+                                              <div>
+                                                <h2 className="sm:text-base text-sm">
+                                                  {item?.name}
+                                                </h2>
+                                                <p className="sm:text-sm text-xs text-[#555555] mt-1">
+                                                  {item?.description}
+                                                </p>
+                                              </div>
+                                              {appliedCoupons &&
+                                              item?.id ===
+                                                appliedCoupons?.id ? (
+                                                <div className="cursor-pointer">
+                                                  <button className="text-white bg-primary sm:px-5 px-3 py-1 sm:text-sm text-xs">
+                                                    Appled!
+                                                  </button>
+                                                </div>
+                                              ) : (
+                                                <div
+                                                  className="cursor-pointer"
+                                                  onClick={() =>
+                                                    // handleCouponApply(item)
+                                                    getCouponDiscount(item)
+                                                  }
+                                                >
+                                                  <button className="text-white bg-secondary sm:px-5 px-3 py-1 sm:text-sm text-xs">
+                                                    Apply
+                                                  </button>
+                                                </div>
+                                              )}
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                  </div>
                                 </div>
-                              )
-                             
-                              
-                              
-                              }
+                              )}
                           </div>
                         </div>
                       </div>
@@ -618,14 +628,14 @@ const CheckoutPage = ({ searchParams }) => {
                     </div>
                   )}
                   {/* coupon  start */}
-                  {couponDiscount && (
+                  {appliedCoupons && (
                     <div className="flex  justify-between ">
                       <p className="text-gray-500 font-semibold  text-base">
                         Coupon discount
                       </p>
                       <p className="font-semibold  text-base text-right   leading-tight tracking-tight">
                         {constant.currency}{" "}
-                        {couponDiscount && couponDiscount.toFixed(2)}
+                        {appliedCoupons && appliedCoupons?.amount.toFixed(2)}
                         {/* {paymentSummary?.discountOnMrp.toFixed(2)} */}
                       </p>
                     </div>

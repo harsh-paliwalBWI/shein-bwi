@@ -250,7 +250,7 @@ const NavbarClient = ({ cookie }: any) => {
                   <div className="min-h-[100px] flex items-center   w-[30%]  ">
                     {/* {isSearchOpen ? ( */}
 
-                    <div className="relative w-full h-full flex items-center border border-[#999999] px-4 justify-between gap-3 search-container z-10 ">
+                    <div className=" relative w-full h-full flex items-center border border-[#999999] px-4 justify-between gap-3 search-container z-20 ">
                       {/* <div className="flex w-full gap-3 items-center border border-[red]"> */}
                       <div>
                         <FlatIcon
@@ -296,7 +296,7 @@ const NavbarClient = ({ cookie }: any) => {
                               setSearchQuery("");
                             }}
                           >
-                            <div className="absolute top-[45px] left-0 rounded-lg  shadow-md bg-white xl:w-full w-[300px] lg:min-h-[100px] lg:max-h-[500px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
+                            <div className="absolute z-50  top-[45px] left-0 rounded-lg  shadow-md bg-white xl:w-full w-[300px] lg:min-h-[100px] lg:max-h-[400px] overflow-y-auto  px-4 flex flex-col py-4 gap-3  ">
                               {/* <div> */}
                               {searchedProducts?.map((prod, idx) => {
                                 // console.log(prod);

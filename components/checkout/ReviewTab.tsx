@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { constant } from "../../utils/constants";
 import { paymentMethods } from "../../utils/utilities";
 import FlatIcon from "../flatIcon/flatIcon";
-import cashImg from "../../images/credit-card (2) 1.svg"
-
+import cashImg from "../../images/cod.png";
+import cardImg from "../../images/credit-card (2) 1.svg";
 const ReviewTab = ({
   addressToDeliver,
   selectedPaymentMethod,
@@ -91,7 +91,7 @@ useEffect
           <div className="flex flex-col gap-3">
             <div className="text-secondary xl:text-lg text-lg font-bold flex items-center gap-x-2 ">
 
-              <div className=""><Image src={cashImg} alt="" height={1000} width={1000} className="aspect-auto w-[50px]" /></div>
+              <div className=""><Image src={selectedPaymentMethod==="cod"? cashImg: cardImg} alt="" height={1000} width={1000} className="aspect-auto w-[50px]" /></div>
 
               {
                 paymentMethods.filter(

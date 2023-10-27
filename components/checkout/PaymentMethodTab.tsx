@@ -92,10 +92,7 @@ const PaymentMethodTab = ({
                 </div>
               </div>
             );
-          } 
-
-
-          else {
+          } else {
             return (
               <div
                 className="flex justify-between items-center sm:px-8 px-5 py-2 bg-white  border  border-[#838383]   "
@@ -107,8 +104,6 @@ const PaymentMethodTab = ({
               </div>
             );
           }
-
-
         })}
         {/* <div
             

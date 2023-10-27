@@ -3,6 +3,7 @@ import { getCoverPic, priceSlabsCheck, removeHtml } from "../../utils/cartUtilit
 import { auth, db } from "../../config/firebase-config";
 import { addDoc, collection, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { removeCartObjFromUser } from "../../utils/databaseService";
+import { constant } from "../../utils/constants";
 
 
 
@@ -10,16 +11,35 @@ const initialState: any = {
     cart: [],
 };
 
+function getImage(product: any) {
+    if (
+        product?.coverPic &&
+        product?.coverPic?.url &&
+        !product?.coverPic?.url?.includes("assets/img")
+    ) {
+        return product?.coverPic?.url;
+    }
+    if (
+        product?.images &&
+        product?.images[0]?.url &&
+        !product?.images[0]?.url?.includes("assets/img")
+    ) {
+        return product?.images[0]?.url;
+    }
+    return constant?.errImage;
+}
+
+
 
 
 export function getCartObj({ product, productID, quantity = 1 }: any) {
 
-    console.log(product,"from getCartObj ");
-    
+    console.log(product, "from getCartObj ");
+
     let cartObj: any = {
         name: product.prodName,
         quantity: quantity || 1,
-        img: product.coverPic,
+        img: getImage(product),
         productId: productID,
         commentMsg: '',
         commentImgs: [],
@@ -69,23 +89,23 @@ export function getCartObj({ product, productID, quantity = 1 }: any) {
     }
 
     cartObj = priceSlabsCheck(cartObj, product);
-console.log(cartObj,"cartObj;");
+    console.log(cartObj, "cartObj;");
 
     return cartObj;
 
-    
+
 }
 
 export function getPriceListCartObj({ product, index, quantity = 1 }) {
-    console.log(product,"from getPriceListCartObj");
+    console.log(product, "from getPriceListCartObj");
     console.log(index);
     // console.log(pack," pack from getPriceListCartObj");
-    
-    
+
+
     let cartObj: any = {
         name: product.prodName,
         quantity: quantity || 1,
-        img: getCoverPic(product, index),
+        img: getImage(product),
         description: product.priceList[index].weight,
         commentMsg: '',
         commentImgs: [],
@@ -156,10 +176,10 @@ export function getPriceListCartObj({ product, index, quantity = 1 }) {
             }
         }
     }
-console.log("cartObj before",cartObj);
+    console.log("cartObj before", cartObj);
     cartObj = priceSlabsCheck(cartObj, product);
 
-console.log(cartObj,"cart obj---");
+    console.log(cartObj, "cart obj---");
 
     return cartObj;
 }
@@ -194,13 +214,13 @@ export const cartSlice = createSlice({
                 isPriceList,
             } = action.payload;
             // console.log(productID,"productID");
-            
+
             let cart = current(state)?.cart;
-// console.log(cart,"cart");
+            // console.log(cart,"cart");
 
             let cartIndex = isPriceList ? cart.findIndex((item) => item?.productId === productID && item?.description === product?.priceList[index]?.weight) : cart.findIndex((item) => item?.id === productID)
             // console.log(cartIndex,"cartIndex");
-            
+
             let objec = cart[cartIndex] || null;
 
             let newArr = isPriceList ? cart.filter((item) => item?.productId !== productID && item?.description !== product?.priceList[index]?.weight) : cart.filter((item) => item?.id !== productID)
@@ -223,7 +243,7 @@ export const cartSlice = createSlice({
             // console.log({ arr });
 
             let currentQty = state.cart[index]['quantity']
-            
+
             let cartitemId = state.cart[index]?.id || ""
             if (type === 'inc') {
                 arr[index] = {
