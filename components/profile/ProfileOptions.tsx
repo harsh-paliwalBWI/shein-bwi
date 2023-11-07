@@ -93,14 +93,9 @@ const ProfileOptions = ({ cookie, setSelectedTab, selectedTab }) => {
   }
 
   async function uploadTask(userPic: any) {
-    // setLoading(true)
-    // console.log(userPic,"FROM uploadTask");
     await uploadImage(userPic);
-    //   await client.invalidateQueries({ queryKey: ['userData'] })
-    //  await client.refetchQueries({ queryKey: ['userData'] })
-    //   toast.success("Profile pic updated successfully.")
-    // setLoading(false)
   }
+  
   useEffect(() => {
     setIsClient(true);
     // console.log(userData,"DATA AFTER RELOAD");
@@ -114,7 +109,7 @@ const ProfileOptions = ({ cookie, setSelectedTab, selectedTab }) => {
           <div className="border border-[#EEEEEE] rounded-full p-2 mb-2">
             <div className=" rounded-full  relative">
               <Image
-                src={isClient && userData?.dP || constant.errImage}
+                src={(isClient && userData?.dP) || constant.errImage}
                 alt=""
                 width={1000}
                 height={1000}

@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import reac from "./im"
+import reac from "./im";
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -7,13 +7,13 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-  extend: {
+    extend: {
       fontFamily: {
         outfit: "var(--font-outfit)",
       },
       colors: {
         primary: "#EB4897",
-        secondary:"#000000",
+        secondary: "#000000",
         highlight: "#29AFEC",
       },
       boxShadow: {
@@ -23,26 +23,25 @@ module.exports = {
       padding: {
         body: "4%",
       },
+      margin: {
+        body: "4%",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-          "login-bg": "url('../images/Rectangle 2 (4).svg')",
-          "instagram-section-bg":"url('../images/Group 34290.png')"
+        "login-bg": "url('../images/Rectangle 2 (4).svg')",
+        "instagram-section-bg": "url('../images/Group 34290.png')",
       },
     },
-     screens: {
-      'sm': '480px',
-      'md': '768px',
-      'lg': '976px',
-      'xl': '1280px',
-      '2xl': '1440px',
-      '3xl': '1536px',
-
-    }
+    screens: {
+      sm: "480px",
+      md: "768px",
+      lg: "976px",
+      xl: "1280px",
+      "2xl": "1440px",
+      "3xl": "1536px",
+    },
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-
-  ],
+  plugins: [require("@tailwindcss/line-clamp")],
 };

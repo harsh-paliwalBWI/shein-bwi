@@ -36,7 +36,7 @@ export const fetchFarmGallery = async () => {
 
 export const fetchCategories = async () => {
     const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/api/categories',
-        { next: { revalidate: 60 * 60 * 24 } }
+        { method: "POST", cache: "no-cache" }
 
         // { cache: 'no-cache' }
     );
@@ -733,7 +733,7 @@ export const fetchCouponList = async () => {
     const arr = []
     querySnapshot.forEach((doc) => {
         const couponData = doc.data();
-        const couponWithId = { id: doc.id, ...couponData }; 
+        const couponWithId = { id: doc.id, ...couponData };
         arr.push(couponWithId);
     });
     return arr

@@ -9,7 +9,6 @@ import { cookies } from "next/dist/client/components/headers";
 import { dehydrate } from "@tanstack/react-query";
 import Hydrate from "../../utils/hydrate.client";
 import NavbarClient from "./NavbarClient";
-import { useQuery } from "@tanstack/react-query";
 
 const Navbar = async () => {
   const queryClient = getQueryClient();

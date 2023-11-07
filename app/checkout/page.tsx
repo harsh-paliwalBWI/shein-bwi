@@ -15,7 +15,6 @@ import ShippingTab from "../../components/checkout/ShippingTab";
 import { initialAddress, paymentMethods, tabs } from "../../utils/utilities";
 import PaymentMethodTab from "../../components/checkout/PaymentMethodTab";
 import ReviewTab from "../../components/checkout/ReviewTab";
-import Hr from "../../components/Hr/Hr";
 import { constant } from "../../utils/constants";
 import { CircularProgress, Skeleton } from "@mui/material";
 import { useRouter } from "next/navigation";
