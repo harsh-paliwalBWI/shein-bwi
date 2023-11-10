@@ -36,7 +36,7 @@ const CategoriesBar: FC<Props> = ({
   return (
     <div className="absolute left-0 w-[98vw]  right-0  flex justify-center  rounded-b-lg min-w-[100%]  mx-auto   z-30">
       <div
-        className="flex justify-between items-center mx-body w-full bg-white  shadow-lg rounded-b-lg"
+        className="flex justify-between items-center mx-body w-full  bg-white z-30  shadow-lg rounded-b-lg"
         onMouseLeave={() => {
           setHoveredCategory(null);
         }}
