@@ -44,8 +44,8 @@ const SubCategoryClient = ({ params }: any) => {
                     slug={subCat?.slug?.name}
                     path={
                       subCat?.isSubcategories
-                        ? `/category/${params?.slug}/${subCat?.slug?.name}`
-                        : `/shop/category/${params?.slug}/${subCat?.slug?.name}`
+                        ? `/category/${params?.slug}/${params?.subCategorySlug}/${subCat?.slug?.name}`
+                        : `/shop/category/${params?.slug}/${params?.subCategorySlug}/${subCat?.slug?.name}`
                     }
                   />
                 );

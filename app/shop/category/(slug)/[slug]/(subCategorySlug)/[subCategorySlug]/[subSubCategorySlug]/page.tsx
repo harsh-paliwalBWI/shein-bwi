@@ -10,7 +10,13 @@ const SubSubCategoryProducts = async ({ params }: any) => {
   const queryClient: any = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["shop", "category", params?.slug, params?.subCategorySlug],
+    queryKey: [
+      "shop",
+      "category",
+      params?.slug,
+      params?.subCategorySlug,
+      params?.subSubCategorySlug,
+    ],
     queryFn: () =>
       fetchCategoryProducts({
         slug: params?.slug,
