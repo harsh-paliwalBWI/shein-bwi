@@ -11,24 +11,46 @@ import check from "../../images/Vector 28.svg";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../../config/firebase-config";
+import { CircularProgress } from "@mui/material";
 
 const PopUp = ({ setShowPopup }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [inputData, setInputData] = useState("");
 
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     if (inputData) {
-      toast.success("Success.");
       if (!isChecked) {
         toast.error("Please accept terms & conditions.");
         return;
       }
-      setInputData("");
-      setShowPopup(false);
+
+      const handleEmailSubmit = httpsCallable(
+        functions,
+        "email-sendCouponsToUserEmail"
+      );
+
+      try {
+        setIsLoading(true);
+        await handleEmailSubmit({
+          email: inputData,
+        });
+        setIsLoading(false);
+
+        toast.success("Submitted");
+        setInputData("");
+        setShowPopup(false);
+      } catch (error) {
+        console.log("ERROR", error);
+        setIsLoading(false);
+        toast.error("Something went wrong!");
+      }
     } else {
       toast.error("Please enter email.");
     }
@@ -164,9 +186,13 @@ const PopUp = ({ setShowPopup }) => {
                     onClick={() => {
                       onSubmitHandler();
                     }}
-                    className="bg-secondary text-white flex justify-center items-center py-3 mb-6 lg:text-base sm:text-sm text-xs"
+                    className="bg-secondary cursor-pointer text-white flex justify-center items-center py-3 mb-6 lg:text-base sm:text-sm text-xs"
                   >
-                    <button>Get My Offer</button>
+                    {isLoading ? (
+                      <CircularProgress className="!text-white" size={25} />
+                    ) : (
+                      <button>Get My Offer</button>
+                    )}
                   </div>
                   <div className="  flex justify-center items-center lg:mb-10 mb-5 underline lg:text-base text-sm font-semibold ">
                     <button>I Will Pay Full Price</button>
