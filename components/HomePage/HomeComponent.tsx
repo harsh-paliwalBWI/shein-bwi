@@ -1,48 +1,34 @@
 "use client";
-import React,{useState,useEffect} from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeSections } from "../../utils/databaseService";
 import BannerSlider from "./widgets/BannerSlider";
-import ImageBanner from "./widgets/ImageBanner";
 import CategoriesSlider from "./widgets/CategoriesSlider";
+import ImageBanner from "./widgets/ImageBanner";
+import ImageBlock from "./widgets/ImageBlock";
 import ProductCarousel from "./widgets/ProductCarousel";
-import Vendors from "./widgets/Vendors";
 import ProductList from "./widgets/ProductList";
 import Services from "./widgets/Services";
-import ImageBlock from "./widgets/ImageBlock";
-import TextBlock from "./widgets/TextBlock";
+import Vendors from "./widgets/Vendors";
 // import BrandSlider from "./widgets/BrandSlider";
-import Brands from "./widgets/Brands";
-import ReviewSlider from "../reviews/ReviewSlider";
 import Advertisement from "../advertisement/Advertisement";
-import WatchShopSlider from "../watchAndShop/WatchShopSlider";
 import InstaFamilySlider from "../instaFamily/InstaFamilySlider";
-import PopUp from "../popUp/PopUp";
+import ReviewSlider from "../reviews/ReviewSlider";
+import WatchShopSlider from "../watchAndShop/WatchShopSlider";
+import CategoryGrid from "./widgets/CategoryGrid";
 // import CategoryGrid from "./widgets/CategoryGrid";
 
 const HomeComponent = ({ cookie }) => {
-  const [showPopup, setShowPopup] = useState(false);
   const { data: homeData } = useQuery({
     queryKey: ["homeSections"],
     queryFn: fetchHomeSections,
     cacheTime: 180,
   });
   // console.log("homeData");
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-    }, 2000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   function renderWidgets(section, idx) {
     // console.log("CHCOG", section?.widgetType);lo
 
     switch (section?.widgetType) {
-
       case "banner-slider":
         return <BannerSlider myKey={idx} section={section} />;
       case "image-banner":
@@ -53,6 +39,10 @@ const HomeComponent = ({ cookie }) => {
         );
       // fetchProductCarousel(section, regionId);
       case "categories":
+        if (section?.designType === "combo") {
+          return <CategoryGrid section={section}></CategoryGrid>;
+        }
+
         return <CategoriesSlider myKey={idx} section={section} />;
       // fetchCategories(section, regionId);
       case "vendors":
@@ -98,9 +88,6 @@ const HomeComponent = ({ cookie }) => {
             }
           })}
       </div>
-
-
-      {showPopup&&<PopUp setShowPopup={setShowPopup}/>}
     </div>
   );
 };

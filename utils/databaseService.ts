@@ -702,11 +702,11 @@ export const getDocFromWidget = async (docId) => {
     const docSnap = await getDoc(docRef);
     let arr = []
     if (docSnap.exists()) {
-        arr.push(docSnap.data())
-        return arr
+        
+        return {...docSnap.data(),id:docSnap.id}
     } else {
         console.log("No such document!");
-        return []
+        return null
     }
 }
 

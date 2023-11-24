@@ -17,10 +17,7 @@ const CategoriesSlider = ({ section, myKey }) => {
     queryKey: ["homeSections"],
     queryFn: fetchHomeSections,
   });
-  // const {data:widgetData}=useQuery({
-  //   queryKey: ["homeSections"],
-  //   queryFn: getDocFromWidget(section?.widgetID),
-  // })
+ 
   const { data: widgetData } = useQuery({
     queryKey: ["widgetDoc"],
     queryFn: () => getDocFromWidget(section?.widgetID),

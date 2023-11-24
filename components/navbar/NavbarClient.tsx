@@ -55,6 +55,7 @@ import { deleteCookie } from "cookies-next";
 import { dividerClasses } from "@mui/material";
 import { constant } from "../../utils/constants";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
+import PopUp from "../popUp/PopUp";
 
 const NavbarClient = ({ cookie }: any) => {
   const cart = useAppSelector((state) => state.cartReducer.cart);
@@ -76,6 +77,7 @@ const NavbarClient = ({ cookie }: any) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [variant, setVariant] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
 
   // console.log(pathname,"name");
 
@@ -91,6 +93,16 @@ const NavbarClient = ({ cookie }: any) => {
     dispatch(closeLoginModal());
     document.body.classList.remove("no-scroll");
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   async function getCart() {
     const cart = await getUserCartDetails(cookie);
@@ -196,6 +208,8 @@ const NavbarClient = ({ cookie }: any) => {
   }
   return (
     <>
+      {showPopup && <PopUp setShowPopup={setShowPopup} />}
+
       {matches ? (
         <NavMobile cookie={cookie} handleLogout={handleLogout} />
       ) : (
