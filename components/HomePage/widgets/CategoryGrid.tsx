@@ -45,7 +45,7 @@ const CategoryGrid = ({ section }) => {
             <div className='h-[48px] w-[48px] flex items-center justify-center rounded-full arrow-container cursor-pointer'><FlatIcon className="flaticon-arrow rotate-180 text-lg"/></div>
         </div> */}
         </div>
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {homeData &&
             homeData?.data?.filter(
               (val: any) => val?.id === section?.widgetID

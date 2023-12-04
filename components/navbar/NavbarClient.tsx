@@ -245,11 +245,11 @@ const NavbarClient = ({ cookie }: any) => {
                 <p className="text-secondary font-bold"> Code: SHE15</p>
               </div>
               <div className="flex items-center justify-end gap-8 lg:w-1/3 w-[18%]   xl:text-sm text-xs ">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 invisible">
                   <h4>English</h4>
                   <FlatIcon className="flaticon-arrow-down text-[10px] text-white" />
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 invisible">
                   <h4>INR</h4>
                   <FlatIcon className="flaticon-arrow-down text-[10px] text-white" />
                 </div>

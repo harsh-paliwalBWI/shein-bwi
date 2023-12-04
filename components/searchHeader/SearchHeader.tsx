@@ -1,18 +1,17 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import logo from "../../images/logo (2).png";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import FlatIcon from "../flatIcon/flatIcon";
+import { useState } from "react";
+import logo from "../../images/logo (2).png";
 import { checkUserLogin, getUserData } from "../../utils/databaseService";
-import { useQuery } from "@tanstack/react-query";
+import FlatIcon from "../flatIcon/flatIcon";
 // import { BsPersonFill } from "react-icons/bs";
-import { auth } from "../../config/firebase-config";
-import { signOut } from "firebase/auth";
 import axios from "axios";
+import { signOut } from "firebase/auth";
 import { usePathname, useRouter } from "next/navigation";
+import { auth } from "../../config/firebase-config";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
-import { getUserCartDetails } from "../../utils/cartUtilities/cartUtility";
 const SearchHeader = ({ cookie }: any) => {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
