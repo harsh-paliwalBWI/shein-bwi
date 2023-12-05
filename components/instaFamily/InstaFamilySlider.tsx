@@ -6,9 +6,12 @@ import Slider from "react-slick";
 import { useQuery } from "@tanstack/react-query";
 // import { fetchSimilarProductsForCart } from '../../../config/typesense';
 import { fetchSimilarProductsForCart } from "../../config/typesense";
+import instagram from "../../images/instagram (3) 1.svg";
+
 // import VideoCard from '../videoCard/VideoCard';
 import InstaFamilyCard from "./InstaFamilyCard";
 import FlatIcon from "../flatIcon/flatIcon";
+import Image from "next/image";
 
 const InstaFamilySlider = () => {
   const slider = useRef<any>(null);
@@ -103,10 +106,15 @@ const InstaFamilySlider = () => {
   return (
     <>
       {similarData && similarData.length > 0 && (
-        <div className="px-body bg-instagram-section-bg bg-cover bg-no-repeat  md:py-16 py-10  -mb-4">
-          <div className="text-white">
+        // <div className="px-body bg-instagram-section-bg bg-cover bg-no-repeat  md:py-16 py-10  -mb-4">
+        <div className="px-body  bg-cover bg-no-repeat  md:py-16 py-10  -mb-4">
+          {/* <div className="text-white"> */}
+          <div className="">
             <div className="flex justify-center items-center gap-2 ">
-              <FlatIcon className="flaticon-instagram  sm:text-5xl text-3xl" />
+              <div>
+                <Image src={instagram} alt="" />
+              </div>
+              {/* <FlatIcon className="flaticon-instagram  sm:text-5xl text-3xl" /> */}
               <h1 className="sm:text-3xl text-xl font-bold">
                 INSTAGRAM FAMILY
               </h1>
@@ -127,14 +135,13 @@ const InstaFamilySlider = () => {
                   prevArrow={<SamplePrevArrow />}
                   draggable={true}
                 >
-                  {[1,2,3,4,6,7,5,6,8].map((item: any, idx: number) => {
-                      return (
-                        <div key={idx}>
-                          <InstaFamilyCard />
-                        
-                        </div>
-                      );
-                    })}
+                  {[1, 2, 3, 4, 6, 7, 5, 6, 8].map((item: any, idx: number) => {
+                    return (
+                      <div key={idx}>
+                        <InstaFamilyCard />
+                      </div>
+                    );
+                  })}
                 </Slider>
               </div>
             </div>

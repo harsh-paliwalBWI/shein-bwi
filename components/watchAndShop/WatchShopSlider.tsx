@@ -6,6 +6,7 @@ import Slider from "react-slick";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSimilarProductsForCart } from "../../config/typesense";
 import WatchShopCard from "./WatchShopCard";
+import Link from "next/link";
 
 const WatchShopSlider = () => {
   const slider = useRef<any>(null);
@@ -104,6 +105,14 @@ const WatchShopSlider = () => {
           <div className="md:py-12 py-6">
             <div className="text-center">
               <h1 className="sm:text-3xl text-xl font-bold">WATCH AND SHOP</h1>
+              {/* <div className="">
+                <Link
+                  href={`/view-all?type=${section?.widgetType}&id=${section?.widgetID}&name=${section?.sectionName}`}
+                  className="text-primary font-medium underline"
+                >
+                  View All
+                </Link>
+              </div> */}
             </div>
             <div className="  justify-center items-center relative  md:py-12 py-6 ">
               <div className="back  ">
@@ -117,14 +126,14 @@ const WatchShopSlider = () => {
                     prevArrow={<SamplePrevArrow />}
                     draggable={true}
                   >
-                    {[1,3,4,6,7,9,9,5].map((item: any, idx: number) => {
-                        return (
-                          <div key={idx}>
-                            <WatchShopCard />
-                            {/* <ProductCard product={item} mx={2.5} /> */}
-                          </div>
-                        );
-                      })}
+                    {[1, 3, 4, 6, 7, 9, 9, 5].map((item: any, idx: number) => {
+                      return (
+                        <div key={idx}>
+                          <WatchShopCard />
+                          {/* <ProductCard product={item} mx={2.5} /> */}
+                        </div>
+                      );
+                    })}
                   </Slider>
                 </div>
               </div>

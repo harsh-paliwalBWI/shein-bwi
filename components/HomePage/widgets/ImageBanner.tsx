@@ -18,12 +18,10 @@ const ImageBanner = ({ section, myKey = `` }) => {
     homeData?.data?.filter((val: any) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID) &&
     homeData?.data?.filter((val) => val?.id === section?.widgetID)[0]?.arr;
-// console.log(imagesArr,"img arr");
+  // console.log(imagesArr,"img arr");
 
   const newImagesArr = imagesArr.slice(0, 3);
-// console.log(newImagesArr,"newImagesArr");
-
-
+  // console.log(newImagesArr,"newImagesArr");
 
   const settings = {
     dots: true,
@@ -115,7 +113,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
   // }
   // if (imagesArr.length > 3) {
   //   // console.log(true);
-    
+
   //   return (
   //     <div
   //       className={` only-carousel border border-green-600 `}
@@ -153,8 +151,8 @@ const ImageBanner = ({ section, myKey = `` }) => {
   //   );
   // }
 
-  // new start 
-  if (imagesArr.length ===7) {
+  // new start
+  if (imagesArr.length === 7) {
     return (
       <div
         className={` only-carousel `}
@@ -166,27 +164,72 @@ const ImageBanner = ({ section, myKey = `` }) => {
         // }}
       >
         <div className="grid md:grid-cols-2 md:grid-cols-1  gap-x-5 gap-y-5">
-      <div className="md:h-[450px] h-[200px]"><Image src={imagesArr[0].image?.org} alt="" width={1000} height={1000} className="h-full"/></div>
-      <div className="grid grid-cols-3 md:h-[450px] h-[200px] ">
-        <div className="md:h-[225px] h-[100px] ">
-          <Image src={imagesArr[6].image?.org}  alt="" width={1000} height={1000} className="h-full border"/>
+          <div className="md:h-[450px] h-[200px]">
+            <Image
+              src={imagesArr[0].image?.org}
+              alt=""
+              width={1000}
+              height={1000}
+              className="h-full"
+            />
           </div>
-        <div className="md:h-[225px] h-[100px] "><Image src={imagesArr[5].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
-        </div>
-        <div className="md:h-[225px] h-[100px] ">
-          <Image src={imagesArr[4].image?.org}  alt="" width={1000} height={1000} className="h-full" />
+          <div className="grid grid-cols-3 md:h-[450px] h-[200px] ">
+            <div className="md:h-[225px] h-[100px] ">
+              <Image
+                src={imagesArr[6].image?.org}
+                alt=""
+                width={1000}
+                height={1000}
+                className="h-full border"
+              />
+            </div>
+            <div className="md:h-[225px] h-[100px] ">
+              <Image
+                src={imagesArr[5].image?.org}
+                alt=""
+                width={1000}
+                height={1000}
+                className="h-full"
+              />
+            </div>
+            <div className="md:h-[225px] h-[100px] ">
+              <Image
+                src={imagesArr[4].image?.org}
+                alt=""
+                width={1000}
+                height={1000}
+                className="h-full"
+              />
+            </div>
+            <div className="md:h-[225px] h-[100px] ">
+              <Image
+                src={imagesArr[3].image?.org}
+                alt=""
+                width={1000}
+                height={1000}
+                className="h-full"
+              />
+            </div>
+            <div className="md:h-[225px] h-[100px] ">
+              <Image
+                src={imagesArr[2].image?.org}
+                alt=""
+                width={1000}
+                height={1000}
+                className="h-full"
+              />
+            </div>
+            <div className="md:h-[225px] h-[100px] ">
+              <Image
+                src={imagesArr[1].image?.org}
+                alt=""
+                width={1000}
+                height={1000}
+                className="h-full"
+              />
+            </div>
           </div>
-        <div className="md:h-[225px] h-[100px] ">
-          <Image src={imagesArr[3].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
         </div>
-        <div className="md:h-[225px] h-[100px] ">
-          <Image src={imagesArr[2].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
-        </div>
-        <div className="md:h-[225px] h-[100px] ">
-          <Image src={imagesArr[1].image?.org}  alt="" width={1000} height={1000} className="h-full"/>
-        </div>
-      </div>
-      </div>
       </div>
     );
   }
@@ -198,37 +241,53 @@ const ImageBanner = ({ section, myKey = `` }) => {
       ?.image?.url;
 
   return (
-  
-  
-   
-<div className={` w-full  ${imagesArr.length===3?"px-body":imagesArr.length===2?"px-[1.5%]":"px-0"}   ${imagesArr.length===3?"lg:-mt-36 -mt-16":"-mt-0"} z-30`}>
-{/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
+    <div
+      className={` w-full  ${
+        imagesArr.length === 3
+          ? "px-body"
+          : imagesArr.length === 2
+          ? "px-[1.5%]"
+          : "px-0"
+      }    z-30`}
+    >
+      {/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
 
-    <div className={` w-full  flex  items-center ${imagesArr.length===3?"sm:gap-7":"sm:gap-2"} `} key={myKey}>
-      {newImagesArr.map((imageData, index) => (
-        <div
-          key={imageData.image.org || imageData.image.url}
-          className={` ${
-            newImagesArr.length === 1
-              ? "w-full flex justify-center items-center  "
-              : `w-${100 / newImagesArr.length} `
-          }  `}
-        >
-          <Image
-            src={imageData.image.org || imageData.image.url}
-            alt="banner"
-            width={1000}
-            height={1000}
-            // layout="responsive"
-            style={{aspectRatio:"auto"}}
-            className={`flex-1 ${imagesArr.length===2?"sm:h-[25rem] h-[10rem]":"h-auto"} object-fit `   }
-          />
-        </div>
-      ))}
-    </div>
+      <div
+        className={` w-full  flex  items-center ${
+          imagesArr.length === 3 ? "sm:gap-7" : "sm:gap-2"
+        } `}
+        key={myKey}
+      >
+        {newImagesArr.map((imageData, index) => (
+          <div
+            key={imageData.image.org || imageData.image.url}
+            className={` ${
+              newImagesArr.length === 1
+                ? "w-full flex justify-center items-center  "
+                : `w-${100 / newImagesArr.length} `
+            }  `}
+          >
+            <Image
+              src={imageData.image.org || imageData.image.url}
+              alt="banner"
+              width={1000}
+              height={1000}
+              // layout="responsive"
+              style={{ aspectRatio: "auto" }}
+              className={`flex-1 ${
+                imagesArr.length === 2 ? "sm:h-[25rem] h-[10rem]" : "h-auto"
+              } object-fit `}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
 export default ImageBanner;
- 
+
+
+
+{/* <div className={` w-full  ${imagesArr.length===3?"px-body":imagesArr.length===2?"px-[1.5%]":"px-0"}   ${imagesArr.length===3?"lg:-mt-36 -mt-16":"-mt-0"} z-30`}> */}
+{/*  */}

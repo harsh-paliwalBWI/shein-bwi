@@ -85,13 +85,14 @@ const Footer = () => {
   return (
     <div className="  h-fit">
       <div className="flex      w-full">
-        <div className="bg-[#F6F4F1] text-white  w-full ">
+        {/* <div className="bg-[#F6F4F1] text-white  w-full "> */}
+        <div className="bg-[#000] text-white  w-full ">
           <div className="px-body sm:py-[40px] py-[20px] ">
             <div className="grid  xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xl:gap-x-10 gap-x-4 gap-y-4 sm:mb-[60px] mb-[40px]  ">
               {DUMMY_DATA.map((item: any, idx: number) => {
                 return (
                   <div className=" flex flex-col gap-4  " key={idx}>
-                    <h3 className=" relative font-bold md:text-xl text-base text-secondary ">
+                    <h3 className=" relative font-bold md:text-xl text-base text-white ">
                       {item.heading}
                       <div className="bg-primary   absolute bottom-[-12px] p-[1px] w-[55px] h-[2px]"></div>
                     </h3>
@@ -99,7 +100,8 @@ const Footer = () => {
                       {item.subLinks.map((item: any, idx: number) => {
                         return (
                           <Link key={idx} href={`${item.href}`}>
-                            <p className="text-sm text-[#555555] font-medium">
+                            <p className="text-sm text-[#858484] hover:text-white font-medium">
+                              {/* <p className="text-sm text-[#fff] font-medium"> */}
                               {item.name}
                             </p>
                           </Link>
@@ -110,60 +112,75 @@ const Footer = () => {
                 );
               })}
               <div className=" flex flex-col gap-4    ">
-                <h3 className=" relative font-bold md:text-xl text-base text-secondary ">
+                <h3 className=" relative font-bold md:text-xl text-base text-white ">
                   OUR OFFICE
                   <div className="bg-primary   absolute bottom-[-12px] p-[1px] w-[55px] h-[2px]"></div>
                 </h3>
-                <div className="flex flex-col gap-4 mt-4 text-sm text-[#555555] font-semibold ">
-                  <div className="flex gap-3 cursor-pointer">
-                    <div>
-                      <FlatIcon className="flaticon-address text-2xl font-bold text-secondary " />
+                <div className="flex flex-col gap-4 mt-4 text-sm text-[#fff] font-semibold ">
+                  {storeData?.storeAddress?.address && (
+                    <div className="flex gap-3 cursor-pointer">
+                      <div>
+                        <FlatIcon className="flaticon-address text-2xl font-bold text-white " />
+                      </div>
+                      <p>
+                        {storeData?.storeAddress?.address}
+                        {/* 3517 W. Gray St. Utica, Pennsylvania 57867 */}
+                      </p>
                     </div>
-                    <p>
-                      {storeData?.storeAddress?.address}
-                      {/* 3517 W. Gray St. Utica, Pennsylvania 57867 */}
-                    </p>
-                  </div>
-                  <div className="flex gap-3 cursor-pointer">
-                    <div>
-                      <FlatIcon className="flaticon-contact text-2xl font-bold text-secondary" />
+                  )}
+                  {storeData?.storePhone && (
+                    <div className="flex gap-3 cursor-pointer">
+                      <div>
+                        <FlatIcon className="flaticon-contact text-2xl font-bold text-white" />
+                      </div>
+                      <p>
+                        {/* (217) 555-0113, (217) 555-0113 */}
+                        {storeData?.storePhone}
+                      </p>
                     </div>
-                    <p>
-                      {/* (217) 555-0113, (217) 555-0113 */}
-                      {storeData?.storePhone}
-                    </p>
-                  </div>
-                  <a
-                    href={`mailto:${storeData?.storeEmail}`}
-                    className="flex gap-3 cursor-pointer"
-                  >
-                    <div>
-                      <FlatIcon className="flaticon-contact-1 text-2xl font-bold text-secondary" />
-                    </div>
-                    <p>{storeData?.storeEmail}</p>
-                  </a>
-                  <div className="text-secondary text-base font-semibold cursor-pointer">
+                  )}
+                  {storeData?.storeEmail && (
+                    <a
+                      href={`mailto:${storeData?.storeEmail}`}
+                      className="flex gap-3 cursor-pointer"
+                    >
+                      <div>
+                        <FlatIcon className="flaticon-contact-1 text-2xl font-bold text-white" />
+                      </div>
+                      <p>{storeData?.storeEmail}</p>
+                    </a>
+                  )}
+                  <div className="text-white text-base font-semibold cursor-pointer">
                     <span>Follow us on social media get</span>{" "}
                     <span className="text-primary">1000 Bonus </span>Points *
                     <span></span>
                   </div>
                   <div className="flex gap-4">
-                    <Link href={storeData ? storeData?.facebookUrl : ""} target="_blank">
+                    <Link
+                      href={storeData ? storeData?.facebookUrl : ""}
+                      target="_blank"
+                    >
                       <div>
                         <Image src={facebookImg} alt="" />
                       </div>
                     </Link>
-                    <Link href={storeData ? storeData?.instagramUrl : ""} target="_blank">
+                    <Link
+                      href={storeData ? storeData?.instagramUrl : ""}
+                      target="_blank"
+                    >
                       <div>
                         <Image src={instagram} alt="" />
                       </div>
                     </Link>
                     {/* <Link href={""} target="_blank"> */}
-                      <div className="cursor-pointer">
-                        <Image src={pinterest} alt="" />
-                      </div>
+                    <div className="cursor-pointer">
+                      <Image src={pinterest} alt="" />
+                    </div>
                     {/* </Link> */}
-                    <Link href={storeData ? storeData?.twitterUrl : ""} target="_blank">
+                    <Link
+                      href={storeData ? storeData?.twitterUrl : ""}
+                      target="_blank"
+                    >
                       <div>
                         <Image src={twitter} alt="" />
                       </div>
@@ -175,7 +192,7 @@ const Footer = () => {
             <div className="">
               <div className="flex md:items-center md:flex-row flex-col gap-y-4 justify-between gap-x-3">
                 <div className="flex flex-col">
-                  <div className=" md:text-2xl sm:text-xl text-lg font-semibold text-secondary mb-3">
+                  <div className=" md:text-2xl sm:text-xl text-lg font-semibold text-white mb-3">
                     <h2>We Accept</h2>
                   </div>
                   <div className="flex items-center lg:flex-nowrap flex-wrap md:gap-x-6 gap-x-4 gap-y-2 cursor-pointer">
@@ -189,7 +206,7 @@ const Footer = () => {
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <div className=" md:text-2xl sm:text-xl text-lg font-semibold text-secondary mb-3 md:text-end">
+                  <div className=" md:text-2xl sm:text-xl text-lg font-semibold text-white mb-3 md:text-end">
                     <h2>Delivery Partners</h2>
                   </div>
                   <div className="flex items-center md:justify-end lg:flex-nowrap flex-wrap md:gap-x-6 gap-x-4  gap-y-2 cursor-pointer">
@@ -207,11 +224,11 @@ const Footer = () => {
           </div>
           <div className="border-b-[1.5px] border-[white] border-line"></div>
           <div className="flex sm:flex-row flex-col items-center sm:justify-between gap-x-4 gap-y-4   py-5 px-body">
-            <p className="text-secondary md:text-base text-sm font-medium text-center sm:text-start ">
+            <p className="text-white md:text-base text-sm font-medium text-center sm:text-start ">
               ©2019-2023 SHEINSTYESTORES INC All Rights Reserved
             </p>
             <div className="">
-              <div className="text-secondary md:text-base text-sm font-medium mb-3">
+              <div className="text-white md:text-base text-sm font-medium mb-3">
                 Download App and Get 10% Extra Discount
               </div>
               <div className="flex sm:flex-row flex-row items-center sm:gap-x-6 gap-x-2 gap-y-4">

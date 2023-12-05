@@ -58,7 +58,7 @@ const PopUp = ({ setShowPopup }) => {
   return (
     <div>
       <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50 flex justify-center items-center">
-        <div className="xl:w-[70%] lg:w-[80%] md:w-[50%] sm:w-[70%] w-[90%] h-auto    flex flex-col justify-end gap-y-3 ">
+        <div className="xl:w-[70%] scale-75 lg:w-[80%] md:w-[50%] sm:w-[70%] w-[90%] h-auto    flex flex-col justify-end gap-y-3 ">
           <div
             className="w-full flex justify-end items-center"
             onClick={() => {

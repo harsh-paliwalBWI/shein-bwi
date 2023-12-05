@@ -13,6 +13,7 @@ import {
   fetchSectionData,
 } from "../../../utils/databaseService";
 import ProductListCard from "../productListCard/ProductListCard";
+import Link from "next/link";
 
 const ProductList = ({ section, myKey }) => {
   const { data: homeData } = useQuery({
@@ -59,13 +60,18 @@ const ProductList = ({ section, myKey }) => {
 
             <div className="flex items-center justify-between  mb-6">
               {section?.sectionName && (
-                <div className="flex flex-col justify-center ">
+                <div className="flex  flex-col items-center gap-2 justify-center ">
                   <h3 className="text-[#FFFFFF] text-lg lg:text-4xl font-semibold">
                     {section?.sectionName}
                   </h3>
-                  <h3 className="text-[#FDDF40] text-lg lg:text-2xl font-semibold">
-                    {section?.sectionName}
-                  </h3>
+                  <div className="">
+                    <Link
+                      href={`/view-all?type=${section?.widgetType}&id=${section?.widgetID}&name=${section?.sectionName}`}
+                      className="text-primary font-medium underline"
+                    >
+                      View All
+                    </Link>
+                  </div>
                 </div>
               )}
 

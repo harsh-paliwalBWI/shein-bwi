@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import ProductCarouselCard from "../productCarouselCard/ProductCarouselCard";
+import Link from "next/link";
 
 const ProductCarousel = ({ section, myKey,cookie }) => {
   const { data: homeData } = useQuery({
@@ -113,11 +114,19 @@ return product?.id
           ?.arr?.length !== 0 && (
           <div className="">
             {section?.sectionName && (
-              <div className=" w-auto flex justify-start mb-2 px-body">
+              <div className="flex  flex-col items-center gap-2 justify-center w-auto  mb-2 px-body">
                 <h3 className=" text-secondary  sm:text-3xl text-xl font-bold">
                   {section?.sectionName}
                   {/* Nutrition & Supplements */}
                 </h3>
+                <div className="">
+                  <Link
+                    href={`/view-all?type=${section?.widgetType}&id=${section?.widgetID}&name=${encodeURIComponent(section?.sectionName)}`}
+                    className="text-primary font-medium underline"
+                  >
+                    View All
+                  </Link>
+                </div>
               </div>
             )}
             <div className="  justify-center items-center relative lg:mt-5 ">

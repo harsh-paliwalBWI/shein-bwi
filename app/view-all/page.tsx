@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { fetchHomeSections } from "../../utils/databaseService";
 import CategoryCard from "../../components/categoryCard/CategoryCard";
+import ProductCarouselCard from "../../components/HomePage/productCarouselCard/ProductCarouselCard";
 
 const page = async ({ searchParams }) => {
   console.log({ searchParams });
@@ -42,13 +43,40 @@ const page = async ({ searchParams }) => {
         </div>
       );
     }
+    if (searchParams?.type === "product-carousel" ||searchParams?.type === "product-list"  ) {
+      return (
+        <div className="grid xl:grid-cols-5  lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 sm:gap-x-10 gap-x-2 sm:gap-y-10 gap-y-5">
+          {homeData &&
+            homeData?.data?.filter(
+              (val: any) => val?.id === searchParams?.id
+            ) &&
+            homeData?.data?.filter((val) => val?.id === searchParams?.id) &&
+            homeData?.data
+              ?.filter((val: any) => val?.id === searchParams?.id)[0]
+              ?.arr?.map((productData, idx) => {
+                return (
+                  <div className="" key={idx}>
+                    <ProductCarouselCard
+                      product={{
+                        ...productData?.data,
+                        ...productData,
+                        data: null,
+                      }}
+                      id={productData?.id}
+                    />
+                  </div>
+                );
+              })}
+        </div>
+      );
+    }
     return <></>;
   }
 
   return (
     <div className="flex flex-col py-5 px-body">
       <div className="flex justify-center py-4">
-        <h1 className="text-center text-2xl font-semibold">
+        <h1 className="text-center sm:text-3xl text-xl font-bold">
           {searchParams?.name || ""}
         </h1>
       </div>

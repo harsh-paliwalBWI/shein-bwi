@@ -216,7 +216,7 @@ const NavbarClient = ({ cookie }: any) => {
         <>
           <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body z-10 ">
             <div className="flex items-center   w-full  justify-between lg:gap-5  ">
-              <div className="flex items-center lg:gap-8 gap-4 lg:w-1/3 w-[18%] ">
+              {/* <div className="flex items-center lg:gap-8 gap-4 lg:w-1/3 w-[18%] ">
                 <div>
                   {" "}
                   <FlatIcon className="flaticon-facebook lg:text-base text-sm" />{" "}
@@ -233,18 +233,26 @@ const NavbarClient = ({ cookie }: any) => {
                   {" "}
                   <FlatIcon className="flaticon-youtube lg:text-xl text-lg" />
                 </div>
-              </div>
+              </div> */}
               {/* <div className="flex justify-center  w-2/3 border border-white">
                 <span className="text-secondary font-bold">New Users Only</span>
                 <span>All India Free Delivery + 15% Extra Discount </span>
                 <span className="text-secondary font-bold"> Code: SHE15</span>
               </div> */}
-              <div className="flex justify-center gap-2 items-start  lg:w-2/3 w-[64%]  xl:text-sm text-xs ">
-                <p className="text-secondary font-bold">New Users Only </p>
-                <p>All India Free Delivery + 15% Extra Discount </p>
-                <p className="text-secondary font-bold"> Code: SHE15</p>
+              {/* <div className="flex justify-center items-center gap-2   lg:w-2/3 w-[64%]  xl:text-sm text-xs "> */}
+              <div className="flex justify-center items-center gap-2   w-full  xl:text-sm text-xs ">
+                <p className=" text-base lg:text-lg text-secondary font-bold">
+                  New Users Only{" "}
+                </p>
+                <p className=" text-base lg:text-lg">
+                  All India Free Delivery + 15% Extra Discount{" "}
+                </p>
+                <p className=" text-base lg:text-lg text-secondary font-bold">
+                  {" "}
+                  Code: SHE15
+                </p>
               </div>
-              <div className="flex items-center justify-end gap-8 lg:w-1/3 w-[18%]   xl:text-sm text-xs ">
+              {/* <div className="flex items-center justify-end gap-8 lg:w-1/3 w-[18%]   xl:text-sm text-xs ">
                 <div className="flex items-center gap-2 invisible">
                   <h4>English</h4>
                   <FlatIcon className="flaticon-arrow-down text-[10px] text-white" />
@@ -253,7 +261,7 @@ const NavbarClient = ({ cookie }: any) => {
                   <h4>INR</h4>
                   <FlatIcon className="flaticon-arrow-down text-[10px] text-white" />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="z-10  ">
@@ -616,6 +624,24 @@ const NavbarClient = ({ cookie }: any) => {
             >
               <div className="bg-white">Prescription</div>
             </Modal> */}
+          </div>
+          <div className="w-full px-body grid   md:grid-cols-4 py-2  justify-between items-stretch">
+            <div className="flex gap-2 justify-center items-center ">
+              <FlatIcon className=" text-primary flaticon-free-delivery md:text-2xl lg:text-4xl font-bold" />
+              <p className="md:text-sm lg:text-lg font-semibold">All India Free Delivery</p>
+            </div>
+            <div className="flex gap-2 justify-center items-center ">
+              <FlatIcon className=" text-primary flaticon-fast-delivery md:text-2xl lg:text-4xl font-bold" />
+              <p className="md:text-sm lg:text-lg font-semibold">Fast Delivery</p>
+            </div>
+            <div className="flex gap-2 justify-center items-center ">
+              <FlatIcon className=" text-primary flaticon-trending-topic md:text-2xl lg:text-4xl font-bold" />
+              <p className="md:text-sm lg:text-lg font-semibold">Trending Style</p>
+            </div>
+            <div className="flex gap-2 justify-center items-center ">
+              <FlatIcon className=" text-primary flaticon-delivery-status-3 md:text-2xl lg:text-4xl font-bold" />
+              <p className="md:text-sm lg:text-lg font-semibold">Easy Return & Exchange</p>
+            </div>
           </div>
         </>
       )}
