@@ -95,7 +95,11 @@ const CategoriesBar: FC<Props> = ({
         {categories[hoveredCategory]?.category?.banner &&
           categories[hoveredCategory]?.category?.banner?.url && (
             <div className="w-[25%] rounded-br-lg flex flex-col items-center justify-center pr-4">
-              <div className="max-h-[400px]">
+              <Link
+                href={`/shop/category/${categories[hoveredCategory]?.category?.slug?.name}`}
+                // target="_blank"
+                className="max-h-[400px]"
+              >
                 <Image
                   src={categories[hoveredCategory]?.category?.banner?.url}
                   alt={categories[hoveredCategory]?.category?.name}
@@ -103,7 +107,7 @@ const CategoriesBar: FC<Props> = ({
                   height={1000}
                   className="w-full h-full object-contain"
                 />
-              </div>
+              </Link>
             </div>
           )}
       </div>
