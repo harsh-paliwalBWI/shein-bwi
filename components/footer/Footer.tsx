@@ -35,6 +35,7 @@ const Footer = () => {
         { name: "Business Enquiries", href: "business-enquiries" },
         { name: "Become a Partner", href: "bacome-a-partner" },
         { name: "Fraud Alert", href: "fraud-alert" },
+        { name: "Store Locations", href: "store-locations" },
       ],
     },
     {

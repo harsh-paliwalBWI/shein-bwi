@@ -812,4 +812,19 @@ export async function fetchPrivacyData() {
     }
 }
 
+export const fetchStorLocations = async () => {
+    const res = await getDocs(collection(db, "branches")).then((snaoShot) => {
+        if (snaoShot.docs.length === 0) return [];
 
+        let arr = [];
+        for (const location of snaoShot.docs) {
+            let data = location.data();
+            arr.push({ ...data, id: location.id })
+        }
+
+        return arr
+    })
+
+    return JSON.parse(JSON.stringify(res))
+    // return (await getDoc(doc(db, "storeLocations", 'locations'))).data();
+}
