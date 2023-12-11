@@ -100,14 +100,14 @@ const Categories = () => {
                 ?.slice(
                   0,
                   categorycheck1
-                    ? 1
-                    : categorycheck2
-                    ? 2
-                    : categorycheck3
                     ? 3
+                    : categorycheck2
+                    ? 6
+                    : categorycheck3
+                    ? 8
                     : categorycheck4
-                    ? 4
-                    : 5
+                    ? 10
+                    : 10
                 )
                 .map((categoryData, index) => {
                   let category = categoryData?.category;
