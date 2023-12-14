@@ -91,6 +91,8 @@ const Footer = () => {
       email: email,
       createdAt: new Date(),
     }
+    console.log("data");
+    
     try {
       console.log("submitted");
       await addDoc(collection(db, "newsletter"), data)

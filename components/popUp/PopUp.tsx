@@ -56,9 +56,10 @@ const PopUp = ({ setShowPopup }) => {
     }
   };
   return (
+    // xl:w-[60%] scale-55
     <div>
       <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50 flex justify-center items-center">
-        <div className="xl:w-[65%] scale-60 lg:w-[80%] md:w-[50%] sm:w-[70%] w-[90%] h-auto    flex flex-col justify-end gap-y-3   ">
+        <div className="xl:w-[60%] scale-55 lg:w-[80%] md:w-[50%] sm:w-[70%] w-[90%] h-auto    flex flex-col justify-end gap-y-3   ">
           {/* <div
             className="w-full flex justify-end items-center border border-[red]"
             onClick={() => {
@@ -105,7 +106,7 @@ const PopUp = ({ setShowPopup }) => {
                       // }}
                     />
                   </div>
-                  <div className="xl:my-7 my-4 flex flex-col gap-2">
+                  <div className="xl:my-5 my-3 flex flex-col gap-2">
                     <div className="flex justify-center text-secondary xl:text-lg sm:text-base text-sm font-semibold">
                       <p>Get Your Entire Order For</p>
                     </div>
@@ -225,13 +226,13 @@ const PopUp = ({ setShowPopup }) => {
                   </div>
                 </div>
               </div>
-              <div className="w-[50%] lg:block hidden xl:h-[630px] h-[570px] ">
+              <div className="w-[50%] lg:block hidden xl:h-[610px] h-[570px] ">
                 <Image
                   src={beautyImg}
                   alt=""
                   height={1000}
                   width={1000}
-                  className="w-full h-full  "
+                  className="w-full h-[100%]  "
                 />
               </div>
             </div>

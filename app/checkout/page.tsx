@@ -280,6 +280,7 @@ setCouponName(couponText.name)
     // console.log("inside placeOrder");
     // console.log(paymentSummary,"--");
     // toast.success("Order Placed Successfully");
+    setIsLoading(true)
 
     const autoConfirmOrder = await getDoc(doc(db, "payment", "info")).then(
       (val) => {
@@ -692,6 +693,7 @@ setCouponName(couponText.name)
                     </p>
                   </div>
                 </div>
+
                 <div className="flex  ">
                   <button
                     className=" w-full text-white py-2 px-2 hover:bg-white hover:text-black cursor-pointer hover:border hover:border-secondary   md:h-[60px] h-[40px] bg-secondary  text-center  text-base font-semibold"
@@ -709,13 +711,13 @@ setCouponName(couponText.name)
                     // }}
                     //  previous onclick end
                   >
-                    {/* {tabs} */}
+                    
                     {selectedTab === tabs[2]
                       ? "Proceed To Payment"
                       : selectedTab === tabs[1]
                       ? "Proceed To Review"
                       : "Select Payment Method"}
-                    {/* Proceed To Payment */}
+                    
                   </button>
                 </div>
               </div>
