@@ -38,15 +38,15 @@ const Categories = () => {
   };
 
   return (
-    <div className=" relative  py-3.5  w-[100%] mx-auto  bg-black px-body">
+    <div className=" relative  py-3.5  w-[100%] mx-auto  bg-black px-body ">
       <OutsideClickHandler
         onClick={() => {
           // setTab(0);
         }}
       >
         <div className="   ">
-          <div className="w-full mx-auto flex items-center justify-between gap-5">
-            <div className="flex items-center xl:gap-10 gap-5">
+          <div className="w-full mx-auto flex items-center justify-between gap-5  ">
+            <div className="flex items-center xl:gap-10 gap-5 ">
               {/* <div
                 onClick={() => {
                   // handleTabClick(0);
@@ -140,7 +140,7 @@ const Categories = () => {
                         // }
                       }}
                       className={`
-                     lg:gap-2 gap-1 items-center w-fit   border-b-2 border-black hover:border-primary   `}
+                     lg:gap-2 gap-1 items-center w-fit  border-b-2 border-black hover:border-primary   `}
                     >
                       <Link
                         href={
@@ -153,7 +153,7 @@ const Categories = () => {
                           setHoveredCategory(null);
                         }}
                       >
-                        <h1 className="text-xs md:text-[13px] lg:text-sm text-white font-medium cursor-pointer">
+                        <h1 className="text-xs md:text-[13px] lg:text-sm text-white font-medium cursor-pointer ">
                           {category.name}
                         </h1>
                       </Link>

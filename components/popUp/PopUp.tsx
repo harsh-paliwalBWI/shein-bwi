@@ -58,9 +58,9 @@ const PopUp = ({ setShowPopup }) => {
   return (
     <div>
       <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50 flex justify-center items-center">
-        <div className="xl:w-[70%] scale-75 lg:w-[80%] md:w-[50%] sm:w-[70%] w-[90%] h-auto    flex flex-col justify-end gap-y-3 ">
-          <div
-            className="w-full flex justify-end items-center"
+        <div className="xl:w-[65%] scale-60 lg:w-[80%] md:w-[50%] sm:w-[70%] w-[90%] h-auto    flex flex-col justify-end gap-y-3   ">
+          {/* <div
+            className="w-full flex justify-end items-center border border-[red]"
             onClick={() => {
               setShowPopup((prev) => !prev);
             }}
@@ -70,15 +70,27 @@ const PopUp = ({ setShowPopup }) => {
                 icon={"flaticon-close text-primary font-bold text-[10px]"}
               />
             </button>
-          </div>
+          </div> */}
           <OutsideClickHandler
             onClick={() => {
               setShowPopup(false);
             }}
           >
-            <div className="flex  w-full h-auto  bg-white ">
-              <div className="lg:w-[50%] w-[100%] xl:px-10 sm:px-5 px-3 ">
-                <div className="w-full my-3 xl:my-6 md:my-4 relative ">
+            <div className="flex  w-full h-auto  bg-white   relative">
+            <div
+            className=" absolute w-[50px] h-[50px]  rounded-full right-0 top-0  flex justify-center items-center   "
+            onClick={() => {
+              setShowPopup((prev) => !prev);
+            }}
+          >
+            <button className="bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center">
+              <FlatIcon
+                icon={"flaticon-close text-primary font-bold text-lg"}
+              />
+            </button>
+          </div>
+              <div className="lg:w-[50%] w-[100%] xl:px-10 sm:px-5 px-3  ">
+                <div className="w-full my-3 xl:my-6 md:my-4 relative  ">
                   <div className=" flex justify-center  ">
                     <Image
                       src={logo}
@@ -194,7 +206,7 @@ const PopUp = ({ setShowPopup }) => {
                       <button>Get My Offer</button>
                     )}
                   </div>
-                  <div className="  flex justify-center items-center lg:mb-10 mb-5 underline lg:text-base text-sm font-semibold ">
+                  <div className="  flex justify-center items-center lg:mb-5 mb-5 underline lg:text-base text-sm font-semibold ">
                     <button>I Will Pay Full Price</button>
                   </div>
                   <div className="text-center text-gray-700 md:text-sm text-xs font-medium">
@@ -213,7 +225,7 @@ const PopUp = ({ setShowPopup }) => {
                   </div>
                 </div>
               </div>
-              <div className="w-[50%] lg:block hidden xl:h-[650px] h-[570px]">
+              <div className="w-[50%] lg:block hidden xl:h-[630px] h-[570px] ">
                 <Image
                   src={beautyImg}
                   alt=""

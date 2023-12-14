@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 // import { fetchSimilarProductsForCart } from '../../../config/typesense';
 import { fetchSimilarProductsForCart } from "../../config/typesense";
 import instagram from "../../images/instagram (3) 1.svg";
+import instagram2 from "../../images/instagram (9) 1.svg";
 
 // import VideoCard from '../videoCard/VideoCard';
 import InstaFamilyCard from "./InstaFamilyCard";
@@ -107,21 +108,30 @@ const InstaFamilySlider = () => {
     <>
       {similarData && similarData.length > 0 && (
         // <div className="px-body bg-instagram-section-bg bg-cover bg-no-repeat  md:py-16 py-10  -mb-4">
-        <div className="px-body  bg-cover bg-no-repeat  md:py-16 py-10  -mb-4">
+        <div className="px-body  bg-cover bg-no-repeat    ">
           {/* <div className="text-white"> */}
-          <div className="">
+          <div className="flex flex-col gap-4">
             <div className="flex justify-center items-center gap-2 ">
-              <div>
+              {/* <div>
                 <Image src={instagram} alt="" />
-              </div>
+              </div> */}
               {/* <FlatIcon className="flaticon-instagram  sm:text-5xl text-3xl" /> */}
               <h1 className="sm:text-3xl text-xl font-bold">
                 INSTAGRAM FAMILY
               </h1>
             </div>
             <h5 className="text-center sm:text-xl sm font-semibold">
-              Tag us @shienstylestores to get featured
+              {/* Tag us @shienstylestores to get featured */}
+              Tag us @sheinstylestores and use #sheinstylestores to get feautured
             </h5>
+            <div className="text-primary font-medium underline text-center cursor-pointer">
+                  {/* <Link
+                    href={`/view-all?type=${section?.widgetType}&id=${section?.widgetID}&name=${encodeURIComponent(section?.sectionName)}`}
+                    className="text-primary font-medium underline"
+                  > */}
+                    View All
+                  {/* </Link> */}
+                </div>
           </div>
           <div className="  justify-center items-center relative    md:py-12 py-6">
             <div className="back  ">
@@ -145,6 +155,14 @@ const InstaFamilySlider = () => {
                 </Slider>
               </div>
             </div>
+          </div>
+          <div className="flex items-center sm:gap-3 gap-2 justify-center lg:text-2xl md:text-xl sm:text-base text-sm font-semibold ">
+            <h2>EXPLORE MORE ON</h2>
+              <div className="sm:w-fit sm:h-full h-8 w-8 ">
+                <Image src={instagram2} alt="" />
+              </div>
+              {/* <FlatIcon className="flaticon-instagram  sm:text-5xl text-3xl" /> */}
+            <h2>@sheinstylestores</h2>
           </div>
         </div>
       )}

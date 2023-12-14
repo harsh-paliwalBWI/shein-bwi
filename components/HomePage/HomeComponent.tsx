@@ -15,6 +15,7 @@ import InstaFamilySlider from "../instaFamily/InstaFamilySlider";
 import ReviewSlider from "../reviews/ReviewSlider";
 import WatchShopSlider from "../watchAndShop/WatchShopSlider";
 import CategoryGrid from "./widgets/CategoryGrid";
+import StoreLinks from "./widgets/StoreLinks";
 // import CategoryGrid from "./widgets/CategoryGrid";
 
 const HomeComponent = ({ cookie }) => {
@@ -73,6 +74,8 @@ const HomeComponent = ({ cookie }) => {
         return <WatchShopSlider />;
       case "instagram-family":
         return <InstaFamilySlider />;
+        case "playStore":
+          return <StoreLinks/>;
       default:
     }
   }
@@ -87,6 +90,7 @@ const HomeComponent = ({ cookie }) => {
               return renderWidgets(section, idx);
             }
           })}
+          {/* <StoreLinks/> */}
       </div>
     </div>
   );

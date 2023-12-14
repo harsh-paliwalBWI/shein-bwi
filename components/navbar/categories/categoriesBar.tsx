@@ -17,13 +17,10 @@ const CategoriesBar: FC<Props> = ({
   setHoveredCategory,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(0);
-
   const style =
     "flex items-center justify-between gap-2 font-bold lg:text-base text-sm lg:px-[20px] px-[10px] py-2 cursor-pointer";
   const style2 = "font-semibold lg:text-base text-sm lg:px-[20px] px-[10px]";
-
   if (hoveredCategory === null) return <></>;
-
   if (hoveredCategory === "shopby") {
     return SubSubCategoryRender(
       categories,
@@ -32,19 +29,18 @@ const CategoriesBar: FC<Props> = ({
       selectedCategory
     );
   }
-
   return (
-    <div className="absolute left-0 w-[98vw]  right-0  flex justify-center  rounded-b-lg min-w-[100%]  mx-auto   z-30">
+    <div className="absolute left-0 w-[98.75vw]  right-0  flex justify-center rounded-b-lg min-w-[100%]  mx-auto   z-30">
       <div
-        className="flex justify-between items-center mx-body w-full  bg-white z-30  shadow-lg rounded-b-lg"
+        className="flex justify-between mx-[4%] w-[95%]  bg-white z-30  shadow-lg rounded-b-lg"
         onMouseLeave={() => {
           setHoveredCategory(null);
         }}
       >
-        <div className="flex-1 bg py-4 rounded-bl-lg px-2 max-h-[400px] flex flex-col flex-wrap">
+        <div className=" py-4 rounded-bl-lg px-2 max-h-[400px] flex flex-row gap-12 ">
           {categories[hoveredCategory]?.subcategories?.map((subCat) => {
             return (
-              <>
+              <div className="flex flex-col">
                 <Link
                   href={
                     subCat?.isSubcategories
@@ -58,7 +54,7 @@ const CategoriesBar: FC<Props> = ({
                   <div
                     className={` w-auto flex items-center justify-between px-2 gap-6   hover:bg-white`}
                   >
-                    <h2 className="whitespace-nowrap font-semibold text-base hover:text-primary">
+                    <h2 className="whitespace-nowrap font-semibold text-lg hover:text-primary">
                       {subCat?.name}
                     </h2>
                   </div>
@@ -80,34 +76,30 @@ const CategoriesBar: FC<Props> = ({
                         <div
                           className={`mt-1 w-auto flex items-center justify-between px-2   hover:bg-white`}
                         >
-                          <h2 className="whitespace-nowrap text-sm hover:text-primary">
+                          <h2 className="whitespace-nowrap text-base hover:text-primary">
                             {subSubCat?.name}
                           </h2>
                         </div>
                       </Link>
                     );
                   })}
-              </>
+              </div>
               // </div>
             );
           })}
         </div>
         {categories[hoveredCategory]?.category?.banner &&
           categories[hoveredCategory]?.category?.banner?.url && (
-            <div className="w-[25%] rounded-br-lg flex flex-col items-center justify-center pr-4">
-              <Link
-                href={`/shop/category/${categories[hoveredCategory]?.category?.slug?.name}`}
-                // target="_blank"
-                className="max-h-[400px]"
-              >
+            <div className="w-[25%] max-h-[400px] rounded-br-lg flex flex-col items-center justify-center p-8 mr-6 ">
+              <div className="h-[400px] w-[400px] aspect-square flex items-center justify-center object-contain">
                 <Image
                   src={categories[hoveredCategory]?.category?.banner?.url}
                   alt={categories[hoveredCategory]?.category?.name}
-                  width={1000}
-                  height={1000}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-contain"
                 />
-              </Link>
+              </div>
             </div>
           )}
       </div>
@@ -115,7 +107,6 @@ const CategoriesBar: FC<Props> = ({
   );
 };
 export default CategoriesBar;
-
 function SubSubCategoryRender(
   categories: any,
   setSelectedCategory: React.Dispatch<any>,
@@ -125,7 +116,7 @@ function SubSubCategoryRender(
   return (
     <div className="absolute left-0  w-[90vw]   min-w-[100%]  z-30">
       <div className="flex  gap-2 absolute left-0 w-auto  min-w-[100%]  bg-white shadow-lg rounded-b-lg">
-        <div className=" w-fit py-[0px] flex flex-col  bg-[#ececec] rounded-b-lg">
+        <div className=" w-fit py-[0px] flex flex-col  bg-[#ECECEC] rounded-b-lg">
           {categories &&
             categories?.map((categoryData, idx) => {
               let category = categoryData?.category;

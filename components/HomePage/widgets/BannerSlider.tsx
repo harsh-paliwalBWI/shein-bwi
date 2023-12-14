@@ -190,6 +190,7 @@ import Slider from "react-slick";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { bannerLink } from "../../../utils/bannerLink/bannerLinking";
+import FlatIcon from "../../flatIcon/flatIcon";
 const BannerSlider = ({ section, myKey }) => {
   const router = useRouter();
   const { data: homeData } = useQuery({
@@ -205,6 +206,18 @@ const BannerSlider = ({ section, myKey }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return <div className={`${className}`} onClick={onClick} />;
+  }
+
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return <div className={`${className}`} onClick={onClick} />;
+  }
+  const arrowButtonClass =
+    "absolute top-0 bottom-0 my-auto bg-[#fef8fb] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20";
   return (
     // <div className="relative" key={myKey}>
     <>
@@ -215,10 +228,19 @@ const BannerSlider = ({ section, myKey }) => {
           0 &&
         homeData?.data?.filter((val: any) => val?.id === section?.widgetID)[0]
           ?.arr?.length !== 0 && (
-          <div className="w-full z-10">
+          <div className="w-full z-10 relative ">
+             <div className="">
+                <button
+                  className={`${arrowButtonClass} left-0 lg:-left-0 flex items-center justify-center`}
+                  onClick={() => slider.current?.slickPrev()}
+                >
+                  <FlatIcon className="flaticon-left-arrow text-secondary sm:text-2xl text-lg font-bold"/>
+                </button>
+              </div>
             <Slider
               ref={slider}
               {...settings}
+              dotsClass={`slick-dots `}
               nextArrow={<></>}
               prevArrow={<></>}
               autoplay={true}
@@ -259,6 +281,14 @@ const BannerSlider = ({ section, myKey }) => {
                     </div>
                   ))}
             </Slider>
+            <div className="">
+                <button
+                  className={`${arrowButtonClass} right-0 lg:-right-0 text-center flex items-center justify-center   `}
+                  onClick={() => slider.current?.slickNext()}
+                >
+                  <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary sm:text-2xl text-lg font-bold"/>
+                </button>
+              </div>
           </div>
         )}
     </>

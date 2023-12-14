@@ -116,7 +116,7 @@ const ProductCarouselCard = ({ product, id }) => {
       </div>
       <Link href={`/product/${product?.slug?.name}`}>
         <div
-          className={`border-[1px]  p-2 product-card ${
+          className={`border-[1px]   product-card ${
             hoveredProduct === product?.id
               ? "border-primary"
               : "border-secondary"
@@ -157,6 +157,7 @@ const ProductCarouselCard = ({ product, id }) => {
               </div>
             </div>
           </div>
+          <div className=" pl-2 pr-2 pb-2">
           <div className="flex  overflow-hidden truncate w-full text-xs font-medium text-primary capitalize mb-1">
             <h2 className="">{""}</h2> {/* to be checked */}
           </div>
@@ -181,6 +182,7 @@ const ProductCarouselCard = ({ product, id }) => {
                 </p>
               </div>
             )}
+          </div>
           </div>
         </div>
       </Link>

@@ -131,7 +131,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
       </div>
       <Link href={`/product/${product?.slug?.name}`}>
         <div
-          className={`border-[1px] p-1 md:p-2 product-card ${
+          className={`border-[1px]  product-card ${
             hoveredProduct === product?.id
               ? "border-primary"
               : "border-secondary"
@@ -188,6 +188,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
               </div>
             </div>
           </div>
+          <div className="pl-2 pr-2 pb-2">
           <div className="line-clamp-1 w-full text-sm font-medium text-primary capitalize mb-1 sm:mb-2 md:mb-3">
             <h2 className="">{product?.prodName}</h2>
           </div>
@@ -217,6 +218,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
                 </p>
               </div>
             )}
+          </div>
           </div>
         </div>
       </Link>

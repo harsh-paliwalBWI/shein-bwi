@@ -3,7 +3,7 @@ import Link from "next/link";
 // import logo from "../../images/MedX-Pharmacy-Logo-R-01 1 (1).svg";
 // import Logo from "../../images/Group 34330.png"
 // import logo from "../../images/Frame 34430.svg";
-import logo from "../../images/Group 34291.png";
+import logo from "../../images/Group 34291.svg";
 import axios from "axios";
 import { toast } from "react-toastify";
 import React, { useEffect, useState, Fragment } from "react";
@@ -56,6 +56,7 @@ import { dividerClasses } from "@mui/material";
 import { constant } from "../../utils/constants";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
 import PopUp from "../popUp/PopUp";
+import { Popover } from '@headlessui/react';
 
 const NavbarClient = ({ cookie }: any) => {
   const cart = useAppSelector((state) => state.cartReducer.cart);
@@ -78,7 +79,15 @@ const NavbarClient = ({ cookie }: any) => {
   const router = useRouter();
   const [variant, setVariant] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const handleMouseEnter = () => {
+    setIsMenuOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMenuOpen(false);
+  };
   // console.log(pathname,"name");
 
   const handleLoginClick = () => {
@@ -240,7 +249,10 @@ const NavbarClient = ({ cookie }: any) => {
                 <span className="text-secondary font-bold"> Code: SHE15</span>
               </div> */}
               {/* <div className="flex justify-center items-center gap-2   lg:w-2/3 w-[64%]  xl:text-sm text-xs "> */}
-              <div className="flex justify-center items-center gap-2   w-full  xl:text-sm text-xs ">
+              <Link href={`/view-all?type=product-carousel&id=H6ZyHPlP74sOsbcsA8Cj&name=${encodeURIComponent("BESTSELLER")}`}
+                    className="flex justify-center items-center gap-2   w-full  xl:text-sm text-xs "
+                  >
+              {/* <div className="flex justify-center items-center gap-2   w-full  xl:text-sm text-xs "> */}
                 <p className=" text-base lg:text-lg text-secondary font-bold">
                   New Users Only{" "}
                 </p>
@@ -251,7 +263,8 @@ const NavbarClient = ({ cookie }: any) => {
                   {" "}
                   Code: SHE15
                 </p>
-              </div>
+              {/* </div> */}
+              </Link>
               {/* <div className="flex items-center justify-end gap-8 lg:w-1/3 w-[18%]   xl:text-sm text-xs ">
                 <div className="flex items-center gap-2 invisible">
                   <h4>English</h4>
@@ -583,7 +596,51 @@ const NavbarClient = ({ cookie }: any) => {
                   </div>
                   <div className="flex items-center justify-end gap-7  w-[30%]">
                     {userData ? (
-                      UserDropDown(userData, handleLogout)
+                      // UserDropDown(userData, handleLogout)
+
+
+                      <div className="flex items-center justify-center">
+                      <div
+                         onMouseEnter={handleMouseEnter}
+                         onMouseLeave={handleMouseLeave}
+                        className="relative text-left flex justify-center items-center group"
+                      >
+                        <div className=" cursor-pointer">
+                          <div className="flex items-center gap-2">
+                            <FlatIcon className="flaticon-user-fill text-2xl" />
+                            {(userData && userData?.name) || "User "}
+                          </div>
+                        </div>
+                        <Transition
+                          as={Fragment}
+                          show={isMenuOpen}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <div className="z-50 absolute right-0 mt-2 top-full w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="px-1 py-1">
+                              <Link href={"/profilepage"}>
+                                <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:text-primary">
+                                  Profile
+                                </button>
+                              </Link>
+                              <button
+                                onClick={handleLogout}
+                                className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:text-primary"
+                              >
+                                Logout
+                              </button>
+                            </div>
+                          </div>
+                        </Transition>
+                      </div>
+                    </div>
+
+
                     ) : !isLoginOpen ? (
                       <div
                         className="flex items-center gap-2 cursor-pointer"
@@ -625,6 +682,7 @@ const NavbarClient = ({ cookie }: any) => {
               <div className="bg-white">Prescription</div>
             </Modal> */}
           </div>
+       
           <div className="w-full px-body grid   md:grid-cols-4 py-2  justify-between items-stretch">
             <div className="flex gap-2 justify-center items-center ">
               <FlatIcon className=" text-primary flaticon-free-delivery md:text-2xl lg:text-4xl font-bold" />
@@ -643,6 +701,7 @@ const NavbarClient = ({ cookie }: any) => {
               <p className="md:text-sm lg:text-lg font-semibold">Easy Return & Exchange</p>
             </div>
           </div>
+          {/* </Link> */}
         </>
       )}
       {isClient && isLoginOpen && (
@@ -659,63 +718,71 @@ const NavbarClient = ({ cookie }: any) => {
 
 export default NavbarClient;
 
-function UserDropDown(userData: any, handleLogout: any): React.ReactNode {
-  return (
-    <div className=" flex items-center justify-center">
-      <Menu
-        as="div"
-        className="relative text-left flex justify-center items-center "
-      >
-        <div className="flex justify-center items-center">
-          <Menu.Button className="">
-            <div className="flex items-center  gap-2">
-              <FlatIcon className="flaticon-user-fill text-2xl" />
-              {(userData && userData?.name) || "User "}
-            </div>
-          </Menu.Button>
-        </div>
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <Menu.Items className="z-50 absolute right-0 mt-2 top-full w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="px-1 py-1 ">
-              <Menu.Item>
-                {({ active }) => (
-                  <Link href={"/profilepage"}>
-                    <button
-                      className={`${
-                        active ? "bg-primary text-white" : "text-gray-900"
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    >
-                      {/* {active ? "active" : "notActive"} */}
-                      Profile
-                    </button>
-                  </Link>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={handleLogout}
-                    className={`${
-                      active ? "bg-primary text-white" : "text-gray-900"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    {/* {active ? "active" : "notActive"} */}
-                    Logout
-                  </button>
-                )}
-              </Menu.Item>
-            </div>
-          </Menu.Items>
-        </Transition>
-      </Menu>
-    </div>
-  );
-}
+// function UserDropDown(userData: any, handleLogout: any): React.ReactNode {
+//   return (
+//     <div className=" flex items-center justify-center">
+//       <Menu
+//         as="div"
+//         className="relative text-left flex justify-center items-center "
+//       >
+//         <div className="flex justify-center items-center">
+//           <Menu.Button className="border border-[red]">
+//             <div className="flex items-center  gap-2">
+//               <FlatIcon className="flaticon-user-fill text-2xl" />
+//               {(userData && userData?.name) || "User "}
+//             </div>
+//           </Menu.Button>
+//         </div>
+//         <Transition
+//           as={Fragment}
+//           enter="transition ease-out duration-100"
+//           enterFrom="transform opacity-0 scale-95"
+//           enterTo="transform opacity-100 scale-100"
+//           leave="transition ease-in duration-75"
+//           leaveFrom="transform opacity-100 scale-100"
+//           leaveTo="transform opacity-0 scale-95"
+//         >
+//           <Menu.Items className="z-50 absolute right-0 mt-2 top-full w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+//             <div className="px-1 py-1 ">
+//               <Menu.Item>
+//                 {({ active }) => (
+//                   <Link href={"/profilepage"}>
+//                     <button
+//                       className={`${
+//                         active ? "bg-primary text-white" : "text-gray-900"
+//                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+//                     >
+//                       {/* {active ? "active" : "notActive"} */}
+//                       Profile
+//                     </button>
+//                   </Link>
+//                 )}
+//               </Menu.Item>
+//               <Menu.Item>
+//                 {({ active }) => (
+//                   <button
+//                     onClick={handleLogout}
+//                     className={`${
+//                       active ? "bg-primary text-white" : "text-gray-900"
+//                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+//                   >
+//                     {/* {active ? "active" : "notActive"} */}
+//                     Logout
+//                   </button>
+//                 )}
+//               </Menu.Item>
+//             </div>
+//           </Menu.Items>
+//         </Transition>
+//       </Menu>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+

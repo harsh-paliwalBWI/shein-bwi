@@ -71,7 +71,7 @@ const AddressEditModal = ({ setIsAddressEdit, item, isNewAddress = false }) => {
           <div className="flex sm:flex-row flex-col items-center w-full gap-5">
             <div className="sm:w-[100%] w-[100%]  flex flex-col gap-2 ">
               <label htmlFor="" className="text-[#555555] text-sm">
-                Name*
+               First Name*
               </label>
               <input
                 type="text"

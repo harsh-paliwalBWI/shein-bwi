@@ -90,7 +90,7 @@ const NewProfileAddress = ({ onClose }) => {
           <div className="flex sm:flex-row flex-col items-center w-full sm:gap-5 gap-3">
             <div className="sm:w-[50%] w-[100%]  flex flex-col gap-2 ">
               <label htmlFor="" className="text-[#555555] text-sm">
-                Name*
+               First Name*
               </label>
               <input
                 type="text"

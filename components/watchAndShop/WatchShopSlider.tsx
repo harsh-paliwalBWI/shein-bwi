@@ -102,8 +102,8 @@ const WatchShopSlider = () => {
     <>
       {similarData && similarData.length > 0 && (
         <div className="px-body bg-[#fef8fb]">
-          <div className="md:py-12 py-6">
-            <div className="text-center">
+          <div className="md:pt-12 pt-6 ">
+            <div className="text-center ">
               <h1 className="sm:text-3xl text-xl font-bold">WATCH AND SHOP</h1>
               {/* <div className="">
                 <Link

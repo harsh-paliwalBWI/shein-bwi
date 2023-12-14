@@ -9,15 +9,15 @@ const WatchShopCard = () => {
   return (
     <>
       <div
-        className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden cursor-pointer`}
+        className={`flex flex-col mx-2.5 relative border border-black rounded-2xl   bordered-shape overflow-hidden cursor-pointer`}
       >
-        <div className="  product-card relative">
+        <div className="  product-card relative rounded-2xl">
           <Image
             src={videoImg}
             alt=""
             width={1000}
             height={1000}
-            className="w-full h-full object-fit"
+            className="w-full h-full object-fit rounded-2xl"
           />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
             <Image

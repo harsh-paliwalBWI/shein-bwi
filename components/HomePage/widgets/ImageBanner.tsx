@@ -242,13 +242,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
 
   return (
     <div
-      className={` w-full  ${
-        imagesArr.length === 3
-          ? "px-body"
-          : imagesArr.length === 2
-          ? "px-[1.5%]"
-          : "px-0"
-      }    z-30`}
+      className={` w-full ${imagesArr.length === 3? "-mt-5":  "mt-0"} ${imagesArr.length === 3? "px-body": imagesArr.length === 2 ? "px-[1.5%]": "px-0"}    z-30`}
     >
       {/* <div className="flex justify-center items-center mb-8"><h1 className="sm:text-3xl text-xl font-bold">#SHEINSTYLESTORES CAMPAIGN</h1></div> */}
 

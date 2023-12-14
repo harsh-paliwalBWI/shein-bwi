@@ -74,6 +74,7 @@ const CheckoutPage = ({ searchParams }) => {
   const [isCoupon, setIsCoupon] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [couponDiscount, setCouponDiscount] = useState(null);
+  const [couponName, setCouponName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userAddress, setUserAddress] = useState(
     userData?.defaultAddress || initialAddress
@@ -111,7 +112,7 @@ const CheckoutPage = ({ searchParams }) => {
   }
 
   async function getCouponDiscount(couponText: any) {
-    // console.log(couponText, "couponText");
+    console.log(couponText, "couponText");
     if (couponText.name) {
       setIsModalOpen(true);
       document.body.classList.add("no-scroll");
@@ -129,18 +130,31 @@ const CheckoutPage = ({ searchParams }) => {
       };
       const res = await getCouponDiscountDetails(data);
       let res2 = await res.data;
+      console.log("res2",res2);
+      // let couponInfo={...res2}
+      
 
       if (res2["success"]) {
+        console.log(res2["details"]["totalAmountToPaid"]);
+        
         const couponDiscount =
           paymentSummary.totalPayable - res2["details"]["totalAmountToPaid"];
-        setPaymentSummary((prev: any) => {
-          return {
-            ...prev,
-            totalPayable: res2["details"]["totalAmountToPaid"],
-          };
-        });
+        // setPaymentSummary((prev: any) => {
+        //   return {
+        //     ...prev,
+        //     totalPayable: res2["details"]["totalAmountToPaid"],
+        //   };
+        // });
+
+        console.log("couponDiscount",couponDiscount);
+        console.log(",,couponText",couponText);
+        
+        
         setCouponDiscount(couponDiscount);
-        setAppliedCoupons(couponText);
+setCouponName(couponText.name)
+        setAppliedCoupons(res2);
+
+        // setAppliedCoupons(couponText);
         document.body.classList.remove("no-scroll");
         setIsModalOpen(false);
         toast.success("Coupon applied succesfully");
@@ -277,7 +291,8 @@ const CheckoutPage = ({ searchParams }) => {
       delivery: paymentSummary?.delivery?.deliveryCost || 0,
       couponDiscount: 0,
       defaultGst: paymentSummary?.totalGst || 0,
-      totalAmountToPaid: paymentSummary?.totalPayable,
+      // totalAmountToPaid: paymentSummary?.totalPayable,
+      totalAmountToPaid:((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))).toFixed(2),
       couponId: "", //coupon
       couponName: "", //coupon,
       scheduledDate: "",
@@ -452,26 +467,30 @@ const CheckoutPage = ({ searchParams }) => {
                           className="xl:text-base text-sm font-medium outline-0  sm:w-[80%] w-[70%]"
                           placeholder="Enter coupon code"
                           value={
-                            !appliedCoupons
+                            !couponName
                               ? ""
-                              : `${appliedCoupons?.name} (Applied)`
+                              : `${couponName} (Applied)`
                           }
                           onChange={() => {
                             () => setIsCoupon(true);
                           }}
                         />
-                      </div>
+                    </div>
+                      {couponName&&
                       <div
                         onClick={async () => {
+                          setCouponName("")
                           setRemovingCoupon(true);
                           const res = await getPaymentSummary();
                           setAppliedCoupons(null);
                           setRemovingCoupon(false);
+                          toast.success("Coupon removed.")
+
                         }}
                       >
                         <FlatIcon className="flaticon-close text-primary text-lg" />
                       </div>
-                    </div>
+                    }                    </div>
                   </div>
 
                   <Modal isOpen={removingCoupon} setOpen={setRemovingCoupon}>
@@ -570,7 +589,7 @@ const CheckoutPage = ({ searchParams }) => {
                                               </div>
                                               {appliedCoupons &&
                                               item?.id ===
-                                                appliedCoupons?.id ? (
+                                                appliedCoupons["data"]["couponId"] ? (
                                                 <div className="cursor-pointer">
                                                   <button className="text-white bg-primary sm:px-5 px-3 py-1 sm:text-sm text-xs">
                                                     Appled!
@@ -634,7 +653,7 @@ const CheckoutPage = ({ searchParams }) => {
                       </p>
                       <p className="font-semibold  text-base text-right   leading-tight tracking-tight">
                         {constant.currency}{" "}
-                        {appliedCoupons && appliedCoupons?.amount.toFixed(2)}
+                        {appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2)}
                         {/* {paymentSummary?.discountOnMrp.toFixed(2)} */}
                       </p>
                     </div>
@@ -668,7 +687,8 @@ const CheckoutPage = ({ searchParams }) => {
                     </p>
                     <p className=" font-bold text-secondary    text-base leading-tight tracking-tight">
                       {constant.currency}{" "}
-                      {paymentSummary?.totalPayable.toFixed(2)}
+                      {/* - {appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2)} */}
+                      {((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))).toFixed(2)}
                     </p>
                   </div>
                 </div>

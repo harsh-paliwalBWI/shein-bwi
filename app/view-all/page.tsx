@@ -12,6 +12,7 @@ const page = async ({ searchParams }) => {
     queryFn: fetchHomeSections,
     cacheTime: 180,
   });
+console.log(searchParams,"searchParams");
 
   function renderData() {
     if (searchParams?.type === "categories") {
