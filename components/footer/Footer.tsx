@@ -116,7 +116,7 @@ const Footer = () => {
     queryFn: () => getStoreDetails(),
     keepPreviousData: true,
   });
-  console.log(storeData,"storeData");
+  // console.log(storeData,"storeData");
 
 
   return (

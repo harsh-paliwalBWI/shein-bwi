@@ -6,6 +6,8 @@ import { constant } from "../../../utils/constants";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { bannerLink } from "../../../utils/bannerLink/bannerLinking";
+import Link from "next/link";
 const ImageBanner = ({ section, myKey = `` }) => {
   const { data: homeData } = useQuery({
     queryKey: ["homeSections"],
@@ -108,48 +110,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
 
   if (imagesArr.length === 0) return <div className="hidden"></div>;
 
-  // if(imagesArr.length>3){
-  //   ima
-  // }
-  // if (imagesArr.length > 3) {
-  //   // console.log(true);
-
-  //   return (
-  //     <div
-  //       className={` only-carousel border border-green-600 `}
-  //       onMouseEnter={() => {
-  //         setHoveredProduct(true);
-  //       }}
-  //       onMouseLeave={() => {
-  //         setHoveredProduct(false);
-  //       }}
-  //     >
-  //       <Slider
-  //         {...settings}
-  //         className=""
-  //         dotsClass={`slick-dots `}
-  //         nextArrow={<SampleNextArrow />}
-  //         prevArrow={<SamplePrevArrow />}
-  //         draggable={true}
-  //       >
-  //         {imagesArr?.map((image: any,idx:number) => {
-  //           return (
-  //             <div className="rounded-lg px-[10%]" key={idx}>
-  //               <Image
-  //                 src={image?.image?.org}
-  //                 alt="banner"
-  //                 width={100}
-  //                 height={100}
-  //                 layout="responsive"
-  //                 className="flex-1 max-h-[450px] object-fill rounded-lg cursor-pointer"
-  //               />
-  //             </div>
-  //           );
-  //         })}
-  //       </Slider>
-  //     </div>
-  //   );
-  // }
+  
 
   // new start
   if (imagesArr.length === 7) {
@@ -252,8 +213,22 @@ const ImageBanner = ({ section, myKey = `` }) => {
         } `}
         key={myKey}
       >
-        {newImagesArr.map((imageData, index) => (
-          <div
+        {newImagesArr.map((imageData:any, index:number) => (
+          // console.log("imageData",imageData)
+          
+          <Link
+          target="_blank"
+          href={`${bannerLink(imageData)}`}
+          onClick={(e) => {
+            if (
+              !bannerLink(imageData) ||
+              bannerLink(imageData)?.includes("undefined")
+            ) {
+              // console.log("inside preventDefault");
+              
+              e.preventDefault();
+            }
+          }}
             key={imageData.image.org || imageData.image.url}
             className={` ${
               newImagesArr.length === 1
@@ -272,7 +247,7 @@ const ImageBanner = ({ section, myKey = `` }) => {
                 imagesArr.length === 2 ? "sm:h-[25rem] h-[10rem]" : "h-auto"
               } object-fit `}
             />
-          </div>
+          </Link>
         ))}
       </div>
     </div>
