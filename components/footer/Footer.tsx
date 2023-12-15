@@ -307,7 +307,7 @@ const Footer = () => {
                       className='w-[100%] outline-0 py-3 sm:px-3 px-1 rounded-md text-black' placeholder='Your email address' />
                   </div>
                   <div onClick={() => onSubscribeSumbitHandler()} className='xl:w-[30%] w-[40%] py-3 bg-black text-white flex  rounded-md justify-center gap-2  xl:text-base md:text-sm text-xs font-semibold cursor-pointer'>
-                    <button className="border border-[red]" style={{ height: "100%", position: "relative", }}>
+                    <button className="" style={{ height: "100%", position: "relative", }}>
                         {loading && (
                                 <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
                                     <Loader />
