@@ -191,6 +191,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { bannerLink } from "../../../utils/bannerLink/bannerLinking";
 import FlatIcon from "../../flatIcon/flatIcon";
+import Link from "next/link";
 const BannerSlider = ({ section, myKey }) => {
   const router = useRouter();
   const { data: homeData } = useQuery({
@@ -257,7 +258,19 @@ const BannerSlider = ({ section, myKey }) => {
                 homeData?.data
                   ?.filter((val: any) => val?.id === section?.widgetID)[0]
                   ?.arr?.map((banner: any, idx: any) => (
-                    <div
+                    <Link
+                    target="_blank"
+                    href={`${bannerLink(banner)}`}
+                    onClick={(e) => {
+                      if (
+                        !bannerLink(banner) ||
+                        bannerLink(banner)?.includes("undefined")
+                      ) {
+                        // console.log("inside preventDefault");
+                        
+                        e.preventDefault();
+                      }
+                    }}
                       className="h-auto w-full"
                       key={idx + 100}
                       // onClick={async () => {
@@ -278,7 +291,7 @@ const BannerSlider = ({ section, myKey }) => {
                         layout="responsive"
                         className="object-fill w-full h-full"
                       />
-                    </div>
+                    </Link>
                   ))}
             </Slider>
             <div className="">
