@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from './slices/cartSlice'
 import loginReducer from "./slices/loginModalSlice"
+import appReducer from './slices/appSlice'
 export const store = configureStore({
   reducer: {
     cartReducer,
-loginReducer
+loginReducer,
+appReducer
   },
   devTools: process.env.NODE_ENV !== "production",
 });

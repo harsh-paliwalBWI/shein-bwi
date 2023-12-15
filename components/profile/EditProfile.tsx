@@ -9,10 +9,12 @@ import { toast } from 'react-toastify';
 import Loader from '../loader/Loader';
 import NewProfileAddress from './NewProfileAddress';
 import FlatIcon from '../flatIcon/flatIcon';
+import { getCookie } from "cookies-next";
 
 
 
 const EditProfile = () => {
+  const cookies = { value: getCookie("uid") };
   const client = useQueryClient()
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
@@ -20,7 +22,7 @@ const EditProfile = () => {
 
   const { data: userData } = useQuery({
     queryKey: ["userData"],
-    queryFn: () => getUserData(null),
+    queryFn: () => getUserData(cookies),
 
     // keepPreviousData: true,
     // enabled: isClient,
@@ -78,14 +80,14 @@ const EditProfile = () => {
             First Name*
           </label>
           <input className="py-3 border-[1px] border-[#838383] outline-0 px-3 "
-            value={isClient && state.firstName} onChange={(e) => setState({ ...state, firstName: e.target.value })} />
+            value={(isClient && state.firstName)?state.firstName:""} onChange={(e) => setState({ ...state, firstName: e.target.value })} />
         </div>
         <div className="md:w-[50%] w-full flex flex-col gap-3 ">
           <label className="text-[#555555] font-medium text-sm">
             Last Name*
           </label>
           <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-            value={isClient && state.lastName} onChange={(e) => setState({ ...state, lastName: e.target.value })} />
+            value={(isClient && state.lastName)?state.lastName:""} onChange={(e) => setState({ ...state, lastName: e.target.value })} />
         </div>
       </div>
       <div className="flex md:flex-row flex-col gap-4 w-full mb-5">
@@ -94,14 +96,14 @@ const EditProfile = () => {
             Email Address*
           </label>
           <input className="py-3 border-[1px] border-[#838383] outline-0 px-3"
-            value={isClient && state?.email} onChange={(e) => setState({ ...state, email: e.target.value })} />
+            value={(isClient && state?.email)?state?.email:""} onChange={(e) => setState({ ...state, email: e.target.value })} />
         </div>
         <div className="md:w-[50%] w-full flex flex-col gap-3 ">
           <label className="text-[#555555] font-medium text-sm">
             Phone No.
           </label>
           <input className="py-3 border-[1px]  outline-0 px-3 bg-gray-200"
-            value={isClient && state?.phone} disabled
+            value={(isClient && state?.phone)?state?.phone:""} disabled
           // onChange={(e) => setState({ ...state, phone: e.target.value })} 
           />
         </div>
@@ -111,7 +113,7 @@ const EditProfile = () => {
           About Me
         </label>
         <textarea
-          value={isClient && state.about} onChange={(e) => setState({ ...state, about: e.target.value })}
+          value={(isClient && state.about)?state.about:""} onChange={(e) => setState({ ...state, about: e.target.value })}
           name=""
           id=""
           className=" border-[1px] border-[#838383] w-full outline-0 px-3 py-2"
@@ -153,8 +155,16 @@ const EditProfile = () => {
         </div>
         <div
           onClick={async () => await onSaveChangesHandler()}
-          className="md:w-[50%] w-full  bg-secondary text-white text-center  py-3  text-sm font-medium cursor-pointer ">
-          <button>{isLoading ? <Loader /> : "Save Changes"}</button>
+          className="md:w-[50%] w-full  bg-secondary text-white text-center  py-3  text-sm font-medium cursor-pointer flex justify-center items-center ">
+          <button style={{ height: "100%", position: "relative", }}>
+          {isLoading && (
+                                <div className='' style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                                    <Loader />
+                                </div>
+                            )}
+                            {!isLoading && "Save Changes"}
+          
+          </button>
 
         </div>
       </div>

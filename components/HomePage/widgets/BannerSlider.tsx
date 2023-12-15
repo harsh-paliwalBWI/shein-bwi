@@ -218,7 +218,7 @@ const BannerSlider = ({ section, myKey }) => {
     return <div className={`${className}`} onClick={onClick} />;
   }
   const arrowButtonClass =
-    "absolute top-0 bottom-0 my-auto bg-[#fef8fb] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20";
+    "absolute top-0 bottom-0 my-auto bg-[#fef8fb] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20 rounded-full";
   return (
     // <div className="relative" key={myKey}>
     <>

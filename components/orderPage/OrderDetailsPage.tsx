@@ -11,7 +11,7 @@ const OrderDetailsPage = ({singleOrder}) => {
     <div className='w-full  '>
       <div className=' '>
       <div className='flex justify-between bg-primary px-5 py-2.5 text-white sm:text-sm text-xs'>
-        <div>Order NumberQTY{" "}:{" "}OD{singleOrder?.orderId}</div>
+        <div>Order Number{" "}:{" "}OD{singleOrder?.orderId}</div>
         {/* <div>QTY{" "}:{" "}{singleOrder?.products?.length}</div> */}
       </div>
       <div className='border-l border-l-gray-400 border-r border-r-gray-400 border-b border-b-gray-400'>
@@ -79,10 +79,10 @@ const OrderDetailsPage = ({singleOrder}) => {
   <h3 className='text-gray-500'> Discount</h3>
     <h3 className='font-semibold'>{constant?.currency} {singleOrder?.discountOnMrp.toFixed(2)}</h3>
   </div>
-  <div className='flex justify-between xl:text-base text-sm '> 
+ {singleOrder?.couponDiscount!==0&&<div className='flex justify-between xl:text-base text-sm '> 
   <h3 className='text-gray-500'>Coupon Discount</h3>
     <h3 className='font-semibold'>{constant?.currency} {singleOrder?.couponDiscount.toFixed(2)}</h3>
-  </div>
+  </div>}
   {/* <div className='flex justify-between xl:text-base text-sm '>
   <h3 className='text-gray-500'>Taxes</h3>
     <h3 className='font-semibold'>Rs. 100</h3>

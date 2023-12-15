@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchSimilarProductsForCart } from "../../config/typesense";
 import WatchShopCard from "./WatchShopCard";
 import Link from "next/link";
+import FlatIcon from "../flatIcon/flatIcon";
 
 const WatchShopSlider = () => {
   const slider = useRef<any>(null);
@@ -97,11 +98,12 @@ const WatchShopSlider = () => {
     const { className, style, onClick } = props;
     return <div className={`${className}`} onClick={onClick} />;
   }
-
+  const arrowButtonClass =
+  "absolute top-0 bottom-0 my-auto bg-[#F2F7FF] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20 rounded-full ";
   return (
     <>
       {similarData && similarData.length > 0 && (
-        <div className="px-body bg-[#fef8fb]">
+        <div className="px-body bg-[#fef8fb] relative">
           <div className="md:pt-12 pt-6 ">
             <div className="text-center ">
               <h1 className="sm:text-3xl text-xl font-bold">WATCH AND SHOP</h1>
@@ -114,7 +116,16 @@ const WatchShopSlider = () => {
                 </Link>
               </div> */}
             </div>
-            <div className="  justify-center items-center relative  md:py-12 py-6 ">
+            {/* <div> */}
+            <div className="  justify-center items-center   md:py-12 py-6 ">
+            <div className="">
+                <button
+                  className={`${arrowButtonClass} left-0 lg:left-4 flex items-center justify-center`}
+                  onClick={() => slider.current?.slickPrev()}
+                >
+                  <FlatIcon className="flaticon-left-arrow text-secondary sm:text-2xl text-lg font-bold"/>
+                </button>
+              </div>
               <div className="back  ">
                 <div className="w-[100%]  h-auto only-carousel">
                   <Slider
@@ -122,8 +133,8 @@ const WatchShopSlider = () => {
                     {...settings}
                     className=""
                     dotsClass={`slick-dots `}
-                    nextArrow={<SampleNextArrow />}
-                    prevArrow={<SamplePrevArrow />}
+                    nextArrow={<></>}
+                    prevArrow={<></>}
                     draggable={true}
                   >
                     {[1, 3, 4, 6, 7, 9, 9, 5].map((item: any, idx: number) => {
@@ -135,9 +146,18 @@ const WatchShopSlider = () => {
                       );
                     })}
                   </Slider>
+                  <div className="">
+                <button
+                  className={`${arrowButtonClass} right-0 lg:right-4 text-center flex items-center justify-center   `}
+                  onClick={() => slider.current?.slickNext()}
+                >
+                  <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary sm:text-2xl text-lg font-bold"/>
+                </button>
+              </div>
                 </div>
               </div>
             </div>
+            {/* </div> */}
           </div>
         </div>
       )}

@@ -27,6 +27,7 @@ import { db } from "../../config/firebase-config";
 import { addDoc, collection } from "firebase/firestore";
 import { toast } from 'react-toastify';
 import blacklogo from "../../images/sheinBlack.png";
+import Loader from "../loader/Loader";
 
 const DUMMY_DATA = [
   // {
@@ -85,8 +86,10 @@ const pyamentModeImages = [
 ];
 const Footer = () => {
   const [email, setEmail] = useState("")
+  const [loading,setLoading]=useState(false)
 
   const onSubscribeSumbitHandler = async () => {
+    setLoading(true)
     const data = {
       email: email,
       createdAt: new Date(),
@@ -94,11 +97,16 @@ const Footer = () => {
     console.log("data");
     
     try {
+    
+
       console.log("submitted");
       await addDoc(collection(db, "newsletter"), data)
+      setLoading(false)
       toast.success("Subscribed !")
       setEmail("")
     } catch (error) {
+    setLoading(false)
+
       console.log(error);
 
     }
@@ -299,7 +307,24 @@ const Footer = () => {
                       className='w-[100%] outline-0 py-3 sm:px-3 px-1 rounded-md text-black' placeholder='Your email address' />
                   </div>
                   <div onClick={() => onSubscribeSumbitHandler()} className='xl:w-[30%] w-[40%] py-3 bg-black text-white flex  rounded-md justify-center gap-2  xl:text-base md:text-sm text-xs font-semibold cursor-pointer'>
-                    <p>SUBSCRIBE</p>
+                    <button className="border border-[red]" style={{ height: "100%", position: "relative", }}>
+                        {loading && (
+                                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                                    <Loader />
+                                </div>
+                            )}
+                            {!loading && "SUBSCRIBE"}
+                     
+                      </button>
+{/* 
+                      <button style={{ height: "100%", position: "relative", }}>
+          {loading && (
+                                <div className='' style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                                    <Loader />
+                                </div>
+                            )}
+                            {!loading && "SUBSCRIBE"}
+                            </button> */}
                   </div>
                 </div>
               </div>

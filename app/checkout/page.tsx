@@ -277,7 +277,7 @@ setCouponName(couponText.name)
     }
   };
   async function placeOrder(isCod = true) {
-    // console.log("inside placeOrder");
+    console.log("inside placeOrder");
     // console.log(paymentSummary,"--");
     // toast.success("Order Placed Successfully");
     setIsLoading(true)
@@ -290,10 +290,10 @@ setCouponName(couponText.name)
     );
     let orderObj = {
       delivery: paymentSummary?.delivery?.deliveryCost || 0,
-      couponDiscount: 0,
+      couponDiscount:appliedCoupons ? appliedCoupons["details"]["totalCouponDiscount"]: 0,
       defaultGst: paymentSummary?.totalGst || 0,
       // totalAmountToPaid: paymentSummary?.totalPayable,
-      totalAmountToPaid:((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))).toFixed(2),
+      totalAmountToPaid:((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))),
       couponId: "", //coupon
       couponName: "", //coupon,
       scheduledDate: "",
@@ -332,9 +332,11 @@ setCouponName(couponText.name)
       if (orderObj.status == "Confirmed") {
         toast.success("Order Placed Successfully");
         router.push("/ordersucessfull");
+        setIsLoading(false)
       } else {
         toast.error("Order Pending");
         router.push("/notconfirm");
+        setIsLoading(false)
       }
       // if (selectedPaymentMethod === "cod") {
       //   // if (getCondition(userData, args)) {
@@ -348,6 +350,7 @@ setCouponName(couponText.name)
       //   // }
       // }
     } else {
+      setIsLoading(false)
       return orderId;
     }
   }
@@ -396,6 +399,8 @@ setCouponName(couponText.name)
         return <></>;
     }
   }
+  console.log(isLoading,"------");
+  
   return (
     <div className="px-body  ">
       <div className="w-full flex lg:flex-row flex-col-reverse sm:gap-y-8 gap-y-4 gap-x-16 lg:mt-10 mt-5 lg:mb-24 mb-5  ">
@@ -713,13 +718,41 @@ setCouponName(couponText.name)
                   >
                     
                     {selectedTab === tabs[2]
-                      ? "Proceed To Payment"
+                      ? isLoading?<Loader/>:"Proceed To Payment"
+                      // "Proceed To Payment"
                       : selectedTab === tabs[1]
                       ? "Proceed To Review"
                       : "Select Payment Method"}
                     
                   </button>
                 </div>
+
+
+{/* <div className="flex">
+  {isLoading ? (
+    <Loader />
+  ) : (
+    <button
+      className="w-full text-white py-2 px-2 hover:bg-white hover:text-black cursor-pointer hover:border hover:border-secondary md:h-[60px] h-[40px] bg-secondary text-center text-base font-semibold"
+      onClick={() => {
+        if (selectedTab === tabs[2]) {
+          // setIsStripeOpen(true);
+          placeOrder();
+        } else {
+          handleClick();
+        }
+      }}
+    >
+      {selectedTab === tabs[2]
+        ? "Proceed To Payment"
+        : selectedTab === tabs[1]
+        ? "Proceed To Review"
+        : "Select Payment Method"}
+    </button>
+  )}
+</div> */}
+
+                {/* <Loader/> */}
               </div>
             </div>
           )}

@@ -83,6 +83,8 @@ export const getUserData = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
+    console.log("UID",uid);
+    
 
     if (uid) {
         const docRef = doc(db, "users", uid);

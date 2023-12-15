@@ -6,6 +6,8 @@ import { fetchHomeSections } from "../../../utils/databaseService";
 import FlatIcon from "../../flatIcon/flatIcon";
 import Link from "next/link";
 const CategoryGrid = ({ section }) => {
+  console.log("section from category grid",section.endAt);
+  
   const [countdown, setCountdown] = useState({
     days: 0,
     hours: 0,
@@ -21,10 +23,13 @@ const CategoryGrid = ({ section }) => {
   
   // console.log(section,"from CategoryGrid");
 
+  const endDate = new Date(section?.endAt).getTime(); // Convert to milliseconds
+  const now = new Date().getTime();
+  console.log(endDate>now?"true":"false");
+  
   useEffect(() => {
     // Calculate the time difference between now and the end date
-    const endDate = new Date("2023-12-31T23:59:59").getTime(); // Convert to milliseconds
-    const now = new Date().getTime(); // Convert to milliseconds
+    // Convert to milliseconds
 
     const timeDifference = endDate - now;
 
@@ -52,8 +57,14 @@ const CategoryGrid = ({ section }) => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // if (countdown.days === 0 && countdown.hours === 0 && countdown.minutes === 0 && countdown.seconds === 0) {
+  //   // If the countdown is zero, the end date and time have passed, so don't render the component
+  //   return null;
+  // }
+
   return (
     <>
+    {endDate>now&&
       <div className="px-body">
         <div className="text-3xl  text-center font-bold mb-5 ">
           {/* <div><span className='text-primary'>#SHIEN </span><span>STYLE STORES</span></div>
@@ -78,29 +89,29 @@ const CategoryGrid = ({ section }) => {
             </div>
           </div> */}
 
-{/* <div className="flex items-center gap-6 w-1/3 ">
-        <div className="text-xl font-semibold">Ends in</div>
-        <div className="flex items-center gap-x-2">
-          <div className="px-3 py-2 bg-primary text-white text-base font-semibold">{countdown.days}</div>
+<div className="flex items-center sm:gap-6 gap-2 lg:w-1/3 w-fit  ">
+        <div className="xl:text-xl text-base font-semibold">Ends in</div>
+        <div className="flex items-center gap-x-2 lg:text-base text-sm">
+          {/* <div className="md:px-3 px-2 md:py-2 py-1 bg-primary text-white  font-semibold">{countdown.days}</div> */}
+          {/* <div>:</div> */}
+          <div className="md:px-3 px-2 md:py-2 py-1  bg-primary  text-white">{countdown.hours}</div>
           <div>:</div>
-          <div className="px-3 py-2 bg-primary text-white">{countdown.hours}</div>
+          <div className="md:px-3 px-2 md:py-2 py-1  bg-primary text-white">{countdown.minutes}</div>
           <div>:</div>
-          <div className="px-3 py-2 bg-primary text-white">{countdown.minutes}</div>
-          <div>:</div>
-          <div className="px-3 py-2 bg-primary text-white">{countdown.seconds}</div>
+          <div className="md:px-3 px-2 md:py-2 py-1  bg-primary text-white">{countdown.seconds}</div>
         </div>
-      </div> */}
+      </div>
           {/* w-1/3 */}
           <Link
             href={`/view-all?type=${section?.widgetType}&id=${section?.widgetID}&name=${section?.sectionName}`}
-            className="text-primary text-center mx-auto font-medium underline"
+            className="text-primary  w-fit text-center  font-medium underline "
           >
             View All
           </Link>
-          {/* <div className='flex items-center w-1/3  justify-end'>
-            <div className='h-[48px] w-[48px] flex items-center justify-center rounded-full arrow-container cursor-pointer'><FlatIcon className="flaticon-arrow text-lg"/></div>
-            <div className='h-[48px] w-[48px] flex items-center justify-center rounded-full arrow-container cursor-pointer'><FlatIcon className="flaticon-arrow rotate-180 text-lg"/></div>
-        </div> */}
+          <div className='lg:flex items-center lg:w-1/3 w-0 hidden '>
+            {/* <div className='h-[48px] w-[48px] flex items-center justify-center rounded-full arrow-container cursor-pointer'><FlatIcon className="flaticon-arrow text-lg"/></div>
+            <div className='h-[48px] w-[48px] flex items-center justify-center rounded-full arrow-container cursor-pointer'><FlatIcon className="flaticon-arrow rotate-180 text-lg"/></div> */}
+        </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {homeData &&
@@ -130,6 +141,7 @@ const CategoryGrid = ({ section }) => {
               })}
         </div>
       </div>
+}
       {/* <CategoryGridCard/> */}
     </>
     // <div><CategoryGridCard/></div>

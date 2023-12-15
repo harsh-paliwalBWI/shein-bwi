@@ -57,8 +57,10 @@ import { constant } from "../../utils/constants";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
 import PopUp from "../popUp/PopUp";
 import { Popover } from '@headlessui/react';
+import { getCookie } from "cookies-next";
 
 const NavbarClient = ({ cookie }: any) => {
+    const cookies = { value: getCookie("uid") };;
   const cart = useAppSelector((state) => state.cartReducer.cart);
   const isLoginOpen = useAppSelector(
     (state: any) => state.loginReducer.isLoginOpen
@@ -119,7 +121,7 @@ const NavbarClient = ({ cookie }: any) => {
   }
   const { data: userData } = useQuery({
     queryKey: ["userData"],
-    queryFn: () => getUserData(cookie),
+    queryFn: () => getUserData(cookies),
     //
     // keepPreviousData: true,
   });
