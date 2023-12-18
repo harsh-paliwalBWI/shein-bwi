@@ -94,28 +94,24 @@ const Footer = () => {
       email: email,
       createdAt: new Date(),
     }
-    console.log("data");
-    
+    // console.log("data");
     try {
-    
-
+    if (email) {
       console.log("submitted");
       await addDoc(collection(db, "newsletter"), data)
       setLoading(false)
       toast.success("Subscribed !")
       setEmail("")
+      
+    } else {
+    setLoading(false)
+      toast.error("Please enter email!")
+    } 
     } catch (error) {
     setLoading(false)
-
+    toast.error("Something went wrong!")
       console.log(error);
-
     }
-
-    // .then((result) => {
-    //   console.log("Document written with ID: ", result.id);
-    // })
-    // const docRef = await addDoc(collection(db, "newsletters"), data);
-    // console.log("Document written with ID: ", docRef.id);
   }
 
 
@@ -306,7 +302,7 @@ const Footer = () => {
                       type='email'
                       className='w-[100%] outline-0 py-3 sm:px-3 px-1 rounded-md text-black' placeholder='Your email address' />
                   </div>
-                  <div onClick={() => onSubscribeSumbitHandler()} className='xl:w-[30%] w-[40%] py-3 bg-black text-white flex  rounded-md justify-center gap-2  xl:text-base md:text-sm text-xs font-semibold cursor-pointer'>
+                  {/* <div onClick={() => onSubscribeSumbitHandler()} className='xl:w-[30%] w-[40%] py-3 bg-black text-white flex  rounded-md justify-center gap-2  xl:text-base md:text-sm text-xs font-semibold cursor-pointer'>
                     <button className="" style={{ height: "100%", position: "relative", }}>
                         {loading && (
                                 <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
@@ -316,16 +312,26 @@ const Footer = () => {
                             {!loading && "SUBSCRIBE"}
                      
                       </button>
-{/* 
-                      <button style={{ height: "100%", position: "relative", }}>
-          {loading && (
-                                <div className='' style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
-                                    <Loader />
-                                </div>
-                            )}
-                            {!loading && "SUBSCRIBE"}
-                            </button> */}
+
+                  </div> */}
+                
+<div onClick={() => onSubscribeSumbitHandler()} className="  xl:w-[30%] w-[40%] h-fit  py-3 bg-black text-white xl:text-base md:text-sm text-xs font-semibold cursor-pointer rounded-md ">
+<button className=" w-full text-center  " style={{ height: "100%", position: "relative" }}>
+{loading && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <Loader />
                   </div>
+                )}
+                {!loading && "SUBSCRIBE"}
+</button>
+</div>
                 </div>
               </div>
             </div>

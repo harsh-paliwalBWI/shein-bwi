@@ -110,7 +110,7 @@ const InstaFamilySlider = () => {
     <>
       {similarData && similarData.length > 0 && (
         // <div className="px-body bg-instagram-section-bg bg-cover bg-no-repeat  md:py-16 py-10  -mb-4">
-        <div className="px-body  bg-cover bg-no-repeat   ">
+        <div className="px-body relative  bg-cover bg-no-repeat   ">
           {/* <div className="text-white"> */}
           <div className="flex flex-col gap-4">
             <div className="flex justify-center items-center gap-2 ">
@@ -135,15 +135,15 @@ const InstaFamilySlider = () => {
                   {/* </Link> */}
                 </div>
           </div>
-          <div className="  justify-center items-center relative    md:py-12 py-6">
-          {/* <div className="">
+          <div className="  justify-center items-center    md:py-12 py-6">
+          <div className="">
                 <button
                   className={`${arrowButtonClass} left-0 lg:left-4 flex items-center justify-center`}
                   onClick={() => slider.current?.slickPrev()}
                 >
                   <FlatIcon className="flaticon-left-arrow text-secondary sm:text-2xl text-lg font-bold"/>
                 </button>
-              </div> */}
+              </div>
             <div className="back  ">
               <div className="w-[100%]  h-auto only-carousel">
                 <Slider
@@ -151,8 +151,8 @@ const InstaFamilySlider = () => {
                   {...settings}
                   className=""
                   dotsClass={`slick-dots `}
-                  nextArrow={<SamplePrevArrow/>}
-                  prevArrow={<SampleNextArrow/>}
+                  nextArrow={<></>}
+                  prevArrow={<></>}
                   draggable={true}
                 >
                   {[1, 2, 3, 4, 6, 7, 5, 6, 8].map((item: any, idx: number) => {
@@ -165,14 +165,14 @@ const InstaFamilySlider = () => {
                 </Slider>
               </div>
             </div>
-            {/* <div className="">
+            <div className="">
                 <button
                   className={`${arrowButtonClass} right-0 lg:right-4 text-center flex items-center justify-center   `}
                   onClick={() => slider.current?.slickNext()}
                 >
                   <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary sm:text-2xl text-lg font-bold"/>
                 </button>
-              </div> */}
+              </div>
           </div>
           <div className="flex items-center sm:gap-3 gap-2 justify-center lg:text-2xl md:text-xl sm:text-base text-sm font-semibold ">
             <h2>EXPLORE MORE ON</h2>
