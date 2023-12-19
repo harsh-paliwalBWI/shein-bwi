@@ -8,15 +8,13 @@ import { fetchSimilarProductsForCart } from "../../config/typesense";
 import WatchShopCard from "./WatchShopCard";
 import Link from "next/link";
 import FlatIcon from "../flatIcon/flatIcon";
+import { fetchVideoProducts } from "../../utils/databaseService";
 
 const WatchShopSlider = () => {
   const slider = useRef<any>(null);
-  const { data: similarData } = useQuery({
-    queryKey: ["product", "caricature-cartoon", "similar-product"],
-    queryFn: () =>
-      fetchSimilarProductsForCart({
-        searchKeywords: ["Gentlemen's Collection", "Nike"],
-      }),
+  const { data: videoProducts } = useQuery({
+    queryKey: ["video-products"],
+    queryFn: () => fetchVideoProducts(),
   });
   // console.log(similarData,"simildar data");
 
@@ -99,10 +97,10 @@ const WatchShopSlider = () => {
     return <div className={`${className}`} onClick={onClick} />;
   }
   const arrowButtonClass =
-  "absolute top-0 bottom-0 my-auto bg-[#F2F7FF] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20 rounded-full ";
+    "absolute top-0 bottom-0 my-auto bg-[#F2F7FF] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20 rounded-full ";
   return (
     <>
-      {similarData && similarData.length > 0 && (
+      {videoProducts && videoProducts.length > 0 && (
         <div className="px-body bg-[#fef8fb] relative">
           <div className="md:pt-12 pt-6 ">
             <div className="text-center ">
@@ -118,12 +116,12 @@ const WatchShopSlider = () => {
             </div>
             {/* <div> */}
             <div className="  justify-center items-center   md:py-12 py-6 ">
-            <div className="">
+              <div className="">
                 <button
                   className={`${arrowButtonClass} left-0 lg:left-4 flex items-center justify-center`}
                   onClick={() => slider.current?.slickPrev()}
                 >
-                  <FlatIcon className="flaticon-left-arrow text-secondary sm:text-2xl text-lg font-bold"/>
+                  <FlatIcon className="flaticon-left-arrow text-secondary sm:text-2xl text-lg font-bold" />
                 </button>
               </div>
               <div className="back  ">
@@ -137,23 +135,23 @@ const WatchShopSlider = () => {
                     prevArrow={<></>}
                     draggable={true}
                   >
-                    {[1, 3, 4, 6, 7, 9, 9, 5].map((item: any, idx: number) => {
+                    {videoProducts.map((item: any, idx: number) => {
                       return (
-                        <div key={idx}>
-                          <WatchShopCard />
+                        <div key={item?.id}>
+                          <WatchShopCard item={item} />
                           {/* <ProductCard product={item} mx={2.5} /> */}
                         </div>
                       );
                     })}
                   </Slider>
                   <div className="">
-                <button
-                  className={`${arrowButtonClass} right-0 lg:right-4 text-center flex items-center justify-center   `}
-                  onClick={() => slider.current?.slickNext()}
-                >
-                  <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary sm:text-2xl text-lg font-bold"/>
-                </button>
-              </div>
+                    <button
+                      className={`${arrowButtonClass} right-0 lg:right-4 text-center flex items-center justify-center   `}
+                      onClick={() => slider.current?.slickNext()}
+                    >
+                      <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary sm:text-2xl text-lg font-bold" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

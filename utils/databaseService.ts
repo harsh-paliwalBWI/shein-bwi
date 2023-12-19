@@ -83,8 +83,8 @@ export const getUserData = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    console.log("UID",uid);
-    
+    console.log("UID", uid);
+
 
     if (uid) {
         const docRef = doc(db, "users", uid);
@@ -698,14 +698,37 @@ export const getUserWishlistData2 = async (cookieData) => {
     }
 }
 
+export async function fetchInstagramVideosData() {
+    const response = (await getDoc(doc(db, "platformMedia", "instagram"))).data();
+
+    if (response && response?.list && response?.list?.length !== 0) {
+        return response?.list
+    }
+    return []
+}
+
+
+export async function fetchVideoProducts() {
+    let arr = []
+    const responseData = await getDocs(query(collection(db, "products"), where("video.active", "==", true))).then((val) => {
+        if (val.docs.length === 0) return [];
+
+        for (const doc of val.docs) {
+            arr.push({ ...doc.data(), id: doc.id })
+        }
+        return;
+    });
+    return arr;
+}
+
 
 export const getDocFromWidget = async (docId) => {
     const docRef = doc(db, "widgets", docId);
     const docSnap = await getDoc(docRef);
     let arr = []
     if (docSnap.exists()) {
-        
-        return {...docSnap.data(),id:docSnap.id}
+
+        return { ...docSnap.data(), id: docSnap.id }
     } else {
         console.log("No such document!");
         return null

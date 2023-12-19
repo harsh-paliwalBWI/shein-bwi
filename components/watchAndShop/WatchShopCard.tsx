@@ -4,15 +4,23 @@ import Image from "next/image";
 import videoImg from "../../images/0c8ce2ac-59a4-444a-b6ac-09a3637f205d.svg";
 import VideoMiniCard from "../HomePage/videoCard/VideoMiniCard";
 import playButton from "../../images/Group 1830.svg";
+import { useQuery } from "@tanstack/react-query";
+import { fetchVideoProducts } from "../../utils/databaseService";
+import ReactPlayer from "react-player";
 
-const WatchShopCard = () => {
+const WatchShopCard = ({ item }) => {
   return (
     <>
       <div
         className={`flex flex-col mx-2.5 relative border border-black rounded-2xl   bordered-shape overflow-hidden cursor-pointer`}
       >
         <div className="  product-card relative rounded-2xl">
-          <Image
+          <ReactPlayer
+            light={item?.video?.thumbnail}
+            url={item?.video?.link}
+            width={"100%"}
+          />
+          {/* <Image
             src={videoImg}
             alt=""
             width={1000}
@@ -27,8 +35,8 @@ const WatchShopCard = () => {
               height={1000}
               className="aspect-auto w-[60px] h-[60px]"
             />
-          </div>
-          <VideoMiniCard />
+          </div> */}
+          <VideoMiniCard product={item} />
         </div>
       </div>
     </>
