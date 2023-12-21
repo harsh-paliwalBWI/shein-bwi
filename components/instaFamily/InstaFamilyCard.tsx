@@ -7,16 +7,18 @@ import ReactPlayer from "react-player";
 const InstaFamilyCard = ({ item }) => {
   return (
     <div
-      className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden cursor-pointer rounded-2xl border border-black `}
+      className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden cursor-pointer rounded-2xl border border-[#d7d7d7] `}
     >
-      <div className=" rounded-2xl product-card ">
+      {/* <div className=" rounded-2xl product-card "> */}
         <ReactPlayer
           url={item?.link}
           light={item?.thumbnail}
           width={"100%"}
+          playing={true}
+          // controls
           // controls
         />
-      </div>
+      {/* </div> */}
     </div>
   );
 };

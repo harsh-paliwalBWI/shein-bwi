@@ -19,6 +19,7 @@ const WatchShopCard = ({ item }) => {
             light={item?.video?.thumbnail}
             url={item?.video?.link}
             width={"100%"}
+            playing={true}
           />
           {/* <Image
             src={videoImg}

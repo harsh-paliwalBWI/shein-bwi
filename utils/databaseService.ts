@@ -710,7 +710,7 @@ export async function fetchInstagramVideosData() {
 
 export async function fetchVideoProducts() {
     let arr = []
-    const responseData = await getDocs(query(collection(db, "products"), where("video.active", "==", true))).then((val) => {
+    const responseData = await getDocs(query(collection(db, "products"), where("video.active", "==", true), where('status', "==", true))).then((val) => {
         if (val.docs.length === 0) return [];
 
         for (const doc of val.docs) {
