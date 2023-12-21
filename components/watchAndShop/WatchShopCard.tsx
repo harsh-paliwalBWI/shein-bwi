@@ -20,6 +20,7 @@ const WatchShopCard = ({ item }) => {
             url={item?.video?.link}
             width={"100%"}
             playing={true}
+            loop={true}
           />
           {/* <Image
             src={videoImg}

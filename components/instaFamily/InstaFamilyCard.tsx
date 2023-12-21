@@ -10,14 +10,15 @@ const InstaFamilyCard = ({ item }) => {
       className={`flex flex-col mx-2.5 relative   bordered-shape overflow-hidden cursor-pointer rounded-2xl border border-[#d7d7d7] `}
     >
       {/* <div className=" rounded-2xl product-card "> */}
-        <ReactPlayer
-          url={item?.link}
-          light={item?.thumbnail}
-          width={"100%"}
-          playing={true}
-          // controls
-          // controls
-        />
+      <ReactPlayer
+        url={item?.link}
+        light={item?.thumbnail}
+        width={"100%"}
+        playing={true}
+        loop={true}
+        // controls
+        // controls
+      />
       {/* </div> */}
     </div>
   );
