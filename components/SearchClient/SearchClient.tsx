@@ -23,7 +23,7 @@ const SearchClient = ({ query }) => {
   });
 
   return (
-    <div className=" px-body  py-10">
+    <div className=" px-body  py-10 ">
       <div className="w-full  flex flex-col  ">
         <div className="flex py-2 border-b-2 border-primary w-fit">
           <h2 className="text-2xl font-semibold">
@@ -41,7 +41,7 @@ const SearchClient = ({ query }) => {
             </div>
           </div>
         ) : searchData && searchData?.length !== 0 ? (
-          <div className="mt-4 grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-cols-2 gap-3">
+          <div className="mt-4 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-3">
             {searchData &&
               searchData?.map((product, idx) => {
                 return <ProductCard product={product} idx={idx} mx={2.5}/>;

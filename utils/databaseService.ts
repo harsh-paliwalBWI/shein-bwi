@@ -83,7 +83,7 @@ export const getUserData = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    console.log("UID", uid);
+    // console.log("UID", uid);
 
 
     if (uid) {
@@ -99,7 +99,60 @@ export const getUserData = async (cookieData: any) => {
         return null;
     }
 };
+export const getUserPoints=async(cookieData)=>{
+    let cookie;
 
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (auth.currentUser?.uid) {
+        uid = auth.currentUser?.uid;
+        // console.log(uid,"uid");
+
+    }
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+
+    if (uid) {
+        console.log("inside uid if");
+        // const querySnapshot = await getDocs(collection(db, "users", uid, "pointTransactions"));
+        // const arr = []
+        // querySnapshot.forEach((doc) => {
+        //     const couponData = doc.data();
+        //     const couponWithId = { id: doc.id, ...couponData };
+        //     arr.push(couponWithId);
+        // });
+        // return arr
+
+        
+        const pointTransactions = await getDocs(collection(db, `users/${uid}/pointTransactions`)).then((res: QuerySnapshot) => {
+            if (res.docs.length === 0) {
+        console.log("inside uid if res---");
+        // console.log();
+                
+                return [];
+            }
+            let arr = [];
+            for (const point of res.docs) {
+        console.log("inside uid for");
+
+                const data = point.data();
+                arr.push({ ...data, id: point.id })
+            }
+            console.log("arr",arr);
+            
+            return arr;
+        })
+        return pointTransactions;
+    } else {
+        return [];
+    }
+
+}
 export const getUserAddresses = async (cookieData) => {
     let cookie;
 
@@ -852,4 +905,20 @@ export const fetchStorLocations = async () => {
 
     return JSON.parse(JSON.stringify(res))
     // return (await getDoc(doc(db, "storeLocations", 'locations'))).data();
+}
+
+export const fetchPointsDetails=async()=>{
+    const docRef = doc(db, "features", "points");
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+        const data=docSnap.data()
+    //   console.log("Document data:", docSnap.data());
+      return {...data}
+    } else {
+      // docSnap.data() will be undefined in this case
+    //   console.log("No such document!");
+      return null
+
+    }
 }

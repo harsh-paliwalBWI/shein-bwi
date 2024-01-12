@@ -70,10 +70,15 @@ export function getProductFromCart(cart, product) {
 }
 
 export function getFilteredProducts({ filters, products }) {
+    console.log("filters",filters);
+    
     let newArr = products || []
     if (filters.price !== null && products && products?.length !== 0) {
+        console.log("inside if");
+        
         newArr = products.filter((e) => e?.discountedPrice >= filters.price[0] && e?.discountedPrice <= filters?.price[1])
     }
+// console.log("newArr",newArr);
 
     return newArr
 }

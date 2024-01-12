@@ -26,7 +26,7 @@ import Link from "next/link";
 import { db } from "../../config/firebase-config";
 import { addDoc, collection } from "firebase/firestore";
 import { toast } from 'react-toastify';
-import blacklogo from "../../images/sheinBlack.png";
+import blacklogo from "../../images/logo (4).svg";
 import Loader from "../loader/Loader";
 
 const DUMMY_DATA = [
@@ -127,12 +127,12 @@ const Footer = () => {
     <>
       <div>
         <div className="flex lg:flex-row flex-col flex-col-reverse bg-black">
-          <div className="lg:w-[63%]  w-[100%]  ">
-            <div className=" sm:pt-10 pt-5 px-[6%] flex sm:flex-row flex-col xl:gap-x-5 gap-x-4 gap-y-4 ">
+          <div className="lg:w-[100%]  w-[100%]  ">
+            <div className=" w-[100%] sm:pt-10 pt-5 px-body lg:flex sm:flex-row grid sm:grid-cols-2 grid-cols-1 flex-col xl:gap-x-5 gap-x-4 gap-y-4">
               {/* <div className="grid  lg:w-[65%] w-[100%] xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:gap-x-5 gap-x-4 gap-y-4 sm:mb-[60px] mb-[40px]  "> */}
               {DUMMY_DATA.map((item: any, idx: number) => {
                 return (
-                  <div className="sm:w-1/3 flex flex-col gap-4  " key={idx}>
+                  <div className="lg:w-[20%]  flex flex-col gap-4   " key={idx}>
                     <h3 className=" relative font-bold md:text-xl text-base text-white ">
                       {item.heading}
                       <div className="bg-primary   absolute bottom-[-12px] p-[1px] w-[55px] h-[2px]"></div>
@@ -152,7 +152,7 @@ const Footer = () => {
                   </div>
                 );
               })}
-              <div className="sm:w-1/3  flex flex-col gap-4   ">
+              <div className="lg:w-[30%]   flex flex-col gap-4    ">
                 <h3 className=" relative font-bold md:text-xl text-base text-white ">
                   OUR OFFICE
                   <div className="bg-primary   absolute bottom-[-12px] p-[1px] w-[55px] h-[2px]"></div>
@@ -226,11 +226,62 @@ const Footer = () => {
                   </div>
                 </div>
               </div>
+
+
+              <div className="lg:w-[30%]   bg-black  flex items-center   ">
+            <div className="  h-fit flex flex-col gap-6 sm:gap-8 lg:gap-8  ">
+              <div className="w-full flex sm:justify-center">
+              <div className="sm:w-[180px] w-[150px]  ">
+            <Image
+                  src={blacklogo}
+                  alt="logo"
+                  width={1000}
+                  height={1000}
+                  className="w-full h-full object-full "
+                />
+                </div>
+                </div>
+              <h1 className=' text-white lg:text-3xl sm:text-xl text-xl font-bold lg:text-center sm:text-center '>NEWSLETTER</h1>
+              <div className="flex flex-col text-white  gap-6 sm:gap-8 lg:gap-16">
+                <p className='  font-semibold  md:text-base sm:text-sm text-xs lg:text-center sm:text-center'>Join now and get 10% off on your next purchase and Be the first to know about new collections and exclusive offers. </p>
+                <div className='flex p-1 bg-white rounded-md w-[100%] mx-auto justify-between  email-container  items-center '>
+                  <div className="w-[70%]">
+                    <input value={email} onChange={(e) => setEmail(e.target.value)}
+                      type='email'
+                      className='w-[100%] outline-0 py-3 sm:px-3 px-1 rounded-md text-black' placeholder='Your email address' />
+                  </div>
+                 
+                
+<div onClick={() => onSubscribeSumbitHandler()} className="  xl:w-[30%] w-[40%] h-fit  py-3 bg-primary text-white xl:text-base md:text-sm text-xs font-semibold cursor-pointer rounded-md ">
+<button className=" w-full text-center  " style={{ height: "100%", position: "relative" }}>
+{loading && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <Loader />
+                  </div>
+                )}
+                {!loading && "SUBSCRIBE"}
+</button>
+</div>
+                </div>
+              </div>
             </div>
+          </div>
+            </div>
+
+
+
+            
             <div className=" sm:py-[28px] py-[20px] ">
               <div className=" flex lg:flex-row md:flex-col sm:flex-row  w-full xl:gap-x-8 gap-x-4">
               </div>
-              <div className="px-[6%]">
+              <div className="px-body">
               {/* <div className="flex  md:items-center md:flex-row flex-col gap-y-4 justify-between gap-x-3"> */}
 
                 <div className="flex  md:items-center md:flex-row flex-col gap-y-4 justify-between gap-x-3">
@@ -280,10 +331,10 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="lg:w-[37%] w-[100%] py-5 lg:py-10 px-body  bg-primary  flex items-center">
+          {/* <div className="lg:w-[37%] w-[100%] py-5 lg:py-10 px-body  bg-black  flex items-center">
             <div className="  h-fit flex flex-col gap-6 sm:gap-8 lg:gap-8  ">
               <div className="w-full flex justify-center">
-              <div className="sm:w-[180px] w-[150px] ">
+              <div className="sm:w-[180px] w-[150px] border border-[red] ">
             <Image
                   src={blacklogo}
                   alt="logo"
@@ -302,20 +353,9 @@ const Footer = () => {
                       type='email'
                       className='w-[100%] outline-0 py-3 sm:px-3 px-1 rounded-md text-black' placeholder='Your email address' />
                   </div>
-                  {/* <div onClick={() => onSubscribeSumbitHandler()} className='xl:w-[30%] w-[40%] py-3 bg-black text-white flex  rounded-md justify-center gap-2  xl:text-base md:text-sm text-xs font-semibold cursor-pointer'>
-                    <button className="" style={{ height: "100%", position: "relative", }}>
-                        {loading && (
-                                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
-                                    <Loader />
-                                </div>
-                            )}
-                            {!loading && "SUBSCRIBE"}
-                     
-                      </button>
-
-                  </div> */}
+                 
                 
-<div onClick={() => onSubscribeSumbitHandler()} className="  xl:w-[30%] w-[40%] h-fit  py-3 bg-black text-white xl:text-base md:text-sm text-xs font-semibold cursor-pointer rounded-md ">
+<div onClick={() => onSubscribeSumbitHandler()} className="  xl:w-[30%] w-[40%] h-fit  py-3 bg-primary text-white xl:text-base md:text-sm text-xs font-semibold cursor-pointer rounded-md ">
 <button className=" w-full text-center  " style={{ height: "100%", position: "relative" }}>
 {loading && (
                   <div
@@ -335,7 +375,7 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

@@ -193,8 +193,10 @@ function SideMenuLogin({ isOpen, onClose, setShowLogin }) {
             toast.success("Login successfully.");
             // console.log("user already exist");
           }
-
-          await axios.get(`/api/login?uid=${res.user.uid}`);
+          await axios.post(
+            `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/login?uid=${res.user.uid}`
+          )
+          // await axios.get(`/api/login?uid=${res.user.uid}`);
           await queryClient.invalidateQueries({ queryKey: ["userData"] });
           await queryClient.refetchQueries({ queryKey: ["userData"] });
           dispatch(closeLoginModal());

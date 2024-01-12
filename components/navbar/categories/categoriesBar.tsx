@@ -30,17 +30,17 @@ const CategoriesBar: FC<Props> = ({
     );
   }
   return (
-    <div className="absolute left-0 w-[98.75vw]  right-0  flex justify-center rounded-b-lg min-w-[100%]  mx-auto   z-30">
+    <div className="absolute left-0 w-[98.75vw]  right-0  flex justify-center rounded-b-lg min-w-[100%]  mx-auto   z-30 ">
       <div
-        className="flex justify-between mx-[4%] w-[95%]  bg-white z-30  shadow-lg rounded-b-lg"
+        className="flex justify-center gap-x-12 px-[4%] w-[100%]  bg-white z-30  shadow-lg rounded-b-lg "
         onMouseLeave={() => {
           setHoveredCategory(null);
         }}
       >
-        <div className=" py-4 rounded-bl-lg px-2 max-h-[400px] flex flex-row gap-12 ">
+        <div className=" py-4 rounded-bl-lg  max-h-[400px] flex flex-row gap-12  ">
           {categories[hoveredCategory]?.subcategories?.map((subCat) => {
             return (
-              <div className="flex flex-col">
+              <div className="flex flex-col ">
                 <Link
                   href={
                     subCat?.isSubcategories
@@ -90,14 +90,14 @@ const CategoriesBar: FC<Props> = ({
         </div>
         {categories[hoveredCategory]?.category?.banner &&
           categories[hoveredCategory]?.category?.banner?.url && (
-            <div className="w-[25%] max-h-[400px] rounded-br-lg flex flex-col items-center justify-center p-8 mr-6 ">
-              <div className="h-[400px] w-[400px] aspect-square flex items-center justify-center object-contain">
+            <div className="w-[25%] max-h-[400px] rounded-br-lg flex flex-col items-center justify-center p-8 mr-6  ">
+              <div className="h-[350px] w-[350px]  flex items-center justify-center object-contain">
                 <Image
                   src={categories[hoveredCategory]?.category?.banner?.url}
                   alt={categories[hoveredCategory]?.category?.name}
                   width={500}
                   height={500}
-                  className="w-full h-full object-contain"
+                  className="w-[100%] h-[100%] object-fill "
                 />
               </div>
             </div>

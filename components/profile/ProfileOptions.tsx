@@ -79,7 +79,8 @@ const ProfileOptions = ({ cookie, setSelectedTab, selectedTab }) => {
     signOut(auth)
       .then(async () => {
         toast.success("Logged out");
-        await axios.get(`/api/logout`);
+        await axios.post(`${process.env.NEXT_PUBLIC_API_DOMAIN}/api/logout`);
+        // await axios.get(`/api/logout`);
         await queryClient.invalidateQueries({ queryKey: ["userData"] });
 
         // Sign-out successful.
@@ -202,6 +203,17 @@ const ProfileOptions = ({ cookie, setSelectedTab, selectedTab }) => {
             <FlatIcon icon={"flaticon-location  font-normal text-2xl"} />
           </div>
           <h4 className=" font-semibold text-sm">Addresses</h4>
+        </div>
+        <div
+          onClick={() => setSelectedTab(4)}
+          className={`flex gap-3 items-center border-b border-b-[#EEF0F5]  py-4 px-6 cursor-pointer  hover:text-primary ${
+            selectedTab === 3 ? "text-primary" : "text-secondary"
+          }`}
+        >
+          <div>
+            <FlatIcon icon={"flaticon-location  font-normal text-2xl"} />
+          </div>
+          <h4 className=" font-semibold text-sm">Points</h4>
         </div>
         {/* <div onClick={()=>setSelectedTab(4)} className='flex gap-3 items-center border-b border-b-[#EEF0F5]  py-4 px-6 cursor-pointer text-secondary hover:text-primary'>
           <div><FlatIcon icon={"flaticon-card  font-normal text-2xl"} /></div><h4 className=" font-semibold text-sm">Payment Method</h4>

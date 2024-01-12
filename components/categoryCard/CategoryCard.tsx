@@ -25,7 +25,7 @@ const CategoryCard = ({ cat, heading, slug, path = null }) => {
                 alt=""
                 width={1000}
                 height={1000}
-                className="w-full h-full object-fit rounded-lg   "
+                className="w-full h-full object-fit  "
               />
             </div>
             {/* <div className="absolute left-0 border-[10px] border-[green] w-full h-full"></div> */}

@@ -86,7 +86,7 @@ const CartComponent = ({cookie}) => {
 
   return (
     <>
-    <div className="flex flex-col px-body  w-full md:mb-10 mb-5 md:mt-8 mt-4 ">
+    <div className="flex flex-col px-body  w-full md:mb-10 mb-5 md:pt-0 sm:pt-10 pt-5 md:mt-8 mt-4  ">
       <div className="flex flex-col sm:gap-10 gap-5  border-gray-300   w-full ">
         <div className=" md:w-[100%] w-[100%]">
           <div className='flex items-center gap-2 md:mb-8 mb-4'>

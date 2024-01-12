@@ -31,7 +31,7 @@ const StoreLinks = () => {
             <div className="flex flex-col flex-1 gap-3 lg:gap-10 justify-center lg:items-start items-center py-6 lg:py-0  ">
               <div className="min-w-[140px] w-[35%] sm:w-[20%] lg:w-[37%] lg:max-w-[200px] flex   ">
                 <Image
-                  src={require("../../../images/Group 34291.svg")}
+                  src={require("../../../images/Group 34291 (2).svg")}
                   alt="logo"
                   width={1000}
                   height={1000}
@@ -41,7 +41,7 @@ const StoreLinks = () => {
               <div className="pl-2 lg:pl-4">
                 <h6 className="font-medium text-sm sm:text-base md:text-lg lg:text-2xl">
                   {/* Your Trusted Pharmacy is <br /> Now Online! */}
-                  Download the app now!
+                  Download the app and get 10% off !
                 </h6>
               </div>
               <div className="flex justify-start gap-3  ">

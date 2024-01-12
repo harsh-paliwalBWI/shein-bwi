@@ -20,7 +20,7 @@ const CategoryGrid = ({ section }) => {
 
   const endDate = new Date(section?.endAt).getTime(); // Convert to milliseconds
   const now = new Date().getTime();
-  console.log(endDate > now ? "true" : "false");
+  // console.log(endDate > now ? "true" : "false");
 
   useEffect(() => {
     // Calculate the time difference between now and the end date
@@ -102,15 +102,15 @@ const CategoryGrid = ({ section }) => {
               <div className="flex items-center gap-x-2 lg:text-base text-sm">
                 {/* <div className="md:px-3 px-2 md:py-2 py-1 bg-primary text-white  font-semibold">{countdown.days}</div> */}
                 {/* <div>:</div> */}
-                <div className="md:px-3 px-2 md:py-2 py-1  bg-primary  text-white">
+                <div className="md:px-3 px-2 md:py-2 py-1  bg-black  text-white">
                   {countdown.hours?.toString().padStart(2, "0")}
                 </div>
                 <div>:</div>
-                <div className="md:px-3 px-2 md:py-2 py-1  bg-primary text-white">
+                <div className="md:px-3 px-2 md:py-2 py-1  bg-black text-white">
                   {countdown.minutes?.toString().padStart(2, "0")}
                 </div>
                 <div>:</div>
-                <div className="md:px-3 px-2 md:py-2 py-1  bg-primary text-white">
+                <div className="md:px-3 px-2 md:py-2 py-1  bg-black text-white">
                   {countdown.seconds?.toString().padStart(2, "0")}
                 </div>
               </div>

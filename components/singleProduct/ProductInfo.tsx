@@ -214,7 +214,7 @@ const ProductInfo = ({ params }: any) => {
         <div className="sm:pb-10 ">
           {/* <Headersection heading={product?.prodName} /> */}
           <div className="flex flex-col px-body  ">
-            <div className="flex flex-col md:flex-row gap-3 md:gap-6 mt-10 ">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-6 sm:mt-10 mt-5">
               <div className=" md:flex md:flex-col flex-row   gap-4   hidden ">
                 {product.images.map((item: any, idx: number) => {
                   // console.log(idx);
@@ -244,7 +244,7 @@ const ProductInfo = ({ params }: any) => {
                       alt={product?.prodName || ""}
                       width={1000}
                       height={1000}
-                      className="w-[100%]   object-cover lg:h-[595px] h-[300px]"
+                      className="w-[100%]   object-fit lg:h-[595px] h-[300px] "
                     />
                   </div>
                 </div>

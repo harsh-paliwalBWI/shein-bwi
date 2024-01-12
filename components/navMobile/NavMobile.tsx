@@ -30,7 +30,7 @@ const Navmobile = ({cookie,handleLogout}) => {
     // keepPreviousData: true,
   });
   return (
-    <div className={`text-center  ${matches2 ? "px-[5%]" : "px-[7%]"} `}>
+    <div className={`text-center  ${matches2 ? "px-[5%]" : "px-[7%]"}  bg-white z-40 `}>
       <div className="flex items-center justify-between py-[10px]">
       <div
           onClick={(prev) => {
@@ -42,6 +42,7 @@ const Navmobile = ({cookie,handleLogout}) => {
           <TfiMenuAlt className="h-[20px] w-auto"/>
         </div>
         <div>
+        <Link href={"/"}>
           <Image
             src={logo}
             alt=""
@@ -50,6 +51,7 @@ const Navmobile = ({cookie,handleLogout}) => {
             style={{ aspectRatio: "auto", width: "100px", height: "auto" }}
             className=""
           />
+          </Link>
         </div>
         {/* <div
           onClick={(prev) => {

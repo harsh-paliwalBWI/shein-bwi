@@ -15,6 +15,7 @@ import OrderPage from "../orderPage/OrderPage";
 import HelpAndSupport from "../helpAndSupport/HelpAndSupport";
 import Addresses from "../addresses/Addresses";
 import OrderDetailsPage from "../orderPage/OrderDetailsPage";
+import Points from "./Points";
 
 const Profile = ({ cookie }) => {
   const [isClient, setIsClient] = useState(false);
@@ -116,6 +117,8 @@ const Profile = ({ cookie }) => {
             />
           )}
           {selectedTab === 3 && <Addresses userId={userData?.id} />}
+          {selectedTab === 4 && <Points  cookie={cookie}/>}
+
           {selectedTab === 5 && <HelpAndSupport />}
         </div>
       </div>

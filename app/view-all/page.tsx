@@ -46,7 +46,7 @@ console.log(searchParams,"searchParams");
     }
     if (searchParams?.type === "product-carousel" ||searchParams?.type === "product-list"  ) {
       return (
-        <div className="grid xl:grid-cols-5  lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 sm:gap-x-10 gap-x-2 sm:gap-y-10 gap-y-5">
+        <div className="grid xl:grid-cols-4  lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 sm:gap-x-6w gap-x-2 sm:gap-y-10 gap-y-5">
           {homeData &&
             homeData?.data?.filter(
               (val: any) => val?.id === searchParams?.id

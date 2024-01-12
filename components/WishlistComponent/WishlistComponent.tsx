@@ -49,13 +49,13 @@ const WishlistComponent = ({ cookie }) => {
     setIsClient(true);
   }, [wishlistData2]);
   return (
-    <>
+    <div className=" w-full h-full">
       {wishlistData2 && wishlistData2.length > 0 && isClient ? (
-        <div className="px-body">
-          <h1 className="sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5">
+        <div className="px-body  w-full h-full ">
+          <h1 className="sm:text-2xl text-xl font-semibold md:mt-10 md:pt-0 sm:pt-10 pt-5  sm:mx-0 mx-5  ">
             My Wishlist
           </h1>
-          <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:gap-x-8 gap-x-2 sm:gap-y-10 gap-y-5 md:my-10 my-6">
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 md:gap-x-8 gap-x-2 sm:gap-y-10 gap-y-5 md:my-10 my-6">
             {wishlistData2 &&
               wishlistData2.length > 0 &&
               isClient &&
@@ -70,8 +70,8 @@ const WishlistComponent = ({ cookie }) => {
         </div>
       ) : isLoading ? (
         <div className="px-body">
-          <h1 className="sm:text-2xl text-xl font-semibold md:mt-10 mt-5 sm:mx-0 mx-5">
-            MY WISHLIST
+          <h1 className="sm:text-2xl text-xl font-semibold md:mt-10 mt-5  md:pt-0 sm:pt-10 pt-5 sm:mx-0 mx-5">
+          My Wishlist
           </h1>
           <Loading />
         </div>
@@ -99,7 +99,7 @@ const WishlistComponent = ({ cookie }) => {
           </div>
         </div>
       } */}
-    </>
+    </div>
   );
 };
 

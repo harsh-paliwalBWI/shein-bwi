@@ -79,11 +79,11 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
               });
               toast.success("Product removed from wishlist.");
             }}
-            className="w-[20px] h-[20px] sm:w-[25px] sm:h-[25px] md:w-[30px] md:h-[30px] rounded-full bg-white flex justify-center items-center cursor-pointer "
+            className="w-[20px] h-[20px] sm:w-[25px] sm:h-[25px] md:w-[40px] md:h-[40px] rounded-full bg-white flex justify-center items-center cursor-pointer "
           >
             <FlatIcon
               icon={
-                "flaticon-heart-fill  text-sm md:text-base text-secondary font-normal "
+                "flaticon-heart-fill  text-sm md:text-xl text-secondary font-normal "
               }
             />
           </div>
@@ -103,11 +103,11 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
               });
               toast.success("Product added to wishlist.");
             }}
-            className=" w-[20px] h-[20px] sm:w-[25px] sm:h-[25px] md:w-[30px] md:h-[30px] rounded-full bg-white flex justify-center items-center cursor-pointer"
+            className=" w-[20px] h-[20px] sm:w-[25px] sm:h-[25px] md:w-[40px] md:h-[40px] rounded-full bg-white flex justify-center items-center cursor-pointer"
           >
             <FlatIcon
               icon={
-                "flaticon-heart text-secondary font-normal text-sm md:text-base rounded-full text-secondary "
+                "flaticon-heart text-secondary font-normal text-sm md:text-xl rounded-full text-secondary "
               }
             />
           </div>
@@ -138,7 +138,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
           }`}
         >
           <div className=" relative mb-1 md:mb-2 ">
-            <div className="md:h-[250px] sm:h-[190px] h-[150px] w-auto relative ">
+            <div className="md:h-[400px] sm:h-[190px] h-[150px] w-auto relative ">
               <Image
                 src={image}
                 alt=""
@@ -189,7 +189,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
             </div>
           </div>
           <div className="pl-2 pr-2 pb-2">
-          <div className="line-clamp-1 w-full text-sm font-medium text-primary capitalize mb-1 sm:mb-2 md:mb-3">
+          <div className="line-clamp-1 w-full text-base font-medium text-primary capitalize mb-1 sm:mb-2 md:mb-3">
             <h2 className="">{product?.prodName}</h2>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 md:gap-4">

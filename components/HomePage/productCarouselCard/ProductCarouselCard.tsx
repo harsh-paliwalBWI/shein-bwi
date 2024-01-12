@@ -38,7 +38,7 @@ const ProductCarouselCard = ({ product, id }) => {
   return (
     // <Link href={`/product/${product?.slug?.name}`}>
     <div
-      className="flex flex-col z-10  mx-2.5 relative   bordered-shape overflow-hidden  "
+      className="flex flex-col z-10  mx-2 relative   bordered-shape overflow-hidden  "
       key={id || Math.random().toString()}
       onMouseEnter={() => {
         setHoveredProduct(product?.id);
@@ -86,11 +86,11 @@ const ProductCarouselCard = ({ product, id }) => {
               });
               toast.success("Product added to wishlist.");
             }}
-            className=" w-[30px] h-[30px] rounded-full bg-white flex justify-center items-center cursor-pointer"
+            className=" w-[40px] h-[40px] rounded-full bg-white flex justify-center items-center cursor-pointer"
           >
             <FlatIcon
               icon={
-                "flaticon-heart text-secondary font-normal text-base rounded-full text-secondary "
+                "flaticon-heart text-secondary font-normal text-xl rounded-full text-secondary "
               }
             />
           </div>
@@ -123,7 +123,7 @@ const ProductCarouselCard = ({ product, id }) => {
           }`}
         >
           <div className=" relative  mb-2">
-            <div className="h-[250px] lg:h-[250px] relative ">
+            <div className="h-[250px] lg:h-[400px] relative ">
               <Image
                 src={image}
                 alt=""
@@ -161,7 +161,7 @@ const ProductCarouselCard = ({ product, id }) => {
           <div className="flex  overflow-hidden truncate w-full text-xs font-medium text-primary capitalize mb-1">
             <h2 className="">{""}</h2> {/* to be checked */}
           </div>
-          <div className="flex    w-full text-xs font-bold mb-3 ">
+          <div className="flex    w-full text-base font-bold mb-3 ">
             <h2 className="truncate">
               {product?.prodName || "Calcium Magnesium Zinc"}{" "}
             </h2>

@@ -82,7 +82,7 @@ const slider = useRef<any>(null);
   return (
     <div className='flex  md:flex-row flex-col gap-y-8 items-center  justify-between px-body  md:py-16 py-8 gap-x-4 bg-[#fef8fb]'>
         <div className='md:w-[40%]  w-[90%] '>
-            <div className='2xl:w-[60%] sm:-[80%] w-[100%]  flex flex-col  gap-y-2'>
+            <div className='  w-[100%]  flex flex-col  gap-y-2'>
             <h1 className='sm:text-3xl text-xl  font-bold '>WHAT THEY&apos;RE SAYING</h1>
             <h6 className='text-[#555555] font-medium text-xs leading-6'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </h6>
             </div>

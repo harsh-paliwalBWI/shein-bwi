@@ -20,6 +20,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
   const [minMax, setMinMax] = useState(null);
   const [products, setProducts] = useState(null);
   const [isClient, setIsClient] = useState(false);
+
   const { data: categoryProducts,isLoading } = useQuery({
     queryKey: ["shop", "category", params?.slug],
     queryFn: () =>
@@ -38,13 +39,17 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
     if (categoryProducts) {
       setMinMax(categoryProducts?.minMax);
       if (!filters.price) {
+        console.log("insdie filters.price ");
+        
         setFiters({ ...filters, price: categoryProducts?.minMax });
       }
     }
   }, [categoryProducts]);
+  console.log("filter ---------",filters);
+  
   return (
-    <div className="flex flex-col px-body   h-full ">
-      <div className="w-full flex flex-col lg:flex-row gap-x-4 gap-y-4  mb-20">
+    <div className="flex flex-col px-body   h-full  ">
+      <div className="w-full flex flex-col lg:flex-row gap-x-4 gap-y-4  mb-20 pt-5 sm:pt-10 md:pt-0 ">
       {minMax && filters?.price ? (
         <FilterSection 
          filters={filters}
@@ -61,8 +66,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
       ) : (
         <></>
       )}
-        {/* <div className="w-full h-1 bg-[red]"></div> */}
-        {/* <hr /> */}
+       
         <div className="w-full flex-1">
           {matches && (
             <>
@@ -73,7 +77,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
                         filters: filters,
                         products: categoryProducts?.products,
                       })?.length
-                    } Items Found
+                    } Items Found 
                   {/* {categoryProducts?.products?.length} Items Found */}
                 </h4>
                 {/* <div className="flex gap-20 items-center">
@@ -120,7 +124,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
               <h2 className="font-semibold text-xl">No Products Found</h2>
             </div>
           ) :
-         ( <div className="w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 grid sm:gap-y-8 gap-y-4   md:mb-10  ">
+         ( <div className="w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 grid sm:gap-y-8 gap-y-4   md:mb-10  ">
             {categoryProducts &&
               // categoryProducts?.products?.map((product: any) => {
               //   return (

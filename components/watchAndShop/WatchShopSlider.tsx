@@ -23,8 +23,8 @@ const WatchShopSlider = () => {
     infinite: false,
     speed: 500,
     arrows: true,
-    slidesToShow: 6,
-    slidesToScroll: 6,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     initialSlide: 0,
     responsive: [
       {
@@ -97,7 +97,7 @@ const WatchShopSlider = () => {
     return <div className={`${className}`} onClick={onClick} />;
   }
   const arrowButtonClass =
-    "absolute top-0 bottom-0 my-auto bg-[#F2F7FF] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20 rounded-full ";
+    "absolute top-0 bottom-0 my-auto bg-primary sm:w-8 sm:h-8 h-8 w-8 block text-white cursor-pointer z-20 rounded-full ";
   return (
     <>
       {videoProducts && videoProducts.length > 0 && (
@@ -121,7 +121,7 @@ const WatchShopSlider = () => {
                   className={`${arrowButtonClass} left-0 lg:left-4 flex items-center justify-center`}
                   onClick={() => slider.current?.slickPrev()}
                 >
-                  <FlatIcon className="flaticon-left-arrow text-secondary sm:text-2xl text-lg font-bold" />
+                  <FlatIcon className="flaticon-left-arrow text-white sm:text-xl text-lg font-bold" />
                 </button>
               </div>
               <div className="back  ">
@@ -149,7 +149,7 @@ const WatchShopSlider = () => {
                       className={`${arrowButtonClass} right-0 lg:right-4 text-center flex items-center justify-center   `}
                       onClick={() => slider.current?.slickNext()}
                     >
-                      <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary sm:text-2xl text-lg font-bold" />
+                      <FlatIcon className="flaticon-left-arrow -rotate-180 text-white sm:text-xl text-lg font-bold" />
                     </button>
                   </div>
                 </div>

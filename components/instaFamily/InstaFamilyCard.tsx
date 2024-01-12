@@ -15,6 +15,7 @@ const InstaFamilyCard = ({ item }) => {
         light={item?.thumbnail}
         width={"100%"}
         playing={true}
+        height={"500px"}
         loop={true}
         // controls
         // controls

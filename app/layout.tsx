@@ -6,6 +6,7 @@ import Navbar from "../components/navbar/Navbar";
 import { ReduxProvider } from "../redux/provider";
 import Footer from "../components/footer/Footer";
 import NewsLetter from "../components/newsletter/NewsLetter";
+import FeaturesHeader from "../components/navbar/categories/FeaturesHeader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
           <Providers>
             {/* <SearchHeader/> */}
             <Navbar />
+            <FeaturesHeader/>
             {children}
             {/* <NewsLetter /> */}
             <Footer />

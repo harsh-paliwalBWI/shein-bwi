@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { constant } from '../../utils/constants';
 
 const OrderDetailsPage = ({singleOrder}) => {
-  // console.log("singleOrder",singleOrder);
+  console.log("singleOrder",singleOrder);
   
   return (
     <>
@@ -79,6 +79,12 @@ const OrderDetailsPage = ({singleOrder}) => {
   <h3 className='text-gray-500'> Discount</h3>
     <h3 className='font-semibold'>{constant?.currency} {singleOrder?.discountOnMrp.toFixed(2)}</h3>
   </div>
+  {singleOrder?.pointDiscount&&
+     <div className='flex justify-between xl:text-base text-sm '> 
+     <h3 className='text-gray-500'>Loyality Point Discount</h3>
+       <h3 className='font-semibold'>{constant?.currency} {singleOrder?.pointDiscount.toFixed(2)}</h3>
+     </div>
+  }
  {singleOrder?.couponDiscount!==0&&<div className='flex justify-between xl:text-base text-sm '> 
   <h3 className='text-gray-500'>Coupon Discount</h3>
     <h3 className='font-semibold'>{constant?.currency} {singleOrder?.couponDiscount.toFixed(2)}</h3>

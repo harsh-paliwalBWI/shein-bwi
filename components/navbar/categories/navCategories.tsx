@@ -24,9 +24,14 @@ const Categories = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const categorycheck1 = useMediaQuery("(max-width:600px)");
   const categorycheck2 = useMediaQuery("(max-width:655px)");
-  const categorycheck3 = useMediaQuery("(max-width:749px)");
-  const categorycheck4 = useMediaQuery("(max-width:899px)");
+  const categorycheck3 = useMediaQuery("(max-width:1260px)");
+  const categorycheck4 = useMediaQuery("(max-width:1390px)");
   const hovershow = useMediaQuery("(max-width:975px)");
+
+  // console.log("categorycheck1",categorycheck1);
+  // console.log("categorycheck2",categorycheck2);
+  // console.log("categorycheck3",categorycheck3);
+  // console.log("categorycheck4",categorycheck4);
   useEffect(() => {}, []);
 
   const handleTabClick = (tabIndex) => {
@@ -44,58 +49,12 @@ const Categories = () => {
           // setTab(0);
         }}
       >
-        <div className="   ">
-          <div className="w-full mx-auto flex items-center justify-between gap-5  ">
-            <div className="flex items-center xl:gap-10 gap-5 ">
-              {/* <div
-                onClick={() => {
-                  // handleTabClick(0);
-                }}
-                onMouseEnter={() => {
-                  setTab(0);
-                  setHoveredCategory("shopby");
-                }}
-                onMouseLeave={() => {
-                  setHoveredCategory(null);
-                  setTab(null);
-                }}
-                className={`
-                     lg:gap-2 gap-1 items-center w-fit relative  border-b-2 border-black hover:border-primary   `}
-              >
-                <Link href={"/category"}>
-                  <h1 className="text-xs md:text-sm text-white font-medium cursor-pointer">
-                    Shop by Category
-                  </h1>
-                </Link>
+        <div className="  flex justify-center ">
+          <div className="w-full mx-auto flex items-center justify-center gap-5  ">
+            <div className="flex items-center lg:gap-7 md:gap-3 gap-5  ">
+             
 
-                {!hovershow ? (
-                  <Transition
-                    appear={true}
-                    show={hoveredCategory !== null && tab === 0}
-                  >
-                    <Transition.Child
-                      className="flex flex-col absolute left-0 pt-5 w-full   z-30  transition duration-300"
-                      enter="ease-in-out"
-                      enterFrom=" opacity-0"
-                      enterTo=" opacity-100"
-                      leave="ease-out"
-                      leaveFrom=" opacity-100"
-                      leaveTo=" opacity-0"
-                    >
-                      <CategoriesBar
-                        type={
-                          hoveredCategory === "shopby" ? hoveredCategory : null
-                        }
-                        categories={categories}
-                        hoveredCategory={hoveredCategory}
-                        setHoveredCategory={setHoveredCategory}
-                      />
-                    </Transition.Child>
-                  </Transition>
-                ) : (
-                  ""
-                )}
-              </div> */}
+             
               {categories
                 ?.slice(
                   0,
@@ -104,10 +63,10 @@ const Categories = () => {
                     : categorycheck2
                     ? 6
                     : categorycheck3
-                    ? 8
+                    ? 9
                     : categorycheck4
                     ? 10
-                    : 10
+                    : 12
                 )
                 .map((categoryData, index) => {
                   let category = categoryData?.category;
@@ -153,7 +112,7 @@ const Categories = () => {
                           setHoveredCategory(null);
                         }}
                       >
-                        <h1 className="text-xs md:text-[13px] lg:text-sm text-white font-medium cursor-pointer ">
+                        <h1 className="text-xs lg:text-sm text-white font-medium cursor-pointer">
                           {category.name}
                         </h1>
                       </Link>
@@ -163,7 +122,7 @@ const Categories = () => {
                           show={hoveredCategory !== null && tab === index + 1}
                         >
                           <Transition.Child
-                            className="flex flex-col absolute left-0 pt-5    z-30  transition duration-300"
+                            className="flex flex-col absolute left-0 pt-3    z-30  transition duration-300"
                             enter="ease-in-out"
                             enterFrom=" opacity-0"
                             enterTo=" opacity-100"
@@ -201,21 +160,15 @@ const Categories = () => {
                   );
                 })}
             </div>
-            <div className="absolute right-0 bottom-0 top-0 my-auto   bg-primary cursor-pointer rounded-tl-full rounded-bl-full">
+            {/* <div className="absolute right-0 bottom-0 top-0 my-auto   bg-primary cursor-pointer rounded-tl-full rounded-bl-full">
               <div
-                // onClick={()=>{
-                //   setShowPopUp((prev)=>!prev)
-                // }}
                 className="flex item-center justify-center lg:gap-2 gap-1  text-white   font-medium  lg:px-14  px-3 xl:text-sm text-xs"
               >
                 <p className="py-3.5 ">Men&apos;s Wear</p>
-                {/* <div className="py-3.5 border border-primary  "> */}
                 <FlatIcon className="flaticon-arrow text-white text-sm font-semibold rotate-180 " />
-                {/* </div> */}
 
-                {/* <div className="py-3.5 border border-[#0092FF] ">right arrow</div> */}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </OutsideClickHandler>

@@ -218,7 +218,7 @@ const BannerSlider = ({ section, myKey }) => {
     return <div className={`${className}`} onClick={onClick} />;
   }
   const arrowButtonClass =
-    "absolute top-0 bottom-0 my-auto bg-[#fef8fb] sm:w-10 sm:h-10 h-8 w-8 block text-white cursor-pointer z-20 rounded-full";
+    "absolute top-0 bottom-0 my-auto bg-primary sm:w-8 sm:h-8 h-8 w-8 block text-white cursor-pointer z-20 rounded-full";
   return (
     // <div className="relative" key={myKey}>
     <>
@@ -229,13 +229,13 @@ const BannerSlider = ({ section, myKey }) => {
           0 &&
         homeData?.data?.filter((val: any) => val?.id === section?.widgetID)[0]
           ?.arr?.length !== 0 && (
-          <div className="w-full z-10 relative ">
+          <div className="w-full  relative  ">
              <div className="">
                 <button
                   className={`${arrowButtonClass} left-0 lg:-left-0 flex items-center justify-center`}
                   onClick={() => slider.current?.slickPrev()}
                 >
-                  <FlatIcon className="flaticon-left-arrow text-secondary sm:text-2xl text-lg font-bold"/>
+                  <FlatIcon className="flaticon-left-arrow text-white sm:text-xl text-lg font-bold"/>
                 </button>
               </div>
             <Slider
@@ -271,7 +271,7 @@ const BannerSlider = ({ section, myKey }) => {
                         e.preventDefault();
                       }
                     }}
-                      className="h-auto w-full"
+                      className="sm:h-auto h-[235px] w-full  "
                       key={idx + 100}
                       // onClick={async () => {
                       //   let res = await bannerLink(banner);
@@ -288,8 +288,8 @@ const BannerSlider = ({ section, myKey }) => {
                         alt={banner?.image?.caption || "image"}
                         width={1000}
                         height={100}
-                        layout="responsive"
-                        className="object-fill w-full h-full"
+                        // layout="responsive"
+                        className="object-fill w-[100%] h-[100%]  "
                       />
                     </Link>
                   ))}
@@ -299,7 +299,7 @@ const BannerSlider = ({ section, myKey }) => {
                   className={`${arrowButtonClass} right-0 lg:-right-0 text-center flex items-center justify-center   `}
                   onClick={() => slider.current?.slickNext()}
                 >
-                  <FlatIcon className="flaticon-left-arrow -rotate-180 text-secondary sm:text-2xl text-lg font-bold"/>
+                  <FlatIcon className="flaticon-left-arrow -rotate-180 text-white sm:text-xl text-lg font-bold"/>
                 </button>
               </div>
           </div>

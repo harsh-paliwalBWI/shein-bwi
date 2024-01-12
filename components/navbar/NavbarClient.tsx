@@ -3,7 +3,7 @@ import Link from "next/link";
 // import logo from "../../images/MedX-Pharmacy-Logo-R-01 1 (1).svg";
 // import Logo from "../../images/Group 34330.png"
 // import logo from "../../images/Frame 34430.svg";
-import logo from "../../images/Group 34291.svg";
+import logo from "../../images/Group 34291 (2).svg";
 import axios from "axios";
 import { toast } from "react-toastify";
 import React, { useEffect, useState, Fragment } from "react";
@@ -58,6 +58,12 @@ import OutsideClickHandler from "../../utils/OutsideClickHandler";
 import PopUp from "../popUp/PopUp";
 import { Popover } from '@headlessui/react';
 import { getCookie } from "cookies-next";
+import { PiUserLight } from "react-icons/pi";
+import { PiShoppingCartLight } from "react-icons/pi";
+import { GoHeart } from "react-icons/go";
+import { CiHeart } from "react-icons/ci";
+import { IoIosHeartEmpty } from "react-icons/io";
+import NewNavMobile from "../navMobile/NewNavMobile";
 
 const NavbarClient = ({ cookie }: any) => {
     const cookies = { value: getCookie("uid") };;
@@ -218,14 +224,20 @@ const NavbarClient = ({ cookie }: any) => {
     // console.log(" end");
   }
   return (
-    <>
+    <div className="fixed top-0 w-full z-40 ">
       {showPopup && <PopUp setShowPopup={setShowPopup} />}
 
       {matches ? (
-        <NavMobile cookie={cookie} handleLogout={handleLogout} />
+         <NewNavMobile
+         cookie={cookie}
+         isClient={isClient}
+         handleLogout={handleLogout}
+        
+       />
+        // <NavMobile cookie={cookie} handleLogout={handleLogout} />
       ) : (
-        <>
-          <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body z-10 ">
+        <div className="">
+          <div className="bg-primary text-white py-2 text-sm font-semibold w-full px-body z-10  ">
             <div className="flex items-center   w-full  justify-between lg:gap-5  ">
               {/* <div className="flex items-center lg:gap-8 gap-4 lg:w-1/3 w-[18%] ">
                 <div>
@@ -258,7 +270,7 @@ const NavbarClient = ({ cookie }: any) => {
                 <p className=" text-base lg:text-lg text-secondary font-bold">
                   New Users Only{" "}
                 </p>
-                <p className=" text-base lg:text-lg">
+                <p className=" text-base lg:text-2xl font-bold">
                   All India Free Delivery + 15% Extra Discount{" "}
                 </p>
                 <p className=" text-base lg:text-lg text-secondary font-bold">
@@ -590,7 +602,7 @@ const NavbarClient = ({ cookie }: any) => {
                         height={1000}
                         style={{
                           aspectRatio: "auto",
-                          width: "180px",
+                          width: "200px",
                           height: "auto",
                         }}
                       />
@@ -609,8 +621,9 @@ const NavbarClient = ({ cookie }: any) => {
                       >
                         <div className=" cursor-pointer">
                           <div className="flex items-center gap-2">
-                            <FlatIcon className="flaticon-user-fill text-2xl" />
-                            {(userData && userData?.name) || "User "}
+                            {/* <FlatIcon className="flaticon-user-fill text-2xl" /> */}
+                            <PiUserLight className=" text-3xl"/>
+                            {/* {(userData && userData?.name) || "User "} */}
                           </div>
                         </div>
                         <Transition
@@ -625,14 +638,14 @@ const NavbarClient = ({ cookie }: any) => {
                         >
                           <div className="z-50 absolute right-0 mt-2 top-full w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <div className="px-1 py-1">
-                              <Link href={"/profilepage"}>
-                                <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:text-primary">
+                              <Link href={"/profilepage"} className="">
+                                <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm  hover:text-primary  hover:bg-[#F2F7FF]">
                                   Profile
                                 </button>
                               </Link>
                               <button
                                 onClick={handleLogout}
-                                className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:text-primary"
+                                className="group flex w-full items-center rounded-md px-2 py-2 text-sm  hover:text-primary  hover:bg-[#F2F7FF]"
                               >
                                 Logout
                               </button>
@@ -648,25 +661,31 @@ const NavbarClient = ({ cookie }: any) => {
                         className="flex items-center gap-2 cursor-pointer"
                         onClick={handleLoginClick}
                       >
-                        <FlatIcon className={"flaticon-user-fill text-2xl"} />
+                        {/* <FlatIcon className={"flaticon-user-fill text-2xl "} /> */}
+                        <PiUserLight className=" text-3xl"/>
                         <h3>Login</h3>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 cursor-pointer">
-                        <FlatIcon className={"flaticon-user-fill text-2xl"} />
+                        {/* <FlatIcon className={"flaticon-user-fill text-2xl"} /> */}
+                        <PiUserLight className=" text-3xl"/>
                         <h3>Login</h3>
                       </div>
                     )}
                     <Link href={"/wishlist"}>
                       <div className="cursor-pointer">
-                        <FlatIcon className="flaticon-heart-fill text-2xl " />
+                        {/* <FlatIcon className="flaticon-heart-fill text-2xl " /> */}
+                        {/* <GoHeart className=" text-2xl "/> */}
+                        {/* <CiHeart className=" text-2xl " /> */}
+                        <IoIosHeartEmpty className=" text-3xl "  />
                       </div>
                     </Link>
                     <Link
                       href={"/cart"}
                       className="flex items-center  gap-2 cursor-pointer relative"
                     >
-                      <FlatIcon className="flaticon-bag-fill text-2xl" />
+                      {/* <FlatIcon className="flaticon-bag-fill text-2xl" /> */}
+                      <PiShoppingCartLight className=" text-3xl"/>
                       <div className="h-[15px] w-[15px] rounded-full bg-primary absolute top-0 -right-1 flex items-center justify-center text-[8px] text-white">
                         {cart.length > 0 ? cart.length : 0}
                       </div>
@@ -685,7 +704,7 @@ const NavbarClient = ({ cookie }: any) => {
             </Modal> */}
           </div>
        
-          <div className="w-full px-body grid   md:grid-cols-4 py-2  justify-between items-stretch">
+          {/* <div className="w-full px-body grid  bg-[white]   md:grid-cols-4 py-2  justify-between items-stretch">
             <div className="flex gap-2 justify-center items-center ">
               <FlatIcon className=" text-primary flaticon-free-delivery md:text-2xl lg:text-4xl font-bold" />
               <p className="md:text-sm lg:text-lg font-semibold">All India Free Delivery</p>
@@ -702,9 +721,9 @@ const NavbarClient = ({ cookie }: any) => {
               <FlatIcon className=" text-primary flaticon-delivery-status-3 md:text-2xl lg:text-4xl font-bold" />
               <p className="md:text-sm lg:text-lg font-semibold">Easy Return & Exchange</p>
             </div>
-          </div>
+          </div> */}
           {/* </Link> */}
-        </>
+        </div>
       )}
       {isClient && isLoginOpen && (
         <SideMenuLogin
@@ -714,7 +733,7 @@ const NavbarClient = ({ cookie }: any) => {
         />
       )}
       {/* {!matches2 && <Categories />} */}
-    </>
+    </div>
   );
 };
 
