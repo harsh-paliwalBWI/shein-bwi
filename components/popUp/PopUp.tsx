@@ -79,12 +79,14 @@ const PopUp = ({ setShowPopup }) => {
           >
             <div className="flex  w-full h-auto  bg-white   relative">
             <div
-            className=" absolute w-[50px] h-[50px]  rounded-full right-0 top-0  flex justify-center items-center   "
+            className="  absolute w-[50px] h-[50px]  rounded-full right-0 top-0  flex justify-center items-center z-50  "
             onClick={() => {
+              // console.log("clicked");
+              
               setShowPopup((prev) => !prev);
             }}
           >
-            <button className="bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center">
+            <button   className="bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center">
               <FlatIcon
                 icon={"flaticon-close text-primary font-bold text-lg"}
               />
