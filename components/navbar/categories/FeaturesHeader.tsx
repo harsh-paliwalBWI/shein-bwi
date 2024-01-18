@@ -1,10 +1,13 @@
 "use client"
 import React from 'react'
 import FlatIcon from '../../flatIcon/flatIcon'
+import { useScrollDirection } from "../../../utils/useScroll";
 
 const FeaturesHeader = () => {
+  const isScrolled = useScrollDirection();
+
   return (
-    <div className="md:mt-[200px] mt-[139px] w-full px-body   h-auto ">
+    <div className={`${isScrolled?"mt-[55px]":"md:mt-[200px] mt-[139px]"}  w-full px-body   h-auto `}>
    <div className='md:grid hidden md:grid-cols-4 grid-cols-2 py-2  justify-between items-stretch'>
    <div className="flex gap-2 justify-center items-center ">
       <FlatIcon className=" text-primary flaticon-free-delivery md:text-2xl lg:text-4xl font-bold" />

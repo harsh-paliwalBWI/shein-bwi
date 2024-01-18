@@ -84,7 +84,7 @@ const NewProfileAddress = ({ onClose }) => {
   }, [])
 
   return (
-    <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0  flex justify-center items-center z-30">
+    <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0  flex justify-center items-center z-50">
       <div className="lg:w-[50%] md:w-[70%] w-[90%] h-auto bg-[white] rounded-xl ">
         <div className="sm:px-8 px-4 sm:py-8 py-4 flex flex-col sm:gap-5 gap-3">
           <div className="flex sm:flex-row flex-col items-center w-full sm:gap-5 gap-3">

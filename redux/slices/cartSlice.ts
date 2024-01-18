@@ -5,8 +5,6 @@ import { addDoc, collection, deleteDoc, doc, setDoc, updateDoc } from "firebase/
 import { removeCartObjFromUser } from "../../utils/databaseService";
 import { constant } from "../../utils/constants";
 
-
-
 const initialState: any = {
     cart: [],
 };
@@ -29,13 +27,7 @@ function getImage(product: any) {
     return constant?.errImage;
 }
 
-
-
-
 export function getCartObj({ product, productID, quantity = 1 }: any) {
-
-    console.log(product, "from getCartObj ");
-
     let cartObj: any = {
         name: product.prodName,
         quantity: quantity || 1,
@@ -87,21 +79,11 @@ export function getCartObj({ product, productID, quantity = 1 }: any) {
             }
         }
     }
-
     cartObj = priceSlabsCheck(cartObj, product);
-    console.log(cartObj, "cartObj;");
-
     return cartObj;
-
-
 }
 
 export function getPriceListCartObj({ product, index, quantity = 1 }) {
-    console.log(product, "from getPriceListCartObj");
-    console.log(index);
-    // console.log(pack," pack from getPriceListCartObj");
-
-
     let cartObj: any = {
         name: product.prodName,
         quantity: quantity || 1,
@@ -176,16 +158,9 @@ export function getPriceListCartObj({ product, index, quantity = 1 }) {
             }
         }
     }
-    console.log("cartObj before", cartObj);
     cartObj = priceSlabsCheck(cartObj, product);
-
-    console.log(cartObj, "cart obj---");
-
     return cartObj;
 }
-
-
-
 
 export const cartSlice = createSlice({
     name: "cartSlice",
@@ -207,23 +182,11 @@ export const cartSlice = createSlice({
 
         },
         removeFromCart: (state, action: PayloadAction<any>) => {
-            // console.log(action,"action");
-            const { product,
-                productID,
-                index,
-                isPriceList,
-            } = action.payload;
-            // console.log(productID,"productID");
-
+            const { product, productID, index, isPriceList, } = action.payload;
             let cart = current(state)?.cart;
-            // console.log(cart,"cart");
-
-            let cartIndex = isPriceList ? cart.findIndex((item) => item?.productId === productID && item?.description === product?.priceList[index]?.weight) : cart.findIndex((item) => item?.id === productID)
-            // console.log(cartIndex,"cartIndex");
-
+            let cartIndex = isPriceList ? cart.findIndex((item) => item?.productId === productID && item?.description === product?.priceList[index]?.weight) : cart.findIndex((item) => item?.productId === productID)
             let objec = cart[cartIndex] || null;
-
-            let newArr = isPriceList ? cart.filter((item) => item?.productId !== productID && item?.description !== product?.priceList[index]?.weight) : cart.filter((item) => item?.id !== productID)
+            let newArr = isPriceList ? cart.filter((item) => item?.productId !== productID && item?.description !== product?.priceList[index]?.weight) : cart.filter((item) => item?.productId !== productID)
             state.cart = newArr;
             if (auth.currentUser?.uid) {
                 if (objec && objec?.id) {
@@ -234,16 +197,10 @@ export const cartSlice = createSlice({
             }
         },
         updateCartItemQuantity: (state, action: PayloadAction<any>) => {
-            const { type,
-
-                addedQty = 1,
-                index,
-            } = action.payload;
+            const { type, addedQty = 1, index, } = action.payload;
             let arr = state.cart;
             // console.log({ arr });
-
             let currentQty = state.cart[index]['quantity']
-
             let cartitemId = state.cart[index]?.id || ""
             if (type === 'inc') {
                 arr[index] = {

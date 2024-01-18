@@ -910,15 +910,33 @@ export const fetchStorLocations = async () => {
 export const fetchPointsDetails=async()=>{
     const docRef = doc(db, "features", "points");
     const docSnap = await getDoc(docRef);
-    
     if (docSnap.exists()) {
         const data=docSnap.data()
-    //   console.log("Document data:", docSnap.data());
       return {...data}
     } else {
-      // docSnap.data() will be undefined in this case
-    //   console.log("No such document!");
       return null
-
     }
+}
+
+
+
+export const fetchFiltersData=async()=>{
+
+const res = await getDocs(collection(db, "features","filters","list")).then((snaoShot) => {
+    if (snaoShot.docs.length === 0) return [];
+
+    let arr = [];
+    for (const location of snaoShot.docs) {
+        // console.log("inside for loop");
+        
+        let data = location.data();
+        // console.log("data",data);
+        
+        arr.push({ ...data, id: location.id })
+    }
+
+    return arr
+})
+
+return JSON.parse(JSON.stringify(res))
 }

@@ -29,6 +29,9 @@ import { GoHeart } from "react-icons/go";
 import { CiHeart } from "react-icons/ci";
 import { IoIosHeartEmpty } from "react-icons/io";
 
+const texts = ["New Users Only !", " All India Free Delivery + 15% Extra Discount", "Code : SHE15"];
+
+
 const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLoginMenu, }: any) => {
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
@@ -56,7 +59,7 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState(false);
-
+  const [currentIndex, setCurrentIndex] = useState(0);
   
 
   
@@ -79,6 +82,13 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
     }
   }, [debouncedSearch]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [texts.length]);
+
   return (
     <div ref={ref}>
       <div
@@ -100,7 +110,7 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
                     className="flex justify-center items-center gap-2   w-full  xl:text-sm text-xs "
                   >
              
-                <p className=" text-[10px] lg:text-lg text-secondary font-bold">
+                {/* <p className=" text-[10px] lg:text-lg text-secondary font-bold">
                   New Users Only
                 </p>
                 <p className=" text-[12px] lg:text-2xl font-bold">
@@ -109,7 +119,8 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
                 <p className="  text-[10px] lg:text-lg text-secondary font-bold">
                  
                   Code: SHE15
-                </p>
+                </p> */}
+                <p className="text-white text-sm">{texts[currentIndex]}</p>
              
               </Link>
       </div>

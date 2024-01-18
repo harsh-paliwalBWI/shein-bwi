@@ -7,6 +7,7 @@ import { ReduxProvider } from "../redux/provider";
 import Footer from "../components/footer/Footer";
 import NewsLetter from "../components/newsletter/NewsLetter";
 import FeaturesHeader from "../components/navbar/categories/FeaturesHeader";
+import GoToTop from "../components/GoToTop/GoToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
             {children}
             {/* <NewsLetter /> */}
             <Footer />
+            <GoToTop className='hidden sm:flex'/>
             <ToastContainer />
           </Providers>
         </ReduxProvider>

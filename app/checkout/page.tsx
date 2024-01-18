@@ -73,7 +73,7 @@ const CheckoutPage = ({ searchParams }) => {
     // keepPreviousData: true,
   });
   // console.log("pointsDetails",pointsDetails);
-  
+
 
   const [completedSteps, setCompletedSteps] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,10 +86,10 @@ const CheckoutPage = ({ searchParams }) => {
   const [couponDiscount, setCouponDiscount] = useState(null);
   const [couponName, setCouponName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoyalityPoints,setIsLoyalityPoints]=useState(false)
-  const [loyalityAmt,setLoyalityAmt]=useState(0)
-  const [isRedeemed,setIsRedeemed]=useState(false)
-  const [pointUsed,setPointUsed]=useState(0)
+  const [isLoyalityPoints, setIsLoyalityPoints] = useState(false)
+  const [loyalityAmt, setLoyalityAmt] = useState(0)
+  const [isRedeemed, setIsRedeemed] = useState(false)
+  const [pointUsed, setPointUsed] = useState(0)
   const [userAddress, setUserAddress] = useState(
     userData?.defaultAddress || initialAddress
   );
@@ -144,13 +144,13 @@ const CheckoutPage = ({ searchParams }) => {
       };
       const res = await getCouponDiscountDetails(data);
       let res2 = await res.data;
-      console.log("res2",res2);
+      console.log("res2", res2);
       // let couponInfo={...res2}
-      
+
 
       if (res2["success"]) {
         console.log(res2["details"]["totalAmountToPaid"]);
-        
+
         const couponDiscount =
           paymentSummary.totalPayable - res2["details"]["totalAmountToPaid"];
         // setPaymentSummary((prev: any) => {
@@ -160,12 +160,12 @@ const CheckoutPage = ({ searchParams }) => {
         //   };
         // });
 
-        console.log("couponDiscount",couponDiscount);
-        console.log(",,couponText",couponText);
-        
-        
+        console.log("couponDiscount", couponDiscount);
+        console.log(",,couponText", couponText);
+
+
         setCouponDiscount(couponDiscount);
-setCouponName(couponText.name)
+        setCouponName(couponText.name)
         setAppliedCoupons(res2);
 
         // setAppliedCoupons(couponText);
@@ -196,26 +196,26 @@ setCouponName(couponText.name)
     }
   }
 
-  const redeedLoyalityPointsHandler=()=>{
-      let maxDiscountFromPoints = paymentSummary?.totalPayable * pointsDetails?.redeem?.percent / 100
-      const userPointAmount = userData?.point?.totalPoints * pointsDetails.conversionRate
-      // console.log( "max discount",maxDiscountFromPoints)
-      // console.log("userPointAmount",userPointAmount);
-      if (maxDiscountFromPoints > userPointAmount) {
-          maxDiscountFromPoints = userPointAmount
-      }
-      // console.log( "point discount",maxDiscountFromPoints)
-      let usedPoints=maxDiscountFromPoints/pointsDetails.conversionRate
-      // console.log( "point used",usedPoints)
-console.log("hii");
+  const redeedLoyalityPointsHandler = () => {
+    let maxDiscountFromPoints = paymentSummary?.totalPayable * pointsDetails?.redeem?.percent / 100
+    const userPointAmount = userData?.point?.totalPoints * pointsDetails.conversionRate
+    // console.log( "max discount",maxDiscountFromPoints)
+    // console.log("userPointAmount",userPointAmount);
+    if (maxDiscountFromPoints > userPointAmount) {
+      maxDiscountFromPoints = userPointAmount
+    }
+    // console.log( "point discount",maxDiscountFromPoints)
+    let usedPoints = maxDiscountFromPoints / pointsDetails.conversionRate
+    // console.log( "point used",usedPoints)
+    // console.log("hii");
     setIsRedeemed(true)
     setLoyalityAmt(maxDiscountFromPoints)
-    setPointUsed(usedPoints) 
+    setPointUsed(usedPoints)
   }
 
-  const removeLoyalityPointsHandler=()=>{
+  const removeLoyalityPointsHandler = () => {
     setLoyalityAmt(0)
-setPointUsed(0)
+    setPointUsed(0)
     setIsRedeemed(false)
     setIsLoyalityPoints(false)
   }
@@ -327,16 +327,16 @@ setPointUsed(0)
     );
     let orderObj = {
       delivery: paymentSummary?.delivery?.deliveryCost || 0,
-      couponDiscount:appliedCoupons ? appliedCoupons["details"]["totalCouponDiscount"]: 0,
-      pointDiscount:loyalityAmt,
-      pointUsed:pointUsed,
+      couponDiscount: appliedCoupons ? appliedCoupons["details"]["totalCouponDiscount"] : 0,
+      pointDiscount: loyalityAmt,
+      pointUsed: pointUsed,
       defaultGst: paymentSummary?.totalGst || 0,
       // totalAmountToPaid: paymentSummary?.totalPayable,
-      totalAmountToPaid: loyalityAmt<paymentSummary?.totalPayable?
-        ((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))-(loyalityAmt&&loyalityAmt)).toFixed(2)
+      totalAmountToPaid: loyalityAmt < paymentSummary?.totalPayable ?
+        ((paymentSummary?.totalPayable.toFixed(2)) - (appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2)) - (loyalityAmt && loyalityAmt)).toFixed(2)
         :
-        ((paymentSummary?.totalPayable.toFixed(2))-(paymentSummary?.totalPayable.toFixed(2))).toFixed(2)
-        ,
+        ((paymentSummary?.totalPayable.toFixed(2)) - (paymentSummary?.totalPayable.toFixed(2))).toFixed(2)
+      ,
       // totalAmountToPaid:((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))),
       couponId: "", //coupon
       couponName: "", //coupon,
@@ -402,8 +402,8 @@ setPointUsed(0)
   useEffect(() => {
     getPaymentSummary();
   }, [addressToDeliver]);
-  console.log(paymentSummary,"payment summary");
-  
+  console.log(paymentSummary, "payment summary");
+
 
   function renderTabs() {
     switch (selectedTab) {
@@ -445,8 +445,8 @@ setPointUsed(0)
         return <></>;
     }
   }
-  console.log(isLoading,"------");
-  
+  console.log(isLoading, "------");
+
   return (
     <div className="px-body  ">
       <div className="w-full flex lg:flex-row flex-col-reverse sm:gap-y-8 gap-y-4 gap-x-16 lg:mt-10 mt-5 md:pt-0 sm:pt-10 pt-5 lg:mb-24 mb-5  ">
@@ -471,9 +471,8 @@ setPointUsed(0)
                       }}
                     >
                       <p
-                        className={`${
-                          tab === selectedTab && "text-primary  "
-                        } font-medium xl:text-base text-sm text-[#555555]`}
+                        className={`${tab === selectedTab && "text-primary  "
+                          } font-medium xl:text-base text-sm text-[#555555]`}
                       >
                         {tab}
                         {(idx === 0 || idx === 1) && " >"}
@@ -527,22 +526,22 @@ setPointUsed(0)
                             () => setIsCoupon(true);
                           }}
                         />
-                    </div>
-                      {couponName&&
-                      <div
-                        onClick={async () => {
-                          setCouponName("")
-                          setRemovingCoupon(true);
-                          const res = await getPaymentSummary();
-                          setAppliedCoupons(null);
-                          setRemovingCoupon(false);
-                          toast.success("Coupon removed.")
-
-                        }}
-                      >
-                        <FlatIcon className="flaticon-close text-primary text-lg" />
                       </div>
-                    }                    </div>
+                      {couponName &&
+                        <div
+                          onClick={async () => {
+                            setCouponName("")
+                            setRemovingCoupon(true);
+                            const res = await getPaymentSummary();
+                            setAppliedCoupons(null);
+                            setRemovingCoupon(false);
+                            toast.success("Coupon removed.")
+
+                          }}
+                        >
+                          <FlatIcon className="flaticon-close text-primary text-lg" />
+                        </div>
+                      }                    </div>
                   </div>
 
                   <Modal isOpen={removingCoupon} setOpen={setRemovingCoupon}>
@@ -573,9 +572,9 @@ setPointUsed(0)
                         >
                           <button className=" bg-white w-[20px] h-[20px] rounded-full flex justify-center items-center cursor-pointer">
                             <FlatIcon className="flaticon-close font-bold text-[10px]"
-                              // icon={
-                              //   "flaticon-close text-secondary font-bold text-[10px]"
-                              // }
+                            // icon={
+                            //   "flaticon-close text-secondary font-bold text-[10px]"
+                            // }
                             />
                             {/* fcbfh dh */}
                           </button>
@@ -641,7 +640,7 @@ setPointUsed(0)
                                                 </p>
                                               </div>
                                               {appliedCoupons &&
-                                              item?.id ===
+                                                item?.id ===
                                                 appliedCoupons["data"]["couponId"] ? (
                                                 <div className="cursor-pointer">
                                                   <button className="text-white bg-primary sm:px-5 px-3 py-1 sm:text-sm text-xs">
@@ -675,66 +674,44 @@ setPointUsed(0)
                   )}
                   <div>
 
-                    {pointsDetails?.active&&paymentSummary?.totalPayable>pointsDetails?.redeem?.minOrderAmt&&
-                    <>
-                    {isRedeemed?
-                    <div className="flex items-center justify-between">
-                    <div 
-                    className="text-primary cursor-pointer"
-                    >Remove loyality points</div>
-                    <button onClick={()=>removeLoyalityPointsHandler()}>
-                    <FlatIcon
-                              icon={
-                                "flaticon-close text-primary font-bold text-base"
-                              }
-                            />
-                    </button>
-                    </div>
-                    :
-                    <div>
-                       <div onClick={()=>setIsLoyalityPoints((prev)=>!prev)}
- className="cursor-pointer text-primary underline"
- >
-   {pointsDetails?.pointName}
-  
- </div>
- {isLoyalityPoints&&
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="text-gray-500 font-medium  text-base">You have  {userData?.point?.totalPoints} loyality points</div>
-                    <button
-                    onClick={()=>redeedLoyalityPointsHandler()}
-                     className=" bg-primary text-white px-3 py-1 rounded-md">
-Redeem
-                    </button>
-                    </div>
+                    {pointsDetails?.active && paymentSummary?.totalPayable > pointsDetails?.redeem?.minOrderAmt &&
+                      <>
+                        {isRedeemed ?
+                          <div className="flex items-center justify-between">
+                            <div
+                              className="text-primary cursor-pointer"
+                            >Remove loyality points</div>
+                            <button onClick={() => removeLoyalityPointsHandler()}>
+                              <FlatIcon
+                                icon={
+                                  "flaticon-close text-primary font-bold text-base"
+                                }
+                              />
+                            </button>
+                          </div>
+                          :
+                          <div>
+                            <div onClick={() => setIsLoyalityPoints((prev) => !prev)}
+                              className="cursor-pointer text-primary underline"
+                            >
+                              {pointsDetails?.pointName}
+
+                            </div>
+                            {isLoyalityPoints &&
+                              <div className="flex justify-between items-center mt-2">
+                                <div className="text-gray-500 font-medium  text-base">You have  {userData?.point?.totalPoints} loyality points</div>
+                                <button
+                                  onClick={() => redeedLoyalityPointsHandler()}
+                                  className=" bg-primary text-white px-3 py-1 rounded-md">
+                                  Redeem
+                                </button>
+                              </div>
+                            }
+                          </div>
+                        }
+                      </>
                     }
-                    </div>
-                    }
-                    
-{/* {isRedeemed?<div onClick={()=>removeLoyalityPointsHandler()}
-className="text-primary cursor-pointer"
->Remove loyality points</div>:
- <div onClick={()=>setIsLoyalityPoints((prev)=>!prev)}
- className="cursor-pointer text-primary underline"
- >
-   {pointsDetails?.pointName}
-  
- </div>
-} */}
-                   
-                    </>
-                  
-                    }
-                    {/* {isLoyalityPoints&&
-                    <div className="flex justify-between items-center">
-                      <div>You have  {userData?.point?.totalPoints} loyality points</div>
-                    <button
-                    onClick={()=>redeedLoyalityPointsHandler()}
-                     className=" bg-primary text-white px-3 py-1 rounded-md">
-Redeem
-                    </button>
-                    </div>
-                    } */}
+
                   </div>
                   <div className="flex   justify-between gap-4  text-base">
                     <p className="text-gray-500 font-semibold  text-base">
@@ -744,12 +721,6 @@ Redeem
                       {constant.currency} {paymentSummary?.totalMrp?.toFixed(2)}
                     </p>
                   </div>
-                  {/* <div className="flex  justify-between gap-4  text-base">
-                    <p className="text-gray-500 font-semibold  text-base">Subtotal</p>
-                    <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
-                      {constant.currency} {paymentSummary?.totalMrp?.toFixed(2)}
-                    </p>
-                  </div> */}
                   {paymentSummary?.discountOnMrp !== 0 && (
                     <div className="flex  justify-between ">
                       <p className="text-gray-500 font-semibold  text-base">
@@ -776,20 +747,19 @@ Redeem
                   )}
                   {/* coupon  end */}
 
- {loyalityAmt>0&&
-  <div className="flex justify-between  ">
-                    <p className="text-gray-500 font-semibold  text-base">
-                      Loyality Point Discount
-                    </p>
-                    <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
-                      {loyalityAmt > 0&&
-                        `${
-                            constant.currency
+                  {loyalityAmt > 0 &&
+                    <div className="flex justify-between  ">
+                      <p className="text-gray-500 font-semibold  text-base">
+                        Loyality Point Discount
+                      </p>
+                      <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
+                        {loyalityAmt > 0 &&
+                          `${constant.currency
                           } ${loyalityAmt.toFixed(
                             2
                           )}`}
-                    </p>
-                  </div>}
+                      </p>
+                    </div>}
                   <div className="flex justify-between  ">
                     <p className="text-gray-500 font-semibold  text-base">
                       Shipping Fees
@@ -797,11 +767,10 @@ Redeem
                     <p className="font-semibold  text-base text-right text-black  leading-tight tracking-tight">
                       {paymentSummary?.delivery?.deliveryCost === 0
                         ? "Free"
-                        : `${
-                            constant.currency
-                          } ${paymentSummary?.delivery?.deliveryCost.toFixed(
-                            2
-                          )}`}
+                        : `${constant.currency
+                        } ${paymentSummary?.delivery?.deliveryCost.toFixed(
+                          2
+                        )}`}
                     </p>
                   </div>
                   {/* <div className="flex justify-between gap-4  text-base">
@@ -818,10 +787,10 @@ Redeem
                     <p className=" font-bold text-secondary    text-base leading-tight tracking-tight">
                       {constant.currency}{" "}
                       {/* - {appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2)} */}
-                      {loyalityAmt<paymentSummary?.totalPayable?
-                      ((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))-(loyalityAmt&&loyalityAmt)).toFixed(2)
-                      :
-                      ((paymentSummary?.totalPayable.toFixed(2))-(paymentSummary?.totalPayable.toFixed(2))).toFixed(2)
+                      {loyalityAmt < paymentSummary?.totalPayable ?
+                        ((paymentSummary?.totalPayable.toFixed(2)) - (appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2)) - (loyalityAmt && loyalityAmt)).toFixed(2)
+                        :
+                        ((paymentSummary?.totalPayable.toFixed(2)) - (paymentSummary?.totalPayable.toFixed(2))).toFixed(2)
                       }
                       {/* {((paymentSummary?.totalPayable.toFixed(2))-(appliedCoupons && appliedCoupons["details"]["totalCouponDiscount"].toFixed(2))-(loyalityAmt&&loyalityAmt)).toFixed(2)} */}
                     </p>
@@ -839,25 +808,25 @@ Redeem
                         handleClick();
                       }
                     }}
-                    //  previous onclick start
-                    // onClick={() => {
-                    //   handleAddressSubmit();
-                    // }}
-                    //  previous onclick end
+                  //  previous onclick start
+                  // onClick={() => {
+                  //   handleAddressSubmit();
+                  // }}
+                  //  previous onclick end
                   >
-                    
+
                     {selectedTab === tabs[2]
-                      ? isLoading?<Loader/>:"Proceed To Payment"
+                      ? isLoading ? <Loader /> : "Proceed To Payment"
                       // "Proceed To Payment"
                       : selectedTab === tabs[1]
-                      ? "Proceed To Review"
-                      : "Select Payment Method"}
-                    
+                        ? "Proceed To Review"
+                        : "Select Payment Method"}
+
                   </button>
                 </div>
 
 
-{/* <div className="flex">
+                {/* <div className="flex">
   {isLoading ? (
     <Loader />
   ) : (

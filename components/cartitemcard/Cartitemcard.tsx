@@ -5,55 +5,40 @@ import { toast } from "react-toastify";
 import product1 from "../../images/productimg1.svg";
 import { constant } from "../../utils/constants";
 import { useDispatch } from "react-redux";
-import {
-  initializeCart,
-  updateCartItemQuantity,
-} from "../../redux/slices/cartSlice";
+import { initializeCart, updateCartItemQuantity, } from "../../redux/slices/cartSlice";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { updatedCartFromBackend } from "../../utils/cartUtilities/cartUtility";
 import FlatIcon from "../flatIcon/flatIcon";
-import { addDoc, collection, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserData } from "../../utils/databaseService";
-import { db } from "../../config/firebase-config";
 import { moveToWishListHandler } from "../../utils/databaseService";
-import {
-  removeFromWishListHandler,
-  getUserWishlist,
-} from "../../utils/databaseService";
+import { removeFromWishListHandler, getUserWishlist, } from "../../utils/databaseService";
 // import { toast } from "react-toastify";
 import { removeFromCart } from "../../redux/slices/cartSlice";
-// import { useQueryClient } from "@tanstack/react-query";
+
 
 const CartItemCard = ({ item, mykey, cookie }) => {
-  // console.log(item);
-  const queryClient = useQueryClient();
-  const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState((item && item?.minQty) || 1);
-  const [color,setColor]=useState(item?.pack?.weight?.split("/"))
-  const [variant, setVariant] = useState(0);
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: () => getUserData(cookie),
-
-    // keepPreviousData: true,
-    // enabled: isClient,
   });
 
-
-  // let weight =item?.pack?.weight.split("/")
-  // console.log(weight&&weight,"weight");
-  
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlistData"],
     queryFn: () => getUserWishlist(userData?.id),
   });
 
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState((item && item?.minQty) || 1);
+  const [color, setColor] = useState(item?.pack?.weight?.split("/"))
+  const [variant, setVariant] = useState(0);
+
   function handleRemoveFromCart(item: any) {
     let data: any = {
       product: item,
-      productID: item?.id,
+      productID: item?.productId,
       quantity: quantity,
       index: variant,
       isPriceList: "",
@@ -68,7 +53,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
           <div className="flex flex-col gap-2 ">
             <div className=" ">
               <Image
-                src={item?.img?.url?item?.img?.url:constant.errImage}
+                src={item?.img?.url ? item?.img?.url : constant.errImage}
                 alt="productalt"
                 width={1000}
                 height={1000}
@@ -84,19 +69,19 @@ const CartItemCard = ({ item, mykey, cookie }) => {
             <div className="flex items-center gap-2 text-[#555555] md:text-sm text-xs font-medium mb-1 ">
               <span>Size : </span> <span>
                 {/* {item?.pack?.weight} */}
-                {item?.pack?.weight?.split("/")&&item?.pack?.weight?.split("/")[0]}
-                </span>{" "}
-                {item?.pack?.weight?.includes("/")? 
-                <div><span>|</span>  Color :  <span> 
-                    {/* {item?.color?.name} */}
-                  {item?.pack?.weight?.split("/")[1]}</span></div>:null}
-             
-             
+                {item?.pack?.weight?.split("/") && item?.pack?.weight?.split("/")[0]}
+              </span>{" "}
+              {item?.pack?.weight?.includes("/") ?
+                <div><span>|</span>  Color :  <span>
+                  {/* {item?.color?.name} */}
+                  {item?.pack?.weight?.split("/")[1]}</span></div> : null}
+
+
               {/* <span>
                   {item?.pack?.weight?.split("/")&&item?.pack?.weight?.split("/")[1]}
                 </span> */}
 
-                
+
             </div>
             {/* <div className="flex items-center sm:justify-start justify-center gap-2 my-3">
               <div className="text-primary text-xl flex ">
@@ -177,18 +162,18 @@ const CartItemCard = ({ item, mykey, cookie }) => {
         </div>
         <div className="flex sm:justify-end justify-center  ">
           {wishlistData &&
-          wishlistData.length > 0 &&
-          wishlistData.includes(`${item?.productId}`) ? (
+            wishlistData.length > 0 &&
+            wishlistData.includes(`${item?.productId}`) ? (
             <div
               className="flex items-center gap-2  text-end cursor-pointer "
-              onClick={async() =>{
-                await removeFromWishListHandler({userId: userData?.id,productId: item?.productId,})
+              onClick={async () => {
+                await removeFromWishListHandler({ userId: userData?.id, productId: item?.productId, })
                 await queryClient.invalidateQueries({
                   queryKey: ["wishlistData"],
                 });
                 toast.success("Product removed from wishlist.");
               }
-                
+
               }
             >
               <FlatIcon
@@ -203,7 +188,7 @@ const CartItemCard = ({ item, mykey, cookie }) => {
           ) : (
             <div
               className="flex items-center gap-2  text-end cursor-pointer "
-              onClick={async() =>{
+              onClick={async () => {
                 moveToWishListHandler({
                   userId: userData?.id,
                   productId: item?.productId,
