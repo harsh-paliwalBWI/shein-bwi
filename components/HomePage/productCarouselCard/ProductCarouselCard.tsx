@@ -123,7 +123,7 @@ const ProductCarouselCard = ({ product, id }) => {
           }`}
         >
           <div className=" relative  mb-2">
-            <div className="h-[250px] lg:h-[400px] relative ">
+            <div className="h-[250px] xl:h-[480px] lg:h-[350px] relative">
               <Image
                 src={image}
                 alt=""

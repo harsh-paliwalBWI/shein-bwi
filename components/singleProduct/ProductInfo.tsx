@@ -70,10 +70,6 @@ const ProductInfo = ({ params }: any) => {
     product?.variants?.option2 && product?.variants?.option2[0]
   );
   const [newProduct, setNewProduct] = useState("");
-  console.log(product, "product from single product---------->");
-  //   console.log(product?.images, "images---------->");
-  // console.log(product?.searchKeywords,"product?.searchKeywords");
-  // console.log(params.slug,"params slug");
 
   const { data: similarData } = useQuery({
     queryKey: ["product", params?.slug, "similar-product"],
@@ -196,7 +192,7 @@ const ProductInfo = ({ params }: any) => {
       index: variant,
       isPriceList: product?.isPriceList,
     };
-    console.log(data);
+    // console.log(data);
 
     dispatch(removeFromCart(data));
   }

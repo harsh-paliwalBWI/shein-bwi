@@ -86,95 +86,16 @@ export function getFilteredProducts({ filters, products }) {
 
 export const getOtherFilteredProducts = async ({ filters, products, otherFilters }: { filters: any, products: any, otherFilters: any }) => {
     let newProducts = getFilteredProducts({ filters, products });
-    console.log("products from getOtherFilteredProducts", newProducts);
-    console.log("otherFilters getOtherFilteredProducts", otherFilters);
-    // for (const [filterName, values] of Object.entries(otherFilters)) {
-    //     console.log(filterName,values);
-    //     let tempFilterProds: any = {};
-    //     if (values && (values as any[]).length) {
-    //         console.log("inside if values");
-    //         console.log("newProducts",newProducts);
-    //         (values as any[]).forEach((value: any) => {
-    //             console.log("inside for each");
-    //             console.log("tempFilterProds",tempFilterProds);
-    //             console.log("newProducts",newProducts);
-    //             Object.assign(tempFilterProds, newProducts.reduce((tempProdObj, prodData) => {
-    //                 console.log("inside reduce");
-    //                 const { filters, id } = prodData;
-    //                 if (id && filters && filters[filterName] && filters[filterName].length && filters[filterName].includes(value)) {
-    //                     console.log("filter name",filters[filterName]);
-                        
-    //                     tempProdObj[id] = prodData;
-    //                 }else{
-    //                     console.log("inside else");
-                        
-    //                 }
-    //                 return tempProdObj;
-    //             }, {}));
-    //         });
-    //     newProducts = Object.values(tempFilterProds);
-
-    //     }
-    //     // newProducts = Object.values(tempFilterProds);
-    // }
-    // for (const [filterName, values] of Object.entries(otherFilters)) {
-    //     if (values && (values as any[]).length) {
-    //         newProducts = newProducts.filter((prodData) => {
-    //             const { filters }: { filters?: Record<string, string[]> } = prodData;
-    //             return filters && filters[filterName] && filters[filterName].some((filterValue:any) => values.includes(filterValue));
-    //         });
-    //     }
-    // }
     for (const [filterName, values] of Object.entries(otherFilters)) {
         if (values && Array.isArray(values) &&values.length&& values.every((val) => typeof val === 'string')) {
             newProducts = newProducts.filter((prodData) => {
                 const { filters }: { filters?: Record<string, string[]> } = prodData;
-// if(!filters[filterName]){
-//     return true
-// }
                 return filters && filters[filterName] && (filters[filterName] as string[]).some((filterValue) => values.includes(filterValue));
             });
         }
-        // console.log("newProducts",newProducts);
-    }
-    // console.log("newProducts",newProducts);
-    
+    }    
     return await newProducts;
 }
 
-// export const getOtherFilteredProducts = async ({ filters, products, otherFilters }: { filters: any, products: any, otherFilters: any }) => {
-//     let newProducts = getFilteredProducts({ filters, products });
-//     console.log("products from getOtherFilteredProducts", products);
-//     console.log("otherFilters getOtherFilteredProducts", otherFilters);
 
-//     for (const [filterName, values] of Object.entries(otherFilters)) {
-//         console.log("filterName:", filterName, "values:", values);
-
-//         let tempFilterProds: any = {};
-//         if (values && Array.isArray(values)) {
-//             console.log("inside if values");
-
-//             values.forEach((value: any) => {
-//                 console.log("inside forEach, value:", value);
-
-//                 Object.assign(tempFilterProds, newProducts.reduce((tempProdObj, prodData) => {
-//                     console.log("inside reduce");
-                    
-//                     const { filters, id } = prodData;
-//                     if (id && filters && filters[filterName] && Array.isArray(filters[filterName]) && filters[filterName].includes(value)) {
-//                         console.log("filter name", filters[filterName]);
-//                         tempProdObj[id] = prodData;
-//                     } else {
-//                         console.log("inside else");
-//                     }
-//                     return tempProdObj;
-//                 }, {}));
-//             });
-//         }
-//         newProducts = Object.values(tempFilterProds);
-//     }
-//     console.log("newProducts", newProducts);
-
-//     return newProducts;
-// }
 

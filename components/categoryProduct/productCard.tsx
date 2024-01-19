@@ -138,7 +138,7 @@ const ProductCard = ({ product, idx = Math.random(), mx }: any) => {
           }`}
         >
           <div className=" relative mb-1 md:mb-2 ">
-            <div className="md:h-[400px] sm:h-[190px] h-[150px] w-auto relative ">
+            <div className="xl:h-[480px] lg:h-[350px] h-[200px] w-auto relative ">
               <Image
                 src={image}
                 alt=""
