@@ -216,7 +216,7 @@ const FilterSection: FC<Props> = ({ filters, setFiters, minMax, setMinMax, filte
                 </div>
               </div>
               {isFiltersOpen[filter.name] && (
-                <div className={`${filter.name==="colour"?"flex":"grid"}  grid-cols-3 items-center gap-5  pt-4 px-3`}>
+                <div className={`${filter.name==="colour"?"flex flex-wrap":"grid"}  grid-cols-3 items-center gap-5  pt-4 px-3`}>
                   {filter.values.map((value: any, idx: number) => (
                     <div key={idx} className="flex items-center gap-2">
                       <div

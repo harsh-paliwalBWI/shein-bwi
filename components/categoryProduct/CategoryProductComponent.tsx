@@ -123,7 +123,7 @@ const CategoryProductComponent = ({ params, queryKey = [] }: any) => {
           )}
           {categoryProducts&&filteredProducts?.length === 0 ? (
             <div className="w-full flex justify-center items-center py-20 lg:py-32">
-              <h2 className="font-semibold text-xl">No Products Found</h2>
+              <h2 className="font-semibold md:text-xl text-base">No Products Found !</h2>
             </div>
           ) :
             (<div className="w-full  grid-cols-2 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3 grid sm:gap-y-8 gap-y-4  md:mb-10   ">
