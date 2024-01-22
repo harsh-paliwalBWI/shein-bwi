@@ -4,9 +4,8 @@ import React, { useState, useEffect, Fragment, useRef } from "react";
 import Image from "next/image";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
-// import logo from "../../images/logo.png";
 import { usePathname, useRouter } from "next/navigation";
-import logo from "../../images/Group 34291.png";
+import logo from "../../images/Group 34291 (2).svg";
 import FlatIcon from "../flatIcon/flatIcon";
 import { TfiMenuAlt } from "react-icons/tfi"
 import { useQuery } from "@tanstack/react-query";
@@ -17,20 +16,13 @@ import { useAppSelector } from "../../redux/hooks";
 import { handleTypesenseSearch } from "../../config/typesense";
 import SearchTile2 from "../searchHeader/SearchTile";
 import useDebounce from "../../utils/useDebounce";
-import { Menu, Transition } from "@headlessui/react";
 import SidebarDrawer from "./SidebarDrawer";
-import { setCurrency } from "../../redux/slices/appSlice";
-import ReactCountryFlag from "react-country-flag";
 import { auth } from "../../config/firebase-config";
 import useOnScreen from "../../utils/visibleElement";
-import { PiUserLight } from "react-icons/pi";
 import { PiShoppingCartLight } from "react-icons/pi";
-import { GoHeart } from "react-icons/go";
-import { CiHeart } from "react-icons/ci";
 import { IoIosHeartEmpty } from "react-icons/io";
 
 const texts = ["New Users Only !", " All India Free Delivery + 15% Extra Discount", "Code : SHE15"];
-
 
 const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLoginMenu, }: any) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -60,9 +52,7 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  
 
-  
   async function fetchSearchedProducts() {
     setIsSearching(true);
     const res = await handleTypesenseSearch(debouncedSearch);
@@ -106,36 +96,24 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
           </a>
          
         </div> */}
-         <Link href={`/view-all?type=product-carousel&id=H6ZyHPlP74sOsbcsA8Cj&name=${encodeURIComponent("BESTSELLER")}`}
-                    className="flex justify-center items-center gap-2   w-full  xl:text-sm text-xs "
-                  >
-             
-                {/* <p className=" text-[10px] lg:text-lg text-secondary font-bold">
-                  New Users Only
-                </p>
-                <p className=" text-[12px] lg:text-2xl font-bold">
-                  All India Free Delivery + 15% Extra Discount{" "}
-                </p>
-                <p className="  text-[10px] lg:text-lg text-secondary font-bold">
-                 
-                  Code: SHE15
-                </p> */}
-                <p className="text-white text-sm">{texts[currentIndex]}</p>
-             
-              </Link>
+        <Link href={`/view-all?type=product-carousel&id=H6ZyHPlP74sOsbcsA8Cj&name=${encodeURIComponent("BESTSELLER")}`}
+          className="flex justify-center items-center gap-2   w-full  xl:text-sm text-xs "
+        >
+          <p className="text-white text-sm">{texts[currentIndex]}</p>
+        </Link>
       </div>
-<div className="bg-black py-1 text-center w-full">
-  <div className="animated-text font-semibold">
-    <span>Download</span>
-    <span>the</span>
-    <span>app</span>
-    <span>and</span>
-    <span>get</span>
-    <span>10%</span>
-    <span>off</span>
-    <span>!</span>
-  </div>
-</div>
+      <div className="bg-black py-1 text-center w-full">
+        <div className="animated-text font-semibold">
+          <span>Download</span>
+          <span>the</span>
+          <span>app</span>
+          <span>and</span>
+          <span>get</span>
+          <span>10%</span>
+          <span>off</span>
+          <span>!</span>
+        </div>
+      </div>
       <div
         className={`text-center block md:hidden bg-white  border border-[red] ${matches2 ? "px-[5%]" : "px-[7%]"
           } border-b border-gray-200 shadow-sm ${!isVisible &&
@@ -253,7 +231,6 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
             </Link>
           </div>
         </div>
-        {/* {isMobile && ( */}
         <SidebarDrawer
           dispatch={dispatch}
           userData={userData}
@@ -263,7 +240,6 @@ const NewNavMobile = ({ cookie, isClient, handleLogout, setShowLogin, closeLogin
           cookie={cookie}
           handleLogout={handleLogout}
         />
-        {/* )} */}
       </div>
     </div>
   );
