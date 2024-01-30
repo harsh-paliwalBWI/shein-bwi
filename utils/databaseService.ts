@@ -752,12 +752,30 @@ export const getUserWishlistData2 = async (cookieData) => {
 }
 
 export async function fetchInstagramVideosData() {
+    console.log("hii");
+    
     const response = (await getDoc(doc(db, "platformMedia", "instagram"))).data();
 
     if (response && response?.list && response?.list?.length !== 0) {
+        console.log("insdie if fetchInstagramVideosData");
+        
         return response?.list
     }
+    console.log("after if");
+    
     return []
+    // let arr = []
+    // const responseData = await getDocs(query(collection(db, "products"), where("video.active", "==", true), where('status', "==", true))).then((val) => {
+    //     if (val.docs.length === 0) return [];
+
+    //     for (const doc of val.docs) {
+    //         console.log("insdie for");
+            
+    //         arr.push({ ...doc.data(), id: doc.id })
+    //     }
+    //     return;
+    // });
+    // return arr;
 }
 
 

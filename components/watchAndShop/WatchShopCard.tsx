@@ -7,8 +7,11 @@ import playButton from "../../images/Group 1830.svg";
 import { useQuery } from "@tanstack/react-query";
 import { fetchVideoProducts } from "../../utils/databaseService";
 import ReactPlayer from "react-player";
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 const WatchShopCard = ({ item }) => {
+  const matches = useMediaQuery('(max-width:976px)');
   return (
     <>
       <div
@@ -19,7 +22,7 @@ const WatchShopCard = ({ item }) => {
             light={item?.video?.thumbnail}
             url={item?.video?.link}
             width={"100%"}
-            height={"500px"}
+            height={matches?"350px":"500px"}
             playing={true}
             loop={true}
           />

@@ -19,7 +19,7 @@ const InstaFamilySlider = () => {
     queryKey: ["instagram-section"],
     queryFn: () => fetchInstagramVideosData(),
   });
-  // console.log(similarData,"simildar data");
+  console.log(instagramData,"instagram-section");
 
   const settings = {
     dots: false,
@@ -82,7 +82,7 @@ const InstaFamilySlider = () => {
         breakpoint: 480,
         settings: {
           slidesToShow: 1.5,
-          slidesToScroll: 2.5,
+          slidesToScroll: 1.5,
           dots: false,
           arrows: false,
         },

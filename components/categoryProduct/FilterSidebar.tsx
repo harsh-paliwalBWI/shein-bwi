@@ -61,9 +61,9 @@ const FilterSidebar: FC<Props> = ({ setIsMobileModalOpen, setFilterSelected, set
                   <p className="font-semibold text-sm text-secondary">{filter?.name}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-5   ">
+              <div className="flex items-center gap-5  flex-wrap  ">
                 {filter.values.map((value: any, idx: number) => (
-                  <div key={idx} className="flex items-center gap-2">
+                  <div key={idx} className="flex items-center gap-2 ">
                     <p
                       onClick={() => toggleFilter(filter.name, value)}
                       className={`bg-gray-100 px-3 py-1  text-sm ${selectedSizes[value] ? "text-black font-semibold" : "text-gray-500"}`}>{value}</p>

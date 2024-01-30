@@ -6,6 +6,8 @@ import { fetchHomeSections } from "../../../utils/databaseService";
 import FlatIcon from "../../flatIcon/flatIcon";
 import Link from "next/link";
 const CategoryGrid = ({ section }) => {
+  // console.log("section",section);
+  
 
   const [countdown, setCountdown] = useState({
     days: 0,

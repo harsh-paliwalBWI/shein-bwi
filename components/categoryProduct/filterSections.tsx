@@ -47,12 +47,10 @@ const FilterSection: FC<Props> = ({ filters, setFiters, minMax, setMinMax, filte
 
   const handleSliderChange = (value: any) => {
     setFiters({ ...filters, price: value });
-    // setSliderValue(value);
   };
 
   const handleModalSliderChange = (value: any) => {
     setModalPriceState(value);
-    // setSliderValue(value);
   };
 
   const toggleFilterSection = (filterName: string) => {
@@ -63,6 +61,8 @@ const FilterSection: FC<Props> = ({ filters, setFiters, minMax, setMinMax, filte
   };
 
   const toggleFilter = (filterType: string, value: string) => {
+    console.log(filterType,value);
+    
     setFilterSelected((prevFilterSelected) => ({
       ...prevFilterSelected,
       [filterType]: prevFilterSelected[filterType].includes(value)
